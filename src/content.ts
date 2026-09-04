@@ -72,7 +72,8 @@ export const atlasMarkup = `
           <a href="#rack" data-nav-section="rack"><span>06</span> Rack & network</a>
           <a href="#inference" data-nav-section="inference"><span>07</span> Inference</a>
           <a href="#lpu" data-nav-section="lpu"><span>08</span> LPU</a>
-          <a href="#sources" data-nav-section="sources"><span>09</span> Sources</a>
+          <a href="#glossary" data-nav-section="glossary"><span>09</span> Glossary</a>
+          <a href="#sources" data-nav-section="sources"><span>10</span> Sources</a>
         </nav>
         <div class="index-legend">
           <i></i>
@@ -747,8 +748,32 @@ vllm serve MODEL_ID \\
         </div>
       </section>
 
-      <section class="chapter sources-chapter" id="sources" data-chapter="Sources">
+      <section class="chapter glossary-chapter" id="glossary" data-chapter="Glossary">
         <div class="chapter-number">09</div>
+        <div class="chapter-title">
+          <p class="chapter-kicker">Working vocabulary</p>
+          <h2>The system in one hundred precise terms</h2>
+          <p class="chapter-summary">Short definitions for reading papers, profiler traces, architecture guides, and source code. Each term answers both “what is it?” and “why does an inference engineer care?”</p>
+        </div>
+        <div class="glossary-toolbar" data-glossary-toolbar>
+          <label>Find a term<input type="search" placeholder="Search SM, all-reduce, TTFT…" data-glossary-search /></label>
+          <div class="glossary-filters" role="group" aria-label="Filter glossary by domain">
+            <button type="button" class="is-active" data-glossary-filter="all">All</button>
+            <button type="button" data-glossary-filter="hardware">Hardware</button>
+            <button type="button" data-glossary-filter="cuda">CUDA</button>
+            <button type="button" data-glossary-filter="performance">Performance</button>
+            <button type="button" data-glossary-filter="training">Training</button>
+            <button type="button" data-glossary-filter="inference">Inference</button>
+            <button type="button" data-glossary-filter="network">Network</button>
+          </div>
+          <span data-glossary-count>Loading terms…</span>
+        </div>
+        <div class="glossary-list" data-glossary-list></div>
+        <div class="glossary-empty" data-glossary-empty hidden>No term matches that filter.</div>
+      </section>
+
+      <section class="chapter sources-chapter" id="sources" data-chapter="Sources">
+        <div class="chapter-number">10</div>
         <div class="chapter-title">
           <p class="chapter-kicker">Source ledger</p>
           <h2>Read outward from the atlas</h2>

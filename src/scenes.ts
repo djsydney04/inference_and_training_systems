@@ -403,7 +403,7 @@ function createRackScene() {
       const grace = makeBox(1.4, 0.75, 2.3, colors.memoryDark, [x, 0, 0], `grace-${pair}`, {
         eyebrow: "Selected / GB200 Superchip",
         title: "Grace CPU",
-        body: "The Arm-based Grace host CPU runs control-heavy code and accesses GPU memory coherently through NVLink-C2C. in the superchip module.",
+        body: "The Arm-based Grace host CPU runs control-heavy code and accesses GPU memory coherently through NVLink-C2C in the superchip module.",
         facts: [["Role", "host compute + system memory"], ["Link", "900 GB/s bidirectional C2C per superchip"]],
       });
       computeDetail.add(grace); selectable.push(grace);
