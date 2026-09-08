@@ -19,15 +19,24 @@ function initNavigation() {
   const progressLabel = qs<HTMLElement>("[data-progress-label]");
   const links = qsa<HTMLAnchorElement>("[data-nav-section]");
   const sections = qsa<HTMLElement>("[data-chapter]");
+  const smallScreen = window.matchMedia("(max-width: 820px)");
+  const syncIndexAccess = () => {
+    if (index) index.inert = smallScreen.matches && !index.classList.contains("is-open");
+  };
+  syncIndexAccess();
+  smallScreen.addEventListener("change", syncIndexAccess);
 
   toggle?.addEventListener("click", () => {
     const isOpen = index?.classList.toggle("is-open") ?? false;
     toggle.setAttribute("aria-expanded", String(isOpen));
+    syncIndexAccess();
+    if (isOpen && smallScreen.matches) links[0]?.focus();
   });
 
   links.forEach((link) => link.addEventListener("click", () => {
     index?.classList.remove("is-open");
     toggle?.setAttribute("aria-expanded", "false");
+    syncIndexAccess();
   }));
 
   document.addEventListener("keydown", (event) => {
@@ -35,10 +44,12 @@ function initNavigation() {
       index.classList.remove("is-open");
       toggle?.setAttribute("aria-expanded", "false");
       toggle?.focus();
+      syncIndexAccess();
     }
   });
 
   let lastScrollY = window.scrollY;
+  let activeChapter = "";
   const updateProgress = () => {
     const doc = document.documentElement;
     const range = Math.max(1, doc.scrollHeight - window.innerHeight);
@@ -48,20 +59,25 @@ function initNavigation() {
       topbar.classList.toggle("is-compact", window.scrollY > lastScrollY && window.scrollY > 180);
       lastScrollY = window.scrollY;
     }
+    // Long textbook chapters can exceed an IntersectionObserver's ratio band.
+    // Use the last chapter start above the reading line, independent of height.
+    const readingLine = Math.min(200, window.innerHeight * 0.25);
+    const section = [...sections].reverse().find((item) => item.getBoundingClientRect().top <= readingLine) ?? sections[0];
+    if (section && section.id !== activeChapter) {
+      activeChapter = section.id;
+      links.forEach((link) => {
+        const active = link.dataset.navSection === activeChapter;
+        link.classList.toggle("is-active", active);
+        if (active) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+      if (progressLabel) progressLabel.textContent = section.dataset.chapter ?? "Atlas";
+    }
   };
   updateProgress();
   window.addEventListener("scroll", updateProgress, { passive: true });
-
-  const observer = new IntersectionObserver((entries) => {
-    const visible = entries
-      .filter((entry) => entry.isIntersecting)
-      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-    if (!visible) return;
-    const section = visible.target as HTMLElement;
-    links.forEach((link) => link.classList.toggle("is-active", link.dataset.navSection === section.id));
-    if (progressLabel) progressLabel.textContent = section.dataset.chapter ?? "Atlas";
-  }, { rootMargin: "-18% 0px -58%", threshold: [0, 0.1, 0.35] });
-  sections.forEach((section) => observer.observe(section));
+  window.addEventListener("resize", updateProgress);
+  new ResizeObserver(updateProgress).observe(document.body);
 }
 
 function initHero() {
@@ -183,6 +199,37 @@ function initAttentionLab() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, rect.width, rect.height);
 
+    // A hybrid is a schedule across layers, not a different policy per query row.
+    if (mode === "hybrid") {
+      const left = 68;
+      const step = (rect.width - left - 22) / tokens;
+      ctx.font = "11px IBM Plex Sans, sans-serif";
+      ctx.fillStyle = "#626760";
+      ctx.fillText("token positions →", left, 28);
+      for (let layer = 0; layer < 4; layer += 1) {
+        const y = 64 + layer * 60;
+        ctx.fillStyle = "#173b99";
+        ctx.fillText(layer < 3 ? `KDA ${layer + 1}` : "Full 4", 12, y + 15);
+        for (let token = 0; token < tokens; token += 1) {
+          ctx.fillStyle = layer < 3 ? "#b9caff" : "#2559d6";
+          ctx.fillRect(left + token * step + 1, y, Math.max(2, step - 3), 24);
+          if (layer < 3 && token < tokens - 1) {
+            ctx.strokeStyle = "#173b99"; ctx.beginPath();
+            ctx.moveTo(left + (token + 1) * step - 2, y + 12);
+            ctx.lineTo(left + (token + 1) * step + 1, y + 12); ctx.stroke();
+          }
+        }
+      }
+      ctx.fillStyle = "#626760"; ctx.font = "10px IBM Plex Sans, sans-serif";
+      ctx.fillText("Each token passes through all four layers.", 16, 305);
+      ctx.fillText("KDA: state. Full: causal access to prior K/V.", 16, 324);
+      if (tokenOutput) tokenOutput.value = String(tokens);
+      if (pairOutput) pairOutput.textContent = "3 recurrent + 1 full";
+      if (complexityOutput) complexityOutput.textContent = "layer hybrid";
+      if (description) description.textContent = descriptions.hybrid[1];
+      return;
+    }
+
     const padding = Math.max(32, Math.min(rect.width, rect.height) * 0.1);
     const size = Math.min(rect.width - padding * 2, rect.height - padding * 1.55);
     const cell = size / tokens;
@@ -192,11 +239,11 @@ function initAttentionLab() {
 
     ctx.fillStyle = "#626760";
     ctx.font = "10px IBM Plex Sans, sans-serif";
-    ctx.fillText("query position ↓", originX, Math.max(15, originY - 19));
+    ctx.fillText("key position →", originX, Math.max(15, originY - 19));
     ctx.save();
     ctx.translate(Math.max(13, originX - 24), originY + size);
     ctx.rotate(-Math.PI / 2);
-    ctx.fillText("key position →", 0, 0);
+    ctx.fillText("query position", 0, 0);
     ctx.restore();
 
     for (let query = 0; query < tokens; query += 1) {
@@ -366,7 +413,7 @@ function initInferenceLabs() {
   const resultCells = qsa<HTMLElement>(".verify-row i");
   const renderSpec = () => {
     const rate = Number(acceptance?.value ?? 70) / 100;
-    const expected = 1 + rate + rate ** 2 + rate ** 3 + rate ** 4;
+    const expected = 1 + rate + rate ** 2 + rate ** 3 + rate ** 4 + rate ** 5;
     if (acceptOutput) acceptOutput.value = `${Math.round(rate * 100)}%`;
     if (effective) effective.textContent = `${expected.toFixed(1)} tokens / verify step`;
     const acceptedCount = Math.round(rate * resultCells.length);

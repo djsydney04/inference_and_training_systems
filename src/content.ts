@@ -1,3 +1,6 @@
+import { trainingExpansionMarkup } from "./training-content";
+import { tensorLesson, attentionLesson, postTrainingLesson, hardwareLesson, rackLesson, inferenceLesson, lpuLesson } from "./textbook-content";
+
 export const atlasMarkup = `
   <a class="skip-link" href="#main-content">Skip to the atlas</a>
 
@@ -191,6 +194,7 @@ tf.debugging.assert_shapes([(q, (B, H, T, Dh))])
 print(q.shape, q.dtype, q.device)</code></pre>
           <div class="code-notes"><span>Why transpose?</span><p>Attention multiplies each head’s <code>T × Dh</code> query matrix by a <code>Dh × T</code> key matrix. Putting heads before sequence lets a batched matmul express that directly.</p></div>
         </div>
+        ${tensorLesson}
       </section>
 
       <section class="chapter" id="transformer" data-chapter="Transformer">
@@ -261,10 +265,10 @@ print(q.shape, q.dtype, q.device)</code></pre>
 
     tokens = tf.shape(scores)[-<span class="num">1</span>]
     allowed = tf.linalg.band_part(tf.ones([tokens, tokens]), -<span class="num">1</span>, <span class="num">0</span>)
-    scores += (<span class="num">1.0</span> - allowed) * tf.cast(-<span class="num">1e9</span>, scores.dtype)
+    scores = tf.where(tf.cast(allowed, tf.bool), tf.cast(scores, tf.float32), -1e9)
 
     weights = tf.nn.softmax(scores, axis=-<span class="num">1</span>)
-    output = tf.matmul(weights, v)
+    output = tf.matmul(tf.cast(weights, v.dtype), v)
     <span class="kw">return</span> output, weights
 
 <span class="cm"># Production kernels fuse several of these steps to avoid HBM round trips.</span></code></pre>
@@ -320,7 +324,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
 
         <div class="case-studies">
           <article class="case-study">
-            <div class="case-meta"><span>Released Aug 2026</span><a href="https://huggingface.co/zai-org/GLM-5.3-Flash" target="_blank" rel="noreferrer">Official model card</a></div>
+            <div class="case-meta"><span>Model card checked September 2026</span><a href="https://huggingface.co/zai-org/GLM-5.3-Flash" target="_blank" rel="noreferrer">Official model card</a></div>
             <h3>GLM‑5.3 Flash: sparse + linear</h3>
             <p>Z.ai describes GLM‑5.3 Flash as the first GLM model to combine sparse and linear attention. Its release configuration specifies 45 layers: 34 KDA linear-attention layers and 11 DeepSeek Sparse Attention layers in a repeating 3:1 schedule. Each sparse indexer selects up to 2,048 positions. These are versioned checkpoint facts, not a promise about every future GLM‑5.3 variant.</p>
             <div class="layer-tape" aria-label="Conceptual hybrid layer schedule">
@@ -358,6 +362,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
             <a href="https://yzhang.site/assets/pubs/techreport/2025/kda.pdf#page=6" target="_blank" rel="noreferrer">Open the authors’ Figure 3</a>
           </div>
         </div>
+        ${attentionLesson}
       </section>
 
       <section class="chapter" id="training" data-chapter="Training">
@@ -441,6 +446,9 @@ print(q.shape, q.dtype, q.device)</code></pre>
           </aside>
         </div>
 
+        ${trainingExpansionMarkup}
+        ${postTrainingLesson}
+
         <div class="code-study">
           <div class="code-heading"><div><span>TensorFlow lab 3</span><h3>A distributed pre-training step</h3></div><button class="copy-button" type="button" data-copy-target="train-code">Copy code</button></div>
           <pre id="train-code"><code>strategy = tf.distribute.MultiWorkerMirroredStrategy()
@@ -449,20 +457,23 @@ print(q.shape, q.dtype, q.device)</code></pre>
     model = DecoderLM(config)
     optimizer = tf.keras.optimizers.AdamW(<span class="num">3e-4</span>, weight_decay=<span class="num">0.1</span>)
 
-<span class="dec">@tf.function</span>(jit_compile=<span class="kw">True</span>)
-<span class="kw">def</span> <span class="fn">distributed_step</span>(batch):
+<span class="dec">@tf.function</span>
+<span class="kw">def</span> <span class="fn">distributed_step</span>(batch, global_batch_size):
     <span class="kw">def</span> <span class="fn">replica_step</span>(tokens):
         x, labels = tokens[:, :-<span class="num">1</span>], tokens[:, <span class="num">1</span>:]
         <span class="kw">with</span> tf.GradientTape() <span class="kw">as</span> tape:
             logits = model(x, training=<span class="kw">True</span>)
-            loss = tf.reduce_mean(
-                tf.keras.losses.sparse_categorical_crossentropy(
-                    labels, logits, from_logits=<span class="kw">True</span>))
+            token_loss = tf.keras.losses.sparse_categorical_crossentropy(
+                labels, logits, from_logits=<span class="kw">True</span>)
+            <span class="cm"># Equal-length, unpadded sequences in this example.</span>
+            per_example = tf.reduce_mean(token_loss, axis=-1)
+            loss = tf.nn.compute_average_loss(
+                per_example, global_batch_size=global_batch_size)
         grads = tape.gradient(loss, model.trainable_variables)
         optimizer.apply_gradients(zip(grads, model.trainable_variables))
         <span class="kw">return</span> loss
     losses = strategy.run(replica_step, args=(batch,))
-    <span class="kw">return</span> strategy.reduce(tf.distribute.ReduceOp.MEAN, losses, axis=<span class="kw">None</span>)
+    <span class="kw">return</span> strategy.reduce(tf.distribute.ReduceOp.SUM, losses, axis=<span class="kw">None</span>)
 
 <span class="cm"># Production: add global-token normalization, loss scaling, gradient</span>
 <span class="cm"># accumulation/clipping, checkpoint state, input resumption, and telemetry.</span></code></pre>
@@ -495,7 +506,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
             </div>
           </div>
           <div class="three-stage">
-            <div id="gpu-scene" class="scene-canvas" role="img" aria-label="Interactive 3D GPU package model"></div>
+            <div id="gpu-scene" class="scene-canvas" role="group" aria-label="Interactive 3D GPU package model"></div>
             <div class="scene-inspector" id="gpu-inspector" aria-live="polite">
               <span>Selected / package</span>
               <h3>Accelerator package</h3>
@@ -527,6 +538,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
             <p data-roofline-copy>At this intensity, moving operands is likely to set the ceiling. Fuse operations or reuse tiles before chasing peak FLOPs.</p>
           </div>
         </figure>
+        ${hardwareLesson}
       </section>
 
       <section class="chapter" id="rack" data-chapter="Rack & network">
@@ -548,7 +560,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
             </div>
           </div>
           <div class="three-stage rack-stage">
-            <div id="rack-scene" class="scene-canvas" role="img" aria-label="Interactive 3D conceptual model of a GB200 NVL72 rack"></div>
+            <div id="rack-scene" class="scene-canvas" role="group" aria-label="Interactive 3D conceptual model of a GB200 NVL72 rack"></div>
             <div class="scene-inspector" id="rack-inspector" aria-live="polite">
               <span>Selected / NVL72</span><h3>Rack-scale NVLink domain</h3>
               <p>18 compute trays × 4 B200 GPUs = 72 GPUs. Nine switch trays contain 18 NVSwitch chips, giving every GPU one NVLink connection to every switch chip.</p>
@@ -606,6 +618,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
           </div>
           <dl class="fiber-terms"><div><dt>Lane</dt><dd>One serial transmit/receive path.</dd></div><div><dt>PAM4</dt><dd>Four voltage levels encode two bits per symbol.</dd></div><div><dt>FEC</dt><dd>Redundant coding corrects a bounded number of bit errors.</dd></div><div><dt>Transceiver</dt><dd>Pluggable or co-packaged electrical–optical conversion.</dd></div></dl>
         </div>
+        ${rackLesson}
       </section>
 
       <section class="chapter" id="inference" data-chapter="Inference">
@@ -676,7 +689,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
             <div class="draft-row"><span>draft</span><i>A</i><i>B</i><i>C</i><i>D</i><i>E</i></div>
             <div class="verify-row"><span>target</span><i class="accepted">✓</i><i class="accepted">✓</i><i class="accepted">✓</i><i class="rejected">×</i><i></i></div>
             <label>Acceptance rate <output data-accept-output>70%</output><input type="range" min="10" max="100" value="70" data-acceptance /></label>
-            <div class="spec-result"><span>Illustrative effective advance</span><strong data-effective-tokens>3.8 tokens / verify step</strong></div>
+            <div class="spec-result"><span>Expected advance, five draft tokens + one target token</span><strong data-effective-tokens>2.9 tokens / verify step</strong><p class="figure-boundary">Toy model: independent acceptance probability a gives 1 + a + a² + … + a⁵ expected tokens. This excludes draft and verification costs.</p></div>
           </div>
         </div>
 
@@ -693,6 +706,7 @@ vllm serve MODEL_ID \\
 <span class="cm"># KV occupancy, preemption/recompute, and per-rank utilization.</span></code></pre>
           <div class="code-notes"><span>Architecture choice</span><p>Tensor parallelism lowers per-GPU weight and compute load but adds a collective inside each layer. Choose it with topology awareness; “more GPUs” can make a latency-sensitive model slower.</p></div>
         </div>
+        ${inferenceLesson}
       </section>
 
       <section class="chapter" id="lpu" data-chapter="LPU">
@@ -709,7 +723,7 @@ vllm serve MODEL_ID \\
             <div class="three-controls"><button type="button" data-lpu-pulse>Run tensor pulse</button><button type="button" data-lpu-view="flow" class="is-active">Data flow</button><button type="button" data-lpu-view="units">Functional slices</button><button type="button" data-lpu-reset>Reset view</button></div>
           </div>
           <div class="three-stage">
-            <div id="lpu-scene" class="scene-canvas" role="img" aria-label="Interactive conceptual 3D model of a Groq Tensor Streaming Processor"></div>
+            <div id="lpu-scene" class="scene-canvas" role="group" aria-label="Interactive conceptual 3D model of a Groq Tensor Streaming Processor"></div>
             <div class="scene-inspector" id="lpu-inspector" aria-live="polite"><span>Selected / architecture</span><h3>Tensor Streaming Processor</h3><p>Instructions flow vertically through independent control queues while tensor operands flow horizontally through stream registers and functional slices.</p><dl><div><dt>Schedule</dt><dd>cycle-accurate, compile time</dd></div><div><dt>Memory</dt><dd>distributed on-die SRAM</dd></div></dl></div>
           </div>
           <div class="scene-key"><span><i class="key-memory"></i> MEM / SRAM</span><span><i class="key-compute"></i> MXM + VXM</span><span><i class="key-fabric"></i> SXM / streams</span><span>Based on Groq’s 2020 and 2022 ISCA papers</span></div>
@@ -746,13 +760,14 @@ vllm serve MODEL_ID \\
           <span>Separate architecture from marketing</span>
           <p>Determinism and explicit SRAM are architectural facts documented in peer-reviewed papers. Token rates, energy advantages, and comparisons to a GPU depend on model, precision, batch, context, system size, software version, and measurement boundary. The atlas records those as dated vendor or benchmark claims—not properties guaranteed by the word “LPU.”</p>
         </div>
+        ${lpuLesson}
       </section>
 
       <section class="chapter glossary-chapter" id="glossary" data-chapter="Glossary">
         <div class="chapter-number">09</div>
         <div class="chapter-title">
           <p class="chapter-kicker">Working vocabulary</p>
-          <h2>The system in one hundred precise terms</h2>
+          <h2>The vocabulary of the whole system</h2>
           <p class="chapter-summary">Short definitions for reading papers, profiler traces, architecture guides, and source code. Each term answers both “what is it?” and “why does an inference engineer care?”</p>
         </div>
         <div class="glossary-toolbar" data-glossary-toolbar>
@@ -801,8 +816,15 @@ vllm serve MODEL_ID \\
           <article data-search="zero optimizer memory sharding training"><span>Training systems · 2019</span><h3>ZeRO</h3><p>Partitioning optimizer states, gradients, and parameters across data-parallel ranks.</p><a href="https://arxiv.org/abs/1910.02054" target="_blank" rel="noreferrer">Rajbhandari et al.</a></article>
           <article data-search="rlhf instructgpt post training human feedback"><span>Post-training · 2022</span><h3>InstructGPT</h3><p>SFT, reward modeling, and PPO-based RLHF pipeline.</p><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noreferrer">Ouyang et al.</a></article>
           <article data-search="dpo direct preference optimization post training"><span>Post-training · 2023</span><h3>Direct Preference Optimization</h3><p>A classification-style preference objective derived from the RLHF reward model.</p><a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noreferrer">Rafailov et al.</a></article>
+          <article data-search="lora adapter rank low parameter efficient fine tuning"><span>Post-training · 2021</span><h3>LoRA</h3><p>Frozen base matrices with trainable low-rank updates; the source for the adapter lesson.</p><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noreferrer">Hu et al.</a></article>
+          <article data-search="deepseek math grpo group reward advantage reinforcement learning"><span>Post-training · 2024</span><h3>DeepSeekMath</h3><p>The original group-relative policy optimization formulation and mathematical reasoning experiments.</p><a href="https://arxiv.org/abs/2402.03300" target="_blank" rel="noreferrer">Shao et al.</a></article>
           <article data-search="deepseek r1 rlvr reasoning post training grpo"><span>Post-training · 2025</span><h3>DeepSeek‑R1</h3><p>Reasoning behavior developed with large-scale reinforcement learning and verifiable tasks.</p><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noreferrer">DeepSeek-AI</a></article>
-          <article data-search="nvidia blackwell gpu sm architecture cuda programming guide"><span>Hardware · checked 2026-09</span><h3>CUDA Programming Guide</h3><p>Thread hierarchy, execution model, memory spaces, and compute capability.</p><a href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/" target="_blank" rel="noreferrer">NVIDIA</a></article>
+          <article data-search="olmo 3 pretraining midtraining long context sft dpo rlvr open model flow"><span>Training · 2025</span><h3>Olmo 3 model flow</h3><p>A fully open staged path across broad pre-training, targeted mid-training, context extension, SFT, DPO, and RLVR.</p><a href="https://allenai.org/blog/olmo3" target="_blank" rel="noreferrer">Ai2</a></article>
+          <article data-search="fineweb2 multilingual pretraining data filtering deduplication corpus"><span>Training data · 2025</span><h3>FineWeb2</h3><p>An ablated, released processing pipeline and multilingual web corpus spanning more than 1,000 languages.</p><a href="https://arxiv.org/abs/2506.20920" target="_blank" rel="noreferrer">Penedo et al.</a></article>
+          <article data-search="muon optimizer moonlight scalable llm training"><span>Optimizer · 2025</span><h3>Muon is Scalable for LLM Training</h3><p>Scaling matrix-orthogonalization updates to a multi-trillion-token mixture-of-experts training run.</p><a href="https://github.com/MoonshotAI/Moonlight" target="_blank" rel="noreferrer">Moonshot AI</a></article>
+          <article data-search="dapo reasoning reinforcement learning entropy dynamic sampling clipping"><span>Post-training · 2025</span><h3>DAPO</h3><p>An open large-scale reasoning-RL system with explicit interventions for entropy, sampling, long responses, and stability.</p><a href="https://arxiv.org/abs/2503.14476" target="_blank" rel="noreferrer">Yu et al.</a></article>
+          <article data-search="gspo group sequence policy optimization qwen moe rl"><span>Post-training · 2025</span><h3>Group Sequence Policy Optimization</h3><p>Sequence-level importance ratios and clipping designed to stabilize long-response and MoE reinforcement learning.</p><a href="https://arxiv.org/abs/2507.18071" target="_blank" rel="noreferrer">Zheng et al.</a></article>
+          <article data-search="nvidia blackwell gpu sm architecture cuda programming guide"><span>Hardware · checked 2026-09</span><h3>CUDA Programming Guide</h3><p>Thread hierarchy, execution model, memory spaces, and compute capability.</p><a href="https://docs.nvidia.com/cuda/cuda-programming-guide/" target="_blank" rel="noreferrer">NVIDIA</a></article>
           <article data-search="gb200 nvl72 rack nvlink nvswitch grace blackwell"><span>Hardware · checked 2026-09</span><h3>DGX GB200 SuperPOD architecture</h3><p>Compute trays, NVLink switch trays, rack composition, and network fabrics.</p><a href="https://docs.nvidia.com/dgx-superpod/reference-architecture-scalable-infrastructure-gb200/latest/dgx-superpod-components.html" target="_blank" rel="noreferrer">NVIDIA</a></article>
           <article data-search="vera rubin nvl72 nvlink 6 hbm4 gpu architecture"><span>Hardware · checked 2026-09</span><h3>Rubin GPU architecture</h3><p>Rubin SM count, HBM4 capacity and bandwidth, NVLink 6, and Vera Rubin NVL72 context.</p><a href="https://developer.nvidia.com/blog/inside-nvidia-rubin-gpu-architecture-powering-the-era-of-agentic-ai/" target="_blank" rel="noreferrer">NVIDIA</a></article>
           <article data-search="vllm pagedattention kv cache serving"><span>Inference · 2023</span><h3>Efficient Memory Management for LLM Serving</h3><p>The PagedAttention paper underlying vLLM’s original cache-management design.</p><a href="https://arxiv.org/abs/2309.06180" target="_blank" rel="noreferrer">Kwon et al.</a></article>
@@ -815,8 +837,8 @@ vllm serve MODEL_ID \\
 
         <div class="next-edition">
           <span>Editorial status</span>
-          <h3>This is the first complete vertical slice, not the end of the textbook.</h3>
-          <p>The information architecture, foundational chapters, source discipline, simulations, and three machine models are in place. Subsequent editions deepen each chapter with derivations, exercises, profiler traces, more kernels, exact topology maps, and versioned implementation notes.</p>
+          <h3>A working textbook, still growing.</h3>
+          <p>This edition adds worked derivations, hands-on memory labs, reference photographs, and tested TensorFlow training and post-training examples. Remaining work includes real profiler traces, multi-GPU experiments, deeper kernel implementation, and a broader exercise bank. The current models are educational cutaways, not measured hardware simulators.</p>
           <a href="#top">Return to the top</a>
         </div>
       </section>
@@ -826,6 +848,6 @@ vllm serve MODEL_ID \\
   <footer>
     <p>The Inference Engineering Atlas</p>
     <p>Original explanations and diagrams. Primary sources linked at the claim.</p>
-    <p>Edition 0.1 · September 2026</p>
+    <p>Edition 0.2 · September 2026</p>
   </footer>
 `;

@@ -5,3 +5,7 @@ dist/
 .playwright-cli/
 output/playwright/
 *.log
+__pycache__/
+*.py[cod]
+checkpoints/
+.venv/

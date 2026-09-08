@@ -9,6 +9,7 @@ type PartInfo = {
 };
 
 type Selectable = THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>;
+const cameraMoves = new WeakMap<THREE.Camera, number>();
 
 const colors = {
   ink: 0x242925,
@@ -69,6 +70,8 @@ function createSceneRig(container: HTMLElement, cameraPosition: [number, number,
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.domElement.setAttribute("role", "img");
+  renderer.domElement.setAttribute("aria-label", "Conceptual 3D cutaway. Use the component selector for descriptions.");
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -91,12 +94,29 @@ function createSceneRig(container: HTMLElement, cameraPosition: [number, number,
   let visible = true;
   new IntersectionObserver(([entry]) => { visible = entry?.isIntersecting ?? true; }, { rootMargin: "200px" }).observe(container);
 
+  let framedObject: THREE.Object3D | null = null;
+  const fitFrame = (direction = camera.position.clone().sub(controls.target), animated = false) => {
+    if (!framedObject) return;
+    const sphere = new THREE.Box3().setFromObject(framedObject).getBoundingSphere(new THREE.Sphere());
+    const verticalHalfAngle = THREE.MathUtils.degToRad(camera.fov / 2);
+    const horizontalHalfAngle = Math.atan(Math.tan(verticalHalfAngle) * camera.aspect);
+    const distance = 1.14 * sphere.radius / Math.sin(Math.min(verticalHalfAngle, horizontalHalfAngle));
+    controls.maxDistance = Math.max(45, distance * 1.8);
+    const destination = sphere.center.clone().add(direction.normalize().multiplyScalar(distance));
+    animateCamera(camera, controls, destination, sphere.center, animated);
+  };
+  const frameObject = (object: THREE.Object3D, direction: [number, number, number], animated = true) => {
+    framedObject = object;
+    fitFrame(new THREE.Vector3(...direction), animated);
+  };
+
   const resize = () => {
     const width = Math.max(1, container.clientWidth);
     const height = Math.max(1, container.clientHeight);
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
+    fitFrame();
   };
   new ResizeObserver(resize).observe(container);
   resize();
@@ -112,7 +132,7 @@ function createSceneRig(container: HTMLElement, cameraPosition: [number, number,
     requestAnimationFrame(frame);
   };
 
-  return { scene, camera, renderer, controls, animate };
+  return { scene, camera, renderer, controls, animate, frameObject };
 }
 
 function bindSelection(
@@ -124,24 +144,64 @@ function bindSelection(
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
   let selected: Selectable | null = null;
+  let pointerStart: { x: number; y: number } | null = null;
+  const isVisible = (mesh: Selectable) => {
+    let object: THREE.Object3D | null = mesh;
+    while (object) { if (!object.visible) return false; object = object.parent; }
+    return true;
+  };
+  const label = document.createElement("label");
+  label.className = "scene-part-picker";
+  label.textContent = "Explore a component";
+  const picker = document.createElement("select");
+  picker.setAttribute("aria-label", `Select a component in ${container.id.replace("-scene", "")}`);
+  label.append(picker); container.append(label);
 
   const resetColor = (mesh: Selectable) => {
     mesh.material.emissive.setHex(0x000000);
     mesh.material.emissiveIntensity = 0;
   };
 
-  container.addEventListener("pointerup", (event) => {
-    const rect = container.getBoundingClientRect();
-    pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-    raycaster.setFromCamera(pointer, camera);
-    const hit = raycaster.intersectObjects(selectable, false)[0]?.object as Selectable | undefined;
-    if (!hit?.userData.info) return;
+  const selectPart = (hit: Selectable) => {
     if (selected) resetColor(selected);
     selected = hit;
     hit.material.emissive.setHex(colors.signal);
     hit.material.emissiveIntensity = 0.34;
-    updateInspector(inspector, hit.userData.info as PartInfo);
+    const info = hit.userData.info as PartInfo;
+    updateInspector(inspector, info);
+    // Multiple physical instances share one semantic entry in the picker.
+    const option = Array.from(picker.options).find((item) => item.text === info.title);
+    if (option) picker.value = option.value;
+  };
+  const refreshPicker = () => {
+    picker.replaceChildren(new Option("Choose a part…", ""));
+    const titles = new Set<string>();
+    selectable.forEach((mesh, index) => {
+      if (!mesh.userData.info || !isVisible(mesh)) return;
+      const title = (mesh.userData.info as PartInfo).title;
+      if (!titles.has(title)) { picker.add(new Option(title, String(index))); titles.add(title); }
+    });
+    if (selected && !isVisible(selected)) { resetColor(selected); selected = null; }
+    // Keep the inspector and the visible view in agreement after a cutaway switch.
+    const firstVisible = selectable.find((mesh) => mesh.userData.info && isVisible(mesh));
+    if (selected) selectPart(selected);
+    else if (firstVisible) selectPart(firstVisible);
+  };
+  picker.addEventListener("change", () => { if (picker.value !== "") selectPart(selectable[Number(picker.value)]); });
+  label.addEventListener("pointerdown", (event) => event.stopPropagation());
+  label.addEventListener("pointerup", (event) => event.stopPropagation());
+  container.addEventListener("pointerdown", (event) => { pointerStart = { x: event.clientX, y: event.clientY }; });
+
+  container.addEventListener("pointerup", (event) => {
+    if (!pointerStart || Math.hypot(event.clientX - pointerStart.x, event.clientY - pointerStart.y) > 5) return;
+    pointerStart = null;
+    const rect = container.getBoundingClientRect();
+    pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    raycaster.setFromCamera(pointer, camera);
+    const hit = raycaster.intersectObjects(selectable.filter(isVisible), false)[0]?.object as Selectable | undefined;
+    if (!hit?.userData.info) return;
+    selectPart(hit);
   });
 
   container.addEventListener("pointermove", (event) => {
@@ -149,8 +209,10 @@ function bindSelection(
     pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
     raycaster.setFromCamera(pointer, camera);
-    container.style.cursor = raycaster.intersectObjects(selectable, false).length ? "pointer" : "grab";
+    container.style.cursor = raycaster.intersectObjects(selectable.filter(isVisible), false).length ? "pointer" : "grab";
   });
+  refreshPicker();
+  return refreshPicker;
 }
 
 function animateCamera(
@@ -158,12 +220,22 @@ function animateCamera(
   controls: OrbitControls,
   destination: THREE.Vector3,
   target: THREE.Vector3,
+  animated = true,
 ) {
+  const move = (cameraMoves.get(camera) ?? 0) + 1;
+  cameraMoves.set(camera, move);
+  if (!animated || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    camera.position.copy(destination);
+    controls.target.copy(target);
+    controls.update();
+    return;
+  }
   const start = camera.position.clone();
   const startTarget = controls.target.clone();
   const started = performance.now();
-  const duration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 1 : 650;
+  const duration = 650;
   const step = (now: number) => {
+    if (cameraMoves.get(camera) !== move) return;
     const t = Math.min(1, (now - started) / duration);
     const eased = 1 - (1 - t) ** 3;
     camera.position.lerpVectors(start, destination, eased);
@@ -245,6 +317,11 @@ function createGPUScene() {
       });
       packageGroup.add(hbm);
       selectable.push(hbm);
+      // Visible lamination helps distinguish a DRAM stack from a compute tile.
+      for (let layer = 0; layer < 6; layer += 1) {
+        const lamina = makeBox(1.57, 0.035, 1.57, colors.memoryDark, [position[0], position[1] - 0.32 + layer * 0.125, position[2]]);
+        packageGroup.add(lamina);
+      }
     });
 
     for (let index = 0; index < 8; index += 1) {
@@ -294,15 +371,17 @@ function createGPUScene() {
     floor.receiveShadow = true;
     rig.scene.add(floor);
 
-    bindSelection(container, rig.camera, selectable, document.getElementById("gpu-inspector"));
+    const refreshSelection = bindSelection(container, rig.camera, selectable, document.getElementById("gpu-inspector"));
     const setView = (view: string) => {
       document.querySelectorAll<HTMLButtonElement>("[data-gpu-view]").forEach((button) => button.classList.toggle("is-active", button.dataset.gpuView === view));
       packageGroup.visible = view !== "sm";
       smDetail.visible = view === "sm";
-      if (view === "package") animateCamera(rig.camera, rig.controls, new THREE.Vector3(13, 12, 16.5), new THREE.Vector3());
-      if (view === "die") animateCamera(rig.camera, rig.controls, new THREE.Vector3(3.8, 8.4, 4.6), new THREE.Vector3(0, 0.3, 0));
-      if (view === "sm") animateCamera(rig.camera, rig.controls, new THREE.Vector3(8.5, 7.5, 10), new THREE.Vector3(0, 0, 0));
+      refreshSelection();
+      if (view === "package") rig.frameObject(packageGroup, [13, 12, 16.5]);
+      if (view === "die") rig.frameObject(logic, [3.8, 8.4, 4.6]);
+      if (view === "sm") rig.frameObject(smDetail, [8.5, 7.5, 10]);
     };
+    rig.frameObject(packageGroup, [13, 12, 16.5], false);
     document.querySelectorAll<HTMLButtonElement>("[data-gpu-view]").forEach((button) => button.addEventListener("click", () => setView(button.dataset.gpuView ?? "package")));
     document.querySelector<HTMLButtonElement>("[data-gpu-reset]")?.addEventListener("click", () => setView("package"));
     rig.animate((time) => {
@@ -427,20 +506,22 @@ function createRackScene() {
       computeDetail.add(nic); selectable.push(nic);
     }
 
-    bindSelection(container, rig.camera, selectable, inspector);
+    const refreshSelection = bindSelection(container, rig.camera, selectable, inspector);
     const setView = (view: string) => {
       document.querySelectorAll<HTMLButtonElement>("[data-rack-view]").forEach((button) => button.classList.toggle("is-active", button.dataset.rackView === view));
       rackGroup.visible = view !== "compute";
       computeDetail.visible = view === "compute";
+      refreshSelection();
       rackGroup.children.forEach((child) => {
         if (!(child instanceof THREE.Mesh) || !(child.material instanceof THREE.MeshStandardMaterial)) return;
         child.material.transparent = view === "fabric";
         child.material.opacity = view === "fabric" && !child.name.startsWith("switch") ? 0.12 : 1;
       });
-      if (view === "rack") animateCamera(rig.camera, rig.controls, new THREE.Vector3(11, 7, 23), new THREE.Vector3(0, 2.2, 0));
-      if (view === "fabric") animateCamera(rig.camera, rig.controls, new THREE.Vector3(13, 3, 18), new THREE.Vector3(0, 2.2, 0));
-      if (view === "compute") animateCamera(rig.camera, rig.controls, new THREE.Vector3(11, 7, 13), new THREE.Vector3(0, 0, 0));
+      if (view === "rack") rig.frameObject(rackGroup, [11, 5, 23]);
+      if (view === "fabric") rig.frameObject(rackGroup, [13, 1, 18]);
+      if (view === "compute") rig.frameObject(computeDetail, [11, 7, 13]);
     };
+    rig.frameObject(rackGroup, [11, 5, 23], false);
     document.querySelectorAll<HTMLButtonElement>("[data-rack-view]").forEach((button) => button.addEventListener("click", () => setView(button.dataset.rackView ?? "rack")));
     document.querySelector<HTMLButtonElement>("[data-rack-reset]")?.addEventListener("click", () => setView("rack"));
     rig.animate((time) => {
@@ -518,9 +599,10 @@ function createLPUScene() {
     const setView = (view: string) => {
       document.querySelectorAll<HTMLButtonElement>("[data-lpu-view]").forEach((button) => button.classList.toggle("is-active", button.dataset.lpuView === view));
       instructionBars.forEach((bar) => { bar.material.opacity = view === "units" ? 0.72 : 0.25; });
-      if (view === "flow") animateCamera(rig.camera, rig.controls, new THREE.Vector3(11, 9, 14), new THREE.Vector3());
-      if (view === "units") animateCamera(rig.camera, rig.controls, new THREE.Vector3(1.5, 13, 5), new THREE.Vector3());
+      if (view === "flow") rig.frameObject(chip, [11, 9, 14]);
+      if (view === "units") rig.frameObject(chip, [1.5, 13, 5]);
     };
+    rig.frameObject(chip, [11, 9, 14], false);
     document.querySelectorAll<HTMLButtonElement>("[data-lpu-view]").forEach((button) => button.addEventListener("click", () => setView(button.dataset.lpuView ?? "flow")));
     document.querySelector<HTMLButtonElement>("[data-lpu-reset]")?.addEventListener("click", () => setView("flow"));
     document.querySelector<HTMLButtonElement>("[data-lpu-pulse]")?.addEventListener("click", () => {
