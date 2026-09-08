@@ -14,7 +14,7 @@ export const trainingExpansionMarkup = `
       <article role="listitem"><span>05 / time</span><h4>Why did the step take this long?</h4><p>Break the critical path into input, forward, backward, optimizer, checkpoint, exposed collectives, bubbles, and stragglers.</p></article>
     </div>
 
-    <div class="training-calculator wide-figure">
+    <div class="training-calculator wide-figure" id="training-state" data-lesson="Model-state and token budgets">
       <div class="lab-head">
         <figcaption><span>Interactive 4.3</span><strong>Model-state and token-budget ledger</strong><p>Estimate one dense decoder run. Change the ZeRO stage to see replication turn into communication.</p></figcaption>
         <div class="calc-assumption"><span>Assumption</span><strong>classic mixed-precision AdamW</strong><small>2 B weights + 2 B gradients + 4 B master weights + 8 B moments per parameter</small></div>

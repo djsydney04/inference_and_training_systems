@@ -6,14 +6,29 @@ and accessibility all agree—not merely that every heading exists.
 
 ## Verified checkpoint — 2026-09-08
 
-The current expansion delivers eleven deeper lessons across the existing
+The curriculum is now organized as 16 chapters with a grouped syllabus, four
+prerequisite-ordered routes, keyboard search, local contents, and deep-link-aware
+navigation. The nine-entry gallery includes training and post-training alongside
+hardware and inference. New material covers data contracts, token normalization,
+profiling methodology, load testing, goodput, and five reviewable projects.
+
+Three.js workbenches now include a four-partition SM teaching model, labeled
+storage/execution components, layer separation, rack communication-domain steps,
+and bank/tile/route detail in the LPU. Guided stages synchronize component
+selection and explanatory text; each model can expand without recreating WebGL.
+
+The token-normalization companion adds CPU gradient-equivalence tests across
+unequal logical workers and accumulation microbatches. A synthetic trace teaches
+overlap accounting, but the real-GPU profiler work below remains unimplemented.
+
+The earlier checkpoint added eleven deeper lessons across the existing
 chapters: gradients, tiled softmax, SFT/DPO, adapters/rollouts, CPU execution,
 warp memory, hardware imagery, communication budgets, paged KV, serving budgets,
 and LPU scheduling. Three new stateful labs make tile statistics, memory sectors,
 and cache ownership inspectable. The training-state calculator is also covered
 by numerical tests.
 
-The companion now runs under TensorFlow 2.20, including a deterministic
+The companion runs under TensorFlow 2.20, including a deterministic
 checkpoint-resume comparison and tests for SFT/DPO/LoRA. Official GB200 images
 have provenance, captions, alt text, and a viewer. Three.js selectors support
 keyboard use, visible-part filtering, and responsive camera framing.

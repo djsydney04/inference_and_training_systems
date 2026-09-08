@@ -1,26 +1,37 @@
-# The Inference Engineering Atlas
+# Machine Learning Systems Atlas
 
 An interactive, systems-first guide to transformer architecture, training,
 inference, and the machines underneath them.
 
-The current textbook edition includes chapter reading objectives, original
-worked explanations, revealable exercises, TensorFlow companion programs, and
-interactive diagrams. The offwhite interface supports desktop and mobile reading.
+The textbook now has 16 chapters across foundations, training, hardware,
+inference, practice, and reference. A grouped syllabus, four prerequisite-ordered
+reading paths, chapter search (⌘/Ctrl K), and previous/next links connect the
+material. Deep links and browser back/forward navigation remain supported.
+The offwhite interface supports desktop and mobile reading.
 
 ## Explore the material
 
 - **Foundations:** tensor shapes, automatic differentiation, decoder blocks,
   causal/hybrid attention, and a tile-by-tile online-softmax lab.
 - **Training:** data and token accounting, model-state/ZeRO estimates,
-  parallelism, checkpoint recovery, SFT, DPO, LoRA, and rollout systems.
+  data manifests, packing and global loss normalization, parallelism,
+  checkpoint recovery, SFT, DPO, LoRA, and rollout systems.
 - **Hardware:** CPU execution, GPU warps/registers/coalescing, GB200 racks,
   optical links, collectives, and compiler-scheduled LPU dataflow.
 - **Serving:** prefill/decode, KV sizing, paged allocation and shared prefixes,
-  batching, speculative decoding, quantization, and evaluation budgets.
+  batching, speculative decoding, quantization, load testing, goodput, overload,
+  reliability, and cost accounting.
+- **Practice:** profiling protocols, a synthetic critical-path lab, and five
+  engineering projects with concrete artifacts and review questions.
 
-GPU, rack, and LPU Three.js cutaways support orbit/zoom, view changes, and
-keyboard-accessible component selectors. Reference hardware images have an
-enlargeable viewer and [a provenance record](public/figures/ATTRIBUTION.md).
+The nine-entry systems gallery connects worked lessons and labs to the syllabus.
+GPU, rack, and LPU Three.js cutaways support expandable workbenches, orbit/zoom,
+view changes, and keyboard-accessible component selectors. Guided steps keep
+geometry highlights and explanations together: SM execution partitions, register
+banks and matrix tiles; superchip/scale-up/scale-out connections; and scheduled
+SRAM/matrix/switch/vector movement. These are teaching models, not die floorplans
+or measured cycle simulators. Reference hardware images have an enlargeable
+viewer and [a provenance record](public/figures/ATTRIBUTION.md).
 
 This remains a developing textbook, not a finished college course or an exhaustive
 survey of every recent paper. The [roadmap](ROADMAP.md) records the remaining work.
@@ -51,9 +62,26 @@ npm run build
 ```
 
 See the [TensorFlow companion](examples/tensorflow/README.md) for a runnable tiny
-decoder, checkpoint-resume example, post-training losses, adapter, and six tests.
+decoder, checkpoint-resume example, post-training losses, adapter, token-weighted
+gradient example, and nine tests. Eleven Node tests cover numerical labs,
+prerequisite ordering, chapter lookup, and camera framing.
 The [verification record](VERIFICATION.md) states what has actually been checked
 and what has not been measured.
+
+## Extend the textbook
+
+- `src/curriculum.ts`: chapter metadata, prerequisites, and focused routes.
+- `src/reader.ts`: chapter routing, syllabus, local contents, search, and migration
+  of older material into the new chapter sequence.
+- `src/atlas-home.ts`: curriculum overview and original SVG gallery previews.
+- `src/systems-content.ts`: data, profiling, serving, and engineering-project lessons.
+- `src/scenes.ts` and `src/scene-detail.ts`: Three.js workbenches and guided stages.
+- `src/camera-fit.ts`, `src/trace-math.ts`, and `tests/`: testable model logic.
+
+Existing lesson content remains in `content.ts`, `textbook-content.ts`, and
+`training-content.ts`. Keep anchor IDs stable; add prerequisites and citations
+when introducing a chapter. Run the build and tests, then inspect the changed
+chapter and its workbench at both desktop and narrow widths.
 
 ## Editorial policy
 

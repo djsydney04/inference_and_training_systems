@@ -92,6 +92,23 @@ The suite checks causal-prefix invariance, finite gradients, interrupted versus
 uninterrupted training, corrupted and uncommitted checkpoints, response masks,
 known DPO values and gradient signs, and the zero-initialized LoRA update.
 
+## Token weighting across partitions
+
+`token_objective.py` separates a local loss sum from the global valid-target
+count. `local_contribution` supports either summed or averaged worker gradients.
+The count must span every worker and accumulation microbatch in one optimizer
+update; accumulation then sums contributions without dividing again.
+
+```bash
+python examples/tensorflow/token_objective.py
+```
+
+The worked example prints 1.50 for the incorrect mean of worker means and 1.75
+for the global token mean. Three tests compare partitioned and full-batch
+gradients, exercise both reducer conventions and unequal padding, allow an empty
+local shard, and reject an empty global update. These are CPU algebra tests, not
+a distributed runtime or a replacement for testing an actual multi-device loop.
+
 ## Post-training kernels
 
 `post_training.py` deliberately separates the objective from the training loop:

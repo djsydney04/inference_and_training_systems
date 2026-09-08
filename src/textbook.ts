@@ -133,5 +133,7 @@ function initFigureViewer() {
 }
 
 export function initializeTextbook() {
-  initSoftmax(); initCPU(); initCoalescing(); initPagedCache(); initReadingTools(); initFigureViewer();
+  initSoftmax(); initCPU(); initCoalescing(); initPagedCache();
+  if (!document.body.classList.contains("atlas-reader")) initReadingTools();
+  initFigureViewer();
 }

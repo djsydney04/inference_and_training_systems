@@ -1,0 +1,300 @@
+.atlas-reader .three-head {
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 16px;
+}
+.atlas-reader .three-head figcaption {
+  display: block;
+  padding: 0;
+}
+.atlas-reader .three-head figcaption > span {
+  display: block;
+  font-size: 10px;
+}
+.atlas-reader .three-head figcaption > strong {
+  display: block;
+  font-size: 17px;
+  margin: 9px 0;
+}
+.atlas-reader .three-head figcaption > p {
+  justify-self: start;
+  max-width: 52ch;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.atlas-reader .three-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 0;
+  max-width: 410px;
+}
+.atlas-reader .three-controls button {
+  min-height: 37px;
+  font: 11px var(--sans);
+}
+.atlas-reader .three-controls .workbench-expand {
+  color: var(--signal-dark);
+  border-color: var(--signal);
+  margin-left: 8px;
+}
+.atlas-reader .three-stage {
+  grid-template-columns: minmax(0, 1fr) 240px;
+  min-height: 580px;
+  height: 64vh;
+  max-height: 760px;
+}
+.atlas-reader .scene-canvas {
+  background-color: #f9f9f3;
+  background-size: 40px 40px;
+}
+.atlas-reader .scene-inspector {
+  padding: 25px 20px;
+  overflow: auto;
+}
+.atlas-reader .scene-inspector h3 {
+  font-size: 25px;
+}
+.atlas-reader .scene-inspector p {
+  font-size: 12px;
+}
+.atlas-reader .scene-inspector dl {
+  margin-top: 22px;
+}
+.model-options {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 15px 0;
+  font: 11px var(--sans);
+}
+.model-options label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.model-options input {
+  accent-color: var(--signal);
+}
+.model-options input[type="range"] {
+  width: 110px;
+}
+.model-options a {
+  margin-left: auto;
+  color: var(--graphite);
+  font-size: 10px;
+}
+.machine-sequence {
+  border-bottom: 1px solid var(--rule-dark);
+  padding: 20px 0 24px;
+}
+.sequence-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  gap: 20px;
+  font: 13px var(--sans);
+}
+.sequence-heading > strong {
+  font-weight: 500;
+}
+.sequence-heading > button {
+  padding: 7px 10px;
+  border: 1px solid var(--rule-dark);
+  background: none;
+  font: 10px var(--sans);
+  cursor: pointer;
+}
+.sequence-buttons {
+  display: flex;
+  gap: 8px;
+}
+.sequence-buttons button {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 10px;
+  border: 1px solid var(--rule);
+  background: none;
+  text-align: left;
+  font: 11px/1.4 var(--sans);
+  cursor: pointer;
+}
+.sequence-buttons button span {
+  color: var(--signal);
+  font-size: 10px;
+}
+.sequence-buttons button.is-active {
+  border-color: var(--signal);
+  background: var(--signal-pale);
+  color: var(--signal-dark);
+}
+.sequence-buttons button:hover {
+  border-color: var(--signal);
+}
+.sequence-explanation {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.6fr) 1fr;
+  gap: 28px;
+  padding: 23px 0 0;
+}
+.sequence-explanation > strong {
+  font: 520 22px/1.25 var(--serif);
+}
+.sequence-explanation > p {
+  margin: 0;
+  max-width: 75ch;
+  color: var(--graphite);
+  font: 13px/1.75 var(--sans);
+}
+.workbench-dialog {
+  width: calc(100vw - 48px);
+  max-width: 1700px;
+  height: calc(100svh - 48px);
+  max-height: none;
+  padding: 25px;
+  border: 1px solid var(--rule-dark);
+  background: var(--paper);
+}
+.workbench-dialog::backdrop {
+  background: #242925d9;
+}
+.workbench-dialog .three-lab {
+  margin: 0;
+}
+.workbench-dialog .three-stage {
+  height: 65vh;
+  min-height: 460px;
+  max-height: none;
+  grid-template-columns: minmax(0, 1fr) 280px;
+}
+.workbench-dialog .three-head {
+  position: sticky;
+  top: -25px;
+  z-index: 8;
+  padding-top: 16px;
+  background: var(--paper);
+}
+.workbench-dialog .scene-canvas {
+  min-height: 460px;
+}
+.workbench-dialog .scene-inspector {
+  font-family: var(--sans);
+}
+@media (max-width: 1100px) {
+  .atlas-reader .three-head {
+    display: block;
+  }
+  .atlas-reader .three-controls {
+    justify-content: start;
+    max-width: none;
+    margin-top: 20px;
+  }
+  .atlas-reader .three-stage {
+    grid-template-columns: minmax(0, 1fr) 210px;
+  }
+  .sequence-explanation {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .sequence-buttons button {
+    font-size: 10px;
+    gap: 7px;
+  }
+}
+@media (max-width: 820px) {
+  .atlas-reader .three-stage {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+  }
+  .atlas-reader .scene-canvas {
+    height: 510px;
+  }
+  .atlas-reader .scene-inspector {
+    border-left: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .atlas-reader .scene-inspector dl {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  .atlas-reader .three-controls .workbench-expand {
+    margin-left: 0;
+  }
+  .workbench-dialog {
+    width: calc(100vw - 20px);
+    height: calc(100svh - 20px);
+    padding: 16px;
+  }
+  .workbench-dialog .three-head {
+    top: -16px;
+  }
+  .workbench-dialog .scene-canvas {
+    min-height: 350px;
+    height: 60vh;
+  }
+}
+@media (max-width: 520px) {
+  .atlas-reader .scene-canvas {
+    height: 400px;
+  }
+  .model-options {
+    gap: 15px;
+  }
+  .model-options a {
+    margin-left: 0;
+  }
+  .sequence-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .sequence-buttons button {
+    min-height: 42px;
+    font-size: 11px;
+  }
+  .sequence-heading {
+    font-size: 12px;
+    gap: 12px;
+  }
+  .sequence-heading button {
+    flex-shrink: 0;
+  }
+  .sequence-explanation > strong {
+    font-size: 22px;
+  }
+  .scene-part-picker select {
+    max-width: 225px;
+  }
+  .atlas-reader .three-controls {
+    row-gap: 7px;
+  }
+  .atlas-reader .scene-inspector dl {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+@media print {
+  .model-options,
+  .machine-sequence,
+  .workbench-expand {
+    display: none !important;
+  }
+}
+@media (min-width: 821px) {
+  .workbench-dialog .three-stage {
+    height: 54vh;
+    min-height: 380px;
+  }
+  .workbench-dialog .scene-canvas {
+    min-height: 380px;
+  }
+  .workbench-dialog .three-head figcaption > p {
+    margin: 0;
+  }
+}

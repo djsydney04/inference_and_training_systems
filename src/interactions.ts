@@ -8,7 +8,7 @@ const qsa = <T extends Element>(selector: string, root: ParentNode = document) =
   Array.from(root.querySelectorAll<T>(selector));
 
 const scrollToId = (id: string) => {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  document.dispatchEvent(new CustomEvent("atlas:navigate", { detail: id }));
 };
 
 function initNavigation() {
@@ -90,7 +90,7 @@ function initHero() {
     button.addEventListener("click", () => scrollToId(button.dataset.scroll ?? "top"));
   });
 
-  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (stages.length > 1 && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     let active = 0;
     window.setInterval(() => {
       stages[active]?.classList.remove("is-active");
@@ -465,7 +465,7 @@ function initCopyButtons() {
 }
 
 export function initializeInteractions() {
-  initNavigation();
+  if (!document.body.classList.contains("atlas-reader")) initNavigation();
   initHero();
   initTensorFigure();
   initTransformerTrace();
