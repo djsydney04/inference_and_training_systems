@@ -41,3 +41,22 @@ Review against brief: retain the explicitly requested offwhite character, but
 remove the long landing-page scroll and undifferentiated slabs. Spend visual
 detail on registers, banks, partitions, routes and operand tiles. Do not add
 ornamental card grids, fake silicon photography, or autonomous spinning models.
+
+## Next implementation slice: an update and a tile
+
+Visual thesis: turn the existing workbench into a readable memory experiment,
+with actual operand values and a selected output carried through every stage.
+Keep the established paper/ink/cobalt palette and serif/sans roles.
+
+Content plan: establish the mathematical contract → run a tiny implementation →
+inspect state transitions → account for bytes and synchronization → test limits.
+Add these as lessons inside distributed training and profiling, not new top-level
+chapters. Gallery links provide direct entry without duplicating the lesson.
+
+Interaction thesis: user-stepped load/barrier/accumulate transitions; output-cell
+selection that synchronizes arithmetic and geometry; an expandable 3D view that
+shares exactly the same tested numerical state. No autonomous playback is needed.
+
+Review: the matrix workbench must show values, masks, and lifetimes—not merely
+more chip boxes. The CPU-replica run is runtime evidence, but not GPU, NCCL,
+network, throughput, or multi-host evidence. Label those boundaries next to it.

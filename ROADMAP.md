@@ -8,7 +8,7 @@ and accessibility all agree—not merely that every heading exists.
 
 The curriculum is now organized as 16 chapters with a grouped syllabus, four
 prerequisite-ordered routes, keyboard search, local contents, and deep-link-aware
-navigation. The nine-entry gallery includes training and post-training alongside
+navigation. The eleven-entry gallery includes training and post-training alongside
 hardware and inference. New material covers data contracts, token normalization,
 profiling methodology, load testing, goodput, and five reviewable projects.
 
@@ -20,6 +20,17 @@ selection and explanatory text; each model can expand without recreating WebGL.
 The token-normalization companion adds CPU gradient-equivalence tests across
 unequal logical workers and accumulation microbatches. A synthetic trace teaches
 overlap accounting, but the real-GPU profiler work below remains unimplemented.
+
+The next slice adds a real `MirroredStrategy` experiment on two logical CPUs:
+four accumulated updates agree with an unpartitioned reference, including both
+parameter copies and optimizer-state copies. This establishes framework-level
+aggregation behavior, not GPU or multi-host transport correctness.
+
+A fourth Three.js workbench now computes tiled matrix multiplication with actual
+operand values, synchronized stages, register partial sums, padding, and masked
+stores. Accessible tables use the same tested model. A new CUDA SIMT companion
+provides ten reference-comparison cases and sanitizer commands, but its GPU
+compilation and execution remain unverified.
 
 The earlier checkpoint added eleven deeper lessons across the existing
 chapters: gradients, tiled softmax, SFT/DPO, adapters/rollouts, CPU execution,
@@ -37,10 +48,10 @@ Next depth gaps, in order:
 
 1. A reproducible profiler lab: trace CPU launch gaps, GEMMs, memory traffic,
    collectives, and the exposed critical path on an actual GPU.
-2. A distributed training companion with validated global token normalization,
-   sharding, collective traces, and failure injection on multiple devices.
-3. Deeper kernel derivations: tiled matmul, backward attention, fused
-   normalization, quantization calibration, and numerical error checks.
+2. Extend the tested logical-CPU replica loop to real accelerators, model
+   sharding, collective traces, and multi-host failure injection.
+3. Compile and validate the CUDA matmul companion; add backward attention,
+   fused normalization, quantization calibration, and numerical error checks.
 4. Exact documented topology walkthroughs and a broader, graded exercise bank.
 5. Continued source refresh and claim-level review of new model releases.
 

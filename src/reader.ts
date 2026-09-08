@@ -1,5 +1,6 @@
 import { chapters, learningPaths, adjacentChapters } from "./curriculum";
 import { galleryMarkup, homeMarkup } from "./atlas-home";
+import { tiledMatmulLesson, distributedRuntimeLesson } from "./kernel-content";
 import {
   dataChapter,
   performanceChapter,
@@ -57,6 +58,8 @@ export function prepareReader() {
     });
   postBody.before(postResearch);
   postBody.remove();
+  byId("training")!.insertAdjacentHTML("beforeend", distributedRuntimeLesson);
+  byId("performance")!.insertAdjacentHTML("beforeend", tiledMatmulLesson);
   chapters.forEach((chapter, index) => {
     const el = byId(chapter.id)!;
     main.append(el);
@@ -141,7 +144,12 @@ export function initializeReader() {
     }
   });
 
-  const searchEntries: { id: string; title: string; chapter: string }[] = [];
+  const searchEntries: {
+    id: string;
+    title: string;
+    chapter: string;
+    keywords?: string;
+  }[] = [];
   chapters.forEach((chapter) => {
     const el = byId(chapter.id)!;
     // Figure numbers follow the reader's chapter order, including moved lessons.
@@ -162,7 +170,7 @@ export function initializeReader() {
       .filter(Boolean);
     const lessons = [
       ...el.querySelectorAll<HTMLElement>("[data-lesson], .three-lab[id]"),
-    ];
+    ].filter((lesson) => !lesson.parentElement?.closest("[data-lesson]"));
     const local = document.createElement("div");
     local.className = "reader-orientation";
     local.innerHTML = `<p><span>After this chapter</span>${chapter.outcome}</p>${requirements.length ? `<div class="prerequisite-line">Builds on ${requirements.map((c) => `<a href="#${c.id}">${c.title}</a>`).join("<span> / </span>")}</div>` : ""}${lessons.length ? `<nav aria-label="In this chapter"><span>In this chapter</span>${lessons.map((lesson) => `<a href="#${lesson.id}">${lesson.dataset.lesson ?? lesson.querySelector("figcaption strong")?.textContent ?? "3D workbench"}</a>`).join("")}</nav>` : ""}`;
@@ -181,10 +189,14 @@ export function initializeReader() {
     el.querySelectorAll<HTMLElement>("h3").forEach((heading, i) => {
       if (heading.closest(".scene-inspector")) return;
       if (!heading.id) heading.id = `${chapter.id}--topic-${i + 1}`;
+      const lesson = heading.closest<HTMLElement>("[data-lesson]");
       searchEntries.push({
         id: heading.id,
         title: heading.textContent?.trim() ?? "",
         chapter: chapter.title,
+        keywords: lesson
+          ? `${lesson.dataset.lesson} ${lesson.id.replaceAll("-", " ")}`
+          : "",
       });
     });
   });
@@ -336,7 +348,9 @@ export function initializeReader() {
     const query = input.value.toLocaleLowerCase().trim();
     const results = searchEntries
       .filter((entry) =>
-        `${entry.title} ${entry.chapter}`.toLocaleLowerCase().includes(query),
+        `${entry.title} ${entry.chapter} ${entry.keywords ?? ""}`
+          .toLocaleLowerCase()
+          .includes(query),
       )
       .slice(0, 18);
     dialog.querySelector("[data-search-status]")!.textContent = query

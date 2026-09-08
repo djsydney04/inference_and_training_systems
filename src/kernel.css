@@ -1,0 +1,327 @@
+.matmul-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 18px;
+  padding: 18px 0;
+  font: 11px var(--sans);
+}
+.matmul-toolbar label {
+  display: grid;
+  gap: 8px;
+}
+.matmul-toolbar select {
+  min-height: 35px;
+  border: 1px solid var(--rule-dark);
+  background: var(--paper);
+  color: var(--ink);
+  padding: 6px 9px;
+  font: 12px var(--sans);
+}
+.matmul-toolbar p {
+  margin: 0 0 6px auto;
+  color: var(--graphite);
+  max-width: 24ch;
+  line-height: 1.5;
+}
+.matmul-stepper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.matmul-stepper > div:first-child {
+  display: grid;
+  gap: 9px;
+}
+.matmul-stepper span {
+  font: 11px var(--sans);
+  color: var(--signal-dark);
+}
+.matmul-stepper strong {
+  font: 520 23px/1.2 var(--serif);
+}
+.matmul-stepper > div:last-child {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+.matmul-stepper button {
+  padding: 11px 14px;
+  border: 1px solid var(--rule-dark);
+  background: none;
+  color: var(--ink);
+  font: 12px var(--sans);
+  cursor: pointer;
+}
+.matmul-stepper [data-matmul-next] {
+  background: var(--ink);
+  color: var(--paper);
+}
+.matmul-stepper button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.matmul-phase-strip {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 18px 0;
+  font: 11px/1.5 var(--sans);
+}
+.matmul-phase-strip > span {
+  flex: 1;
+  padding: 10px 8px;
+  border-bottom: 2px solid var(--rule);
+}
+.matmul-phase-strip > b {
+  color: var(--rule-dark);
+}
+.matmul-phase-strip .is-active {
+  color: var(--signal-dark);
+  border-color: var(--signal);
+  background: var(--signal-pale);
+}
+.matmul-ledger {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  padding: 24px 0;
+  border-top: 1px solid var(--rule);
+}
+.matmul-ledger span {
+  display: block;
+  font: 11px/1.5 var(--sans);
+  color: var(--graphite);
+}
+.matmul-ledger strong {
+  display: block;
+  font: 520 27px var(--serif);
+  margin-top: 9px;
+}
+.matmul-arithmetic {
+  margin: 22px 0;
+  padding: 16px 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.matmul-arithmetic span {
+  display: block;
+  font: 10px var(--sans);
+  color: var(--graphite);
+  margin-bottom: 9px;
+}
+.matmul-arithmetic code {
+  font: 13px/1.7 var(--mono);
+  overflow-wrap: anywhere;
+}
+.matmul-workbench [data-matmul-partial] {
+  color: var(--signal-dark);
+  font: 32px var(--serif);
+}
+.matmul-tables {
+  padding: 20px 0;
+  border-top: 1px solid var(--rule);
+}
+.matmul-tables summary {
+  cursor: pointer;
+  font: 12px var(--sans);
+  color: var(--signal-dark);
+}
+.matmul-tables > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  padding: 20px 0;
+}
+.matmul-tables caption {
+  font: 12px var(--sans);
+  text-align: left;
+  margin-bottom: 14px;
+}
+.matmul-tables table {
+  margin-top: 14px;
+  border-collapse: collapse;
+}
+.matmul-tables td {
+  border: 1px solid var(--rule);
+  padding: 9px 11px;
+  min-width: 32px;
+  text-align: center;
+  font: 12px var(--mono);
+}
+.matmul-tables th {
+  padding: 7px;
+  text-align: center;
+  font: 11px var(--sans);
+  color: var(--graphite);
+}
+.matmul-thread {
+  margin-top: 20px;
+  font: 12px/1.6 var(--sans);
+}
+.matmul-thread summary {
+  cursor: pointer;
+  color: var(--signal-dark);
+}
+.matmul-thread p {
+  margin-top: 14px;
+}
+.matmul-fallback {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  max-width: 45ch;
+  padding: 14px;
+  margin: 0;
+  background: var(--paper);
+  font: 13px/1.6 var(--sans);
+}
+.replica-contract {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 35px;
+  padding: 30px 25px;
+}
+.replica-contract > div {
+  display: grid;
+  gap: 12px;
+}
+.replica-contract strong {
+  font: 520 23px var(--serif);
+}
+.replica-contract span {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 16px 12px;
+  border-left: 3px solid var(--signal);
+  background: var(--signal-pale);
+  font: 12px var(--sans);
+}
+.replica-contract b {
+  font-weight: 500;
+}
+.replica-contract small {
+  font: 12px/1.6 var(--sans);
+  color: var(--graphite);
+}
+.replica-reduction {
+  display: grid;
+  text-align: center;
+  justify-items: center;
+  gap: 10px;
+  padding: 0 25px 28px;
+  font: 13px/1.6 var(--sans);
+}
+.replica-reduction > b {
+  color: var(--signal);
+}
+.replica-reduction strong {
+  font-weight: 500;
+  padding: 16px 22px;
+  background: var(--ink);
+  color: var(--paper);
+}
+.replica-evidence {
+  padding: 25px 0;
+  border-top: 1px solid var(--rule-dark);
+  border-bottom: 1px solid var(--rule-dark);
+}
+.replica-evidence > span {
+  font: 11px/1.5 var(--sans);
+  color: var(--signal-dark);
+}
+.replica-evidence dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+.replica-evidence dt {
+  font: 11px var(--sans);
+  color: var(--graphite);
+}
+.replica-evidence dd {
+  margin: 10px 0 0;
+  font: 18px/1.4 var(--serif);
+}
+.replica-evidence > p {
+  max-width: 75ch;
+  color: var(--graphite);
+  font: 12px/1.7 var(--sans);
+}
+@media (max-width: 1100px) {
+  .matmul-stepper {
+    flex-direction: column;
+    align-items: start;
+  }
+  .matmul-toolbar p {
+    margin-left: 0;
+  }
+  .matmul-phase-strip {
+    font-size: 10px;
+    gap: 5px;
+  }
+}
+@media (max-width: 520px) {
+  .matmul-toolbar {
+    gap: 14px;
+  }
+  .matmul-toolbar select {
+    max-width: 200px;
+  }
+  .matmul-toolbar p {
+    max-width: none;
+  }
+  .matmul-stepper strong {
+    font-size: 22px;
+  }
+  .matmul-stepper button {
+    font-size: 11px;
+    padding: 10px 12px;
+  }
+  .matmul-phase-strip {
+    flex-wrap: wrap;
+  }
+  .matmul-phase-strip > span {
+    flex: 1 0 37%;
+  }
+  .matmul-phase-strip > b:nth-of-type(2) {
+    display: none;
+  }
+  .matmul-ledger {
+    gap: 12px;
+  }
+  .matmul-ledger span {
+    font-size: 10px;
+  }
+  .matmul-ledger strong {
+    font-size: 22px;
+  }
+  .matmul-tables td {
+    min-width: 24px;
+    padding: 7px 8px;
+  }
+  .replica-contract {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 24px 16px;
+  }
+  .replica-evidence dl {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .replica-reduction {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+@media print {
+  .matmul-toolbar,
+  .matmul-stepper,
+  .matmul-phase-strip {
+    display: none;
+  }
+}

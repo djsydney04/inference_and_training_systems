@@ -134,6 +134,9 @@
   padding: 55px clamp(24px, 4.5vw, 72px) 70px;
   gap: 18px;
 }
+.atlas-reader .chapter > * {
+  min-width: 0;
+}
 .atlas-reader .chapter h2 {
   font-size: clamp(36px, 4.5vw, 62px);
   line-height: 1.06;
@@ -776,7 +779,7 @@
     background: var(--paper);
   }
   .atlas-reader .chapter {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     padding: 35px 24px 55px;
   }
   .atlas-reader .chapter > *:not(.chapter-number) {

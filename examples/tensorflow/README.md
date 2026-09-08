@@ -11,6 +11,7 @@ chapters in one deliberately small program. It includes:
 - checkpoint restore plus an atomically published manifest.
 - response-only SFT, sequence log likelihoods, DPO, and a minimal LoRA layer;
 - numerical, gradient, checkpoint-integrity, and resume-equivalence tests.
+- a separate two-logical-CPU MirroredStrategy update-equivalence experiment.
 
 It is educational code. It materializes the complete attention matrix and does
 not contain distributed sharding, FlashAttention, mixed-precision policy,
@@ -91,6 +92,8 @@ python -m unittest discover -s examples/tensorflow -p 'test_*.py' -v
 The suite checks causal-prefix invariance, finite gradients, interrupted versus
 uninterrupted training, corrupted and uncommitted checkpoints, response masks,
 known DPO values and gradient signs, and the zero-initialized LoRA update.
+Ten tests now run, including token-weighting algebra and the replica-runtime
+subprocess described below.
 
 ## Token weighting across partitions
 
@@ -108,6 +111,31 @@ for the global token mean. Three tests compare partitioned and full-batch
 gradients, exercise both reducer conventions and unequal padding, allow an empty
 local shard, and reject an empty global update. These are CPU algebra tests, not
 a distributed runtime or a replacement for testing an actual multi-device loop.
+
+## Verify an actual replica update
+
+`distributed_update.py` takes the next step: it creates two logical CPU devices
+and runs TensorFlow's `MirroredStrategy`, with two accumulation microbatches per
+replica. The valid-target counts are `[2, 0]` and `[6, 3]`. Every local loss sum
+uses the same denominator, 11. The optimizer sums replica gradients once and
+updates the mirrored parameters and momentum state.
+
+```bash
+python examples/tensorflow/distributed_update.py
+```
+
+Run it in a fresh process: logical devices must be configured before TensorFlow
+initializes its runtime. The unittest launches its own subprocess for this reason.
+The script compares the loss, reduced gradient, both parameter copies, all local
+optimizer-state copies, and global target count with an unpartitioned reference
+after each of four updates. A failed comparison terminates the run.
+
+Measured on the CPU environment above: maximum absolute gradient difference
+`7.45e-9`, parameter difference `3.73e-9`, and optimizer-state difference `4.66e-10`.
+These are results for this small deterministic classifier, not general accuracy
+bounds. The experiment verifies a real framework replica path, but not GPU/NCCL
+execution, network transport, sharding, clipping, mixed precision, throughput,
+multi-host recovery, or a distributed decoder training run.
 
 ## Post-training kernels
 

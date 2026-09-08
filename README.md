@@ -15,16 +15,17 @@ The offwhite interface supports desktop and mobile reading.
   causal/hybrid attention, and a tile-by-tile online-softmax lab.
 - **Training:** data and token accounting, model-state/ZeRO estimates,
   data manifests, packing and global loss normalization, parallelism,
-  checkpoint recovery, SFT, DPO, LoRA, and rollout systems.
+  a tested two-replica update, checkpoint recovery, SFT, DPO, LoRA, and rollout systems.
 - **Hardware:** CPU execution, GPU warps/registers/coalescing, GB200 racks,
   optical links, collectives, and compiler-scheduled LPU dataflow.
 - **Serving:** prefill/decode, KV sizing, paged allocation and shared prefixes,
   batching, speculative decoding, quantization, load testing, goodput, overload,
   reliability, and cost accounting.
 - **Practice:** profiling protocols, a synthetic critical-path lab, and five
-  engineering projects with concrete artifacts and review questions.
+  engineering projects with concrete artifacts and review questions; a tiled
+  matrix-multiplication workbench connected to an original CUDA companion.
 
-The nine-entry systems gallery connects worked lessons and labs to the syllabus.
+The eleven-entry systems gallery connects worked lessons and labs to the syllabus.
 GPU, rack, and LPU Three.js cutaways support expandable workbenches, orbit/zoom,
 view changes, and keyboard-accessible component selectors. Guided steps keep
 geometry highlights and explanations together: SM execution partitions, register
@@ -32,6 +33,13 @@ banks and matrix tiles; superchip/scale-up/scale-out connections; and scheduled
 SRAM/matrix/switch/vector movement. These are teaching models, not die floorplans
 or measured cycle simulators. Reference hardware images have an enlargeable
 viewer and [a provenance record](public/figures/ATTRIBUTION.md).
+
+A fourth Three.js workbench follows actual matrix values through global loads,
+shared memory, barriers, register accumulation, and output stores. Click a C cell,
+change tile size, or inspect padded edge cases. The accessible numerical tables
+and 3D view share one tested state model. The [CUDA companion](examples/cuda/README.md)
+includes a correctness harness and sanitizer commands; it has not yet been
+compiled or executed on NVIDIA hardware.
 
 This remains a developing textbook, not a finished college course or an exhaustive
 survey of every recent paper. The [roadmap](ROADMAP.md) records the remaining work.
@@ -63,8 +71,9 @@ npm run build
 
 See the [TensorFlow companion](examples/tensorflow/README.md) for a runnable tiny
 decoder, checkpoint-resume example, post-training losses, adapter, token-weighted
-gradient example, and nine tests. Eleven Node tests cover numerical labs,
-prerequisite ordering, chapter lookup, and camera framing.
+gradient example, two-replica runtime experiment, and ten tests. Sixteen Node
+tests cover numerical labs, matrix-tile schedules, prerequisite ordering,
+chapter lookup, and camera framing.
 The [verification record](VERIFICATION.md) states what has actually been checked
 and what has not been measured.
 
@@ -76,6 +85,9 @@ and what has not been measured.
 - `src/atlas-home.ts`: curriculum overview and original SVG gallery previews.
 - `src/systems-content.ts`: data, profiling, serving, and engineering-project lessons.
 - `src/scenes.ts` and `src/scene-detail.ts`: Three.js workbenches and guided stages.
+- `src/kernel-content.ts`, `src/kernel-lab.ts`, and `src/kernel-scene.ts`: the
+  replica-runtime lesson and value-driven matrix workbench.
+- `src/matmul-math.ts`: pure tile scheduling, padding, and access/FLOP accounting.
 - `src/camera-fit.ts`, `src/trace-math.ts`, and `tests/`: testable model logic.
 
 Existing lesson content remains in `content.ts`, `textbook-content.ts`, and

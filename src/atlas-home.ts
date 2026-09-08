@@ -2,6 +2,24 @@ import { chapters, learningPaths } from "./curriculum";
 
 const glyph = (kind: string) => {
   const common = 'viewBox="0 0 360 180" fill="none" aria-hidden="true"';
+  if (kind === "matmul")
+    return `<svg ${common}>${[
+      [36, 25],
+      [157, 25],
+      [157, 110],
+    ]
+      .map(([x, y], matrix) =>
+        Array.from(
+          { length: 12 },
+          (_, i) =>
+            `<rect x="${x + (i % 4) * 23}" y="${y + Math.floor(i / 4) * 19}" width="19" height="15" fill="${matrix === 2 ? "#4e6051" : i % 4 < 2 && i < 8 ? "#2559d6" : "#c7d2c3"}"/>`,
+        ).join(""),
+      )
+      .join(
+        "",
+      )}<path d="M83 96v47h62m-5-4 5 4-5 4M202 87v15m-4-5 4 5 4-5" stroke="#2559d6"/><path d="M277 112h45m-45 21h45m-45 21h28" stroke="#8b9b87"/></svg>`;
+  if (kind === "replicas")
+    return `<svg ${common}><rect x="43" y="24" width="102" height="42" fill="#b6c7b2"/><rect x="215" y="24" width="102" height="42" fill="#b6c7b2"/><path d="M63 43h20m12 0h28M235 43h20m12 0h28" stroke="#40563e" stroke-width="4"/><path d="M94 66v31h86m86-31v31h-86v25m-5-5 5 5 5-5" stroke="#2559d6" stroke-width="2"/><rect x="125" y="129" width="110" height="30" fill="#2559d6"/></svg>`;
   if (kind === "training")
     return `<svg ${common}>${[0, 1, 2, 3].map((row) => `<rect x="35" y="${25 + row * 35}" width="50" height="23" fill="#515f53"/><rect x="89" y="${25 + row * 35}" width="50" height="23" fill="#a7b7a6"/><rect x="143" y="${25 + row * 35}" width="${row === 0 ? 175 : 42}" height="23" fill="#2559d6"/>`).join("")}<path d="M208 75v71m-4-5 4 5 4-5" stroke="#2559d6"/><path d="M227 87h96M227 119h96M227 151h96" stroke="#adb8aa"/></svg>`;
   if (kind === "mask")
@@ -22,6 +40,22 @@ const glyph = (kind: string) => {
 };
 
 export const galleryItems = [
+  {
+    kind: "matmul",
+    id: "tiled-matmul",
+    title: "Inside a matrix multiplication",
+    scope: "Global loads → shared tiles → partial sums",
+    copy: "Inspect actual operands, step through both barriers, and test the ragged edge of a matrix.",
+    type: "Numerical 3D workbench",
+  },
+  {
+    kind: "replicas",
+    id: "replica-update",
+    title: "Do the replicas agree?",
+    scope: "Targets → gradients → one update",
+    copy: "Run a real two-replica TensorFlow experiment and compare it with an unpartitioned reference.",
+    type: "Verified runtime lesson",
+  },
   {
     kind: "training",
     id: "training-state",
