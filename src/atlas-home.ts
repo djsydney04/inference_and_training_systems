@@ -2,6 +2,24 @@ import { chapters, learningPaths } from "./curriculum";
 
 const glyph = (kind: string) => {
   const common = 'viewBox="0 0 360 180" fill="none" aria-hidden="true"';
+  if (kind === "occupancy")
+    return `<svg ${common}>${Array.from({ length: 64 }, (_, i) => `<rect x="${44 + (i % 16) * 17}" y="${42 + Math.floor(i / 16) * 25}" width="13" height="19" fill="${i < 32 ? "#2559d6" : "#d3d9ce"}"/>`).join("")}<path d="M44 151h272" stroke="#889a89"/><path d="M180 32v112" stroke="#293c31" stroke-dasharray="3 3"/></svg>`;
+  if (kind === "ring")
+    return `<svg ${common}>${[
+      [48, 25],
+      [232, 25],
+      [232, 115],
+      [48, 115],
+    ]
+      .map(
+        ([x, y]) =>
+          `<rect x="${x}" y="${y}" width="80" height="42" fill="#d3d9ce"/>${[0, 1, 2, 3].map((c) => `<rect x="${x + 6 + c * 18}" y="${y + 9}" width="13" height="24" fill="${c === 1 ? "#2559d6" : "#8a9b88"}"/>`).join("")}`,
+      )
+      .join(
+        "",
+      )}<path d="M135 46h86m-7-5 7 5-7 5M272 73v35m-5-7 5 7 5-7M225 136h-86m7-5-7 5 7 5M88 108V73m-5 7 5-7 5 7" stroke="#2559d6" stroke-width="2"/></svg>`;
+  if (kind === "probability")
+    return `<svg ${common}>${[0.4, 0.1, 0.3, 0.2].map((p, i) => `<rect x="${40 + i * 24}" y="${150 - p * 250}" width="17" height="${p * 250}" fill="#8a9b88"/>`).join("")}${[0.1, 0.4, 0.2, 0.3].map((p, i) => `<rect x="${224 + i * 24}" y="${150 - p * 250}" width="17" height="${p * 250}" fill="#2559d6"/>`).join("")}<path d="M152 93h50m-8-6 8 6-8 6M36 151h108m75 0h105" stroke="#293c31"/></svg>`;
   if (kind === "matmul")
     return `<svg ${common}>${[
       [36, 25],
@@ -41,7 +59,23 @@ const glyph = (kind: string) => {
 
 export const galleryItems = [
   {
-    kind: "attention",
+    kind: "ring",
+    id: "ring-allreduce",
+    title: "Where did this gradient come from?",
+    scope: "Local values → reduced shards → complete sum",
+    copy: "Step through six collective sends, inspect every rank's buffers, and account for each original contribution exactly once.",
+    type: "Numerical 3D workbench",
+  },
+  {
+    kind: "occupancy",
+    id: "occupancy-contract",
+    title: "Can the next block become resident?",
+    scope: "Registers + shared memory + thread slots",
+    copy: "Expose resource-allocation cliffs without confusing warp residency with measured performance.",
+    type: "GPU resource lab",
+  },
+  {
+    kind: "probability",
     id: "speculative-exactness",
     title: "Account for every proposed token",
     scope: "Proposal → acceptance → corrected distribution",

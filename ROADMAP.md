@@ -15,6 +15,11 @@ Sampling/speculative decoding is now another separate chapter (18 total), with
 an exact probability-mass lab and a tested conditional Python reference. Actual
 model execution, KV rollback integration and speed measurements remain separate
 work; the reference does not claim to implement a serving engine.
+GPU resources and collective ownership now have separate chapters (20 total).
+The fifth Three.js workbench traces every partial reduction, and the residency
+calculator demonstrates allocation cliffs. Thirty-five Node tests cover the
+shared mathematical state. Tensor/pipeline/context/expert training methods and
+policy-optimization objectives are the next content-depth slices.
 
 The curriculum is now organized as 16 chapters with a grouped syllabus, four
 prerequisite-ordered routes, keyboard search, local contents, and deep-link-aware

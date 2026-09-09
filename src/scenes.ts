@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { createKernelScene } from "./kernel-scene";
+import { createRingScene } from "./ring-scene";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import {
   buildSM,
@@ -1469,6 +1470,7 @@ export function initializeScenes() {
   createRackScene();
   createLPUScene();
   createKernelScene(createSceneRig);
+  createRingScene(createSceneRig);
   document.querySelectorAll<HTMLElement>(".three-lab").forEach((host) => {
     const controls = host.querySelector(".three-controls");
     if (!controls) return;

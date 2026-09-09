@@ -14,6 +14,7 @@ import { initializeSystemsLabs } from "./systems-labs";
 import { initializeMatmulLab } from "./kernel-lab";
 import { initializeMethodLabs } from "./method-labs";
 import { initializeDecodingLabs } from "./decoding-labs";
+import { initializeHardwareLabs } from "./hardware-labs";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 
@@ -30,6 +31,7 @@ initializeSystemsLabs();
 initializeMatmulLab();
 initializeMethodLabs();
 initializeDecodingLabs();
+initializeHardwareLabs();
 initializeReader();
 
 void import("./scenes").then(({ initializeScenes }) => initializeScenes());

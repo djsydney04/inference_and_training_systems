@@ -51,7 +51,8 @@ export const chapters: Chapter[] = [
     id: "optimization",
     title: "Optimization & training numerics",
     part: "Training",
-    outcome: "Derive a stateful update and verify clipping, scaling and recomputation contracts.",
+    outcome:
+      "Derive a stateful update and verify clipping, scaling and recomputation contracts.",
     requires: ["data", "attention"],
   },
   {
@@ -79,12 +80,28 @@ export const chapters: Chapter[] = [
     requires: ["tensors"],
   },
   {
+    id: "gpu-resources",
+    title: "GPU residency & execution limits",
+    part: "Hardware",
+    outcome:
+      "Calculate resource cliffs, distinguish byte boundaries, and trace asynchronous buffer lifetimes.",
+    requires: ["machine"],
+  },
+  {
     id: "rack",
     title: "Racks & interconnects",
     part: "Hardware",
     outcome:
       "Map collectives onto scale-up and scale-out communication domains.",
     requires: ["machine", "training"],
+  },
+  {
+    id: "collectives",
+    title: "Collectives & tensor ownership",
+    part: "Hardware",
+    outcome:
+      "Trace exact partial sums through a ring and map logical ranks onto physical fabrics.",
+    requires: ["rack"],
   },
   {
     id: "lpu",
@@ -100,7 +117,7 @@ export const chapters: Chapter[] = [
     part: "Hardware",
     outcome:
       "Use a trace to distinguish busy work from the exposed critical path.",
-    requires: ["machine"],
+    requires: ["gpu-resources"],
   },
   {
     id: "inference",
@@ -114,7 +131,8 @@ export const chapters: Chapter[] = [
     id: "decoding",
     title: "Sampling & speculative decoding",
     part: "Inference",
-    outcome: "Preserve the sampling distribution and reconcile provisional state before claiming a speedup.",
+    outcome:
+      "Preserve the sampling distribution and reconcile provisional state before claiming a speedup.",
     requires: ["inference"],
   },
   {
@@ -166,7 +184,9 @@ export const learningPaths = [
       "training",
       "post-training",
       "machine",
+      "gpu-resources",
       "rack",
+      "collectives",
       "lpu",
       "performance",
       "inference",
@@ -190,7 +210,9 @@ export const learningPaths = [
       "training",
       "post-training",
       "machine",
+      "gpu-resources",
       "rack",
+      "collectives",
       "performance",
       "projects",
     ],
@@ -204,12 +226,14 @@ export const learningPaths = [
       "orientation",
       "tensors",
       "machine",
+      "gpu-resources",
       "transformer",
       "attention",
       "data",
       "optimization",
       "training",
       "rack",
+      "collectives",
       "lpu",
       "performance",
       "inference",
@@ -228,6 +252,7 @@ export const learningPaths = [
       "transformer",
       "attention",
       "machine",
+      "gpu-resources",
       "inference",
       "decoding",
       "lpu",

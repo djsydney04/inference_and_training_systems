@@ -44,3 +44,10 @@ advance source-check dates.
   passing tests. The 50,000-sample toy check has maximum frequency error 0.00226.
   Desktop and 320-pixel browser checks cover normal, identical and disjoint
   distributions; no page errors observed. No model/GPU speedup is asserted.
+- Iteration 2 pushed as `7754d05`.
+- Iteration 3: split GPU resource limits and collective ownership into their own
+  chapters (20 total), with a fifth Three.js workbench and 15 gallery entries.
+  All 35 Node tests pass. Browser checks trace all six ring steps, exact final
+  values and sent-byte accounting; the occupancy cliff and cannot-fit cases
+  agree with tests. Desktop/mobile diagrams inspected; corrected oversized
+  vertical transfer labels. No hardware throughput claim is made.

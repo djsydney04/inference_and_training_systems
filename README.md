@@ -3,7 +3,7 @@
 An interactive, systems-first guide to transformer architecture, training,
 inference, and the machines underneath them.
 
-The textbook now has 18 chapters across foundations, training, hardware,
+The textbook now has 20 chapters across foundations, training, hardware,
 inference, practice, and reference. A grouped syllabus, four prerequisite-ordered
 reading paths, chapter search (⌘/Ctrl K), and previous/next links connect the
 material. Deep links and browser back/forward navigation remain supported.
@@ -25,7 +25,7 @@ The offwhite interface supports desktop and mobile reading.
   engineering projects with concrete artifacts and review questions; a tiled
   matrix-multiplication workbench connected to an original CUDA companion.
 
-The thirteen-entry systems gallery connects worked lessons and labs to the syllabus.
+The fifteen-entry systems gallery connects worked lessons and labs to the syllabus.
 GPU, rack, and LPU Three.js cutaways support expandable workbenches, orbit/zoom,
 view changes, and keyboard-accessible component selectors. Guided steps keep
 geometry highlights and explanations together: SM execution partitions, register
@@ -40,6 +40,12 @@ change tile size, or inspect padded edge cases. The accessible numerical tables
 and 3D view share one tested state model. The [CUDA companion](examples/cuda/README.md)
 includes a correctness harness and sanitizer commands; it has not yet been
 compiled or executed on NVIDIA hardware.
+
+A fifth Three.js workbench traces exact ring all-reduce values through six
+communication steps. Every partial sum carries its contributor set, and an
+accessible table shares the tested state. The GPU-resources chapter adds an SM
+residency calculator, roofline bounds and asynchronous buffer-lifetime reasoning.
+The declared SM is a teaching profile, not a claim about B200 specifications.
 
 This remains a developing textbook, not a finished college course or an exhaustive
 survey of every recent paper. The [roadmap](ROADMAP.md) records the remaining work.
@@ -71,7 +77,7 @@ npm run build
 
 See the [TensorFlow companion](examples/tensorflow/README.md) for a runnable tiny
 decoder, checkpoint-resume example, post-training losses, adapter, token-weighted
-gradient example, two-replica runtime experiment, and numerical-contract tests. Twenty-eight Node
+gradient example, two-replica runtime experiment, and numerical-contract tests. Thirty-five Node
 tests cover numerical labs, matrix-tile schedules, prerequisite ordering,
 chapter lookup, and camera framing.
 The optimization chapter adds a stateful SGD/momentum/AdamW comparison, clipping

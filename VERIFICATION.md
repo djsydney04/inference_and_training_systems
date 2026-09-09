@@ -21,6 +21,17 @@ experiment has maximum frequency error 0.00226. Normal, identical and disjoint
 browser cases pass at desktop and 320 pixels without page errors. The full
 14-test TensorFlow suite also passes after the optimizer additions.
 
+The hardware slice adds seven Node tests (35 total): register-allocation cliffs,
+shared-memory/thread limits, roofline units, complete rings with 2–8 ranks,
+reduce-scatter ownership, contributor invariants at intermediate steps, and
+sent-byte accounting. All six ring transitions pass in the production browser;
+rank 0 ends with chunks [52,56], [60,64], [68,72], [76,80], 48 sent bytes per
+rank and 192 across the ring. Desktop and 320-pixel 3D views were inspected.
+The mobile document remains 320 pixels wide; canvas width is 272 pixels.
+The residency browser returns 37.5% at 65 registers/256 threads, and an explicit
+cannot-fit result for 128 KiB shared storage. No page errors observed.
+These are analytical/state models, not GPU or network measurements.
+
 ## Code and numerical checks
 
 - `npm test`: sixteen passing tests for online-softmax equivalence with a late

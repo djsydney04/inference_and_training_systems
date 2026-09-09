@@ -3,6 +3,7 @@ import { galleryMarkup, homeMarkup } from "./atlas-home";
 import { tiledMatmulLesson, distributedRuntimeLesson } from "./kernel-content";
 import { optimizationChapter } from "./method-content";
 import { decodingChapter } from "./decoding-content";
+import { resourceChapter, collectiveChapter } from "./hardware-method-content";
 import {
   dataChapter,
   performanceChapter,
@@ -31,6 +32,8 @@ export function prepareReader() {
     dataChapter +
       optimizationChapter +
       decodingChapter +
+      resourceChapter +
+      collectiveChapter +
       postChapter +
       performanceChapter +
       servingChapter +
