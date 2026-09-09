@@ -11,6 +11,10 @@ between data design and distributed training. Four new lessons cover stateful
 optimizers, clipping/update boundaries, mixed precision and activation
 recomputation, with an original interactive optimizer trajectory and CPU tests.
 The previous 16-chapter checkpoint below is retained as development history.
+Sampling/speculative decoding is now another separate chapter (18 total), with
+an exact probability-mass lab and a tested conditional Python reference. Actual
+model execution, KV rollback integration and speed measurements remain separate
+work; the reference does not claim to implement a serving engine.
 
 The curriculum is now organized as 16 chapters with a grouped syllabus, four
 prerequisite-ordered routes, keyboard search, local contents, and deep-link-aware

@@ -31,5 +31,16 @@
 .method-flow li::marker { color:var(--signal-dark); }
 .method-flow strong { display:block; font-weight:500; margin-bottom:6px; }
 .method-flow span { color:var(--graphite); }
+.probability-stage { padding:20px 24px; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); }
+.probability-stage span { font:12px var(--sans); color:var(--signal-dark); }
+.probability-stage p { font:16px/1.65 var(--serif); max-width:75ch; margin:14px 0 0; }
+.probability-chart { overflow-x:auto; padding:20px 16px; }
+.probability-chart svg { width:100%; min-width:720px; display:block; }
+.probability-chart text { font:11px var(--sans); fill:var(--ink); }
+.probability-chart .probability-number { font-size:10px; fill:var(--graphite); }
+.probability-table { margin:0 24px 25px; }
+.probability-table table { min-width:620px; }
+.probability-lab [data-spec-uniform] { width:130px; accent-color:var(--signal); }
+.probability-lab output { font:11px var(--mono); }
 @media(max-width:1000px) { .method-split { grid-template-columns:minmax(0,1fr); }.method-inspector { border-left:0; border-top:1px solid var(--rule); }.method-inspector dl { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; } }
 @media(max-width:520px) { .method-toolbar { padding:18px 16px; gap:12px; }.contract-comparison { grid-template-columns:1fr; padding:24px 16px; }.method-inspector { padding:20px 16px; }.method-inspector dl { grid-template-columns:1fr; gap:0; }.method-table td,.method-table th { padding:9px 7px; }.method-lab>.method-table { margin:16px; }.method-flow { padding-left:38px; padding-right:16px; } }

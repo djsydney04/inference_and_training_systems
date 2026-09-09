@@ -2,6 +2,7 @@ import { chapters, learningPaths, adjacentChapters } from "./curriculum";
 import { galleryMarkup, homeMarkup } from "./atlas-home";
 import { tiledMatmulLesson, distributedRuntimeLesson } from "./kernel-content";
 import { optimizationChapter } from "./method-content";
+import { decodingChapter } from "./decoding-content";
 import {
   dataChapter,
   performanceChapter,
@@ -29,6 +30,7 @@ export function prepareReader() {
     "beforeend",
     dataChapter +
       optimizationChapter +
+      decodingChapter +
       postChapter +
       performanceChapter +
       servingChapter +

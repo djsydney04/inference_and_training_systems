@@ -13,6 +13,7 @@ import { prepareReader, initializeReader } from "./reader";
 import { initializeSystemsLabs } from "./systems-labs";
 import { initializeMatmulLab } from "./kernel-lab";
 import { initializeMethodLabs } from "./method-labs";
+import { initializeDecodingLabs } from "./decoding-labs";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 
@@ -28,6 +29,7 @@ initializeTextbook();
 initializeSystemsLabs();
 initializeMatmulLab();
 initializeMethodLabs();
+initializeDecodingLabs();
 initializeReader();
 
 void import("./scenes").then(({ initializeScenes }) => initializeScenes());

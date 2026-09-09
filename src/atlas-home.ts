@@ -41,6 +41,14 @@ const glyph = (kind: string) => {
 
 export const galleryItems = [
   {
+    kind: "attention",
+    id: "speculative-exactness",
+    title: "Account for every proposed token",
+    scope: "Proposal → acceptance → corrected distribution",
+    copy: "Change proposal quality and trace the probability mass that exact speculative sampling accepts or repairs.",
+    type: "Inference methods lab",
+  },
+  {
     kind: "training",
     id: "optimizer-state",
     title: "One loss, three optimizers",

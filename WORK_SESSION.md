@@ -37,3 +37,10 @@ advance source-check dates.
   first AdamW update is (1.92, 0.92), loss 6.9216. CPU recomputation gradients
   match exactly in the tested example; an infinite scaled gradient skips the
   update without changing the inner optimizer state.
+- Iteration 1 pushed as `fe4e572`; all 14 TensorFlow tests pass together.
+- Iteration 2: added sampling/speculative decoding as a separate chapter (18
+  total), a probability-mass lab (13 gallery entries), seven Node tests (28
+  total), and a pure-Python conditional speculative-round reference with four
+  passing tests. The 50,000-sample toy check has maximum frequency error 0.00226.
+  Desktop and 320-pixel browser checks cover normal, identical and disjoint
+  distributions; no page errors observed. No model/GPU speedup is asserted.

@@ -13,6 +13,14 @@ input/weight gradient difference. The first browser AdamW update is (1.92, 0.92)
 with loss 6.9216. Desktop and 320-pixel layouts were inspected with no page errors.
 The earlier checkpoint's detailed verification record follows.
 
+The next decoding slice adds seven Node tests (28 total), including 2,025 rational
+distribution pairs, filtering order and support boundaries. Four pure-Python
+tests pass for conditional speculation, all-accepted bonus emission, disjoint
+support correction and invalid inputs. The seed-23, 50,000-sample two-token
+experiment has maximum frequency error 0.00226. Normal, identical and disjoint
+browser cases pass at desktop and 320 pixels without page errors. The full
+14-test TensorFlow suite also passes after the optimizer additions.
+
 ## Code and numerical checks
 
 - `npm test`: sixteen passing tests for online-softmax equivalence with a late
