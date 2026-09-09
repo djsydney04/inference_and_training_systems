@@ -1,0 +1,35 @@
+.method-toolbar { display:flex; flex-wrap:wrap; align-items:end; gap:16px; padding:22px 24px; font:12px var(--sans); }
+.method-toolbar label { display:grid; gap:8px; }
+.method-toolbar select,.method-toolbar button { min-height:38px; padding:8px 11px; background:var(--paper); color:var(--ink); border:1px solid var(--rule-dark); font:12px var(--sans); }
+.method-toolbar button { cursor:pointer; }
+.method-toolbar button:last-child { background:var(--ink); color:var(--paper); }
+.method-toolbar button:disabled { opacity:.4; cursor:default; }
+.method-split { display:grid; grid-template-columns:minmax(0,1fr) 255px; align-items:center; border-top:1px solid var(--rule); }
+.method-split svg { width:100%; display:block; }
+.method-split svg text { font:11px var(--sans); fill:var(--graphite); }
+.method-inspector { padding:24px; min-width:0; border-left:1px solid var(--rule); font:12px var(--sans); }
+.method-inspector>span { color:var(--signal-dark); font-size:11px; }
+.method-inspector h4 { margin:18px 0; }
+.method-inspector dl { margin:0; }
+.method-inspector dl div { padding:12px 0; border-top:1px solid var(--rule); }
+.method-inspector dt { font-size:11px; color:var(--graphite); }
+.method-inspector dd { margin:8px 0 0; font:11px var(--mono); overflow-wrap:anywhere; }
+.method-table { overflow-x:auto; margin:24px 0; font:12px/1.6 var(--sans); }
+.method-table summary { cursor:pointer; color:var(--signal-dark); margin-bottom:15px; }
+.method-lab>.method-table { margin:24px; }
+.method-table table { border-collapse:collapse; min-width:min(480px,100%); width:100%; }
+.method-table caption { text-align:left; margin-bottom:14px; color:var(--graphite); }
+.method-table td,.method-table th { text-align:left; padding:12px; border-bottom:1px solid var(--rule); }
+.method-table th { font-weight:500; }
+.contract-comparison { display:grid; grid-template-columns:1fr 1fr; padding:25px; gap:35px; }
+.contract-comparison>div { display:grid; gap:14px; min-width:0; }
+.contract-comparison h4 { margin:0 0 8px; }
+.contract-comparison code { font:12px/1.6 var(--mono); overflow-wrap:anywhere; }
+.contract-comparison strong { font:24px var(--serif); color:var(--signal-dark); }
+.method-flow { margin:0; padding:25px 25px 25px 55px; font:13px/1.65 var(--sans); }
+.method-flow li { padding:12px 0 18px 12px; border-bottom:1px solid var(--rule); }
+.method-flow li::marker { color:var(--signal-dark); }
+.method-flow strong { display:block; font-weight:500; margin-bottom:6px; }
+.method-flow span { color:var(--graphite); }
+@media(max-width:1000px) { .method-split { grid-template-columns:minmax(0,1fr); }.method-inspector { border-left:0; border-top:1px solid var(--rule); }.method-inspector dl { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; } }
+@media(max-width:520px) { .method-toolbar { padding:18px 16px; gap:12px; }.contract-comparison { grid-template-columns:1fr; padding:24px 16px; }.method-inspector { padding:20px 16px; }.method-inspector dl { grid-template-columns:1fr; gap:0; }.method-table td,.method-table th { padding:9px 7px; }.method-lab>.method-table { margin:16px; }.method-flow { padding-left:38px; padding-right:16px; } }

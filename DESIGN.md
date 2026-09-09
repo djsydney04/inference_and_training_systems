@@ -60,3 +60,20 @@ shares exactly the same tested numerical state. No autonomous playback is needed
 Review: the matrix workbench must show values, masks, and lifetimes—not merely
 more chip boxes. The CPU-replica run is runtime evidence, but not GPU, NCCL,
 network, throughput, or multi-host evidence. Label those boundaries next to it.
+
+## Five-hour expansion: methods, state, and physical limits
+
+Visual thesis: keep the established paper/ink/cobalt textbook, with interactive
+figures that expose the quantities an engineer must reconcile.
+
+Content plan: separate training objectives from update mechanics and parallel
+execution; separate inference probability rules from request scheduling; connect
+hardware resources to both. Preserve existing anchors during chapter splits.
+
+Interaction thesis: parameter changes recompute a visible numerical contract;
+stepped probability mass and collective ownership diagrams reveal what moved;
+the current lesson appears in the syllabus without repeating the whole chapter.
+
+Review: the brief asks for depth and flow, not a new visual brand. Keep long
+derivations in readable lessons, concise control labels, and original code-native
+figures with accessible tabular equivalents. Avoid a larger undifferentiated feed.

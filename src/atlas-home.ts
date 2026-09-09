@@ -41,6 +41,14 @@ const glyph = (kind: string) => {
 
 export const galleryItems = [
   {
+    kind: "training",
+    id: "optimizer-state",
+    title: "One loss, three optimizers",
+    scope: "Gradient → history → parameter update",
+    copy: "Compare SGD, momentum and AdamW on a shared objective; inspect every update and its stored state.",
+    type: "Training methods lab",
+  },
+  {
     kind: "matmul",
     id: "tiled-matmul",
     title: "Inside a matrix multiplication",

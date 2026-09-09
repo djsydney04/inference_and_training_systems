@@ -6,6 +6,12 @@ and accessibility all agree—not merely that every heading exists.
 
 ## Verified checkpoint — 2026-09-08
 
+Subsequent working pass, September 9 UTC: optimization is now a separate chapter
+between data design and distributed training. Four new lessons cover stateful
+optimizers, clipping/update boundaries, mixed precision and activation
+recomputation, with an original interactive optimizer trajectory and CPU tests.
+The previous 16-chapter checkpoint below is retained as development history.
+
 The curriculum is now organized as 16 chapters with a grouped syllabus, four
 prerequisite-ordered routes, keyboard search, local contents, and deep-link-aware
 navigation. The eleven-entry gallery includes training and post-training alongside

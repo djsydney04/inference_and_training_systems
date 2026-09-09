@@ -3,6 +3,16 @@
 Checked locally on 2026-09-08. This records evidence, not a general claim of
 production readiness or a completed textbook.
 
+## September 9 working-pass additions
+
+The optimization chapter and its interactive trajectory pass the static build
+and five new Node tests (21 Node tests total). Four new TensorFlow tests pass for
+clipping order, loss scaling/nonfinite skip, stateless activation recomputation,
+and FP16/BF16 cast behavior. The CPU recomputation example reports zero observed
+input/weight gradient difference. The first browser AdamW update is (1.92, 0.92)
+with loss 6.9216. Desktop and 320-pixel layouts were inspected with no page errors.
+The earlier checkpoint's detailed verification record follows.
+
 ## Code and numerical checks
 
 - `npm test`: sixteen passing tests for online-softmax equivalence with a late

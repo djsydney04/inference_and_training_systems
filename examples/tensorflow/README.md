@@ -92,8 +92,20 @@ python -m unittest discover -s examples/tensorflow -p 'test_*.py' -v
 The suite checks causal-prefix invariance, finite gradients, interrupted versus
 uninterrupted training, corrupted and uncommitted checkpoints, response masks,
 known DPO values and gradient signs, and the zero-initialized LoRA update.
-Ten tests now run, including token-weighting algebra and the replica-runtime
+Fourteen tests now run, including token-weighting algebra and the replica-runtime
 subprocess described below.
+
+## Numerical contracts
+
+```bash
+python examples/tensorflow/numerical_contracts.py
+```
+
+Four checks isolate clipping order; Keras 3 loss scaling and nonfinite-update
+skipping; stateless activation recomputation with matching input/weight gradients;
+and the different range/precision tradeoffs of CPU FP16/BF16 casts. The scale
+wrapper test deliberately uses FP32 parameters to isolate its update protocol.
+It is not a mixed-precision decoder or accelerator benchmark.
 
 ## Token weighting across partitions
 

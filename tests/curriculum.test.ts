@@ -45,7 +45,8 @@ test("chapter routing resolves a known lesson and respects sequence boundaries",
   assert.equal(chapterForTarget("missing"), undefined);
   assert.equal(adjacentChapters(chapters[0].id).previous, undefined);
   assert.equal(adjacentChapters(chapters.at(-1)!.id).next, undefined);
-  assert.equal(adjacentChapters("data").next?.id, "training");
+  assert.equal(adjacentChapters("data").next?.id, "optimization");
+  assert.equal(adjacentChapters("optimization").next?.id, "training");
 });
 test("training trace counts exposed communication, not the sum of busy times", () => {
   assert.equal(trainingTrace(4, 0).step, 14);
