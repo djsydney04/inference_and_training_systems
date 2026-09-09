@@ -1,3 +1,125 @@
+.parallel-branches {
+  margin: 24px;
+  font: 13px var(--sans);
+}
+.parallel-shared {
+  display: grid;
+  gap: 9px;
+  text-align: center;
+  padding: 22px 12px;
+  border-top: 1px solid var(--rule-dark);
+  border-bottom: 1px solid var(--rule-dark);
+}
+.parallel-shared strong {
+  color: var(--signal-dark);
+  font: 16px var(--mono);
+}
+.parallel-shared span {
+  color: var(--graphite);
+}
+.parallel-local {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.parallel-local > div {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  padding: 26px 10px;
+}
+.parallel-local > div + div {
+  border-left: 1px solid var(--rule);
+}
+.parallel-local b {
+  font-weight: 400;
+  color: var(--graphite);
+}
+.parallel-local > div > span {
+  color: var(--signal-dark);
+}
+.parallel-local code {
+  font-size: 12px;
+}
+.pipeline-clock {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 25px;
+  padding: 16px 24px;
+  font: 12px var(--sans);
+  border-top: 1px solid var(--rule);
+}
+.pipeline-clock label {
+  display: grid;
+  gap: 12px;
+  width: min(360px, 100%);
+}
+.pipeline-clock input {
+  width: 100%;
+  accent-color: var(--signal);
+}
+.pipeline-chart {
+  overflow-x: auto;
+  margin: 10px 24px;
+}
+.pipeline-chart svg {
+  min-width: 780px;
+  width: 100%;
+  display: block;
+}
+.pipeline-chart text {
+  font: 11px var(--sans);
+}
+.pipeline-result {
+  padding: 20px 24px;
+}
+.pipeline-result p {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 24px;
+  font: 12px var(--sans);
+}
+.pipeline-result p strong {
+  font: 24px var(--serif);
+}
+.pipeline-result > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.pipeline-result > div > span {
+  display: grid;
+  gap: 8px;
+  min-width: 70px;
+  font: 11px var(--sans);
+  color: var(--graphite);
+}
+.pipeline-result > div strong {
+  font: 16px var(--mono);
+  color: var(--ink);
+}
+#pipeline-lab > .method-table {
+  margin: 24px;
+}
+@media (max-width: 520px) {
+  .parallel-branches {
+    margin: 20px 12px;
+  }
+  .parallel-local code {
+    font-size: 10px;
+  }
+  .parallel-local b {
+    font-size: 11px;
+  }
+  .pipeline-clock,
+  .pipeline-result {
+    padding: 20px 16px;
+  }
+  .pipeline-chart,
+  #pipeline-lab > .method-table {
+    margin: 16px;
+  }
+}
 .method-toolbar {
   display: flex;
   flex-wrap: wrap;

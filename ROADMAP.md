@@ -20,6 +20,10 @@ The fifth Three.js workbench traces every partial reduction, and the residency
 calculator demonstrates allocation cliffs. Thirty-five Node tests cover the
 shared mathematical state. Tensor/pipeline/context/expert training methods and
 policy-optimization objectives are the next content-depth slices.
+Parallel training is now its own chapter (21 total) with tensor-shard algebra,
+pipeline schedules, context/expert distinctions and an exact dense rank map.
+The reference validates CPU math, not distributed transport. The next slice
+focuses on policy-objective ratios, advantages, clipping and rollout freshness.
 
 The curriculum is now organized as 16 chapters with a grouped syllabus, four
 prerequisite-ordered routes, keyboard search, local contents, and deep-link-aware

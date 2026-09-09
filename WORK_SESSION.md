@@ -51,3 +51,11 @@ advance source-check dates.
   values and sent-byte accounting; the occupancy cliff and cannot-fit cases
   agree with tests. Desktop/mobile diagrams inspected; corrected oversized
   vertical transfer labels. No hardware throughput claim is made.
+- Iteration 3 pushed as `26a9441`.
+- Iteration 4: parallel training methods become a separate chapter (21 total),
+  with a pipeline timeline and rank-group map (16 gallery entries). Five new
+  Node tests bring the total to 40, covering schedule causality, saved-state
+  ownership, ideal bubbles and dense rank groups. Four TensorFlow tests pass
+  for tensor-parallel forward/all-gradient equivalence and counterexamples.
+  Desktop and 320-pixel browser checks match the GPipe/1F1B arithmetic; no page
+  errors or document overflow observed. Screenshots inspected.

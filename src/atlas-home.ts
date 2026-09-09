@@ -59,6 +59,14 @@ const glyph = (kind: string) => {
 
 export const galleryItems = [
   {
+    kind: "trace",
+    id: "pipeline-schedules",
+    title: "Why does a pipeline keep activations?",
+    scope: "Microbatch → dependencies → storage lifetime",
+    copy: "Compare two training schedules, follow a microbatch, and separate memory savings from idealized idle time.",
+    type: "Training schedule lab",
+  },
+  {
     kind: "ring",
     id: "ring-allreduce",
     title: "Where did this gradient come from?",

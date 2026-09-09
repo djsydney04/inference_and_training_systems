@@ -3,7 +3,7 @@
 An interactive, systems-first guide to transformer architecture, training,
 inference, and the machines underneath them.
 
-The textbook now has 20 chapters across foundations, training, hardware,
+The textbook now has 21 chapters across foundations, training, hardware,
 inference, practice, and reference. A grouped syllabus, four prerequisite-ordered
 reading paths, chapter search (⌘/Ctrl K), and previous/next links connect the
 material. Deep links and browser back/forward navigation remain supported.
@@ -25,7 +25,7 @@ The offwhite interface supports desktop and mobile reading.
   engineering projects with concrete artifacts and review questions; a tiled
   matrix-multiplication workbench connected to an original CUDA companion.
 
-The fifteen-entry systems gallery connects worked lessons and labs to the syllabus.
+The sixteen-entry systems gallery connects worked lessons and labs to the syllabus.
 GPU, rack, and LPU Three.js cutaways support expandable workbenches, orbit/zoom,
 view changes, and keyboard-accessible component selectors. Guided steps keep
 geometry highlights and explanations together: SM execution partitions, register
@@ -77,7 +77,7 @@ npm run build
 
 See the [TensorFlow companion](examples/tensorflow/README.md) for a runnable tiny
 decoder, checkpoint-resume example, post-training losses, adapter, token-weighted
-gradient example, two-replica runtime experiment, and numerical-contract tests. Thirty-five Node
+gradient example, two-replica runtime experiment, and numerical-contract tests. Forty Node
 tests cover numerical labs, matrix-tile schedules, prerequisite ordering,
 chapter lookup, and camera framing.
 The optimization chapter adds a stateful SGD/momentum/AdamW comparison, clipping
@@ -85,6 +85,9 @@ counterexample, mixed-precision contracts and activation recomputation.
 The separate decoding chapter adds probability accounting, exact speculative
 sampling, provisional-state reconciliation, and break-even reasoning. Its
 [Python reference](examples/inference/README.md) has four additional tests.
+The parallel-training chapter derives a partitioned MLP and compares GPipe-style
+and 1F1B schedules. Four additional TensorFlow tests validate the tensor-shard
+algebra on CPU, including all gradients and explicit counterexamples.
 The [verification record](VERIFICATION.md) states what has actually been checked
 and what has not been measured.
 

@@ -64,12 +64,20 @@ export const chapters: Chapter[] = [
     requires: ["optimization"],
   },
   {
+    id: "parallel-training",
+    title: "Parallel training methods",
+    part: "Training",
+    outcome:
+      "Verify a sharded layer, trace pipeline activation lifetimes and reconcile rank ownership.",
+    requires: ["training"],
+  },
+  {
     id: "post-training",
     title: "Post-training & evaluation",
     part: "Training",
     outcome:
       "Implement response masking and preference objectives; audit a rollout pipeline.",
-    requires: ["training"],
+    requires: ["parallel-training"],
   },
   {
     id: "machine",
@@ -182,6 +190,7 @@ export const learningPaths = [
       "data",
       "optimization",
       "training",
+      "parallel-training",
       "post-training",
       "machine",
       "gpu-resources",
@@ -208,6 +217,7 @@ export const learningPaths = [
       "data",
       "optimization",
       "training",
+      "parallel-training",
       "post-training",
       "machine",
       "gpu-resources",
@@ -232,6 +242,7 @@ export const learningPaths = [
       "data",
       "optimization",
       "training",
+      "parallel-training",
       "rack",
       "collectives",
       "lpu",

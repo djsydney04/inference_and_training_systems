@@ -4,6 +4,7 @@ import { tiledMatmulLesson, distributedRuntimeLesson } from "./kernel-content";
 import { optimizationChapter } from "./method-content";
 import { decodingChapter } from "./decoding-content";
 import { resourceChapter, collectiveChapter } from "./hardware-method-content";
+import { parallelChapter } from "./parallel-content";
 import {
   dataChapter,
   performanceChapter,
@@ -34,6 +35,7 @@ export function prepareReader() {
       decodingChapter +
       resourceChapter +
       collectiveChapter +
+      parallelChapter +
       postChapter +
       performanceChapter +
       servingChapter +

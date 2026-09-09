@@ -32,6 +32,16 @@ The residency browser returns 37.5% at 65 registers/256 threads, and an explicit
 cannot-fit result for 128 KiB shared storage. No page errors observed.
 These are analytical/state models, not GPU or network measurements.
 
+Parallel training adds five Node tests (40 total) and four TensorFlow tests.
+The schedule tests sweep both methods across stage/microbatch combinations,
+checking each operation once, no resource collision, causal dependencies,
+nonnegative activation lifetimes and zero remaining bundles. For P=4/M=8,
+both schedules take 22 abstract units; peak bundles are [8,8,8,8] versus
+[4,3,2,1]. Browser controls reproduce those values at desktop and 320 pixels.
+The two-shard float64 MLP has output error 5.55e-17, maximum gradient error
+2.78e-17 and independently reduced dX error 2.60e-18. Duplicated output bias
+produces 0.30349 error. This does not test distributed autograd or communication.
+
 ## Code and numerical checks
 
 - `npm test`: sixteen passing tests for online-softmax equivalence with a late

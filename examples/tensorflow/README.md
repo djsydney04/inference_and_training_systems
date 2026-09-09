@@ -149,6 +149,23 @@ bounds. The experiment verifies a real framework replica path, but not GPU/NCCL
 execution, network transport, sharding, clipping, mixed precision, throughput,
 multi-host recovery, or a distributed decoder training run.
 
+## Tensor-partitioned MLP contract
+
+`tensor_parallel.py` checks a column-split expansion followed by a local GELU
+and a matching row-split down projection. It runs logical shards on one CPU:
+
+```bash
+python -m unittest test_tensor_parallel -v
+python tensor_parallel.py
+```
+
+All four tests pass for output/gradient equality at 1, 2, 4 and 8 shards, input
+gradient summation, a duplicated-output-bias counterexample, nonlinear reduction
+order and invalid shard counts. In the two-shard float64 example, observed
+maximum output error is `5.55e-17`, gradient error `2.78e-17`, and independently
+summed dX error `2.60e-18`. Duplicating the output bias gives error `0.30349`.
+These are algebra checks, not distributed-autograd or NCCL validation.
+
 ## Post-training kernels
 
 `post_training.py` deliberately separates the objective from the training loop:
