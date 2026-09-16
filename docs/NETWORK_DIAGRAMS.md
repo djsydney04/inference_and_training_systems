@@ -36,6 +36,10 @@ scroll inside the figure on small screens.
   SwiGLU activations.
 - `npm run build`: TypeScript and production build passed. Vite retains its
   existing large-chunk warning; this work does not claim a bundle-size reduction.
+- A clean archive of commit `ff3c5bc`, without the shared checkout's unfinished
+  changes, independently passed its 45 tests and production build. Its production
+  preview also passed map navigation, browser Back, feed-forward selection,
+  cached-decode shape updates and internal-link checks.
 - Playwright on the local preview: diagram deep links, every inspector button,
   Space/Enter operation selection, negative gate values, normalization magnitude,
   prefill/decode and shared-KV shape updates, first-token causal masking, valid
