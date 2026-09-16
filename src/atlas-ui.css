@@ -40,7 +40,7 @@
 .atlas-ui .syllabus-overview:hover { background: #ffffffb0; }
 .atlas-ui .current-chapter-link { margin: 30px 10px 10px; font-size: 11px; font-weight: 500; color: var(--graphite); }
 .atlas-ui .index-inner .chapter-lessons a { padding: 9px 11px; margin: 1px 0; border-radius: 2px; gap: 7px; grid-template-columns: 29px minmax(0,1fr); font-size: 12px; }
-.atlas-ui .index-inner .chapter-lessons a span { font-size: 10px; color: #829088; }
+.atlas-ui .index-inner .chapter-lessons a span { font-size: 10px; color: var(--graphite); }
 .atlas-ui .index-inner .chapter-lessons a:hover { background: #e7ece7; }
 .atlas-ui .index-inner .chapter-lessons a.is-current { background: #e4ebfa; box-shadow: none; color: var(--signal-dark); }
 .atlas-ui .reader-reference-links { padding: 0 10px; font-size: 11px; }
