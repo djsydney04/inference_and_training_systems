@@ -1,0 +1,28 @@
+.digital-diagram { overflow-x: auto; margin: 1.2rem 0; }
+.digital-diagram svg { display: block; width: 100%; min-width: 620px; height: auto; font-family: var(--sans, "IBM Plex Sans", sans-serif); color: #59625b; }
+.digital-diagram svg text { fill: #242925; font-size: 15px; }
+.digital-diagram svg .digital-label { font-size: 13px; fill: #59625b; }
+.digital-diagram svg .digital-small { font-size: 11px; fill: #59625b; }
+.digital-diagram svg .digital-value { font-size: 25px; font-family: var(--mono, monospace); }
+.digital-cell { fill: #faf9f5; stroke: #bcbfb6; stroke-width: 1.2; }
+.digital-cell.is-active { fill: #e7edf9; stroke: #2559d6; stroke-width: 1.8; }
+.digital-cell.is-complete { stroke: #2559d6; }
+.digital-wire { fill: none; stroke: #737c74; stroke-width: 1.5; }
+.digital-wire.is-active { stroke: #2559d6; }
+.digital-limit { stroke: #a16e2e; stroke-width: 2; stroke-dasharray: 4 3; }
+.digital-dot { fill: #2559d6; }
+.digital-result { display: grid; gap: .45rem; padding: 1rem 1.5rem; border-top: 1px solid #d0cec3; border-bottom: 1px solid #d0cec3; }
+.digital-result strong { font-size: 1.05rem; font-family: var(--sans, "IBM Plex Sans", sans-serif); }
+.digital-result span { color: #59625b; font-size: .88rem; }
+.digital-result p { margin: .2rem 0 0; font-size: .9rem; }
+.digital-lab .method-toolbar input[type="number"] { width: 7rem; padding: .35rem .5rem; border: 1px solid #bcbfb6; background: #faf9f5; font: inherit; }
+.digital-lab .method-toolbar input[type="range"] { width: 8.5rem; accent-color: #2559d6; }
+.digital-lab .method-toolbar input[type="checkbox"] { accent-color: #2559d6; }
+.digital-source-code summary { cursor: pointer; font-family: var(--sans, "IBM Plex Sans", sans-serif); font-weight: 600; padding: 1rem 0; }
+.digital-source-code pre { max-height: 34rem; overflow: auto; }
+.digital-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); list-style: none; padding: 0; border-block: 1px solid #d0cec3; }
+.digital-flow li { padding: 1rem .8rem; border-right: 1px solid #d0cec3; font-family: var(--sans, "IBM Plex Sans", sans-serif); }
+.digital-flow li:last-child { border-right: 0; }
+.digital-flow strong, .digital-flow span { display: block; }
+.digital-flow span { margin-top: .5rem; font-size: .84rem; color: #59625b; }
+@media (max-width: 680px) { .digital-flow { grid-template-columns: 1fr 1fr; } .digital-flow li { border-bottom: 1px solid #d0cec3; } .digital-diagram svg { min-width: 610px; } }

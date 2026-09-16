@@ -1,0 +1,109 @@
+/* Navigation and reading hierarchy for an expanding technical manual. */
+.atlas-reader { --rail: 270px; }
+.atlas-reader .index-inner { padding: 22px 20px 32px; scrollbar-width: thin; }
+.syllabus-links { display: grid; gap: 2px; margin: 0 -8px 23px; }
+.atlas-reader .syllabus-overview { font-size: 13px; padding: 9px 8px; }
+.reader-path-label { display: block; font: 12px var(--sans); color: var(--graphite); margin-bottom: 8px; }
+[data-reader-path], [data-reader-chapter] { width: 100%; min-width: 0; min-height: 40px; padding: 8px 26px 8px 10px; border: 1px solid var(--rule-dark); background: transparent; color: var(--ink); font: 12px var(--sans); border-radius: 0; }
+.current-chapter-link { display: block; text-decoration: none; margin: 24px 0 8px; font: 500 12px/1.5 var(--sans); color: var(--graphite); }
+.atlas-reader .index-inner .chapter-lessons { margin: 0; padding: 0; border: 0; }
+.atlas-reader .index-inner .chapter-lessons a { grid-template-columns: 31px minmax(0,1fr); gap: 9px; padding: 10px 8px; margin: 0 -8px; font: 12px/1.5 var(--sans); border: 0; }
+.atlas-reader .index-inner .chapter-lessons a span { font-size: 11px; color: var(--graphite); padding-top: 1px; }
+.atlas-reader .index-inner .chapter-lessons a::before { display: none; }
+.atlas-reader .index-inner .chapter-lessons a.is-current { color: var(--signal-dark); background: #e0e5dc; box-shadow: inset 2px 0 var(--signal); }
+.atlas-reader .index-inner .chapter-lessons a.is-current span { color: var(--signal-dark); }
+.sequence-context { grid-column: 1/-1; font: 11px/1.5 var(--sans); color: var(--graphite); margin: 0; }
+
+.atlas-reader .chapter { display: block; padding: 42px clamp(24px, 4vw, 56px) 64px; }
+.atlas-reader .chapter-number { display: none; }
+.atlas-reader .chapter-title { margin-bottom: 25px; max-width: 900px; }
+.atlas-reader .chapter-kicker { font: 500 12px var(--sans); letter-spacing: 0; margin-bottom: 16px; }
+.atlas-reader .chapter h2 { font-size: clamp(34px, 3.6vw, 52px); font-weight: 500; letter-spacing: -.035em; line-height: 1.12; max-width: 26ch; }
+.atlas-reader .chapter-summary { max-width: 66ch; font: 19px/1.6 var(--serif); margin-top: 20px; }
+.chapter-evidence { margin: 12px 0 0; font: 11px/1.5 var(--sans); color: var(--graphite); }
+.reader-orientation { display: flex; align-items: baseline; flex-wrap: wrap; gap: 7px 12px; padding: 0 0 20px; border-top: 0; font: 12px/1.6 var(--sans); color: var(--graphite); }
+.reader-orientation > span { flex-shrink: 0; }
+.reader-orientation ul { display: flex; flex-wrap: wrap; gap: 5px 14px; list-style: none; margin: 0; padding: 0; }
+.atlas-reader .lesson { margin-top: 62px; }
+.atlas-reader .lesson:first-of-type { margin-top: 44px; }
+.atlas-reader .lesson > header { padding-top: 20px; margin-bottom: 23px; border-top-width: 1px; }
+.atlas-reader .lesson header h3 { font: 500 clamp(27px, 2.6vw, 35px)/1.2 var(--serif); max-width: 36ch; margin-top: 12px; }
+.atlas-reader .lesson > p, .atlas-reader .lesson-reading > div > p { font: 18px/1.8 var(--serif); max-width: 68ch; }
+.section-reference { display: block; font: 500 12px/1.6 var(--sans); color: var(--signal-dark); }
+[data-section-number] > .section-reference { grid-column: 1/-1; width: 100%; flex-basis: 100%; margin: 16px 0; }
+figcaption .figure-reference { min-width: 0; font: 500 11px/1.5 var(--sans); font-variant-numeric: tabular-nums; }
+.figure-reference small { display: block; margin-top: 4px; font: 400 10px/1.5 var(--sans); color: var(--graphite); }
+.reference-gallery figcaption .figure-reference { display: block; margin-bottom: 10px; }
+.code-reference, .check-reference { display: block; font: 500 11px/1.5 var(--sans); color: var(--signal-dark); }
+.code-reference { padding: 8px 0; }
+.lesson-code .code-reference { border-top: 1px solid var(--rule); }
+summary .code-reference { display: inline; margin-right: 12px; padding: 0; }
+.knowledge-check .check-reference { margin-bottom: 7px; }
+.atlas-reader .knowledge-check { padding: 20px 0; }
+.atlas-reader .knowledge-check summary { font-size: 15px; }
+.atlas-reader .knowledge-check p { font-size: 17px; }
+.chapter-pagination { gap: 18px 30px; margin-top: 65px; }
+.chapter-pagination .sequence-context { margin-bottom: 4px; }
+.chapter-pagination a:last-child strong::after { content: " →"; }
+.chapter-pagination a:nth-child(2) strong::before { content: "← "; }
+.path-chapter-number { display: block; font-size: 10px; color: var(--graphite); }
+.path-picker ol { list-style: none; padding-left: 0; }
+.path-picker li { padding: 9px 0; }
+
+@media (min-width: 1500px) {
+  .atlas-reader .chapter { padding-left: 70px; padding-right: 70px; }
+}
+@media (max-width: 1100px) {
+  .atlas-reader { --rail: 254px; }
+  .atlas-reader .chapter { padding: 34px 28px 55px; }
+
+  .atlas-reader .chapter-summary { font-size: 18px; }
+}
+@media (max-width: 820px) {
+  .atlas-reader { --rail: 0px; }
+  .atlas-reader .index-inner { position: static; padding: 20px 20px 35px; height: 100%; max-height: 100%; }
+  .atlas-reader .chapter-index { width: min(350px, 92vw); }
+  .atlas-reader .chapter { padding: 30px 24px 48px; }
+  .atlas-reader .chapter h2 { font-size: 38px; }
+  .atlas-reader .lesson > p, .atlas-reader .lesson-reading > div > p { font-size: 17px; }
+  .atlas-reader .topbar { z-index: 50; }
+}
+@media (max-width: 520px) {
+  .atlas-reader .chapter { padding: 26px 20px 44px; }
+  .atlas-reader .chapter h2 { font-size: 34px; }
+  .atlas-reader .chapter-summary { font-size: 17px; }
+  .atlas-reader .lesson header h3 { font-size: 28px; }
+  .atlas-reader .lesson { margin-top: 48px; }
+
+  .chapter-pagination { grid-template-columns: 1fr; gap: 22px; }
+  .chapter-pagination a:last-child { text-align: left; }
+  .chapter-pagination strong { font-size: 15px; }
+}
+@media print {
+  .atlas-reader .chapter { padding: 20px; }
+}
+
+/* One chapter picker and one outline; path settings stay out of the reading flow. */
+.reader-path-settings { margin-top: 24px; border-top: 1px solid var(--rule); padding-top: 16px; font: 12px/1.6 var(--sans); }
+.reader-path-settings summary { cursor: pointer; color: var(--graphite); }
+.reader-path-settings summary span { margin-left: 4px; color: var(--ink); }
+.reader-path-settings[open] summary { margin-bottom: 16px; }
+.reader-path-settings > a { display: inline-block; margin-top: 12px; font-size: 12px; }
+.reader-reference-links { display: flex; gap: 18px; margin-top: 22px; font: 12px var(--sans); }
+.reader-reference-links a { text-decoration: none; color: var(--graphite); }
+.reader-path-settings summary:focus-visible, .deep-dive summary:focus-visible { outline: 2px solid var(--signal); outline-offset: 4px; }
+.deep-dive { margin: 26px 0; padding: 18px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.deep-dive > summary { color: var(--signal-dark); font: 500 14px/1.6 var(--sans); cursor: pointer; }
+.deep-dive[open] > summary { margin-bottom: 20px; }
+.deep-dive > p { max-width: 68ch; font: 17px/1.8 var(--serif); color: #353a34; margin: 16px 0; }
+.deep-dive > p code { font: .82em/1.6 var(--mono); background: var(--paper-deep); padding: 2px 4px; overflow-wrap: anywhere; }
+.deep-dive h4 { font-size: 22px; }
+.deep-dive .lesson-code { margin: 24px 0; }
+.path-outline { border-top: 1px solid var(--rule); padding-top: 15px; }
+.path-outline > summary { cursor: pointer; color: var(--signal-dark); font: 500 13px var(--sans); }
+.path-outline[open] > summary { margin-bottom: 14px; }
+.atlas-home .home-intro h1 { font-size: clamp(46px, 5vw, 72px); line-height: 1.05; max-width: 14ch; }
+.atlas-home .home-kicker { margin-bottom: 14px; }
+.path-section { margin-top: 54px; }
+.path-section h2 { font-size: 32px; }
+.home-standard { margin-top: 48px; }

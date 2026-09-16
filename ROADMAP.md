@@ -1,5 +1,35 @@
 # Build roadmap
 
+## September 14, 2026 — connected implementation path
+
+The reader now has 29 chapters and five prerequisite-complete paths. Eight added
+chapters cover LLM first principles, C/storage, CUDA kernels, digital logic,
+Verilog/FPGA/ASIC design, accelerator comparisons, frontier mechanisms and an
+end-to-end PyTorch training/serving capstone. The source ledger also indexes
+citations placed beside individual lessons. Historical checkpoints follow below.
+
+New executable work includes exact CPU checkpoint restart and KV equivalence,
+held-out token-weighted evaluation, an HTTP service, a real CPU operator trace,
+C sanitizers, normalization forward/backward kernels, and RTL simulation plus
+generic synthesis with simulations of the generated netlists. New figures expose
+weights/gradients, strided addresses, bank conflicts, reduction trees, carry and
+overflow, setup/hold constraints, backpressure and systolic accumulation.
+
+The remaining empirical work needs its target environment:
+
+1. Compile and run CUDA/Triton/custom-autograd companions on NVIDIA hardware;
+   collect sanitizer, profiler and equal-quality performance evidence.
+2. Map the synthesized circuits onto a chosen FPGA, supply clock/I/O/pin
+   constraints, place and route, and measure actual board behavior and frequency.
+3. Validate real GPU collectives, multi-host recovery and model sharding under
+   contention and failure; the logical-CPU references do not establish transport.
+4. Run the pinned serving load test on real accelerators and repeat across
+   realistic prompt/output distributions, cache states and service objectives.
+5. Continue source refresh as disclosures change; the dated frontier chapter
+   distinguishes announced specifications, author benchmarks and local evidence.
+
+These are measurement boundaries, not results implied by a successful site build.
+
 The site is developed as a series of independently verifiable vertical slices.
 “Complete” means the prose, diagrams, source ledger, interactions, mobile layout,
 and accessibility all agree—not merely that every heading exists.

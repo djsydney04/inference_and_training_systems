@@ -95,7 +95,7 @@ export const atlasMarkup = `
           <p class="chapter-summary">Every training or inference bottleneck is a shortage of compute, memory capacity, memory bandwidth, communication bandwidth, or orchestration efficiency. Start by locating the scarce resource.</p>
         </div>
 
-        <div class="concept-strip" role="list">
+        <div class="concept-strip" role="list" id="systems-mental-models" data-lesson="Model, machine and system">
           <article role="listitem">
             <span>Model</span>
             <h3>A graph of tensor operations</h3>
@@ -113,7 +113,7 @@ export const atlasMarkup = `
           </article>
         </div>
 
-        <figure class="wide-figure hierarchy-figure">
+        <figure class="wide-figure hierarchy-figure" id="systems-scale-ladder" data-lesson="From a scalar to a cluster">
           <figcaption>
             <span>Figure 0.1</span>
             <strong>The scale ladder</strong>
@@ -127,7 +127,7 @@ export const atlasMarkup = `
             <button data-scroll="rack"><i style="--size: .78"></i><span>rack</span><small>scale-up domain</small></button>
             <button data-scroll="training"><i style="--size: 1"></i><span>cluster</span><small>scale-out fabric</small></button>
           </div>
-          <div class="omission"><strong>Model boundary:</strong> the ladder omits storage, power, cooling, host software, and failures; those re-enter in Chapters 4–7.</div>
+          <div class="omission"><strong>Model boundary:</strong> the ladder omits storage, power, cooling, host software, and failures; revisit them in <a href="#training">distributed training</a>, <a href="#machine">CPU and GPU architecture</a>, <a href="#rack">racks and interconnects</a>, and <a href="#serving-lab">serving experiments</a>.</div>
         </figure>
       </section>
 
@@ -177,7 +177,7 @@ export const atlasMarkup = `
 
         <div class="code-study">
           <div class="code-heading">
-            <div><span>TensorFlow lab 1</span><h3>Watch the axes move</h3></div>
+            <div><span>TensorFlow example</span><h3>Watch the axes move</h3></div>
             <button class="copy-button" type="button" data-copy-target="tensor-code">Copy code</button>
           </div>
           <pre id="tensor-code"><code><span class="kw">import</span> tensorflow <span class="kw">as</span> tf
@@ -207,7 +207,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
         </div>
 
         ${networkOverview}
-        <figure class="wide-figure transformer-map">
+        <figure class="wide-figure transformer-map" id="decoder-block" data-lesson="Trace a decoder block">
           <figcaption><span>Figure 2.1</span><strong>A decoder-only Transformer block</strong><p>Press play to trace one activation through a pre-normalized block.</p></figcaption>
           <div class="transformer-controls">
             <button type="button" data-transformer-play>Trace one token</button>
@@ -230,7 +230,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
           <div class="omission"><strong>Model boundary:</strong> this view omits dropout, biases, rotary position transforms, cache writes, MoE routing, and parallel sharding.</div>
         </figure>
 
-        <div class="reading-grid">
+        <div class="reading-grid" id="attention-and-mlp" data-lesson="Attention and the feed-forward network">
           <div class="prose">
             <h3>Why self-attention works</h3>
             <p>Each token creates a query, key, and value. Query–key dot products measure compatibility. A causal mask forbids looking rightward. Softmax turns allowed scores into weights; their weighted sum selects information from prior values.</p>
@@ -253,9 +253,9 @@ print(q.shape, q.dtype, q.device)</code></pre>
           </aside>
         </div>
 
-        <div class="code-study">
+        <div class="code-study" id="attention-primitives" data-lesson="Implement causal attention">
           <div class="code-heading">
-            <div><span>TensorFlow lab 2</span><h3>Attention from primitives</h3></div>
+            <div><span>TensorFlow example</span><h3>Attention from primitives</h3></div>
             <button class="copy-button" type="button" data-copy-target="attention-code">Copy code</button>
           </div>
           <pre id="attention-code"><code><span class="kw">import</span> tensorflow <span class="kw">as</span> tf
@@ -338,14 +338,14 @@ print(q.shape, q.dtype, q.device)</code></pre>
 
           <article class="case-study">
             <div class="case-meta"><span>Kimi Linear, 2025 → Kimi K3, 2026</span><a href="https://arxiv.org/abs/2510.26692" target="_blank" rel="noreferrer">Technical report</a></div>
-            <h3>Kimi: KDA + gated MLA</h3>
-            <p>Kimi Delta Attention treats recent input as writes to a matrix-valued recurrent memory. A fine-grained decay gate controls forgetting by channel; a delta-rule correction removes an old key association before writing the new value. Kimi’s published hybrid uses three KDA layers for each MLA layer.</p>
+            <h3>Kimi Linear: KDA + MLA</h3>
+            <p>Kimi Delta Attention treats recent input as writes to a matrix-valued recurrent memory. A fine-grained decay gate controls forgetting by channel; a delta-rule correction removes an old key association before writing the new value. Kimi Linear’s published hybrid uses three KDA layers for each MLA layer. Kimi K3 is a separate checkpoint with its own layer configuration.</p>
             <div class="equation-block compact">
               <span class="equation-label">Conceptual KDA update</span>
               <div><var>S</var><sub>t</sub> ← decay(<var>S</var><sub>t−1</sub>) + correction(<var>k</var><sub>t</sub>, <var>v</var><sub>t</sub>)</div>
               <p>Training uses a chunkwise parallel form; token-by-token decode uses the recurrence.</p>
             </div>
-            <p class="claim-note"><strong>Reported result:</strong> the Kimi Linear paper reports 6.3× lower time per output token than its MLA baseline at one-million-token context, batch one. This is an author measurement on its stated setup, not a universal speedup.</p>
+            <p class="claim-note"><strong>Reported result:</strong> the Kimi Linear paper reports 2.3× faster decoding than its MLA baseline at one-million-token context with batch size one. Its headline 6.3× result uses the larger batch sizes made feasible by reduced state. These are distinct author comparisons on the stated setup, not universal speedups.</p>
           </article>
         </div>
 
@@ -355,7 +355,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
               <span>PRIMARY SOURCE / REDRAW</span>
               <strong>Kimi Linear</strong>
               <div class="paper-diagram"><i>KDA</i><i>KDA</i><i>KDA</i><i>MLA</i></div>
-              <small>3 recurrent mixers preserve throughput; 1 content-addressed layer restores exact lookup.</small>
+              <small>3 recurrent mixers preserve throughput; 1 content-addressed layer retains token-addressable retrieval.</small>
             </div>
           </div>
           <div class="paper-caption">
@@ -389,7 +389,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
           <div class="training-readout" data-training-readout><strong>Batch</strong><p>The input pipeline must deliver already-tokenized, shuffled, deduplicated sequences quickly enough that accelerators never wait.</p></div>
         </figure>
 
-        <div class="training-phases">
+        <div class="training-phases" id="training-lifecycle" data-lesson="Pre-training and post-training">
           <section>
             <span>Phase A</span>
             <h3>Pre-training</h3>
@@ -453,7 +453,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
         ${postTrainingLesson}
 
         <div class="code-study">
-          <div class="code-heading"><div><span>TensorFlow lab 3</span><h3>A distributed pre-training step</h3></div><button class="copy-button" type="button" data-copy-target="train-code">Copy code</button></div>
+          <div class="code-heading"><div><span>TensorFlow example</span><h3>A distributed pre-training step</h3></div><button class="copy-button" type="button" data-copy-target="train-code">Copy code</button></div>
           <pre id="train-code"><code>strategy = tf.distribute.MultiWorkerMirroredStrategy()
 
 <span class="kw">with</span> strategy.scope():
@@ -747,7 +747,8 @@ vllm serve MODEL_ID \\
 
         <div class="current-hardware-note">
           <span>What is public now</span>
-          <p>The detailed cutaway above models the peer-reviewed 2020/2022 TSP. NVIDIA’s 2026 Groq 3 LPX page lists 256 next-generation LPUs per rack, 128 GB of aggregate on-chip SRAM, 40 PB/s SRAM bandwidth, and 315 PFLOPS of FP8 inference compute. A comparable Groq 3 microarchitecture disclosure is not yet public, so this atlas does not project first-generation tile counts onto the new chip.</p>
+          <p>The detailed cutaway above models the peer-reviewed 2020/2022 TSP. NVIDIA’s announced Groq 3 LPX platform lists 256 LPUs per rack, 128 GB of aggregate on-chip SRAM, 40 PB/s aggregate SRAM bandwidth, and 315 PFLOPS of FP8 compute. Its March 2026 architectural first look discloses 500 MB of compiler-managed SRAM per LPU, 320-byte vector operations, and matrix/vector/switch execution modules. These are vendor disclosures, not measurements in this atlas. The older cutaway does not establish the new chip’s exact floorplan or tile counts; the announced platform’s availability must be checked separately.</p>
+          <a class="lesson-source" href="https://developer.nvidia.com/blog/inside-nvidia-groq-3-lpx-the-low-latency-inference-accelerator-for-the-nvidia-vera-rubin-platform" target="_blank" rel="noreferrer">NVIDIA Groq 3 LPX architectural first look · March 16, 2026</a>
           <a href="https://groq.com/platform" target="_blank" rel="noreferrer">Current Groq platform specifications</a>
         </div>
 
@@ -805,6 +806,7 @@ vllm serve MODEL_ID \\
         </div>
 
         <div class="source-ledger" data-source-ledger>
+          <article data-search="tinytpu tiny tpu tiny-tpu architecture hardware systolic array processing element pe mac weight stationary dataflow verilog rtl pipeline double buffering backpropagation training inference"><span>Hardware walkthrough · checked 2026-09-16</span><h3>TinyTPU: the why and how</h3><p>A visual guide to an educational accelerator: processing elements, systolic dataflow, pipelining, double buffering and training. Read alongside <a href="#systolic-array-cycles">Trace a systolic array</a> to compare weight-stationary and output-stationary execution.</p><a href="https://www.tinytpu.com/" target="_blank" rel="noreferrer">TinyTPU walkthrough</a></article>
           <article data-search="tensor parallel column row mlp gradients megatron"><span>Training methods · checked 2026-09-09</span><h3>Tensor-parallel Transformer layers</h3><p>Compatible projection partitions and their communication boundaries.</p><a href="https://arxiv.org/abs/1909.08053" target="_blank" rel="noreferrer">Megatron-LM</a></article>
           <article data-search="gpipe pipeline microbatch activation memory"><span>Training methods · checked 2026-09-09</span><h3>Microbatch pipeline training</h3><p>Layer partitioning and synchronous microbatch accumulation.</p><a href="https://arxiv.org/abs/1811.06965" target="_blank" rel="noreferrer">GPipe</a></article>
           <article data-search="parallelism context sequence expert process groups"><span>Training runtime · checked 2026-09-09</span><h3>Parallelism and process groups</h3><p>Version-sensitive tensor, pipeline, context and expert composition rules.</p><a href="https://docs.nvidia.com/megatron-core/developer-guide/latest/user-guide/parallelism-guide.html" target="_blank" rel="noreferrer">Megatron Core guide</a></article>

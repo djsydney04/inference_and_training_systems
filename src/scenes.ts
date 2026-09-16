@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { attachSceneNavigation } from "./scene-navigation";
 import { createKernelScene } from "./kernel-scene";
 import { createRingScene } from "./ring-scene";
+import { RenderBudget } from "./render-budget";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import {
   buildSM,
@@ -111,10 +112,25 @@ function createSceneRig(
   blue.position.set(-7, 1, -6);
   scene.add(blue);
 
+  const renderBudget = new RenderBudget();
+  const invalidate = (duration = 0) =>
+    renderBudget.invalidate(performance.now(), duration);
+  controls.addEventListener("change", () => invalidate());
+  const workbench = container.closest<HTMLElement>(".three-lab")!;
+  // Every current model animation is user-triggered and ends within 2.8 seconds.
+  // Camera/control changes also invalidate independently, including damping.
+  ["click", "input", "change", "pointerup"].forEach((event) =>
+    workbench.addEventListener(event, () => invalidate(3000)),
+  );
+  ["atlas:matmulchange", "atlas:ringchange", "atlas:chapterchange"].forEach(
+    (event) => document.addEventListener(event, () => invalidate()),
+  );
+  document.addEventListener("visibilitychange", () => invalidate());
   let visible = true;
   new IntersectionObserver(
     ([entry]) => {
       visible = entry?.isIntersecting ?? true;
+      if (visible) invalidate();
     },
     { rootMargin: "200px" },
   ).observe(container);
@@ -151,6 +167,7 @@ function createSceneRig(
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
     fitFrame();
+    invalidate();
   };
   new ResizeObserver(resize).observe(container);
   resize();
@@ -161,6 +178,7 @@ function createSceneRig(
       requestAnimationFrame(frame);
       if (!visible || document.hidden || !container.clientWidth) return;
       controls.update();
+      if (!renderBudget.consume(time, true)) return;
       onFrame?.(time);
       renderer.render(scene, camera);
     };

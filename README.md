@@ -3,52 +3,67 @@
 An interactive, systems-first guide to transformer architecture, training,
 inference, and the machines underneath them.
 
-The textbook now has 21 chapters across foundations, training, hardware,
-inference, practice, and reference. A grouped syllabus, four prerequisite-ordered
-reading paths, chapter search (⌘/Ctrl K), and previous/next links connect the
-material. Deep links and browser back/forward navigation remain supported.
-The offwhite interface supports desktop and mobile reading.
+The textbook has **29 chapters** across foundations, training, hardware,
+inference, practice and reference. Five prerequisite-ordered reading paths,
+chapter search (⌘/Ctrl K), a searchable source ledger and deep links connect the
+material. Start at **How LLMs work** or choose **Circuits and accelerators** for
+the circuit-design path.
+
+The integrated reader indexes 125 sections and 55 figures, with numbered code,
+worked checks and a source ledger. Fonts and figures are served locally; primary-source links lead outward
+when you choose to inspect the research.
+
+The sidebar has one chapter picker and a short outline. Optional worked details
+open within a lesson; search and direct links reveal folded targets. Chapter
+titles, introductions and display numbers come from the curriculum, and the
+chosen learning path is saved locally and controls previous/next navigation. See
+[the authoring guide](docs/AUTHORING.md) before adding or moving content.
 
 ## Explore the material
 
-- **Foundations:** tensor shapes, automatic differentiation, decoder blocks,
-  causal/hybrid attention, and a tile-by-tile online-softmax lab.
-- **Training:** data and token accounting, model-state/ZeRO estimates,
-  data manifests, packing and global loss normalization, parallelism,
-  a tested two-replica update, checkpoint recovery, SFT, DPO, LoRA, and rollout systems.
-- **Hardware:** CPU execution, GPU warps/registers/coalescing, GB200 racks,
-  optical links, collectives, and compiler-scheduled LPU dataflow.
-- **Serving:** prefill/decode, KV sizing, paged allocation and shared prefixes,
-  batching, speculative decoding, quantization, load testing, goodput, overload,
-  reliability, and cost accounting.
-- **Practice:** profiling protocols, a synthetic critical-path lab, and five
-  engineering projects with concrete artifacts and review questions; a tiled
-  matrix-multiplication workbench connected to an original CUDA companion.
+- **Foundations:** bytes and tokenization, probability and loss, gradients,
+  tensors, attention, C types/pointers, storage ownership and strided layouts.
+- **Training:** data contracts, packing, optimization, mixed precision,
+  recomputation, distributed state, tensor/pipeline/context/expert parallelism,
+  post-training objectives and evaluation.
+- **Circuits:** gates, two's complement, fixed point, clocked state, setup/hold,
+  clock-domain crossings, ready/valid, Verilog simulation, FPGA resources,
+  synthesis, pipelined MACs, systolic arrays and ASIC physical implementation.
+- **Kernels:** CUDA launch/indexing, memory transactions and bank conflicts,
+  barriers, reductions, softmax and RMSNorm forward/backward, GEMM tiling,
+  tensor-core pipelines, compiler layers, Triton and profiling.
+- **Hardware:** CPU/GPU/LPU, NVIDIA, AMD, Google TPU, AWS Trainium, Cerebras,
+  Intel Gaudi, edge/unified-memory systems, interconnect, memory and power.
+- **Serving and frontier:** KV allocation, batching, speculative sampling,
+  MLA, MoE, hybrid state, FlashAttention, FP8/FP4, disaggregation, test-time
+  computation, latency tails and goodput.
+- **End-to-end practice:** train a byte decoder, verify checkpoint restart and
+  cached equivalence, evaluate held-out text, export an actual CPU trace and
+  serve the checkpoint over HTTP; then follow a pinned vLLM GPU exercise.
 
-The sixteen-entry systems gallery connects worked lessons and labs to the syllabus.
-GPU, rack, and LPU Three.js cutaways support expandable workbenches, orbit/zoom,
-view changes, and keyboard-accessible component selectors. Guided steps keep
-geometry highlights and explanations together: SM execution partitions, register
-banks and matrix tiles; superchip/scale-up/scale-out connections; and scheduled
-SRAM/matrix/switch/vector movement. These are teaching models, not die floorplans
-or measured cycle simulators. Reference hardware images have an enlargeable
-viewer and [a provenance record](public/figures/ATTRIBUTION.md).
+The systems gallery includes interactive numerical diagrams and five Three.js
+workbenches. Tables expose the same computed state without WebGL. Hardware
+reference images have [provenance](public/figures/ATTRIBUTION.md). The new source
+review records dated disclosures and corrected comparisons in
+[the September 14 source audit](docs/SOURCE_AUDIT_2026-09-14.md).
 
-A fourth Three.js workbench follows actual matrix values through global loads,
-shared memory, barriers, register accumulation, and output stores. Click a C cell,
-change tile size, or inspect padded edge cases. The accessible numerical tables
-and 3D view share one tested state model. The [CUDA companion](examples/cuda/README.md)
-includes a correctness harness and sanitizer commands; it has not yet been
-compiled or executed on NVIDIA hardware.
+## Executable companions
 
-A fifth Three.js workbench traces exact ring all-reduce values through six
-communication steps. Every partial sum carries its contributor set, and an
-accessible table shares the tested state. The GPU-resources chapter adds an SM
-residency calculator, roofline bounds and asynchronous buffer-lifetime reasoning.
-The declared SM is a teaching profile, not a claim about B200 specifications.
+| Path | What it demonstrates | Environment |
+| --- | --- | --- |
+| [PyTorch](examples/pytorch/README.md) | Decoder, training, exact restart, KV cache, held-out loss, HTTP and CPU trace | Native Python + pinned PyTorch; CPU |
+| [TensorFlow](examples/tensorflow/README.md) | RoPE/RMSNorm/SwiGLU decoder, distributed objective, post-training, tensor parallel algebra | TensorFlow; logical CPU replicas |
+| [C](examples/c-basics/README.md) | Ownership, padded/transpose views and reference matmul | C17 compiler; ASan/UBSan |
+| [CUDA](examples/cuda/LEARNING_PATH.md) | Reductions, softmax/RMSNorm derivatives and Triton | NVIDIA CUDA host required for device execution |
+| [CUDA to PyTorch](examples/cuda/TORCH_RMSNORM.md) | Custom autograd operation and complete AdamW update comparisons | Analytical CPU path verified; compiled CUDA path requires GPU |
+| [RTL](examples/rtl/README.md) | Adder, elastic MAC, dot-product FSM, systolic array; synthesized-netlist simulation | Icarus; Yosys or YoWASP for synthesis |
+| [Sampling](examples/inference/README.md) | Exact speculative acceptance and residual sampling | Standard Python |
 
-This remains a developing textbook, not a finished college course or an exhaustive
-survey of every recent paper. The [roadmap](ROADMAP.md) records the remaining work.
+The written path is broad; verification boundaries remain specific. CPU tests,
+RTL simulation and generic synthesis do not establish GPU kernel performance,
+FPGA board frequency, cluster scaling or production serving capacity. Those
+hardware exercises include commands and proof obligations. See
+[verification](VERIFICATION.md) and [the roadmap](ROADMAP.md).
 
 ## Local development
 
@@ -77,7 +92,7 @@ npm run build
 
 See the [TensorFlow companion](examples/tensorflow/README.md) for a runnable tiny
 decoder, checkpoint-resume example, post-training losses, adapter, token-weighted
-gradient example, two-replica runtime experiment, and numerical-contract tests. Forty Node
+gradient example, two-replica runtime experiment, and numerical-contract tests. Eighty Node
 tests cover numerical labs, matrix-tile schedules, prerequisite ordering,
 chapter lookup, and camera framing.
 The optimization chapter adds a stateful SGD/momentum/AdamW comparison, clipping
@@ -118,6 +133,6 @@ The [Modal GPU Glossary](https://modal.com/gpu-glossary/readme) informs topic
 coverage, while this project adds a structured learning path, training and
 inference systems, current model architectures, and interactive machine models.
 The glossary is a topic reference, not copied site content. Paper figures are
-conceptual redraws unless explicitly credited otherwise. TensorFlow is the
-educational implementation path; GPU serving examples use their native stack
+conceptual redraws unless explicitly credited otherwise. TensorFlow and PyTorch provide
+educational implementation paths; GPU serving examples use their native stack
 and do not imply that vLLM runs directly on Groq hardware.

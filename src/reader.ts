@@ -1,10 +1,20 @@
-import { chapters, learningPaths, adjacentChapters } from "./curriculum";
+import { chapters, learningPaths } from "./curriculum";
 import { galleryMarkup, homeMarkup } from "./atlas-home";
 import { tiledMatmulLesson, distributedRuntimeLesson } from "./kernel-content";
 import { optimizationChapter } from "./method-content";
 import { decodingChapter } from "./decoding-content";
 import { resourceChapter, collectiveChapter } from "./hardware-method-content";
 import { parallelChapter } from "./parallel-content";
+import { currentLessonIndex } from "./reading-position";
+import { foundationsChapter } from "./foundations-content";
+import { capstoneChapter } from "./capstone-content";
+import { acceleratorChapter } from "./accelerator-content";
+import { frontierChapter } from "./frontier-content";
+import { programmingChapter, cudaChapter } from "./cuda-content";
+import { digitalChapter, fpgaChapter } from "./digital-content";
+import { kernelTrainingLesson } from "./kernel-training-content";
+import { learningPathForId, readingSequence } from "./learning-path";
+import { labelChapterContents, sectionTitle } from "./reader-structure";
 import {
   dataChapter,
   performanceChapter,
@@ -30,7 +40,8 @@ export function prepareReader() {
   main.insertAdjacentHTML("afterbegin", homeMarkup + galleryMarkup);
   main.insertAdjacentHTML(
     "beforeend",
-    dataChapter +
+    foundationsChapter + capstoneChapter + acceleratorChapter + frontierChapter +
+      programmingChapter + cudaChapter + digitalChapter + fpgaChapter + dataChapter +
       optimizationChapter +
       decodingChapter +
       resourceChapter +
@@ -69,37 +80,45 @@ export function prepareReader() {
   postBody.remove();
   byId("training")!.insertAdjacentHTML("beforeend", distributedRuntimeLesson);
   byId("performance")!.insertAdjacentHTML("beforeend", tiledMatmulLesson);
+  byId("cuda-kernels")!.insertAdjacentHTML("beforeend", kernelTrainingLesson);
   chapters.forEach((chapter, index) => {
     const el = byId(chapter.id)!;
     main.append(el);
     el.dataset.chapter = chapter.title;
+    el.dataset.chapterNumber = String(index + 1);
+    el.querySelector(".chapter-title h2")!.textContent = chapter.title;
+    el.querySelector(".chapter-summary")!.textContent = chapter.intro;
+    if (chapter.evidenceChecked)
+      el.querySelector(".chapter-summary")!.insertAdjacentHTML("afterend", `<p class="chapter-evidence">Sources checked ${escape(chapter.evidenceChecked)}</p>`);
     el.querySelector(".chapter-number")!.textContent = String(
       index + 1,
     ).padStart(2, "0");
-    el.querySelector(".chapter-kicker")!.textContent = chapter.part;
+    el.querySelector(".chapter-kicker")!.textContent = `${chapter.part} / Chapter ${String(index + 1).padStart(2, "0")}`;
+  });
+  // Every adjacent lesson citation is also discoverable in the central ledger.
+  const ledger = document.querySelector<HTMLElement>("[data-source-ledger]")!;
+  const sourceURLs = new Set([...ledger.querySelectorAll<HTMLAnchorElement>("a[href]")].map(a => a.href));
+  chapters.filter(c => c.id !== "sources").forEach(chapter => {
+    byId(chapter.id)!.querySelectorAll<HTMLAnchorElement>("a.lesson-source").forEach(link => {
+      if (sourceURLs.has(link.href)) return;
+      sourceURLs.add(link.href);
+      const lesson = link.closest<HTMLElement>("[data-lesson]");
+      const article = document.createElement("article");
+      article.dataset.search = `${chapter.title} ${lesson?.dataset.lesson ?? ""} ${link.textContent} ${link.hostname}`;
+      article.innerHTML = `<span>${escape(chapter.part)} · lesson reference</span><h3>${escape(link.textContent ?? link.hostname)}</h3><p>Used in <a href="#${escape(lesson?.id || chapter.id)}">${escape(lesson?.dataset.lesson ?? chapter.title)}</a>.</p><a href="${escape(link.href)}" target="_blank" rel="noreferrer">${escape(link.hostname)}</a>`;
+      ledger.append(article);
+    });
   });
   const index = document.querySelector(".index-inner")!;
   const parts = [...new Set(chapters.map((chapter) => chapter.part))];
-  index.innerHTML = `<a class="syllabus-overview" href="#top">Curriculum overview</a><a class="syllabus-overview" href="#gallery">Systems gallery <span>↗</span></a><nav aria-label="Textbook syllabus">${parts
-    .map(
-      (part) =>
-        `<section class="nav-part"><h2>${part}</h2>${chapters
-          .filter((c) => c.part === part)
-          .map(
-            (c) =>
-              `<a href="#${c.id}" data-nav-section="${c.id}"><span>${String(chapters.indexOf(c) + 1).padStart(2, "0")}</span>${c.title}</a>`,
-          )
-          .join("")}</section>`,
-    )
-    .join(
-      "",
-    )}</nav><p class="syllabus-foot">Read the mechanism.<br>Build the system. Verify the result.</p>`;
+  index.innerHTML = `<div class="syllabus-links"><a class="syllabus-overview" href="#top">Overview</a><a class="syllabus-overview" href="#gallery">Diagrams and labs</a></div><label class="reader-path-label" for="reader-chapter">Chapters</label><select id="reader-chapter" data-reader-chapter><option value="top">Choose a chapter</option>${parts.map(part => `<optgroup label="${escape(part)}">${chapters.filter(c => c.part === part).map(c => `<option value="${c.id}">${String(chapters.indexOf(c) + 1).padStart(2, "0")} ${escape(c.title)}</option>`).join("")}</optgroup>`).join("")}</select><section data-chapter-panel><a class="current-chapter-link" data-current-chapter-link>Chapter overview</a><nav class="chapter-lessons" aria-label="Current chapter sections"></nav></section><details class="reader-path-settings"><summary>Reading path <span data-path-name></span></summary><label class="reader-path-label" for="reader-path">Choose a path</label><select id="reader-path" data-reader-path>${learningPaths.map(path => `<option value="${path.id}">${escape(path.title)}</option>`).join("")}</select><a href="#learning-paths">View this path</a></details><div class="reader-reference-links"><a href="#glossary">Glossary</a><a href="#sources">Sources</a></div>`;
   const brand = document.querySelector<HTMLAnchorElement>(".wordmark")!;
   brand.setAttribute("aria-label", "Machine Learning Systems Atlas, home");
   brand.querySelector("span:last-child")!.innerHTML =
     "Machine Learning Systems <small>Atlas</small>";
   document.querySelector(".topbar-progress")!.innerHTML =
-    '<a href="#top">Atlas</a><span class="breadcrumb-divider">/</span><span data-reader-part>Overview</span><span class="breadcrumb-divider">/</span><span data-progress-label>Curriculum</span>';
+    '<span data-reader-part>Overview</span><span class="breadcrumb-divider">/</span><span data-progress-label>Curriculum</span>';
+  document.querySelector(".index-toggle")!.textContent = "Contents";
   document
     .querySelector(".index-toggle")!
     .insertAdjacentHTML(
@@ -127,6 +146,7 @@ export function initializeReader() {
   ];
   const syncDrawer = () => {
     index.inert = narrow.matches && !index.classList.contains("is-open");
+    main.inert = narrow.matches && index.classList.contains("is-open");
   };
   const closeDrawer = () => {
     index.classList.remove("is-open");
@@ -135,14 +155,30 @@ export function initializeReader() {
   };
   syncDrawer();
   narrow.addEventListener("change", syncDrawer);
+  const pathSelect = document.querySelector<HTMLSelectElement>("[data-reader-path]")!;
+  let savedPath: string | null = null;
+  try { savedPath = localStorage.getItem("atlas-reading-path"); } catch { /* Storage can be disabled. */ }
+  let selectedPath = learningPathForId(savedPath).id;
+  const chapterPanel = index.querySelector<HTMLElement>("[data-chapter-panel]")!;
+  const chapterSelect = index.querySelector<HTMLSelectElement>("[data-reader-chapter]")!;
   toggle.addEventListener("click", () => {
     const open = index.classList.toggle("is-open");
     toggle.setAttribute("aria-expanded", String(open));
     syncDrawer();
     if (open && narrow.matches)
-      index.querySelector<HTMLAnchorElement>("a")?.focus();
+      (
+        [...index.querySelectorAll<HTMLAnchorElement>('a[aria-current="page"]')].find(link => !link.closest("[hidden]")) ??
+        index.querySelector<HTMLAnchorElement>("a")
+      )?.focus();
   });
   document.addEventListener("keydown", (e) => {
+    if (e.key === "Tab" && narrow.matches && index.classList.contains("is-open") && !document.querySelector("dialog[open]")) {
+      const controls = [...index.querySelectorAll<HTMLElement>('a[href],button:not(:disabled),select,summary')].filter(element => element.getClientRects().length && !element.closest("[hidden]") && (!element.closest("details:not([open])") || element.tagName === "SUMMARY"));
+      const first = controls[0];
+      const last = controls.at(-1);
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+    }
     if (
       e.key === "Escape" &&
       index.classList.contains("is-open") &&
@@ -159,19 +195,9 @@ export function initializeReader() {
     chapter: string;
     keywords?: string;
   }[] = [];
+  const chapterLessons = new Map<string, HTMLElement[]>();
   chapters.forEach((chapter) => {
     const el = byId(chapter.id)!;
-    // Figure numbers follow the reader's chapter order, including moved lessons.
-    let figureNumber = 0;
-    el.querySelectorAll<HTMLElement>("figcaption > span:first-child").forEach(
-      (label) => {
-        const kind = label.textContent?.match(
-          /^(Figure|Interactive)\s+\d/,
-        )?.[1];
-        if (kind)
-          label.textContent = `${kind} ${chapters.indexOf(chapter) + 1}.${++figureNumber}`;
-      },
-    );
     const guide = el.querySelector(".chapter-reading-guide");
     guide?.remove();
     const requirements = chapter.requires
@@ -180,37 +206,116 @@ export function initializeReader() {
     const lessons = [
       ...el.querySelectorAll<HTMLElement>("[data-lesson], .three-lab[id]"),
     ].filter((lesson) => !lesson.parentElement?.closest("[data-lesson]"));
+    chapterLessons.set(
+      chapter.id,
+      lessons.filter((lesson) => Boolean(lesson.id)),
+    );
+    labelChapterContents(el, chapters.indexOf(chapter) + 1, chapterLessons.get(chapter.id)!);
     const local = document.createElement("div");
     local.className = "reader-orientation";
-    local.innerHTML = `<p><span>After this chapter</span>${chapter.outcome}</p>${requirements.length ? `<div class="prerequisite-line">Builds on ${requirements.map((c) => `<a href="#${c.id}">${c.title}</a>`).join("<span> / </span>")}</div>` : ""}${lessons.length ? `<nav aria-label="In this chapter"><span>In this chapter</span>${lessons.map((lesson) => `<a href="#${lesson.id}">${lesson.dataset.lesson ?? lesson.querySelector("figcaption strong")?.textContent ?? "3D workbench"}</a>`).join("")}</nav>` : ""}`;
-    el.querySelector(".chapter-title")!.after(local);
-    const { previous, next } = adjacentChapters(chapter.id);
+    local.innerHTML = `<span>Builds on</span><ul>${requirements.map(c => `<li><a href="#${c.id}">${escape(c.title)}</a></li>`).join("")}</ul>`;
+    if (requirements.length) el.querySelector(".chapter-title")!.after(local);
     const footer = document.createElement("nav");
     footer.className = "chapter-pagination";
     footer.setAttribute("aria-label", "Chapter sequence");
-    footer.innerHTML = `${previous ? `<a href="#${previous.id}"><span>Previous chapter</span><strong>← ${previous.title}</strong></a>` : '<a href="#top"><span>Back to</span><strong>Curriculum overview</strong></a>'}${next ? `<a href="#${next.id}"><span>Next chapter</span><strong>${next.title} →</strong></a>` : '<a href="#projects"><span>Put it into practice</span><strong>Engineering projects →</strong></a>'}`;
     el.append(footer);
     searchEntries.push({
       id: chapter.id,
       title: chapter.title,
-      chapter: chapter.part,
+      chapter: `${chapter.part} / Chapter ${chapters.indexOf(chapter) + 1}`,
+      keywords: `${chapter.intro} ${chapter.outcome} ${chapter.id.replaceAll("-", " ")}`,
     });
     el.querySelectorAll<HTMLElement>("h3").forEach((heading, i) => {
-      if (heading.closest(".scene-inspector")) return;
+      if (heading.closest(".scene-inspector, .reader-orientation")) return;
       if (!heading.id) heading.id = `${chapter.id}--topic-${i + 1}`;
       const lesson = heading.closest<HTMLElement>("[data-lesson]");
       searchEntries.push({
-        id: heading.id,
+        id: lesson?.id ?? heading.id,
         title: heading.textContent?.trim() ?? "",
-        chapter: chapter.title,
+        chapter: `${chapter.title}${heading.closest<HTMLElement>("[data-section-number]") ? ` / Section ${heading.closest<HTMLElement>("[data-section-number]")!.dataset.sectionNumber}` : ""}`,
         keywords: lesson
           ? `${lesson.dataset.lesson} ${lesson.id.replaceAll("-", " ")}`
           : "",
       });
     });
+    // Index optional worked detail by its own heading, then reveal it on arrival.
+    el.querySelectorAll<HTMLElement>("h4, .deep-dive > summary").forEach((heading) => {
+      if (heading.closest(".scene-inspector")) return;
+      const headingCopy = heading.cloneNode(true) as HTMLElement;
+      headingCopy.querySelectorAll(".code-reference,.check-reference,.section-reference").forEach(label => label.remove());
+      const title = headingCopy.textContent?.trim() ?? "";
+      if (!heading.id) {
+        const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "detail";
+        const base = `${chapter.id}--${slug}`;
+        let id = base, suffix = 2;
+        while (byId(id)) id = `${base}-${suffix++}`;
+        heading.id = id;
+      }
+      searchEntries.push({ id: heading.id, title, chapter: chapter.title });
+    });
   });
 
   let activePage: HTMLElement | undefined;
+  const lessonNav = index.querySelector<HTMLElement>(".chapter-lessons")!;
+  let activeLessons: HTMLElement[] = [];
+  const sequenceMarkup = (chapterId: string) => {
+    const sequence = readingSequence(chapterId, selectedPath);
+    const { previous, next } = sequence;
+    const context = sequence.inPath ? `${sequence.path.title} · Step ${sequence.position} of ${sequence.total}` : "Outside this path · Book order";
+    return `<p class="sequence-context">${escape(context)}</p>${previous ? `<a href="#${previous.id}"><span>Previous chapter</span><strong>${escape(previous.title)}</strong></a>` : '<a href="#top"><span>Back to</span><strong>Curriculum overview</strong></a>'}${next ? `<a href="#${next.id}"><span>Next chapter</span><strong>${escape(next.title)}</strong></a>` : '<a href="#top"><span>End of this sequence</span><strong>Choose another reading path</strong></a>'}`;
+  };
+  const syncPath = () => {
+    const path = learningPathForId(selectedPath);
+    pathSelect.value = path.id;
+    document.querySelectorAll<HTMLButtonElement>("[data-learning-path]").forEach(button => {
+      const active = button.dataset.learningPath === path.id;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    document.querySelector("[data-path-description]")!.textContent = path.description;
+    document.querySelector("[data-path-route]")!.innerHTML = path.route.map(id => {
+      const chapter = chapters.find(c => c.id === id)!;
+      return `<li><a href="#${id}"><span class="path-chapter-number">Chapter ${chapters.indexOf(chapter) + 1}</span>${escape(chapter.title)}</a></li>`;
+    }).join("");
+    chapters.forEach(chapter => {
+      byId(chapter.id)!.querySelector(".chapter-pagination")!.innerHTML = sequenceMarkup(chapter.id);
+    });
+    index.querySelector("[data-path-name]")!.textContent = path.title;
+  };
+  const choosePath = (id: string) => {
+    selectedPath = learningPathForId(id).id;
+    try { localStorage.setItem("atlas-reading-path", selectedPath); } catch { /* Reading still works without storage. */ }
+    syncPath();
+  };
+  pathSelect.addEventListener("change", () => choosePath(pathSelect.value));
+  const updateLessonPosition = () => {
+    if (document.querySelector("dialog[open]")) return;
+    const current = currentLessonIndex(
+      activeLessons.map((el) => el.getBoundingClientRect().top),
+      Number.parseFloat(getComputedStyle(document.body).getPropertyValue("--topbar")) + 90,
+    );
+    lessonNav.querySelectorAll<HTMLAnchorElement>("a").forEach((link, i) => {
+      link.classList.toggle("is-current", current === i);
+      if (current === i) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    });
+  };
+  const syncLessonNav = (page: HTMLElement) => {
+    activeLessons = chapterLessons.get(page.id) ?? [];
+    const meta = chapters.find(c => c.id === page.id);
+    chapterPanel.hidden = !meta || !activeLessons.length;
+    chapterSelect.value = meta?.id ?? "top";
+    index.querySelector(".index-inner")!.scrollTop = 0;
+    const chapterLink = index.querySelector<HTMLAnchorElement>("[data-current-chapter-link]")!;
+    chapterLink.href = `#${page.id}`;
+    lessonNav.innerHTML = activeLessons
+      .map(
+        (lesson) =>
+          `<a href="#${lesson.id}"><span>${lesson.dataset.sectionNumber}</span>${escape(sectionTitle(lesson))}</a>`,
+      )
+      .join("");
+
+  };
   const progress = document.createElement("div");
   progress.className = "reader-progress";
   progress.setAttribute("aria-hidden", "true");
@@ -219,9 +324,21 @@ export function initializeReader() {
     if (!activePage) return;
     const range = Math.max(1, activePage.offsetHeight - innerHeight + 64);
     progress.style.width = `${Math.max(0, Math.min(1, scrollY / range)) * 100}%`;
+    updateLessonPosition();
   };
-  window.addEventListener("scroll", updateProgress, { passive: true });
-  const renderRoute = (focus = false) => {
+  let scrollFrame = 0;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (scrollFrame) return;
+      scrollFrame = requestAnimationFrame(() => {
+        scrollFrame = 0;
+        updateProgress();
+      });
+    },
+    { passive: true },
+  );
+  const renderRoute = (focus = false, instant = false) => {
     // Expanded workbenches temporarily move out of their chapters. Restore them
     // synchronously before resolving a deep link or browser-history entry.
     document.dispatchEvent(new Event("atlas:beforenavigate"));
@@ -240,6 +357,13 @@ export function initializeReader() {
     topPages.forEach((item) => {
       item.hidden = item !== page;
     });
+    let disclosure = destination.closest<HTMLDetailsElement>("details");
+    while (disclosure) {
+      disclosure.open = true;
+      disclosure = disclosure.parentElement?.closest<HTMLDetailsElement>("details") ?? null;
+    }
+    if (destination.id === "learning-paths")
+      page.querySelector<HTMLDetailsElement>(".path-outline")!.open = true;
     // A search result must remain reachable after using a reference-page filter.
     if (
       destination.closest(
@@ -257,12 +381,13 @@ export function initializeReader() {
         ?.click();
     }
     activePage = page;
+    if (changed) syncLessonNav(page);
     const meta = chapters.find((c) => c.id === page.id);
-    document.title = `${meta?.title ?? (page.id === "gallery" ? "Systems gallery" : "Training, hardware & inference")} | Machine Learning Systems Atlas`;
+    document.title = `${meta?.title ?? (page.id === "gallery" ? "Diagrams and labs" : "Overview")} | Machine Learning Systems Atlas`;
     document.querySelector("[data-reader-part]")!.textContent =
       meta?.part ?? "Overview";
     document.querySelector("[data-progress-label]")!.textContent =
-      meta?.title ?? (page.id === "gallery" ? "Systems gallery" : "Curriculum");
+      meta?.title ?? (page.id === "gallery" ? "Diagrams and labs" : "Curriculum");
     index.querySelectorAll<HTMLAnchorElement>("a").forEach((a) => {
       const active = a.hash === `#${page.id}`;
       a.classList.toggle("is-active", active);
@@ -276,13 +401,15 @@ export function initializeReader() {
       else
         destination.scrollIntoView({
           block: "start",
-          behavior: changed || motion.matches ? "instant" : "smooth",
+          behavior: instant || changed || motion.matches ? "instant" : "smooth",
         });
       if (focus) {
         const target =
           destination === page
             ? page.querySelector<HTMLElement>("h1,h2")!
-            : destination;
+            : destination.matches("[data-section-number]")
+              ? destination.querySelector<HTMLElement>(":scope > header h3, :scope > h3, .section-reference") ?? destination
+              : destination;
         target.setAttribute("tabindex", "-1");
         target.focus({ preventScroll: true });
       }
@@ -314,37 +441,25 @@ export function initializeReader() {
       return;
     }
     if (location.hash !== hash) history.pushState(null, "", hash);
-    renderRoute(true);
+    renderRoute(true, true);
   });
   window.addEventListener("hashchange", () => renderRoute());
   document.addEventListener("atlas:navigate", (e) => {
     const id = (e as CustomEvent<string>).detail;
     history.pushState(null, "", `#${id}`);
-    renderRoute(true);
+    renderRoute(true, true);
   });
   new ResizeObserver(updateProgress).observe(main);
+
+  chapterSelect.addEventListener("change", () => {
+    document.dispatchEvent(new CustomEvent("atlas:navigate", { detail: chapterSelect.value }));
+  });
 
   document
     .querySelectorAll<HTMLButtonElement>("[data-learning-path]")
     .forEach((button) =>
       button.addEventListener("click", () => {
-        const path = learningPaths.find(
-          (p) => p.id === button.dataset.learningPath,
-        )!;
-        document
-          .querySelectorAll<HTMLButtonElement>("[data-learning-path]")
-          .forEach((b) => {
-            b.classList.toggle("is-active", b === button);
-            b.setAttribute("aria-pressed", String(b === button));
-          });
-        document.querySelector("[data-path-description]")!.textContent =
-          path.description;
-        document.querySelector("[data-path-route]")!.innerHTML = path.route
-          .map(
-            (id) =>
-              `<li><a href="#${id}">${chapters.find((c) => c.id === id)!.title}</a></li>`,
-          )
-          .join("");
+        choosePath(button.dataset.learningPath!);
       }),
     );
 
@@ -411,5 +526,6 @@ export function initializeReader() {
   document.addEventListener("atlas:chapterchange", () => {
     if (dialog.open) dialog.close();
   });
+  syncPath();
   renderRoute();
 }

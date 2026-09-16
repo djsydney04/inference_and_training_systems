@@ -101,6 +101,31 @@
 .nav-part {
   margin-top: 23px;
 }
+.atlas-reader .index-inner .chapter-lessons {
+  margin: 3px 0 10px 20px;
+  padding: 3px 0 3px 8px;
+  border-left: 1px solid #c9d0c3;
+}
+.atlas-reader .index-inner .nav-part .chapter-lessons a {
+  grid-template-columns: 13px minmax(0, 1fr);
+  gap: 5px;
+  padding: 6px 5px;
+  font-size: 10px;
+  line-height: 1.45;
+  color: var(--graphite);
+}
+.atlas-reader .index-inner .nav-part .chapter-lessons a span {
+  font-size: 9px;
+  padding-top: 1px;
+  color: #77816f;
+}
+.atlas-reader .index-inner .nav-part .chapter-lessons a::before {
+  display: none;
+}
+.atlas-reader .index-inner .nav-part .chapter-lessons a.is-current {
+  color: var(--signal-dark);
+  background: #e0e5dc;
+}
 .nav-part h2 {
   margin: 0 10px 6px;
   font: 500 11px var(--sans);

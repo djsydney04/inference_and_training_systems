@@ -1,4 +1,46 @@
-# Five-hour textbook development pass
+# Textbook development record
+
+## September 16 clarity pass
+
+Simplified navigation to one chapter picker and outline; removed the duplicate
+section toolbar, sidebar modes and sidebar pagination. Shortened chapter/topic
+names and rewrote introductions. Kept advanced detail in optional worked
+disclosures and added six missing teaching transitions within existing lessons.
+Search and deep links reveal folded details, and generated listing numbers stay
+out of their fragment IDs. Preserved source dates and replaced a stale
+“next chapter” claim with a stable subject link. See the clarity audit and latest
+verification record for evidence and limitations.
+
+## Learning layout follow-up
+
+Reworked the reader around a focused chapter outline, a separate full syllabus,
+compact consistent headings and a persistent section navigator. Saved learning
+paths now drive the chapter sequence. Added canonical numbering for sections,
+every captioned figure, code listings and checks; indexed previously omitted
+orientation, Transformer, ledger and project material. Stable fragment IDs stay
+separate from display numbers. Added `docs/AUTHORING.md` and 13 structural/path
+tests; all 80 tests and the production build pass. Browser navigation and label
+audits include rapid mobile controls, persistence, history and disclosures.
+
+## September 14, 2026 continuation
+
+Expanded the connected curriculum from 21 to 29 chapters. Added first-principles
+probability/gradient learning; C and CUDA with forward/backward kernels; digital
+logic, Verilog, FPGA and ASIC foundations; dated accelerator/frontier coverage;
+and a train/checkpoint/cache/profile/HTTP capstone. The final review added a
+custom CUDA-to-PyTorch autograd bridge with complete update comparisons.
+
+Added five prerequisite-complete paths, broader glossary terms, gallery entries
+and automatic discovery of adjacent citations in the source ledger. Preserved
+the pre-existing reader/render-budget changes and verified the integrated site.
+
+Evidence: 67 Node tests, 10 PyTorch tests, independent RMSNorm gradient/update
+checks, C sanitizers, four RTL simulations and their synthesized-netlist reruns,
+production build and 90 reader-width checks. Detailed results and limits are in
+`VERIFICATION.md`; primary-source corrections are in
+`docs/SOURCE_AUDIT_2026-09-14.md`. No remote publication is claimed by this record.
+
+## Historical five-hour pass
 
 Requested: deepen training methods, inference methods, and hardware; break dense
 sections into clearer lessons; keep iterating with verified checkpoints.
@@ -59,3 +101,12 @@ advance source-check dates.
   for tensor-parallel forward/all-gradient equivalence and counterexamples.
   Desktop and 320-pixel browser checks match the GPipe/1F1B arithmetic; no page
   errors or document overflow observed. Screenshots inspected.
+- Iteration 4 pushed as `87d69e1`. The full 18-test TensorFlow suite passes.
+- Iteration 5: added current-section links beneath the active chapter and
+  bounded, event-invalidated 3D rendering. Four new Node tests bring the total
+  to 44. Browser instrumentation observed 213 WebGL draw calls before and after
+  a one-second idle interval, then 608 after stepping the ring. Section links
+  follow scroll position and the mobile drawer remains inert when closed.
+- The overarching product goal is now active again; development continues
+  against its unchanged textbook scope. The five-hour session boundary remains
+  2026-09-09 05:47:20 UTC.

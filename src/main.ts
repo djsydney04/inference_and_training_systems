@@ -1,9 +1,15 @@
+import "./fonts.css";
 import "./styles.css";
 import "./textbook.css";
 import "./reader.css";
 import "./workbench.css";
 import "./kernel.css";
 import "./methods.css";
+import "./manual.css";
+import "./accelerator.css";
+import "./cuda.css";
+import "./digital.css";
+import "./learning-reader.css";
 import { initializeAtlasUI } from "./atlas-ui";
 import { atlasMarkup } from "./content";
 import { initializeNetworkLabs } from "./network-labs";
@@ -18,6 +24,10 @@ import { initializeMethodLabs } from "./method-labs";
 import { initializeDecodingLabs } from "./decoding-labs";
 import { initializeHardwareLabs } from "./hardware-labs";
 import { initializeParallelLabs } from "./parallel-labs";
+import { initializeFoundationsLabs } from "./foundations-labs";
+import { initializeAcceleratorLabs } from "./accelerator-labs";
+import { initializeCudaLabs } from "./cuda-labs";
+import { initializeDigitalLabs } from "./digital-labs";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 
@@ -37,6 +47,10 @@ initializeMethodLabs();
 initializeDecodingLabs();
 initializeHardwareLabs();
 initializeParallelLabs();
+initializeFoundationsLabs();
+initializeAcceleratorLabs();
+initializeCudaLabs();
+initializeDigitalLabs();
 initializeReader();
 initializeAtlasUI();
 

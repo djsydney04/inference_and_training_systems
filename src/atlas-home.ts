@@ -4,6 +4,10 @@ const glyph = (kind: string) => {
   const common = 'viewBox="0 0 360 180" fill="none" aria-hidden="true"';
   if (kind === "network")
     return `<svg ${common}><path d="M74 34v26m0 28v24m0 28v22m0-113h-39v77h24M88 74h86m-86 52h86m48-52h55m-55 52h55" stroke="#2559d6" stroke-width="2"/><rect x="47" y="8" width="54" height="26" fill="#c7d2c3"/><rect x="47" y="60" width="54" height="28" fill="#2559d6"/><rect x="47" y="112" width="54" height="28" fill="#2559d6"/><rect x="47" y="162" width="54" height="10" fill="#c7d2c3"/>${[62,114].map(y => [174,210,246,282].map((x,i) => `<rect x="${x}" y="${y}" width="24" height="24" fill="${i === 2 ? '#2559d6' : '#c7d2c3'}"/>`).join('')).join('')}</svg>`;
+  if (kind === "circuit")
+    return `<svg ${common}><path d="M20 70h55m55 0h45m55 0h45m55 0h20M92 105v38h200v-38" stroke="#2559d6" stroke-width="2"/><path d="M30 152h30v-18h25v18h25v-18h25v18h25" stroke="#59625b"/><rect x="75" y="40" width="55" height="64" stroke="#59625b"/><path d="m75 84 10 8-10 8" stroke="#59625b"/><rect x="175" y="40" width="55" height="64" fill="#2559d6"/><path d="M188 60h30m-15-15v30m-15 13h30" stroke="#fff"/><rect x="275" y="40" width="55" height="64" stroke="#59625b"/><path d="m275 84 10 8-10 8" stroke="#59625b"/><path d="M20 17h105m10 0h60m10 0h130" stroke="#c2c7bd"/></svg>`;
+  if (kind === "gradient")
+    return `<svg ${common}><path d="M38 20v132h126M208 20v132h120" stroke="#59625b"/>${[32,78,42].map((h,i)=>`<rect x="${52+i*35}" y="${151-h}" width="23" height="${h}" fill="#87978a"/>`).join("")}${[19,112,21].map((h,i)=>`<rect x="${221+i*35}" y="${151-h}" width="23" height="${h}" fill="${i===1 ? '#2559d6' : '#87978a'}"/>`).join("")}<path d="M173 88h23m-6-5 6 5-6 5" stroke="#2559d6" stroke-width="2"/></svg>`;
   if (kind === "occupancy")
     return `<svg ${common}>${Array.from({ length: 64 }, (_, i) => `<rect x="${44 + (i % 16) * 17}" y="${42 + Math.floor(i / 16) * 25}" width="13" height="19" fill="${i < 32 ? "#2559d6" : "#d3d9ce"}"/>`).join("")}<path d="M44 151h272" stroke="#889a89"/><path d="M180 32v112" stroke="#293c31" stroke-dasharray="3 3"/></svg>`;
   if (kind === "ring")
@@ -64,6 +68,36 @@ export const galleryItems = [
     kind: "network", id: "network-map", title: "Open the whole neural network",
     scope: "Embeddings → attention → feed-forward → prediction", type: "Clickable architecture",
     copy: "Dive into every stage of a decoder, follow tensor shapes, and inspect attention and feed-forward arithmetic.",
+  },
+  {
+    kind: "gradient", id: "first-weight-update", title: "Watch six weights learn",
+    scope: "Scores → probabilities → loss → derivatives", type: "First-principles lab",
+    copy: "Calculate one next-token prediction, inspect every gradient and apply an update yourself.",
+  },
+  {
+    kind: "circuit", id: "digital-logic", title: "What happens at the next clock edge?",
+    scope: "Bits → gates → registers → transactions", type: "Digital logic workbenches",
+    copy: "Trace carry bits, setup slack and ready/valid backpressure through clocked state.",
+  },
+  {
+    kind: "matmul", id: "fpga-asic", title: "Build the datapath",
+    scope: "Verilog → simulation → FPGA → ASIC", type: "RTL and systolic-array labs",
+    copy: "Write a pipelined multiply-accumulate unit and follow operands across a systolic array.",
+  },
+  {
+    kind: "occupancy", id: "cuda-kernels", title: "From an address to a CUDA kernel",
+    scope: "Threads → memory → reductions → backward", type: "Kernel programming labs",
+    copy: "Connect executable C and CUDA to layout, synchronization and numerical correctness.",
+  },
+  {
+    kind: "cache", id: "accelerator-capacity", title: "Will the model and its state fit?",
+    scope: "Weight precision → cache capacity → transfer time", type: "Accelerator capacity workbench",
+    copy: "Change precision and context length; reconcile the full declared memory budget and KV transfer cost.",
+  },
+  {
+    kind: "trace", id: "capstone-profile", title: "Trace a model you trained",
+    scope: "Training → checkpoint → cached decode → HTTP", type: "End-to-end executable project",
+    copy: "Prove restart and cache equivalence, then collect an actual CPU operator trace and serve generated tokens.",
   },
   {
     kind: "trace",
@@ -195,12 +229,12 @@ export const galleryItems = [
   },
 ];
 
-export const galleryMarkup = `<section id="gallery" class="atlas-gallery" aria-labelledby="gallery-title"><header><p class="home-kicker">Systems gallery</p><h1 id="gallery-title">Open the machine.<br>Follow the work.</h1><p>Each instrument connects a physical or mathematical mechanism to the lesson that explains it.</p></header><div class="gallery-list">${galleryItems.map((item, i) => `<a class="gallery-entry" href="#${item.id}"><div class="gallery-preview">${glyph(item.kind)}</div><div><span>${item.type}</span><h2>${item.title}</h2><p>${item.copy}</p><small>${item.scope}</small></div><b aria-hidden="true">${String(i + 1).padStart(2, "0")}</b></a>`).join("")}</div></section>`;
+export const galleryMarkup = `<section id="gallery" class="atlas-gallery" aria-labelledby="gallery-title"><header><h1 id="gallery-title">Diagrams and labs</h1><p>Open a working example and follow the lesson around it.</p></header><div class="gallery-list">${galleryItems.map((item) => `<a class="gallery-entry" href="#${item.id}"><div class="gallery-preview">${glyph(item.kind)}</div><div><span>${item.type}</span><h2>${item.title}</h2><p>${item.copy}</p><small>${item.scope}</small></div><b aria-hidden="true">→</b></a>`).join("")}</div></section>`;
 
 export const homeMarkup = `<section id="top" class="atlas-home" aria-labelledby="home-title">
-  <header class="home-intro"><p class="home-kicker">An open, interactive textbook</p><h1 id="home-title">Machine Learning<br>Systems</h1><p class="home-disciplines">Training. Hardware. Inference.</p><p class="home-description">Understand how models learn, how machines execute them, and how to make the complete system work.</p><div class="home-actions"><a class="primary-action" href="#orientation">Start the curriculum</a><a class="text-action" href="#gallery">Explore the systems gallery</a></div></header>
-  <section class="curriculum-map" aria-label="How the curriculum connects"><div class="map-lifecycle"><a href="#tensors"><span>Understand</span><strong>Tensors & models</strong><small>shapes · gradients · attention</small></a><i>→</i><a href="#data"><span>Train</span><strong>Data → optimizer</strong><small>pre-training · adaptation</small></a><i>→</i><a href="#inference"><span>Serve</span><strong>Requests → tokens</strong><small>state · scheduling · latency</small></a></div><a class="map-hardware" href="#machine"><span>Underneath every stage</span><strong>CPU / GPU / LPU <i>→</i> memory <i>→</i> interconnect <i>→</i> cluster</strong></a></section>
-  <section class="path-section"><div><p class="home-kicker">Choose a reading path</p><h2>One foundation.<br> Several ways in.</h2><p>The full sequence builds from first principles. Focused paths connect the chapters used together in engineering work.</p></div><div class="path-picker"><div role="group" aria-label="Learning path">${learningPaths.map((path, i) => `<button data-learning-path="${path.id}" aria-pressed="${i === 0}" class="${i === 0 ? "is-active" : ""}">${path.title}</button>`).join("")}</div><p data-path-description>${learningPaths[0].description}</p><ol data-path-route>${learningPaths[0].route.map((id) => `<li><a href="#${id}">${chapters.find((c) => c.id === id)?.title}</a></li>`).join("")}</ol></div></section>
-  <section class="home-feature"><div class="home-machine-plate">${glyph("gpu")}</div><div><p class="home-kicker">From a label to a mechanism</p><h2>Why does a fast chip wait?</h2><p>Start at a GPU package, open an SM, and follow an operand from memory to execution. Then connect the model to a profiler trace.</p><a href="#gpu">Open the GPU workbench</a></div></section>
-  <section class="home-standard"><h2>Learn it. Build it. Prove it.</h2><p>Worked equations explain the mechanism. Labs make it observable. Engineering projects ask for correctness tests, traces, failure recovery, and a clear account of what improved.</p><a href="#projects">See the engineering projects</a><small>A developing curriculum, not a hiring guarantee. Advanced roles also require substantial implementation and research experience.</small></section>
+  <header class="home-intro"><p class="home-kicker">An interactive textbook</p><h1 id="home-title">Machine learning systems</h1><p class="home-description">Learn how an LLM works, write its computations, understand the hardware, and train and serve a small model.</p><div class="home-actions"><a class="primary-action" href="#first-principles">Start learning</a><a class="text-action" href="#gallery">Explore diagrams and labs</a></div></header>
+  <section class="curriculum-map" aria-label="How the material connects"><div class="map-lifecycle"><a href="#first-principles"><span>Understand</span><strong>Models and math</strong><small>tokens, tensors, attention</small></a><i aria-hidden="true">→</i><a href="#data"><span>Train</span><strong>Data and updates</strong><small>loss, gradients, optimization</small></a><i aria-hidden="true">→</i><a href="#inference"><span>Serve</span><strong>Requests and tokens</strong><small>cache, batching, latency</small></a></div><a class="map-hardware" href="#programming"><span>How the work runs</span><strong>C and CUDA <i aria-hidden="true">→</i> processors and circuits <i aria-hidden="true">→</i> connected systems</strong></a></section>
+  <section class="path-section" id="learning-paths"><div><h2>Choose a path</h2><p>Pick a focus. Each path includes the foundations it needs.</p></div><div class="path-picker"><div role="group" aria-label="Learning path">${learningPaths.map((path, i) => `<button data-learning-path="${path.id}" aria-pressed="${i === 0}" class="${i === 0 ? "is-active" : ""}">${path.title}</button>`).join("")}</div><p data-path-description>${learningPaths[0].description}</p><details class="path-outline"><summary>Chapters in this path</summary><ol data-path-route>${learningPaths[0].route.map((id) => `<li><a href="#${id}">${chapters.find((c) => c.id === id)?.title}</a></li>`).join("")}</ol></details></div></section>
+  <section class="home-feature"><div class="home-machine-plate">${glyph("gpu")}</div><div><h2>See the hardware</h2><p>Open a GPU, follow a value from memory to execution, and connect what you see to a profiler trace.</p><a href="#gpu">Open the GPU workbench</a></div></section>
+  <section class="home-standard"><h2>Practice as you read</h2><p>Predict a result before running an example. Use the checks to explain what happened, then change one assumption and try again.</p><a href="#projects">Choose a project</a></section>
 </section>`;

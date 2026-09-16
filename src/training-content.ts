@@ -1,6 +1,6 @@
 export const trainingExpansionMarkup = `
   <section class="training-system-deep-dive" aria-labelledby="training-system-title">
-    <div class="section-rule-title">
+    <div class="section-rule-title" id="training-ledgers" data-lesson="A training run is five coupled ledgers">
       <span>Systems deep dive</span>
       <h3 id="training-system-title">A training run is five coupled ledgers</h3>
       <p>The loss curve is only one view. A healthy run also reconciles data, tokens, numerical state, device memory, and time.</p>

@@ -1,5 +1,155 @@
 # Verification record — textbook expansion
 
+## September 16, 2026 — simpler reading flow and missing steps
+
+Replaced the two sidebar modes and second fixed navigation bar with one chapter
+picker and one short outline. Reading-path settings remain available in a
+disclosure and still drive pagination. Canonical titles and introductions now
+use plain language; source-audit dates remain visible in the hardware comparison
+and frontier chapters. Detailed subsections are searchable, and direct links
+open their containing disclosures before scrolling.
+
+Six existing lessons gained concrete transitions: tensor axes and trainable
+matrices; shifted next-token targets; CUDA thread ownership; clocked RTL updates;
+training/evaluation/generation modes; and per-user versus aggregate serving speed.
+Core explanations and examples remain visible, with eight optional deep dives.
+
+Executed numerical checks against the actual PyTorch companion verify the new
+matrix, target-shift, logit-shape and generation-call examples. Icarus simulates
+the exact two-register example and its published edge table. CUDA ownership and
+serving arithmetic were checked separately; no GPU performance measurement is
+claimed. The companion algorithms were not changed in this pass.
+
+`npm test`: **80 passed**. TypeScript and production build pass. The existing
+bundle-size advisory remains (main JavaScript approximately 711 kB minified).
+See `docs/CLARITY_AUDIT_2026-09-16.md` for the addressed learning gaps.
+
+Final production DOM inventory: 29 chapters, 125 sections, 55 figures, 57 code
+listings, 82 checks, 165 source entries and eight deep dives. All 31 pages pass at
+1440, 1280, 820, 390 and 320 pixels (155 checks, zero horizontal overflow).
+There are no numbering errors, mismatched chapter titles, duplicate IDs or broken
+internal links. The removed toolbar and contents-mode tabs are absent from the DOM.
+
+## September 14, 2026 — learning layout and labeling
+
+Canonical titles now agree in chapter headings, navigation and search. The
+sidebar has separate current-chapter and all-chapter views; the section navigator
+supports explicit jumps and previous/next sections. Selected learning paths
+persist locally and drive chapter pagination, with an explicit book-order
+fallback for chapters outside the selected path.
+
+The reader derives section, figure, code and check references after assembly,
+including legacy alphabetic labels and moved content. Existing meaningful
+orientation, Transformer, training-ledger and project sections are now indexed.
+The resulting inventory is 29 chapters, 125 sections, 55 figures, 56 code listings,
+76 checks and 157 source entries; the expanded inventory includes material that
+previously had no generated reference.
+
+- `npm test`: **80 passed**, including 13 new tests for learning paths, stable
+  IDs, authored chapter/section inventory, numbering and legacy descriptors.
+- `npm run build`: passes TypeScript and production bundling. The existing
+  bundle-size advisory remains (main JavaScript approximately 687 kB minified).
+- Independent browser checks: canonical headings; path-specific neighbors,
+  persistence, off-path fallback and back/forward; section controls and five
+  rapid mobile navigation cycles; code/check disclosures; mobile drawer inert
+  state, Escape and focus return. No browser errors or warnings.
+- Final production audit: all 31 pages (overview, gallery and 29 chapters) at
+  1440, 1280, 820, 390 and 320 pixels: **155 page/width checks, zero overflow**.
+  The complete DOM inventory has zero numbering errors, title mismatches,
+  duplicate IDs or broken internal links. Final desktop and mobile screenshots
+  are in `output/playwright/learning-layout-{desktop,mobile}.png`.
+- Numbered references identify content; they do not imply completion, mastery,
+  execution or hardware validation. No companion algorithm changed in this pass.
+
+Authoring rules and the limits of source-inventory tests are documented in
+`docs/AUTHORING.md`.
+
+## September 14, 2026 — foundations through implementation
+
+The expansion adds eight chapters, bringing the reader to 29 chapters, five
+prerequisite-complete paths and 110 lesson sections after the custom-kernel
+training bridge. The following records current local evidence; older entries
+below retain their original dates.
+
+Final DOM audit: 110 lessons, 47 figures and 157 source-ledger entries. A fresh
+production load requests no remote assets: fonts are now served locally with
+their included OFL licenses and provenance. The final kernel-training lesson
+passes desktop, 390-pixel and 320-pixel layout checks.
+
+### Executed checks
+
+- `npm test`: **67 passed**. Numerical contracts include gradients, cache
+  sizing, accelerator residency/transfer, tensor addresses, bank conflicts,
+  reductions, fixed-point arithmetic, exhaustive 8-bit addition, timing slack,
+  256 backpressure patterns and every systolic partial sum.
+- `npm run build`: TypeScript and production Vite build pass. The full textbook
+  and source listings produce a main JavaScript chunk above Vite's configured
+  550 kB warning threshold; this is a non-failing size warning, not a verified
+  startup-performance improvement.
+- PyTorch 2.8.0 / native arm64 Python 3.12.11: **10 tests passed**, covering
+  causal prefixes, full/chunked KV equivalence, greedy generation, invalid cache
+  metadata, finite-difference backward, exact model/Adam/RNG resume, debugging
+  overfit, token-weighted validation tails, real HTTP generation and overload.
+- The custom RMSNorm autograd harness passes CPU derivative/contract checks and
+  three complete AdamW update comparisons at each of widths 7, 33 and 257,
+  including preceding-layer gradients, parameters and optimizer moments.
+- The C17 tensor-storage exercise passes three reference cases under Address
+  Sanitizer and Undefined Behavior Sanitizer with warnings treated as errors.
+  The Triton companion passes Python syntax compilation.
+- Icarus 13.0 passes four RTL testbenches: 65,536 adder pairs; 640 accepted MAC
+  transactions, 638 consumed and two explicitly reset-flushed; 64 dot-product
+  vectors including reset during accumulation; 1,620 systolic per-cycle checks.
+- YoWASP Yosys 0.69 completes generic synthesis and structural checks for all
+  four circuits. The same Icarus testbenches pass on the generated netlists.
+  This is tested post-synthesis behavior, not a formal equivalence proof.
+
+### Actual small-model run
+
+The original byte-level teaching corpus trained for 100 CPU updates: loss moved
+from 5.56298 at update 1 to 1.09964 at update 100. A separate CLI resume reached
+update 125 with loss 0.78678. A new 69-target-byte evaluation fixture exercised
+the validation CLI. These are mechanics checks on tiny constructed text,
+not a claim about general language-model quality.
+
+The CPU profiler compared identical greedy output IDs for a 30-byte prompt and
+24 output bytes with one CPU thread and seven repetitions. Median whole-generation
+times in that run were 9.458 ms without caching and 6.138 ms with caching. A
+separate instrumented pass exported a real CPU operator trace. These values are
+machine-specific and do not establish CUDA throughput, streamed TTFT or a general
+cache speedup. The script records the measurement boundary and all repetitions.
+
+### Reader and diagram checks
+
+- Production preview serves HTTP 200. All 30 reader pages (overview plus 29
+  chapters) passed at widths 1280, 390 and 320: exactly the intended chapter
+  visible and no document-wide horizontal overflow.
+- No duplicate IDs or unresolved internal anchors after integration.
+- Browser checks cover gradient updates, tensor transpose/padding addresses,
+  coalescing and bank conflicts, reduction stages/reset, full-pipeline stalls
+  and release, and all 27 systolic multiply-accumulates.
+- Desktop/mobile screenshots were inspected. Wide diagrams preserve readable
+  labels with a horizontal-scroll cue and numerical tables. Mobile drawer
+  inertness, open/close/Escape, chapter search and source filtering pass.
+- Browser console reports no errors or warnings during the production checks.
+  Screenshots remain local under ignored `output/playwright/`.
+
+### Source corrections and remaining hardware evidence
+
+The [source audit](docs/SOURCE_AUDIT_2026-09-14.md) records primary documents and
+version boundaries. The existing Kimi comparison now separates its fixed-batch
+2.3× result from its larger-batch 6.3× result. The LPU section acknowledges the
+published Groq 3 architectural first look while keeping the older cutaway's
+scope explicit. Announced platform specifications are not local measurements.
+
+CUDA/Triton/extension compilation, GPU sanitizers and profiling, real-accelerator
+vLLM load tests, multi-host experiments, FPGA target mapping/place-and-route,
+board measurements and ASIC physical signoff remain unverified. The original
+TensorFlow runtime examples were not changed or rerun in this expansion; their
+prior evidence is recorded below. None of these results are implied by the CPU,
+browser or RTL checks above.
+
+## Historical verification
+
 Checked locally on 2026-09-08. This records evidence, not a general claim of
 production readiness or a completed textbook.
 
@@ -41,6 +191,14 @@ both schedules take 22 abstract units; peak bundles are [8,8,8,8] versus
 The two-shard float64 MLP has output error 5.55e-17, maximum gradient error
 2.78e-17 and independently reduced dX error 2.60e-18. Duplicated output bias
 produces 0.30349 error. This does not test distributed autograd or communication.
+
+The complete 18-test TensorFlow suite passes after the tensor-partition work.
+Reader/render improvements add four Node tests (44 total). Browser WebGL
+instrumentation records no additional draw calls during a settled one-second
+idle interval (213 → 213), then new drawing after a ring step (608). This is
+evidence for draw invalidation, not a GPU-power measurement. Chapter-section
+links track the active lesson; mobile link navigation closes/inerts the drawer
+and preserves a 320-pixel document width.
 
 ## Code and numerical checks
 
