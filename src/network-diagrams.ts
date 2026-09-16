@@ -7,7 +7,8 @@ const linkBox = (x: number, y: number, w: number, title: string, sub: string, ta
   `<a href="#${target}" aria-label="Explore ${title}">${box(x, y, w, title, sub)}</a>`;
 const partBox = (x: number, y: number, w: number, title: string, sub: string, part: string) =>
   box(x, y, w, title, sub, `role="button" tabindex="0" aria-label="Inspect ${title}" aria-pressed="false" data-nn-part="${part}"`);
-const line = (path: string, marker: string, extra = "") => `<path class="nn-wire ${extra}" d="${path}" marker-end="url(#${marker})"/>`;
+const line = (path: string, marker: string, extra = "") =>
+  (path.match(/M[^M]+/g) ?? []).map(segment => `<path class="nn-wire ${extra}" d="${segment}" marker-end="url(#${marker})"/>`).join("");
 const start = (id: string, width: number, height: number, title: string, description: string) =>
   `<svg viewBox="0 0 ${width} ${height}" class="nn-svg" aria-labelledby="${id}-title ${id}-desc"><title id="${id}-title">${title}</title><desc id="${id}-desc">${description}</desc><defs><marker id="${id}-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7" fill="#2559d6"/></marker></defs>`;
 

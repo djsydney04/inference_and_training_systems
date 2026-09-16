@@ -3,7 +3,7 @@
 .nn-figure figcaption { display: block; padding: 0 24px; }
 .nn-figure figcaption > span { display: block; margin-bottom: 8px; }
 .nn-figure figcaption strong { display: block; font: 500 21px/1.4 var(--serif); }
-.nn-figure figcaption p { margin: 8px 0 20px; max-width: 66ch; font: 13px/1.65 var(--sans); color: var(--graphite); }
+.nn-figure figcaption p { margin: 8px 0 20px; max-width: 66ch; width: auto; justify-self: start; font: 13px/1.65 var(--sans); color: var(--graphite); }
 .nn-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin: 20px 24px; }
 .nn-controls label { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font: 12px/1.5 var(--sans); }
 .nn-controls select { min-height: 40px; max-width: 100%; background: transparent; border: 1px solid var(--rule-dark); padding: 8px; color: var(--ink); font: 12px var(--sans); }

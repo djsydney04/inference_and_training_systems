@@ -306,12 +306,14 @@ export function initializeReader() {
     )
       return;
     e.preventDefault();
-    if (link.hash === "#main-content") {
+    // SVG diagram links expose href as SVGAnimatedString and have no .hash.
+    const hash = link.getAttribute("href")!;
+    if (hash === "#main-content") {
       main.setAttribute("tabindex", "-1");
       main.focus();
       return;
     }
-    if (location.hash !== link.hash) history.pushState(null, "", link.hash);
+    if (location.hash !== hash) history.pushState(null, "", hash);
     renderRoute(true);
   });
   window.addEventListener("hashchange", () => renderRoute());
