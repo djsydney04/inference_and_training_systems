@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { attachSceneNavigation } from "./scene-navigation";
 import { createKernelScene } from "./kernel-scene";
 import { createRingScene } from "./ring-scene";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -153,6 +154,7 @@ function createSceneRig(
   };
   new ResizeObserver(resize).observe(container);
   resize();
+  attachSceneNavigation(container, camera, controls, fitFrame);
 
   const animate = (onFrame?: (time: number) => void) => {
     const frame = (time: number) => {

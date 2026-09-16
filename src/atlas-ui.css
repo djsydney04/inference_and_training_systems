@@ -143,8 +143,10 @@
 
 /* A figure is one instrument: header, working surface, inspector, and controls. */
 .atlas-ui .three-lab { border: 1px solid #cfd7d3; border-radius: 10px; background: #fff; overflow: clip; box-shadow: 0 2px 3px #21372e04, 0 12px 28px -20px #21372e24; }
+.atlas-ui .three-lab > .section-reference { display: none; }
 .atlas-ui .three-head { padding: 20px 22px 17px; border-bottom: 1px solid var(--rule); align-items: center; gap: 18px; }
 .atlas-ui .three-head figcaption > span { font-size: 10px; color: var(--graphite); }
+.atlas-ui .three-head .figure-reference small { display: inline; margin-left: 8px; font-size: 10px; }
 .atlas-ui .three-head figcaption > strong { font: 500 17px var(--sans); margin: 7px 0; letter-spacing: -.02em; }
 .atlas-ui .three-head figcaption > p { font-size: 11px; max-width: 60ch; }
 .atlas-ui .three-controls { gap: 4px; }
@@ -152,8 +154,17 @@
 .atlas-ui .three-controls button.is-active { background: var(--signal-pale); color: var(--signal-dark); border-color: #bdccef; }
 .atlas-ui .three-controls button:hover { border-color: #a9b7b0; }
 .atlas-ui .three-controls .workbench-expand { margin-left: 4px; color: var(--ink); background: #f2f5f2; border-color: var(--rule); }
-.atlas-ui .three-stage { grid-template-columns: minmax(0,1fr) 235px; height: clamp(480px, 60vh, 680px); min-height: 480px; max-height: none; border-bottom: 1px solid var(--rule); }
+.atlas-ui .three-stage { grid-template-columns: minmax(0,1fr) 235px; height: clamp(400px, 53vh, 640px); min-height: 400px; max-height: none; border-bottom: 1px solid var(--rule); }
 .atlas-ui .scene-canvas { background-color: #f2f5f3; background-image: radial-gradient(#c5d0c9 0.7px, transparent .7px); background-size: 20px 20px; }
+.atlas-ui .scene-canvas.diagram-grid-hidden { background-image: none; }
+.atlas-ui .three-stage.diagram-inspector-hidden { grid-template-columns: minmax(0,1fr); }
+.diagram-camera-tools { position: absolute; z-index: 4; bottom: 17px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 2px; padding: 5px; border: 1px solid #d2dbd5; border-radius: 8px; background: #ffffffed; box-shadow: 0 3px 12px #243a2f12; cursor: default; backdrop-filter: blur(8px); }
+.diagram-camera-tools button { display: grid; place-items: center; width: 31px; height: 31px; padding: 6px; border: 0; border-radius: 4px; color: #53666c; background: none; cursor: pointer; }
+.diagram-camera-tools button svg { width: 19px; height: 19px; }
+.diagram-camera-tools button:hover { color: var(--signal); background: #e9effd; }
+.diagram-camera-tools button[aria-pressed="true"] { background: #edf1ee; color: var(--ink); }
+.camera-divider { display: block; height: 18px; width: 1px; background: var(--rule); margin-inline: 3px; }
+.diagram-gesture-hint { position: absolute; left: 17px; bottom: 72px; color: #75857d; font: 10px var(--sans); pointer-events: none; }
 .atlas-ui .scene-inspector { padding: 24px 20px; background: #fbfcfa; border-color: var(--rule); }
 .atlas-ui .scene-inspector > span { font-size: 10px; color: var(--signal); }
 .atlas-ui .scene-inspector h3 { font: 500 21px/1.2 var(--sans); letter-spacing: -.04em; margin: 17px 0 14px; }
@@ -251,7 +262,7 @@
   .atlas-ui .home-intro h1 { font-size: 42px; }
   .atlas-ui .home-description { font-size: 14px; }
   .atlas-ui .home-kicker { margin-bottom: 18px; }
-  .atlas-ui .three-stage, .atlas-ui .workbench-dialog .three-stage { grid-template-columns: 1fr; height: auto; min-height: 0; }
+  .atlas-ui .three-stage, .atlas-ui .workbench-dialog .three-stage { grid-template-columns: 1fr; height: auto; min-height: 0; max-height: none; }
   .atlas-ui .scene-canvas { height: 450px; }
   .atlas-ui .scene-inspector { border-left: 0; border-top: 1px solid var(--rule); padding: 22px; }
   .atlas-ui .scene-inspector h3 { margin: 10px 0; }
@@ -329,7 +340,7 @@
 }
 @media (prefers-reduced-motion: reduce) { .atlas-ui *, .atlas-ui *::before, .atlas-ui *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
 @media print {
-  .atlas-ui .topbar, .atlas-ui .chapter-index, .chapter-browser, .gallery-toolbar, .plate-layers { display: none !important; }
+  .atlas-ui .topbar, .atlas-ui .chapter-index, .chapter-browser, .gallery-toolbar, .plate-layers, .diagram-camera-tools, .diagram-gesture-hint { display: none !important; }
   .atlas-ui .page-shell { display: block; margin-top: 0; }
   .atlas-ui .three-lab, .atlas-ui .textbook-lab { box-shadow: none; }
   .atlas-ui .chapter { padding: 20px; }
