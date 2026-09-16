@@ -13,6 +13,7 @@ import "./learning-reader.css";
 import { initializeAtlasUI } from "./atlas-ui";
 import { atlasMarkup } from "./content";
 import { initializeNetworkLabs } from "./network-labs";
+import { prepareLessonVisuals, initializeLessonVisuals, initializeFigurePopouts } from "./lesson-visuals";
 import { initializeGlossary } from "./glossary";
 import { initializeInteractions } from "./interactions";
 import { initializeTrainingSystems } from "./training-systems";
@@ -35,6 +36,7 @@ if (!app) throw new Error("Atlas root element is missing");
 
 app.innerHTML = atlasMarkup;
 prepareReader();
+prepareLessonVisuals();
 
 initializeGlossary();
 initializeInteractions();
@@ -51,7 +53,9 @@ initializeFoundationsLabs();
 initializeAcceleratorLabs();
 initializeCudaLabs();
 initializeDigitalLabs();
+initializeLessonVisuals();
 initializeReader();
 initializeAtlasUI();
+initializeFigurePopouts();
 
 void import("./scenes").then(({ initializeScenes }) => initializeScenes());
