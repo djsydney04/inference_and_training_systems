@@ -12,6 +12,21 @@ export const galleryItems = [
     copy: "Dive into every stage of a decoder, follow tensor shapes, and inspect attention and feed-forward arithmetic.",
   },
   {
+    kind: "cache", id: "pd-transfer-budget", title: "Where does the handoff delay go?",
+    scope: "Prompt KV → transfer → first output gap", type: "Disaggregated serving lab",
+    copy: "Vary cache reuse, head count and link rate; reconcile wire bytes, TTFT and the second token's arrival.",
+  },
+  {
+    kind: "mask", id: "speculative-tree-attention", title: "Which branch may this token read?",
+    scope: "Tree ancestry → attention mask → cache ownership", type: "Speculative decoding lab",
+    copy: "Inspect a packed draft tree and separate logical positions from provisional cache slots.",
+  },
+  {
+    kind: "training", id: "rollout-pipeline", title: "When does faster generation stop helping?",
+    scope: "Actor → reward → learner → new weights", type: "Training pipeline lab",
+    copy: "Change decode speed and policy lag; follow six rollout groups through an overlapping training schedule.",
+  },
+  {
     kind: "gradient", id: "first-weight-update", title: "Watch six weights learn",
     scope: "Scores → probabilities → loss → derivatives", type: "First-principles lab",
     copy: "Calculate one next-token prediction, inspect every gradient and apply an update yourself.",

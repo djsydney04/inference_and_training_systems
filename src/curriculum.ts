@@ -100,10 +100,10 @@ export const chapters: Chapter[] = [
   {
     id: "post-training",
     title: "Post-training",
-    intro: "A trained base model can learn from demonstrations and preferences. Follow the objectives, the data they need and the evaluations that test the result.",
+    intro: "A trained model can learn from demonstrations, preferences and rewards. Follow how generated responses become updates, and what must stay consistent as the policy changes.",
     part: "Training",
     outcome:
-      "Implement response masking and preference objectives; audit a rollout pipeline.",
+      "Implement response masking and preference objectives; trace rollout overlap, policy lag and behavior probabilities.",
     requires: ["parallel-training"],
   },
   {
@@ -214,19 +214,19 @@ export const chapters: Chapter[] = [
   {
     id: "decoding",
     title: "Choosing the next token",
-    intro: "Scores become tokens through a decoding rule. Compare sampling choices and work through why speculative decoding can preserve the same distribution.",
+    intro: "Scores become tokens through a decoding rule. Learn how modern drafters propose several tokens, how the target verifies them, and when that extra work pays off.",
     part: "Inference",
     outcome:
-      "Preserve the sampling distribution and reconcile provisional state before claiming a speedup.",
+      "Preserve the sampling distribution, train compatible proposals, reconcile tree state and measure acceptance by depth.",
     requires: ["inference"],
   },
   {
     id: "serving-lab",
     title: "Serving under load",
-    intro: "A fast single request does not tell you how a service behaves under load. Measure user latency and total throughput while controlling the workload.",
+    intro: "A service manages queues, caches and many requests. Separate prefill from decode, account for the state handoff, and measure useful capacity under load.",
     part: "Inference",
     outcome:
-      "Design a load test, read latency distributions, and define sustainable capacity.",
+      "Design a load test, budget KV handoffs, balance phase pools and distinguish capacity bounds from measured goodput.",
     requires: ["decoding", "performance"],
   },
   {

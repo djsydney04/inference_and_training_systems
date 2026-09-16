@@ -1,4 +1,4 @@
-# Discrete speculative-sampling reference
+# Inference correctness references
 
 Run with Python 3.11 or newer; only the standard library is required.
 
@@ -25,3 +25,22 @@ obligations discussed in the chapter, not features of this small reference.
 
 Primary sources: [Leviathan et al.](https://arxiv.org/abs/2211.17192),
 [Chen et al.](https://arxiv.org/abs/2302.01318).
+
+## KV handoff ownership
+
+```bash
+python3 examples/inference/kv_handoff.py
+python3 -m unittest discover -s examples/inference -p test_kv_handoff.py -v
+```
+
+The CPU protocol sketch reserves destination slots, checks a request/attempt/model
+manifest, accepts out-of-order chunks, rejects conflicting duplicate writes
+atomically, and publishes only a complete cache. The first sampled output token
+is pending input, not part of the transferred prompt cache. Source release
+requires acknowledgement of the completed attempt. Four tests cover these
+boundaries. The full directory now has eight Python tests.
+
+Placeholder values stand for per-position state. There is no network, GPU event,
+lease clock or serializer. Cancellation assumes transport has already drained;
+this is not sufficient to implement a production RDMA connector. See the atlas's
+prefill/decode handoff lesson for the complete deployment contract.

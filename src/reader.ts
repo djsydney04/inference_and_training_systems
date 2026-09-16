@@ -15,6 +15,9 @@ import { programmingChapter, cudaChapter } from "./cuda-content";
 import { portableKernelChapter } from "./portable-kernel-content";
 import { digitalChapter, fpgaChapter } from "./digital-content";
 import { kernelTrainingLesson } from "./kernel-training-content";
+import { disaggregationLessons } from "./disaggregation-content";
+import { speculationFrontierLessons } from "./speculation-frontier-content";
+import { rolloutTrainingLessons } from "./rollout-training-content";
 import { learningPathForId, readingSequence } from "./learning-path";
 import { labelChapterContents, sectionTitle } from "./reader-structure";
 import {
@@ -83,6 +86,9 @@ export function prepareReader() {
   byId("training")!.insertAdjacentHTML("beforeend", distributedRuntimeLesson);
   byId("performance")!.insertAdjacentHTML("beforeend", tiledMatmulLesson);
   byId("cuda-kernels")!.insertAdjacentHTML("beforeend", kernelTrainingLesson);
+  byId("decoding")!.insertAdjacentHTML("beforeend", speculationFrontierLessons);
+  byId("serving-lab")!.insertAdjacentHTML("beforeend", disaggregationLessons);
+  byId("post-training")!.insertAdjacentHTML("beforeend", rolloutTrainingLessons);
   chapters.forEach((chapter, index) => {
     const el = byId(chapter.id)!;
     main.append(el);
