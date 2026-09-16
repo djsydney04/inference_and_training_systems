@@ -1,5 +1,22 @@
 # Textbook development record
 
+## September 16 inference and training pass
+
+Added eleven connected lessons covering modern speculative proposals and draft
+training, tree attention, optimal depth under assumed costs, prefill/decode
+separation, KV ownership and transfer, fleet bottlenecks, rollout records,
+asynchronous actor/learner scheduling and policy correction. Original diagrams
+and interactive calculations expose the intermediate state; companion Python
+examples exercise handoff ownership and event-driven rollout scheduling.
+
+Saved implementation and glossary checkpoints, pulling and merging concurrent
+GitHub work through `b4b8801` on the isolated `codex/atlas-learning-clarity` branch.
+Preserved both the new labs and incoming figure tools. Final evidence: 103 Node,
+8 inference Python and 6 rollout Python tests; TypeScript/build; 155 production
+page/width checks; new-control and narrow-layout reviews. The reader now indexes
+142 sections and 199 sources. See the dated inference/training audit for exact
+source versions, calculated examples and the unverified target-hardware boundary.
+
 ## September 16 clarity pass
 
 Simplified navigation to one chapter picker and outline; removed the duplicate

@@ -1,5 +1,22 @@
 # Build roadmap
 
+## September 16, 2026 — inference meets the training runtime
+
+Modern speculative drafters now connect to their training, tree masks, KV
+gathering and acceptance/cost tradeoffs. Prefill/decode lessons follow a request
+through cache transfer and then explain how worker pools and network capacity
+limit service. The post-training path follows generated responses into a
+versioned actor/learner pipeline and works through off-policy probability ratios.
+The diagrams, calculations, CPU references, citations and reader integration
+are verified in the [dated audit](docs/INFERENCE_TRAINING_AUDIT_2026-09-16.md).
+
+The next empirical work is a controlled target-hardware comparison: fixed-fleet
+colocated versus split serving, each with and without speculation, using the
+same quality and service objectives. Measure TTFT, individual token gaps,
+completion, KV traffic, failure recovery and cost. For training, measure useful
+accepted groups, policy age and learning quality alongside runtime throughput.
+The educational calculators do not substitute for these experiments.
+
 ## September 14, 2026 — connected implementation path
 
 The reader now has 29 chapters and five prerequisite-complete paths. Eight added

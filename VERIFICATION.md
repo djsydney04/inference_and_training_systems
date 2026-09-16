@@ -18,6 +18,30 @@ See [playback behavior and validation](docs/DIAGRAM_PLAYBACK.md).
 Playback uses teaching pace and existing calculation handlers. Animated
 connectors do not represent measured device time; source-image references
 remain static. No new accelerator execution claim follows from these checks.
+## September 16, 2026 — speculative inference and asynchronous training
+
+Added eleven lessons within decoding, serving and post-training: modern draft
+models and their training, packed tree attention, acceptance/cost depth,
+prefill/decode separation, cache ownership, handoff latency, fleet capacity,
+rollout records, asynchronous scheduling and policy-probability correction.
+Primary sources are dated or pinned beside the claims. Ten new glossary entries
+and revised latency definitions keep the terminology consistent.
+
+**103 Node tests, 8 inference Python tests and 6 rollout Python tests pass.**
+TypeScript and production build pass. The tests check mathematical contracts
+and CPU control flow; no GPU serving or training performance is claimed. The
+existing bundle advisory remains (main JavaScript about 908 kB minified).
+
+The production reader has 29 chapters, 142 sections, 156 figures, 62 code listings,
+94 checks, 199 source entries and 22 deep dives. All 31 pages at 1440, 1280, 820,
+390 and 320 pixels pass: 155 checks with no document overflow. There are no
+numbering errors, mismatched chapter titles, duplicate IDs or broken internal
+targets. New interactive controls and mobile layouts were checked separately.
+
+This includes the other agent's schematics and figure popouts from GitHub `main`
+through `b4b8801`. Work is isolated on `codex/atlas-learning-clarity`; the shared
+checkout was not edited or stashed. The detailed source, calculation and test
+record is [the inference/training audit](docs/INFERENCE_TRAINING_AUDIT_2026-09-16.md).
 
 ## September 16, 2026 — chip and switch anatomy
 
