@@ -407,7 +407,8 @@ export function initializeReader() {
           destination === page
             ? page.querySelector<HTMLElement>("h1,h2")!
             : destination.matches("[data-section-number]")
-              ? destination.querySelector<HTMLElement>(":scope > header h3, :scope > h3, .section-reference") ?? destination
+              ? destination.querySelector<HTMLElement>(":scope > header h3, :scope > h3")
+                ?? destination.querySelector<HTMLElement>(".section-reference") ?? destination
               : destination;
         target.setAttribute("tabindex", "-1");
         target.focus({ preventScroll: true });

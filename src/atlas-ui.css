@@ -120,7 +120,7 @@
 
 /* A figure is one instrument: header, working surface, inspector, and controls. */
 .atlas-ui .three-lab { border: 1px solid #cfd7d3; border-radius: 0; background: #fff; overflow: clip; box-shadow: none; }
-.atlas-ui .three-lab > .section-reference { display: none; }
+.atlas-ui .three-lab > .section-reference { display: block; padding: 14px 22px 0; }
 .atlas-ui .three-head { padding: 20px 22px 17px; border-bottom: 1px solid var(--rule); align-items: center; gap: 18px; }
 .atlas-ui .three-head figcaption > span { font-size: 10px; color: var(--graphite); }
 .atlas-ui .three-head .figure-reference small { display: inline; margin-left: 8px; font-size: 10px; }
@@ -274,3 +274,5 @@
   .atlas-ui .three-lab, .atlas-ui .textbook-lab { box-shadow: none; }
   .atlas-ui .chapter { padding: 20px; }
 }
+
+.atlas-ui .workbench-dialog .three-stage.diagram-inspector-hidden { grid-template-columns: minmax(0, 1fr); }
