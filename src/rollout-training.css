@@ -2,7 +2,7 @@
 .rollout-workbench .rollout-readout strong { font-size: 1.08rem; }
 .rollout-workbench .rollout-readout p { font-size: .9rem; line-height: 1.55; }
 .rollout-workbench .rollout-readout p:last-child { margin-bottom: 0; }
-.rollout-workbench > .deep-dive { margin: 0; padding: 16px 24px; }
+body.atlas-ui .rollout-workbench > .deep-dive { margin: 0; padding: 16px 24px; }
 .rollout-timeline { display: block; min-width: 700px; width: 100%; }
 .rollout-timeline text { font-family: inherit; font-size: 12px; fill: currentColor; }
 .rollout-timeline .rollout-actor { fill: #286184; }
@@ -13,5 +13,5 @@
 .rollout-workbench .method-toolbar label { min-width: 0; }
 .rollout-workbench .method-toolbar select { max-width: 100%; }
 @media (max-width: 600px) {
-  .rollout-workbench .rollout-readout, .rollout-workbench > .deep-dive { padding: 16px; }
+  .rollout-workbench .rollout-readout, body.atlas-ui .rollout-workbench > .deep-dive { padding: 16px; }
 }
