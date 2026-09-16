@@ -6,6 +6,7 @@ import "./kernel.css";
 import "./methods.css";
 import { initializeAtlasUI } from "./atlas-ui";
 import { atlasMarkup } from "./content";
+import { initializeNetworkLabs } from "./network-labs";
 import { initializeGlossary } from "./glossary";
 import { initializeInteractions } from "./interactions";
 import { initializeTrainingSystems } from "./training-systems";
@@ -27,6 +28,7 @@ prepareReader();
 
 initializeGlossary();
 initializeInteractions();
+initializeNetworkLabs();
 initializeTrainingSystems();
 initializeTextbook();
 initializeSystemsLabs();

@@ -2,6 +2,8 @@ import { chapters, learningPaths } from "./curriculum";
 
 const glyph = (kind: string) => {
   const common = 'viewBox="0 0 360 180" fill="none" aria-hidden="true"';
+  if (kind === "network")
+    return `<svg ${common}><path d="M74 34v26m0 28v24m0 28v22m0-113h-39v77h24M88 74h86m-86 52h86m48-52h55m-55 52h55" stroke="#2559d6" stroke-width="2"/><rect x="47" y="8" width="54" height="26" fill="#c7d2c3"/><rect x="47" y="60" width="54" height="28" fill="#2559d6"/><rect x="47" y="112" width="54" height="28" fill="#2559d6"/><rect x="47" y="162" width="54" height="10" fill="#c7d2c3"/>${[62,114].map(y => [174,210,246,282].map((x,i) => `<rect x="${x}" y="${y}" width="24" height="24" fill="${i === 2 ? '#2559d6' : '#c7d2c3'}"/>`).join('')).join('')}</svg>`;
   if (kind === "occupancy")
     return `<svg ${common}>${Array.from({ length: 64 }, (_, i) => `<rect x="${44 + (i % 16) * 17}" y="${42 + Math.floor(i / 16) * 25}" width="13" height="19" fill="${i < 32 ? "#2559d6" : "#d3d9ce"}"/>`).join("")}<path d="M44 151h272" stroke="#889a89"/><path d="M180 32v112" stroke="#293c31" stroke-dasharray="3 3"/></svg>`;
   if (kind === "ring")
@@ -58,6 +60,11 @@ const glyph = (kind: string) => {
 };
 
 export const galleryItems = [
+  {
+    kind: "network", id: "network-map", title: "Open the whole neural network",
+    scope: "Embeddings → attention → feed-forward → prediction", type: "Clickable architecture",
+    copy: "Dive into every stage of a decoder, follow tensor shapes, and inspect attention and feed-forward arithmetic.",
+  },
   {
     kind: "trace",
     id: "pipeline-schedules",

@@ -1,4 +1,5 @@
 import { trainingExpansionMarkup } from "./training-content";
+import { networkOverview, networkLessons } from "./network-content";
 import { tensorLesson, attentionLesson, postTrainingLesson, hardwareLesson, rackLesson, inferenceLesson, lpuLesson } from "./textbook-content";
 
 export const atlasMarkup = `
@@ -205,6 +206,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
           <p class="chapter-summary">Attention communicates across token positions. The feed-forward network computes independently at each position. Residual connections keep both updates additive and trainable at depth.</p>
         </div>
 
+        ${networkOverview}
         <figure class="wide-figure transformer-map">
           <figcaption><span>Figure 2.1</span><strong>A decoder-only Transformer block</strong><p>Press play to trace one activation through a pre-normalized block.</p></figcaption>
           <div class="transformer-controls">
@@ -274,6 +276,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
 <span class="cm"># Production kernels fuse several of these steps to avoid HBM round trips.</span></code></pre>
           <div class="code-notes"><span>Correct, not fast</span><p>This pedagogical version materializes the score matrix. FlashAttention computes exact attention in tiles so intermediate scores remain in on-chip SRAM instead of HBM.</p></div>
         </div>
+        ${networkLessons}
       </section>
 
       <section class="chapter" id="attention" data-chapter="Attention field">

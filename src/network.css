@@ -1,0 +1,92 @@
+.nn-lesson { min-width: 0; }
+.nn-figure { margin: 30px 0; padding: 24px 0 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); background: #faf9f5; }
+.nn-figure figcaption { display: block; padding: 0 24px; }
+.nn-figure figcaption > span { display: block; margin-bottom: 8px; }
+.nn-figure figcaption strong { display: block; font: 500 21px/1.4 var(--serif); }
+.nn-figure figcaption p { margin: 8px 0 20px; max-width: 66ch; font: 13px/1.65 var(--sans); color: var(--graphite); }
+.nn-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin: 20px 24px; }
+.nn-controls label { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font: 12px/1.5 var(--sans); }
+.nn-controls select { min-height: 40px; max-width: 100%; background: transparent; border: 1px solid var(--rule-dark); padding: 8px; color: var(--ink); font: 12px var(--sans); }
+.nn-controls input { max-width: 160px; accent-color: var(--signal); }
+.nn-controls output { min-width: 4ch; font-variant-numeric: tabular-nums; }
+.nn-overview { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(210px, 1fr); align-items: start; gap: 12px; padding: 0 24px 20px; }
+.nn-whole { min-width: 0; }
+.nn-svg { display: block; width: 100%; height: auto; overflow: visible; font-family: var(--sans); }
+.nn-svg .nn-node rect, .nn-svg .nn-node circle { fill: #faf9f5; stroke: #8e968c; stroke-width: 1; transition: fill 160ms, stroke 160ms; }
+.nn-svg .nn-node-title { fill: var(--ink); font: 500 14px var(--sans); text-anchor: middle; }
+.nn-svg .nn-node-sub { fill: #59625b; font: 11px var(--sans); text-anchor: middle; }
+.nn-svg .nn-annotation { fill: #59625b; font: 11px var(--sans); }
+.nn-svg .nn-wire { fill: none; stroke: #2559d6; stroke-width: 1.6; }
+.nn-svg .nn-bypass { stroke-dasharray: 5 4; }
+.nn-svg .nn-block-boundary { fill: #efefe7; stroke: #c8cdc3; stroke-dasharray: 5 4; }
+.nn-svg a, .nn-svg [role="button"] { cursor: pointer; text-decoration: none; }
+.nn-svg a:hover rect, .nn-svg .nn-node:hover rect, .nn-svg [aria-pressed="true"] rect, .nn-svg [aria-pressed="true"] circle { fill: #e4ebfc; stroke: #2559d6; stroke-width: 1.8; }
+.nn-svg a:focus-visible, .nn-svg [role="button"]:focus-visible { outline: 2px solid var(--signal); outline-offset: 4px; }
+.nn-svg .nn-plus { fill: var(--signal); font: 28px var(--sans); }
+.nn-svg .nn-tile { fill: #ebece4; stroke: var(--rule); }
+.nn-svg .nn-cell { fill: var(--signal); }
+.nn-diagram-scroll { overflow-x: auto; padding: 20px 24px 12px; scrollbar-width: thin; }
+.nn-diagram-scroll .nn-svg { min-width: 640px; }
+.nn-diagram-scroll:focus-visible { outline: 2px solid var(--signal); outline-offset: -2px; }
+.nn-shape-notes { border-left: 1px solid var(--rule); padding-left: 24px; margin-top: 24px; }
+.nn-shape-notes h4 { font: 500 15px var(--sans); margin: 0 0 16px; }
+.nn-dimensions, .nn-shapes { margin: 0 0 26px; font: 12px/1.5 var(--sans); }
+.nn-dimensions > div { display: grid; grid-template-columns: 60px 1fr; gap: 8px; margin: 8px 0; }
+.nn-dimensions dt { font-weight: 500; }
+.nn-dimensions dd, .nn-shapes dd { margin: 0; color: #59625b; }
+.nn-shapes > div { padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.nn-shapes dd { color: var(--signal-dark); margin-top: 3px; }
+.nn-shapes code { font: 12px/1.5 var(--mono); }
+.nn-shape-notes > a { display: block; margin-top: 14px; font: 12px/1.5 var(--sans); }
+.nn-note, .nn-mode-note { font: 12px/1.65 var(--sans); color: #59625b; }
+.nn-mode-note { color: var(--signal-dark); }
+.nn-boundary { border-top: 1px solid var(--rule); padding: 14px 24px; margin: 0; font: 11px/1.65 var(--sans); color: #59625b; }
+.nn-inspector { margin: 10px 24px 24px; padding: 18px 0 0 18px; border-left: 2px solid var(--signal); min-height: 110px; }
+.nn-inspector strong { font: 500 16px/1.4 var(--sans); }
+.nn-inspector p { margin: 8px 0 0; max-width: 72ch; font: 15px/1.7 var(--serif); }
+.nn-norm-values, .nn-gate-values { display: flex; align-items: center; flex-wrap: wrap; gap: 16px 28px; padding: 0 24px 22px; }
+.nn-norm-values > div, .nn-gate-values > div { display: grid; gap: 8px; }
+.nn-norm-values span, .nn-gate-values span { font: 12px/1.5 var(--sans); color: var(--graphite); }
+.nn-norm-values strong, .nn-gate-values strong { font: 500 23px/1.2 var(--sans); font-variant-numeric: tabular-nums; }
+.nn-norm-values p, .nn-gate-values p { flex-basis: 100%; margin: 0; font: 13px/1.65 var(--sans); }
+.nn-attention-values { padding: 0 24px 20px; }
+.nn-weight-row { display: grid; grid-template-columns: 80px minmax(40px, 1fr) 52px 90px; align-items: center; gap: 12px; margin: 14px 0; font: 12px/1.5 var(--sans); }
+.nn-weight-row strong { font-variant-numeric: tabular-nums; font-weight: 500; }
+.nn-weight-track { height: 22px; background: #e6e8e1; }
+.nn-weight-track i { display: block; height: 100%; background: var(--signal); transition: width 160ms ease; }
+.nn-weight-row.is-masked .nn-weight-track { background: transparent; border: 1px dashed #aaa79d; }
+.nn-weight-row.is-masked { color: #626760; }
+.nn-weight-result { border-top: 1px solid var(--rule); padding-top: 18px; font: 16px/1.5 var(--sans); }
+.nn-targets { margin: 24px 0; border-block: 1px solid var(--rule); padding: 16px 0; }
+.nn-targets > div { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0; }
+.nn-targets span { min-width: 130px; font: 13px/1.7 var(--sans); }
+.nn-targets code { font: 13px/1.7 var(--mono); overflow-wrap: anywhere; }
+.nn-return { display: inline-block; font: 13px/1.6 var(--sans); margin-top: 16px; }
+.nn-reference { font: 13px/1.7 var(--sans); }
+@media (max-width: 1100px) {
+  .nn-overview { grid-template-columns: minmax(0, 1fr); }
+  .nn-whole { max-width: 580px; width: 100%; margin: 0 auto; }
+  .nn-shape-notes { border-left: 0; border-top: 1px solid var(--rule); padding: 24px 0 0; }
+  .nn-dimensions { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+  .nn-shapes { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+}
+@media (max-width: 520px) {
+  .nn-figure figcaption, .nn-boundary { padding-inline: 14px; }
+  .nn-controls { margin-inline: 14px; }
+  .nn-controls label { width: 100%; }
+  .nn-controls select { width: 100%; }
+  .nn-overview { padding-inline: 6px; }
+  .nn-whole { overflow-x: auto; }
+  .nn-whole .nn-svg { min-width: 410px; }
+  .nn-shape-notes { margin-inline: 8px; }
+  .nn-dimensions { display: block; }
+  .nn-diagram-scroll { padding-inline: 14px; }
+  .nn-diagram-scroll::after { content: "Scroll sideways to follow the full diagram"; display: block; margin: 12px 0 0; font: 11px/1.5 var(--sans); color: var(--graphite); }
+  .nn-inspector { margin-inline: 14px; min-height: 0; }
+  .nn-attention-values { padding-inline: 14px; }
+  .nn-weight-row { grid-template-columns: 65px minmax(30px, 1fr) 46px; gap: 8px; }
+  .nn-weight-row > span:last-child { grid-column: 2 / -1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nn-svg .nn-node rect, .nn-svg .nn-node circle, .nn-weight-track i { transition: none; }
+}

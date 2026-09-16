@@ -1,0 +1,84 @@
+import { sourceLink, workedCheck } from "./lesson-template";
+import { wholeNetworkDiagram, attentionDiagram, feedForwardDiagram, embeddingDiagram, residualDiagram, outputDiagram } from "./network-diagrams";
+
+const back = '<a class="nn-return" href="#network-map">Back to the whole network</a>';
+const scroll = (markup: string) => `<div class="nn-diagram-scroll" tabindex="0" aria-label="Diagram; scroll horizontally on narrow screens">${markup}</div>`;
+
+export const networkOverview = `
+<section class="lesson nn-lesson" id="network-map" data-lesson="The whole neural network">
+  <header><span>From tokens to a prediction</span><h3>See the whole network. Open any part.</h3></header>
+  <p>A language model carries one vector per token through a stack of decoder blocks. <strong>Attention mixes token positions; the feed-forward network transforms channels within each position.</strong> Both write back into the same residual stream.</p>
+  <figure class="nn-figure">
+    <figcaption><span>Interactive architecture</span><strong>One forward pass through a decoder language model</strong><p>Click a block to dive into its diagram. Switch execution mode to follow the tensor shapes.</p></figcaption>
+    <div class="nn-controls">
+      <label>Execution <select data-nn-mode><option value="prefill">Prefill · four prompt tokens</option><option value="decode">Decode · one new token, four cached</option></select></label>
+      <label>Key/value heads <select data-nn-heads><option value="2">2 · one per query head</option><option value="1">1 · shared by both query heads</option></select></label>
+    </div>
+    <div class="nn-overview">
+      <div class="nn-whole" data-nn-whole>${wholeNetworkDiagram()}</div>
+      <aside class="nn-shape-notes">
+        <h4>Read the dimensions</h4>
+        <dl class="nn-dimensions"><div><dt>B = 1</dt><dd>sequence in the batch</dd></div><div><dt>T = 4</dt><dd>prompt tokens</dd></div><div><dt>D = 8</dt><dd>channels per token</dd></div><div><dt>H = 2</dt><dd>query heads, 4 channels each</dd></div><div><dt>F = 24</dt><dd>feed-forward hidden channels</dd></div><div><dt>V = 32</dt><dd>vocabulary entries</dd></div></dl>
+        <h4>Shapes in this pass</h4><div data-nn-shapes aria-live="polite"></div>
+        <p class="nn-note">Brackets list axis lengths, not values. A shape such as [1, 4, 8] holds 32 numbers.</p>
+        <a href="#network-attention">Follow Q, K and V</a><a href="#network-feedforward">Open the feed-forward network</a>
+      </aside>
+    </div>
+    <p class="nn-boundary">Illustrative dense decoder: pre-normalization, RMSNorm, RoPE and SwiGLU. Three blocks have different weights. Biases, dropout, expert routing and sharding are omitted. This is a modern variant, not the original encoder–decoder Transformer.</p>
+  </figure>
+  <p class="nn-reference">Architecture context: ${sourceLink("https://arxiv.org/abs/2302.13971", "LLaMA, §2.2")}. For encoder self-attention and decoder cross-attention, see ${sourceLink("https://arxiv.org/abs/1706.03762", "Attention Is All You Need, §3")}.</p>
+</section>`;
+
+export const networkLessons = `
+<section class="lesson nn-lesson" id="network-embeddings" data-lesson="Tokens become vectors">
+  <header><span>Input to the network</span><h3>A token ID chooses a learned row</h3></header>
+  <p>A tokenizer converts text into integer IDs; a token can be a word fragment, punctuation or bytes. The embedding table has one learned D-channel vector for each vocabulary entry. Looking up T IDs produces T vectors. An ID’s numerical size does not describe its meaning.</p>
+  <figure class="nn-figure"><figcaption><span>Original schematic</span><strong>Four IDs become four rows of activations</strong><p>Each selected row carries eight channels into the first decoder block.</p></figcaption>${scroll(embeddingDiagram())}<p class="nn-boundary">IDs and colors are illustrative; this diagram does not use a trained tokenizer or checkpoint.</p></figure>
+  <p>The table is a <strong>parameter</strong>, reused across requests and changed during training. The looked-up vectors are <strong>activations</strong>, computed for this request. Two occurrences of the same ID start from the same embedding, then acquire different contextual representations.</p>
+  <details class="deep-dive" id="network-position"><summary>Where does position enter?</summary><p>In the variant above, RoPE rotates pairs of query and key channels according to token position inside every attention layer. It does not increase the vector width or rotate the value vectors. A query–key dot product then depends on relative position as well as content. This is different from adding a position embedding to the initial token vector.</p><p>${sourceLink("https://arxiv.org/abs/2104.09864", "RoFormer: rotary position embeddings")}</p></details>
+  ${workedCheck("Does an 8-channel embedding mean the model knows only eight words?", "No. D = 8 is the number of features per token. V = 32 is the number of vocabulary entries in this teaching model. The embedding table contains V × D = 256 learned values.")}${back}
+</section>
+
+<section class="lesson nn-lesson" id="network-residual" data-lesson="Normalization and residuals">
+  <header><span>Inside every block</span><h3>Keep the stream; learn an update</h3></header>
+  <p>Each sub-layer reads a normalized copy of the current vector and proposes an update. The addition combines that update with the untouched input. Because both operands have width D, stacking more layers changes the representation without changing its shape.</p>
+  <figure class="nn-figure" data-nn-inspector="residual"><figcaption><span>Interactive path</span><strong>Normalization belongs on the branch</strong><p>Select a part to see what it changes and what it preserves.</p></figcaption>${scroll(residualDiagram())}<div class="nn-inspector" data-nn-description aria-live="polite"></div>
+    <div class="nn-controls"><label>Input magnitude <input type="range" min="1" max="6" value="1" step="1" data-nn-magnitude/><output data-nn-magnitude-label>1×</output></label></div><div class="nn-norm-values" data-nn-norm aria-live="polite"></div>
+    <p class="nn-boundary">Two-channel arithmetic slice, unit learned gains, ε = 0.000001. The normalized values are rounded for display.</p>
+  </figure>
+  <details class="deep-dive"><summary>RMSNorm, LayerNorm, and the gradient path</summary><p>For one token, RMSNorm(x) = γ ⊙ x / √(mean(x²) + ε). The reduction is over channels, not tokens or the batch. γ is learned per channel; ε prevents division by zero. Unlike LayerNorm, RMSNorm does not subtract the channel mean.</p><p>For y = x + f(x), the derivative contains an identity term: ∂y/∂x = I + ∂f/∂x. This gives the gradient a direct route across the block; it does not guarantee that any arbitrarily deep model will train stably. “Pre-norm” describes where normalization is placed, not a claim that the residual stream always has unit magnitude.</p><p>${sourceLink("https://arxiv.org/abs/1910.07467", "Root Mean Square Layer Normalization")}</p></details>${back}
+</section>
+
+<section class="lesson nn-lesson" id="network-attention" data-lesson="Inside attention">
+  <header><span>Communication across positions</span><h3>Queries choose which values to mix</h3></header>
+  <p>Three learned projections read the same normalized input. A <strong>query</strong> asks what to retrieve, a <strong>key</strong> determines compatibility, and a <strong>value</strong> carries the information to mix. These are different views of the same token activations, not three separate input sentences.</p>
+  <figure class="nn-figure" data-nn-inspector="attention"><figcaption><span>Interactive operation graph</span><strong>Split into heads, read context, then rejoin</strong><p>Click any operation. Q and K make the weights; V supplies the content.</p></figcaption>${scroll(attentionDiagram())}<div class="nn-inspector" data-nn-description aria-live="polite"></div></figure>
+  <figure class="nn-figure"><figcaption><span>Numerical attention</span><strong>One query can read only its prefix</strong><p>Select a query position. Each row sums to one over the allowed keys; future positions have exactly zero weight.</p></figcaption>
+    <div class="nn-controls"><label>Query position <select data-nn-query><option value="0">1 · The</option><option value="1">2 · small</option><option value="2">3 · robot</option><option value="3" selected>4 · learns</option></select></label></div>
+    <div class="nn-attention-values" data-nn-attention-values aria-live="polite"></div>
+    <p class="nn-boundary">One head, four illustrative token positions, fixed scaled scores [1, 0, 2, −1] and two displayed value channels. Query selection isolates masking; it does not recompute scores from learned Q/K weights.</p>
+  </figure>
+  <details class="deep-dive"><summary>Track the axes, head sharing and cached decode</summary><p>With Tq query positions and Tk available keys, Q has shape [B, H, Tq, dh]. K and V each have [B, Hkv, Tk, dh]. Each query head reads its assigned KV head. Scores and probabilities have [B, H, Tq, Tk]; multiplying by V produces [B, H, Tq, dh]. Transpose and concatenate the heads to [B, Tq, D], then apply Wo [D, D].</p><p>In the four-token prefill, Tq = Tk = 4 and the mask is triangular. At the next decode step, Tq = 1 and Tk = 5: append the new position’s K and V to the four cached positions. Its absolute position is 4, so it may read all five keys. Applying a naïve 1 × 5 upper-left triangular mask would wrongly hide most of the cache.</p><p>The cache is separate in every layer. Q is needed for the current computation but is not the persistent KV state. Sharing KV heads reduces stored state; it does not reduce the number of query heads. The full score matrix describes the mathematics; fused implementations need not store it.</p><p><a href="#flashattention">Continue into FlashAttention’s tiled computation</a> or <a href="#attention">compare attention variants</a>.</p></details>
+  <p class="nn-reference">${sourceLink("https://arxiv.org/abs/1706.03762", "Scaled dot-product and multi-head attention")}; ${sourceLink("https://arxiv.org/abs/2305.13245", "GQA: grouped-query attention")}.</p>${back}
+</section>
+
+<section class="lesson nn-lesson" id="network-feedforward" data-lesson="Inside the feed-forward network">
+  <header><span>Computation within each position</span><h3>Expand the channels. Gate them. Project back.</h3></header>
+  <p>The feed-forward network—also called the FFN or MLP—applies the same learned function independently to every token. A SwiGLU variant creates two wider vectors, multiplies the up branch by a nonlinear gate, and projects that product back to D channels. The token already carries context from attention.</p>
+  <figure class="nn-figure" data-nn-inspector="feedforward"><figcaption><span>Interactive operation graph</span><strong>Two branches, one token-wise update</strong><p>Click a projection or the product to inspect its weights and shape.</p></figcaption>${scroll(feedForwardDiagram())}<div class="nn-inspector" data-nn-description aria-live="polite"></div>
+    <div class="nn-controls"><label>Gate pre-activation <input type="range" min="-4" max="4" value="1" step="0.25" data-nn-gate/><output data-nn-gate-label>1.00</output></label></div><div data-nn-gate-values class="nn-gate-values" aria-live="polite"></div>
+    <p class="nn-boundary">One expanded channel is isolated: up = 2. The slider changes the gate pre-activation, not a trained model weight.</p>
+  </figure>
+  <details class="deep-dive"><summary>Why the nonlinearity and three matrices matter</summary><p>Using row vectors: g = xWgate, u = xWup, h = SiLU(g) ⊙ u, and FFN(x) = hWdown. Wgate and Wup have shape [D, F]; Wdown has [F, D]. SiLU(z) = zσ(z), where σ is the logistic sigmoid. The gate can be negative or greater than one: it is not an attention probability and does not sum to one.</p><p>The illustrative D = 8, F = 24 network has 3DF = 576 feed-forward matrix parameters per block, excluding biases. A conventional two-matrix FFN has 2DF parameters and an activation between its projections. Their hidden widths need not match; F = 4D is not a universal rule for gated models.</p><p>Two linear maps alone can collapse into one linear map. The nonlinear activation and input-dependent product let this sub-layer express more than a single projection. Matrix multiplication mixes channels here; it never sums over a different token’s row.</p><p>${sourceLink("https://arxiv.org/abs/2002.05202", "GLU Variants Improve Transformer")}</p></details>
+  ${workedCheck("If the sequence grows from 4 tokens to 8, does the FFN get twice as many weights?", "No. The same matrices are reused at every position. The activation tensor and arithmetic grow with the token count, but the learned parameter count stays 3DF. A mixture-of-experts variant changes which feed-forward matrices are selected; it is not shown here.")}${back}
+</section>
+
+<section class="lesson nn-lesson" id="network-output" data-lesson="From logits to the next token">
+  <header><span>Output and the next pass</span><h3>Feature channels become vocabulary scores</h3></header>
+  <p>After the last decoder block, a final normalization and a D × V projection turn each hidden vector into one score per vocabulary token. A score is a <strong>logit</strong>, not a probability. Softmax across the vocabulary gives a next-token distribution.</p>
+  <figure class="nn-figure" data-nn-inspector="output"><figcaption><span>Interactive generation loop</span><strong>The selected ID becomes another input</strong><p>Click a stage to connect the output back to the full network.</p></figcaption>${scroll(outputDiagram())}<div class="nn-inspector" data-nn-description aria-live="polite"></div><p class="nn-boundary">One generation step. Sampling settings, stop conditions and request scheduling are separate serving choices.</p></figure>
+  <div class="nn-targets"><div><span>Inputs</span><code>The → small → robot → learns</code></div><div><span>Training targets</span><code>small → robot → learns → .</code></div></div>
+  <p>Training can compute predictions at every position in parallel because the causal mask prevents access to future inputs. Each position is scored against the <em>following</em> token. Generation uses the last available position, chooses one token, appends it, and repeats. The weights stay fixed during ordinary inference.</p>
+  <details class="deep-dive"><summary>Output projection, weight tying and the two softmax operations</summary><p>The attention softmax chooses among allowed key positions inside a head. The vocabulary softmax chooses among V output tokens after the entire stack. Their axes and purposes differ.</p><p>A model may tie the output projection to the transpose of its embedding table, using the same parameters for input lookup and output scoring. Other models learn a separate matrix. Neither choice makes the intermediate D channels correspond one-to-one to words.</p><p>For illustrative logits [2, 1, 0], softmax gives approximately [0.665, 0.245, 0.090]. If the second entry is the target, its cross-entropy loss is −log(0.245) ≈ 1.408. Sampling is needed for generation, not to compute this training loss.</p></details>
+  <p><a href="#autodiff">Work through the token objective</a> · <a href="#decoding">Explore token selection methods</a> · <a href="#inference">Follow prefill and decode</a></p>${back}
+</section>`;
