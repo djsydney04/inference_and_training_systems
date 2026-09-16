@@ -4,6 +4,7 @@ import "./reader.css";
 import "./workbench.css";
 import "./kernel.css";
 import "./methods.css";
+import { initializeAtlasUI } from "./atlas-ui";
 import { atlasMarkup } from "./content";
 import { initializeGlossary } from "./glossary";
 import { initializeInteractions } from "./interactions";
@@ -35,5 +36,6 @@ initializeDecodingLabs();
 initializeHardwareLabs();
 initializeParallelLabs();
 initializeReader();
+initializeAtlasUI();
 
 void import("./scenes").then(({ initializeScenes }) => initializeScenes());
