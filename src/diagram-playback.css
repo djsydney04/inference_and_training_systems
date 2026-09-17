@@ -8,22 +8,14 @@
   min-width: 0;
 }
 .playback-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.diagram-playback button, .diagram-playback-settings button {
+.diagram-playback button {
   font: 500 12px/1.4 "IBM Plex Sans", sans-serif;
   color: #173b99; background: transparent; border: 1px solid #a8b8d4;
   padding: 5px 12px; cursor: pointer; min-height: 32px;
 }
 .diagram-playback button { min-width: 64px; }
-.diagram-playback button:hover, .diagram-playback-settings button:hover { background: #e5ebf8; }
-.diagram-playback :focus-visible, .diagram-playback-settings :focus-visible { outline: 2px solid #2559d6; outline-offset: 3px; }
-.playback-status { font: 500 10px "IBM Plex Mono", monospace; color: #2559d6; }
-.playback-status::before { content: ""; display: inline-block; width: 5px; height: 5px; margin-right: 5px; background: currentColor; border-radius: 50%; }
-[data-playback-state="paused"] > .diagram-playback .playback-status { color: #626760; }
-.playback-kind { font: 12px "IBM Plex Sans", sans-serif; color: #626760; }
-.diagram-playback .playback-caption { font: 12px/1.55 "IBM Plex Sans", sans-serif; margin: 7px 0 8px; min-height: 2lh; max-width: none; }
-.diagram-playback-settings { border-top: 1px solid #d6d7ce; padding-top: 14px; margin-top: 18px; }
-.diagram-playback-settings > button { width: 100%; text-align: left; }
-.diagram-playback-settings p { font: 11px/1.5 "IBM Plex Sans", sans-serif; color: #626760; margin: 8px 0 0; }
+.diagram-playback button:hover { background: #e5ebf8; }
+.diagram-playback :focus-visible { outline: 2px solid #2559d6; outline-offset: 3px; }
 .walkthrough-focus { outline: 2px solid #2559d6; outline-offset: 2px; }
 svg .walkthrough-focus { outline: none; }
 svg rect.walkthrough-focus, svg .walkthrough-focus > rect, svg .walkthrough-focus > circle { stroke: #2559d6 !important; stroke-width: 3px !important; fill: #e2eaff !important; opacity: 1 !important; }
@@ -44,14 +36,11 @@ svg text.walkthrough-focus { fill: #173b99; font-weight: 600; }
 @media (max-width: 580px) {
   .diagram-playback { padding-inline: 9px; }
   .playback-controls { gap: 7px; }
-  .playback-kind { display: none; }
-  .diagram-playback .playback-caption { min-height: 3lh; }
 }
 @media (prefers-reduced-motion: reduce) {
   [data-diagram-playback] * { transition: none !important; animation: none !important; }
 }
 
 .diagram-playback { margin-block: 8px 12px; background: transparent; }
-.diagram-playback .playback-caption { min-height: 1lh; color: #697469; font-size: 11px; }
 [data-hd-part] .hd-component { transition: fill 250ms, stroke 250ms; }
 @media(prefers-reduced-motion:reduce) { [data-hd-part] .hd-component { transition: none; } }

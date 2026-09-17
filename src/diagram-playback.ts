@@ -9,20 +9,15 @@ type Player = {
   clock: DiagramClock;
   bar: HTMLElement;
   button: HTMLButtonElement;
-  status: HTMLElement;
-  caption: HTMLElement;
   paused: boolean;
   override: boolean;
   liveRegions: Map<Element, string>;
 };
 const players = new Map<HTMLElement, Player>();
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-const readPreference = (key: string) => { try { return localStorage.getItem(key); } catch { return null; } };
-const savePreference = (key: string, value: string) => { try { localStorage.setItem(key, value); } catch { /* Private reading still works. */ } };
-let pausedAll = readPreference("atlas-diagrams-paused") === "true" || reducedMotion.matches;
-let globalButton: HTMLButtonElement;
+let motionPaused = reducedMotion.matches;
 let initialized = false;
-const playing = (player: Player) => !player.paused && (!pausedAll || player.override);
+const playing = (player: Player) => !player.paused && (!motionPaused || player.override);
 
 function live(player: Player, muted: boolean) {
   player.root.querySelectorAll("[aria-live]").forEach(node => {
@@ -43,7 +38,6 @@ function update(player: Player, active = false) {
   player.button.textContent = enabled ? "Pause" : "Play";
   player.button.setAttribute("aria-label", enabled ? "Pause diagram animation" : "Play diagram animation");
   player.button.setAttribute("aria-pressed", String(enabled));
-  player.status.textContent = enabled ? "Auto" : "Paused";
   player.bar.title = enabled ? "Select a component or change a setting to pause and explore." : "Press Play to continue the walkthrough from here.";
   live(player, enabled);
 }
@@ -73,15 +67,13 @@ export function refreshDiagramPlayback() {
     root.dataset.diagramPlayback = walkthrough.kind;
     const bar = document.createElement("div");
     bar.className = "diagram-playback";
-    const kind = { flow: "Execution trace", simulation: "Live example" }[walkthrough.kind];
-    bar.innerHTML = `<div class="playback-controls"><button type="button" data-playback-toggle aria-pressed="true">Pause</button><span class="playback-status">Auto</span><span class="playback-kind">${kind}</span></div><p class="playback-caption">Follow the execution steps automatically.</p>`;
+    bar.innerHTML = '<div class="playback-controls"><button type="button" data-playback-toggle aria-pressed="true">Pause</button></div>';
     // Keep the original caption first and all playback controls inside expanded figures.
     const caption = root.querySelector(":scope > figcaption, :scope > .three-heading, :scope > .lab-heading");
     if (caption && caption !== root.lastElementChild) caption.after(bar); else root.prepend(bar);
     const player: Player = {
       root, walkthrough, clock: new DiagramClock(), bar,
-      button: bar.querySelector("button")!, status: bar.querySelector(".playback-status")!,
-      caption: bar.querySelector(".playback-caption")!,
+      button: bar.querySelector("button")!,
       paused: false, override: false, liveRegions: new Map(),
     };
     players.set(root, player);
@@ -122,28 +114,11 @@ function available(player: Player, modal: HTMLDialogElement | undefined) {
 export function initializeDiagramPlayback() {
   if (initialized) return;
   initialized = true;
-  const settings = document.createElement("div");
-  settings.className = "diagram-playback-settings";
-  settings.innerHTML = '<button type="button" data-playback-all></button><p>Animations follow execution steps. Other figures stay still.</p>';
-  document.querySelector(".reader-reference-links")?.before(settings);
-  globalButton = settings.querySelector("button")!;
-  const globalLabel = () => {
-    globalButton.textContent = pausedAll ? "Play animations" : "Pause animations";
-    globalButton.setAttribute("aria-pressed", String(!pausedAll));
-  };
-  globalButton.addEventListener("click", () => {
-    pausedAll = !pausedAll;
-    savePreference("atlas-diagrams-paused", String(pausedAll));
-    players.forEach(player => { player.paused = false; player.override = false; player.clock.reset(); update(player); });
-    globalLabel();
-  });
   reducedMotion.addEventListener("change", () => {
     if (!reducedMotion.matches) return; // Resuming is an explicit choice after reduced motion.
-    pausedAll = true;
+    motionPaused = true;
     players.forEach(player => { player.override = false; player.clock.reset(); update(player); });
-    globalLabel();
   });
-  globalLabel();
   refreshDiagramPlayback();
   document.addEventListener("visibilitychange", () => {
     players.forEach(player => { player.clock.reset(); update(player); });
@@ -159,7 +134,7 @@ export function initializeDiagramPlayback() {
       if (player.clock.tick(now, active)) {
         // All adapters keep focus on the reader's control; no navigation is allowed.
         const focused = document.activeElement;
-        player.caption.textContent = player.walkthrough.advance();
+        player.root.dataset.playbackStep = player.walkthrough.advance();
         revealSelected(player.root);
         if (focused instanceof HTMLElement && focused.isConnected && document.activeElement !== focused) focused.focus({ preventScroll: true });
         player.root.dataset.playbackFrames = String(Number(player.root.dataset.playbackFrames ?? 0) + 1);

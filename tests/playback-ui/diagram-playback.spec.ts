@@ -74,11 +74,6 @@ test("component maps and comparisons stay still and remain manually explorable",
   await scale.focus();
   await scale.press("ArrowRight");
   const value = await scale.inputValue();
-  // Global animation preferences never enlist a static figure.
-  await page.evaluate(() => {
-    const toggle = document.querySelector<HTMLButtonElement>("[data-playback-all]")!;
-    toggle.click(); toggle.click();
-  });
   await page.clock.runFor(20000);
   await expect(scale).toHaveValue(value);
   await expect(page.locator("#quantization-scale-lab [data-playback-toggle]")).toHaveCount(0);
@@ -102,17 +97,18 @@ test("reduced motion starts paused and an explicit play opts in", async ({ page 
   await expect(figure).toHaveAttribute("data-playback-state", "paused");
 });
 
-test("global pause persists without pacing controls", async ({ page }) => {
+test("playback stays local and retired global preferences cannot pause examples", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("atlas-diagrams-paused", "true"));
   await start(page);
-  await page.evaluate(() => {
-    document.querySelector<HTMLButtonElement>("[data-playback-all]")!.click();
-  });
-  await page.reload();
   const figure = page.locator("#decoder-block");
+  await expect(page.locator("[data-playback-all], .diagram-playback-settings")).toHaveCount(0);
+  await expect(page.locator("[data-playback-pace], .playback-progress")).toHaveCount(0);
+  await figure.locator(".block-pipeline").scrollIntoViewIfNeeded();
+  await page.clock.runFor(7000);
+  expect(Number(await figure.getAttribute("data-playback-frames"))).toBeGreaterThan(0);
+  await figure.locator("[data-playback-toggle]").click();
   await expect(figure).toHaveAttribute("data-playback-state", "paused");
-  await expect(page.locator("[data-playback-pace], [data-playback-default-pace], .playback-progress")).toHaveCount(0);
-  await expect(page.locator(".diagram-playback select, .diagram-playback-settings select")).toHaveCount(0);
-  expect(await page.locator('[data-playback-state="playing"]').count()).toBe(0);
+  await expect(page.locator("#cpu-issue-lab")).not.toHaveAttribute("data-playback-state", "paused");
 });
 
 test("nested schematics preserve manual selection and announcements without playback", async ({ page }) => {
@@ -129,7 +125,6 @@ test("nested schematics preserve manual selection and announcements without play
 test("motion is optional and execution walkthroughs remain valid across repeated cycles", async ({ page }) => {
   await start(page, "orientation");
   const failures = await page.evaluate(async () => {
-    document.querySelector<HTMLButtonElement>("[data-playback-all]")!.click();
     const modulePath = "/src/diagram-walkthroughs.ts";
     const { diagramWalkthrough, diagramHostSelector } = await import(/* @vite-ignore */ modulePath);
     const errors: string[] = [];
