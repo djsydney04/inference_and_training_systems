@@ -1,6 +1,7 @@
 import { trainingExpansionMarkup } from "./training-content";
 import { networkOverview, networkLessons } from "./network-content";
 import { tensorLesson, attentionLesson, postTrainingLesson, hardwareLesson, rackLesson, inferenceLesson, lpuLesson } from "./textbook-content";
+import { scaleLadderMarkup } from "./scale-ladder";
 
 export const atlasMarkup = `
   <a class="skip-link" href="#main-content">Skip to the almanac</a>
@@ -124,16 +125,9 @@ export const atlasMarkup = `
           <figcaption>
             <span>Figure 0.1</span>
             <strong>The scale ladder</strong>
-            <p>Click a level to follow the reading path. Sizes are conceptual, not drawn to scale.</p>
+            <p>Follow a level into its lesson. These conceptual drawings show how values become work, then how machines connect; sizes and component counts are illustrative.</p>
           </figcaption>
-          <div class="scale-ladder" data-scale-ladder>
-            <button data-scroll="tensors"><i style="--size: .22"></i><span>scalar</span><small>one number</small></button>
-            <button data-scroll="tensors"><i style="--size: .34"></i><span>tensor</span><small>shaped numbers</small></button>
-            <button data-scroll="transformer"><i style="--size: .47"></i><span>layer</span><small>operations</small></button>
-            <button data-scroll="gpu"><i style="--size: .61"></i><span>chip</span><small>compute + memory</small></button>
-            <button data-scroll="rack"><i style="--size: .78"></i><span>rack</span><small>scale-up domain</small></button>
-            <button data-scroll="training"><i style="--size: 1"></i><span>cluster</span><small>scale-out fabric</small></button>
-          </div>
+          ${scaleLadderMarkup}
           <div class="omission"><strong>Model boundary:</strong> the ladder omits storage, power, cooling, host software, and failures; revisit them in <a href="#training">distributed training</a>, <a href="#machine">CPU and GPU architecture</a>, <a href="#rack">racks and interconnects</a>, and <a href="#serving-lab">serving experiments</a>.</div>
         </figure>
       </section>

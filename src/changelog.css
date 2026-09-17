@@ -1,0 +1,47 @@
+/* Published history shares the reader's open layout and quiet disclosure surfaces. */
+.atlas-ui .changelog { padding-block: 32px 64px; scroll-margin-top: 24px; }
+.atlas-ui .changelog > header { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 16px 24px; margin-bottom: 30px; }
+.atlas-ui .changelog h2 { margin: 0; font: 500 30px/1.2 var(--sans); letter-spacing: -.035em; }
+.atlas-ui .changelog > header > a { font: 12px/1.6 var(--sans); text-underline-offset: 4px; }
+.atlas-ui .changelog > .changelog-history { max-width: none; padding: 0; display: grid; gap: 12px; }
+.changelog-release { min-width: 0; scroll-margin-top: 24px; }
+.changelog-release > summary { display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px 22px; padding: 18px 22px; background: var(--surface-diagram, #e9eeec); cursor: pointer; list-style: none; }
+.changelog-release > summary::-webkit-details-marker { display: none; }
+.changelog-release > summary::before { content: "+"; flex: 0 0 10px; font: 16px/1 var(--sans); }
+.changelog-release[open] > summary::before { content: "−"; }
+.changelog-release > summary > strong { font: 500 17px/1.4 var(--sans); }
+.changelog-release time { margin-left: auto; font: 12px/1.6 var(--sans); color: var(--graphite); }
+.changelog-release > summary:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+.changelog-changes { padding: 4px 22px 20px; }
+.changelog-group { display: grid; grid-template-columns: minmax(110px, .3fr) minmax(0, 1fr); gap: 16px 40px; margin-top: 26px; }
+.changelog-group h3 { margin: 0; color: var(--graphite); font: 500 13px/1.8 var(--sans); }
+.atlas-ui .changelog-group ul { margin: 0; padding-left: 18px; }
+.atlas-ui .changelog-group li { padding: 0 0 12px 4px; font: 14px/1.8 var(--sans); overflow-wrap: anywhere; }
+.changelog-group li::marker { color: var(--muted); }
+.changelog-group li a { color: var(--signal-dark); text-underline-offset: 3px; }
+.changelog-group li code { font: .88em var(--mono); }
+@media (max-width: 600px) {
+  .atlas-ui .changelog { padding-block: 24px 40px; }
+  .changelog-release > summary { padding: 16px; gap: 8px 12px; }
+  .changelog-release time { font-size: 11px; }
+  .changelog-changes { padding: 0 4px 16px; }
+  .changelog-group { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 24px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .changelog-release[open] > .changelog-changes { animation: disclosure-arrive 180ms ease-out; }
+}
+
+.atlas-ui .content-history { padding-bottom: 24px; }
+.atlas-ui .content-history > header { margin-bottom: 16px; }
+.atlas-ui .changelog .changelog-intro { margin: 0 0 32px; max-width: 64ch; font: 15px/1.7 var(--sans); color: var(--graphite); }
+.changelog-edition-context { margin-left: auto; font: 12px/1.6 var(--sans); color: var(--graphite); }
+.atlas-ui .changelog .changelog-history-note { margin: 24px 0 0; color: var(--graphite); font: 12px/1.7 var(--sans); }
+.atlas-ui .changelog-technical { padding-top: 0; }
+.atlas-ui .changelog-technical > summary { display: flex; align-items: baseline; gap: 20px; padding-block: 20px; font: 500 15px/1.6 var(--sans); list-style: none; }
+.changelog-technical > summary::-webkit-details-marker { display: none; }
+.changelog-technical > summary::before { content: "+"; }
+.changelog-technical[open] > summary::before { content: "−"; }
+.atlas-ui .changelog-technical > summary > span { margin-left: auto; float: none; }
+.atlas-ui .changelog-technical > summary:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+.atlas-ui .changelog-technical > .changelog-source { margin-block: 0 24px; }
+@media (max-width: 600px) { .changelog-edition-context { font-size: 11px; } }
