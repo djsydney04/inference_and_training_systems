@@ -1,0 +1,28 @@
+.fw-control { display: grid; gap: 8px; max-width: 480px; margin: 22px 0; font: 13px/1.5 var(--sans); }
+.fw-control select { width: 100%; min-width: 0; min-height: 44px; padding: 10px; color: var(--ink); background: var(--paper); border: 1px solid var(--rule-dark); font: inherit; }
+.fw-layers { list-style: none; margin: 0; padding: 0; }
+.fw-layers li { position: relative; display: grid; grid-template-columns: 150px minmax(0,1fr); gap: 6px 22px; padding: 22px 0; border-top: 1px solid var(--rule); }
+.fw-layers li + li::before { content: "↓"; position: absolute; top: -12px; left: 0; color: var(--signal); background: var(--paper); padding-right: 8px; }
+.fw-role { grid-row: span 2; font: 12px/1.7 var(--sans); color: var(--graphite); }
+.fw-layers strong { font: 500 17px/1.5 var(--sans); }
+.fw-layers p { margin: 0; font: 15px/1.6 var(--sans); color: var(--graphite); }
+.fw-proof { border-left: 3px solid var(--signal); padding-left: 18px; margin: 20px 0; }
+.fw-proof > span { font: 500 12px/1.6 var(--sans); color: var(--signal-dark); }
+.fw-proof p { margin: 6px 0; font: 16px/1.6 var(--sans); }
+.fw-scroll { overflow-x: auto; max-width: 100%; margin: 26px 0; }
+.fw-scroll table { width: 100%; min-width: 560px; border-collapse: collapse; font: 13px/1.6 var(--sans); }
+.fw-scroll caption { text-align: left; padding: 12px 0; color: var(--graphite); font-size: 12px; }
+.fw-scroll th,.fw-scroll td { text-align: left; padding: 14px 16px 14px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.fw-scroll:focus-visible,.fw-control select:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+.fw-timing-controls { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 20px; }
+.fw-time-track { position: relative; height: 30px; width: 200px; background: #e7e9e2; }
+.fw-time-track i { position: absolute; height: 10px; }
+.fw-time-host { top: 3px; background: #59625b; }
+.fw-time-device { bottom: 3px; background: var(--signal); }
+.fw-time-note { font: 12px/1.6 var(--sans); color: var(--graphite); }
+@media(max-width:600px) {
+  .fw-timing-controls { grid-template-columns: minmax(0,1fr); }
+  .fw-layers li { grid-template-columns: minmax(0,1fr); gap: 6px; }
+  .fw-role { grid-row: auto; }
+  .fw-scroll::before { content: "Scroll horizontally to read the table →"; display: block; position: sticky; left: 0; font: 11px/1.6 var(--sans); color: var(--graphite); }
+}
