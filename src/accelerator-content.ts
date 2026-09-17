@@ -18,6 +18,7 @@ export const acceleratorChapter = chapterMarkup(
 </section>
 <section class="lesson" id="accelerator-memory-atlas" data-lesson="Memory and peak specifications"><header><span>Reference atlas</span><h3>Capacity determines placement; bandwidth constrains the next step</h3></header>
 <div class="method-table"><table><caption>Documented per-accelerator storage; peaks are vendor specifications, checked September 14, 2026</caption><thead><tr><th scope="col">Device / edition</th><th scope="col">Local large memory</th><th scope="col">Peak memory bandwidth</th><th scope="col">Evidence and status</th></tr></thead><tbody>
+<tr><th scope="row">NVIDIA H100 SXM</th><td>80 GB HBM3</td><td>3.35 TB/s</td><td>${source("https://www.nvidia.com/en-us/data-center/h100/","H100 SXM specification, checked September 16, 2026")}; <a href="#h100-kernel-example">worked Hopper example</a></td></tr>
 <tr><th scope="row">NVIDIA H200 SXM</th><td>141 GB HBM3e</td><td>4.8 TB/s</td><td>${source(nvidia,"HGX reference platform")}; established Hopper example</td></tr>
 <tr><th scope="row">NVIDIA B200 SXM</th><td>180 GB HBM3e</td><td>Up to 8 TB/s</td><td>${source(nvidia,"HGX deployment specification")}; do not replace with generic 192 GB Blackwell silicon figures</td></tr>
 <tr><th scope="row">NVIDIA B300 SXM</th><td>288 GB HBM3e</td><td>Up to 8 TB/s</td><td>${source(nvidia,"HGX B300 reference platform")}; eight-GPU node has about 2.30 TB aggregate</td></tr>
@@ -66,6 +67,7 @@ ${check("Exercise: the OS reports 128 GB of physical memory. Can a 127 GB checkp
 <p>Eight devices with 192 GiB each contain 1,536 GiB aggregate. If a serving process replicates 40 GiB of common weights on each, that replication consumes 320 GiB, leaving 1,216 GiB before runtime buffers and KV state. Tensor or expert sharding can change which bytes replicate; it introduces communication and ownership requirements. A sum of capacities is the start of a placement proof, not its conclusion.</p>
 </section>
 <section class="lesson" id="accelerator-portability-lab" data-lesson="Porting an operation"><header><span>Practical lab</span><h3>Carry the numerical contract across the compiler boundary</h3></header>
+<p>Continue in <a href="#portable-kernels">Programming across accelerators</a> for the interactive execution comparison and worked <a href="#h100-kernel-example">H100</a>, <a href="#mi300x-kernel-example">MI300X</a>, <a href="#tpu-kernel-example">TPU</a> and <a href="#trainium-kernel-example">Trainium</a> examples.</p>
 <p>Use one operation from the CUDA chapter—matrix multiplication or row-wise normalization—and write down shapes, layouts, dtypes, accumulation, masks and error tolerances before choosing a second backend. Build a CPU reference, exercise non-tile-aligned sizes, then inspect the compiled memory and kernel timeline. Correctness and supported shapes are independent of the framework accepting the graph.</p>
 <div class="lesson-code"><div><h4>A portable experiment record</h4></div><pre><code>${escapeCode(`operation: row_norm
 shape_cases: [[7, 33], [128, 1024], [513, 4097]]

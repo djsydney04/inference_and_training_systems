@@ -15,6 +15,7 @@ import { atlasMarkup } from "./content";
 import { initializeNetworkLabs } from "./network-labs";
 import { prepareLessonVisuals, initializeLessonVisuals, initializeFigurePopouts } from "./lesson-visuals";
 import { prepareSystemBuildout, initializeSystemBuildout } from "./system-buildout";
+import { initializePortableKernelLab } from "./portable-kernel-lab";
 import { initializeGlossary } from "./glossary";
 import { initializeInteractions } from "./interactions";
 import { initializeTrainingSystems } from "./training-systems";
@@ -30,6 +31,7 @@ import { initializeFoundationsLabs } from "./foundations-labs";
 import { initializeAcceleratorLabs } from "./accelerator-labs";
 import { initializeCudaLabs } from "./cuda-labs";
 import { initializeDigitalLabs } from "./digital-labs";
+import { prepareChipAnatomy, initializeChipAnatomy } from "./chip-anatomy";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 
@@ -37,6 +39,7 @@ if (!app) throw new Error("Atlas root element is missing");
 
 app.innerHTML = atlasMarkup;
 prepareSystemBuildout();
+prepareChipAnatomy();
 prepareReader();
 prepareLessonVisuals();
 
@@ -55,8 +58,10 @@ initializeFoundationsLabs();
 initializeAcceleratorLabs();
 initializeCudaLabs();
 initializeDigitalLabs();
+initializeChipAnatomy();
 initializeLessonVisuals();
 initializeSystemBuildout();
+initializePortableKernelLab();
 initializeReader();
 initializeAtlasUI();
 initializeFigurePopouts();

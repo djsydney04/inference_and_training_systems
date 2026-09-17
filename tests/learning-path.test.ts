@@ -41,7 +41,7 @@ test("references and off-path chapters use book neighbors without reporting path
   for (const [id, previous, next] of [
     ["glossary", "projects", "sources"],
     ["sources", "glossary", undefined],
-    ["cuda-kernels", "accelerator-atlas", "performance"],
+    ["cuda-kernels", "accelerator-atlas", "portable-kernels"],
   ]) {
     const sequence = readingSequence(id!, "circuits");
     assert.equal(sequence.inPath, false);

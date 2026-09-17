@@ -16,5 +16,5 @@ test("visual catalog targets real lessons and supplies inspection content for ev
     assert.ok(topic.invariant && topic.example && topic.relationship, topic.id);
     for (const step of topic.steps) assert.ok(step.label && step.detail && step.note, `${topic.id}: incomplete inspection content`);
   }
-  assert.equal(seen.size, 84);
+  assert.equal(seen.size, 88);
 });

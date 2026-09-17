@@ -185,6 +185,15 @@ export const chapters: Chapter[] = [
     requires: ["programming", "gpu-resources"],
   },
   {
+    id: "portable-kernels",
+    title: "Programming across accelerators",
+    intro: "Keep the matrix operation fixed while changing its execution. Work through H100, AMD MI300X, Google TPU and AWS Trainium examples, with concrete layouts and correctness checks.",
+    evidenceChecked: "September 16, 2026",
+    part: "Programming",
+    outcome: "Port a numerical contract, explain backend-specific tile ownership and verify edge cases before profiling.",
+    requires: ["cuda-kernels", "accelerator-atlas"],
+  },
+  {
     id: "performance",
     title: "Profiling",
     intro: "A profiler records where time is spent. Read a trace, find the work that delays completion and test a specific improvement.",
@@ -301,8 +310,8 @@ export const learningPaths = [
   },
   {
     id: "kernels", title: "Kernel programming",
-    description: "C and memory, GPU execution, CUDA kernels and evidence from profiling.",
-    route: prerequisiteRoute(["cuda-kernels", "performance", "projects"]),
+    description: "C and memory, CUDA and HIP kernels, TPU and Trainium tile programs, and evidence from profiling.",
+    route: prerequisiteRoute(["portable-kernels", "performance", "projects"]),
   },
   {
     id: "inference", title: "Inference and serving",

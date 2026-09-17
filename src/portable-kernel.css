@@ -1,0 +1,43 @@
+.portable-kernel-lab { background: #faf9f5; border-block: 1px solid var(--rule); margin: 32px 0; min-width: 0; }
+.portable-kernel-lab figcaption { display: block; padding: 24px; }
+.portable-kernel-lab figcaption > span, .portable-kernel-lab figcaption > strong { display: block; margin-bottom: 12px; }
+.portable-kernel-lab figcaption > strong { font: 500 24px/1.4 var(--serif); }
+.portable-kernel-lab figcaption p { font: 14px/1.65 var(--sans); max-width: 72ch; }
+.pk-backends { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); padding-inline: 24px; }
+.pk-backends button { text-align: left; background: transparent; border: 0; border-bottom: 2px solid var(--rule); padding: 14px 10px; color: var(--ink); font: 500 14px/1.5 var(--sans); cursor: pointer; }
+.pk-backends button[aria-pressed=true] { border-color: var(--signal); color: var(--signal-dark); }
+.pk-backends small { display: block; font: 11px/1.5 var(--sans); margin-top: 5px; }
+.pk-controls { display: flex; flex-wrap: wrap; gap: 18px 28px; padding: 24px; font: 12px/1.5 var(--sans); }
+.pk-controls label { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.pk-controls select { padding: 9px; border: 1px solid var(--rule-dark); background: transparent; color: var(--ink); font: inherit; max-width: 100%; }
+.pk-controls input { width: 140px; accent-color: var(--signal); }
+.pk-scroll { overflow-x: auto; padding: 0 16px; }
+.pk-scroll svg { display: block; min-width: 760px; width: 100%; }
+.pk-node { cursor: pointer; }
+.pk-node rect { fill: #f7f7f1; stroke: #a4aba0; }
+.pk-node.is-selected rect { fill: #e9eefb; stroke: #2559d6; stroke-width: 2; }
+.pk-label { text-anchor: middle; font: 500 17px var(--sans); fill: #242925; }
+.pk-detail { text-anchor: middle; font: 12px var(--sans); fill: #59625b; }
+.pk-wire { fill: none; stroke: #2559d6; stroke-width: 1.5; }
+.pk-stage { border-left: 2px solid var(--signal); margin: 12px 24px 28px; padding-left: 16px; }
+.pk-stage strong { font: 500 15px var(--sans); }
+.pk-stage p { font: 17px/1.65 var(--serif); margin: 8px 0 0; max-width: 72ch; }
+.pk-work { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 36px; border-top: 1px solid var(--rule); padding: 24px; }
+.pk-work h4 { font: 500 15px/1.5 var(--sans); margin: 0 0 16px; }
+.pk-tiles { display: grid; grid-template-columns: repeat(var(--pk-columns),minmax(0,1fr)); gap: 4px; }
+.pk-tiles button { background: #e6ebdf; color: var(--ink); border: 1px solid #a4aba0; padding: 10px 0; min-height: 40px; font: 12px var(--sans); cursor: pointer; }
+.pk-tiles .pk-edge { border-style: dashed; background: #f4eddf; }
+.pk-tiles button[aria-pressed=true] { border: 2px solid #2559d6; background: #e9eefb; color: #174abf; }
+.pk-work p, .pk-ownership, .portable-kernel-lab .figure-boundary { font: 12px/1.75 var(--sans); }
+.pk-accounting dl { margin: 0; font: 12px/1.7 var(--sans); }
+.pk-accounting dt { color: var(--graphite); }
+.pk-accounting dd { margin: 0 0 12px; font: 500 15px/1.6 var(--sans); font-variant-numeric: tabular-nums; }
+.pk-ownership, .portable-kernel-lab .figure-boundary { margin: 0; border-top: 1px solid var(--rule); padding: 16px 24px; }
+.pk-deeper { display: inline-block; margin: 16px 24px 24px; font: 500 14px var(--sans); }
+.portable-kernel-lab :focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+@media(max-width:700px) {
+  .pk-backends { grid-template-columns: repeat(2,minmax(0,1fr)); padding-inline: 12px; }
+  .pk-work { grid-template-columns: minmax(0,1fr); padding: 16px; }
+  .pk-controls, .portable-kernel-lab figcaption { padding: 16px; }
+  .pk-scroll::after { content: "Scroll sideways to follow the full execution path"; display: block; font: 11px/1.6 var(--sans); color: var(--graphite); margin-block: 8px; }
+}

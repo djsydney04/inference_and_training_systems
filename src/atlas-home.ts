@@ -90,6 +90,11 @@ export const galleryItems = [
     copy: "Connect executable C and CUDA to layout, synchronization and numerical correctness.",
   },
   {
+    kind: "matmul", id: "portable-kernel-workbench", title: "One operation, four backends",
+    scope: "H100 · MI300X · TPU · Trainium", type: "Cross-platform programming lab",
+    copy: "Inspect tile ownership, memory staging and partial sums, then open each platform’s worked example.",
+  },
+  {
     kind: "cache", id: "accelerator-capacity", title: "Will the model and its state fit?",
     scope: "Weight precision → cache capacity → transfer time", type: "Accelerator capacity workbench",
     copy: "Change precision and context length; reconcile the full declared memory budget and KV transfer cost.",
