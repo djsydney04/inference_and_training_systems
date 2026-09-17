@@ -1,16 +1,16 @@
 /** Original pen-style schematics. Coordinates are illustrative; labels carry exact values. */
-const ink = (path: string, blue = false) => `<path class="notebook-ink${blue ? " notebook-blue" : ""}" d="${path}"/>`;
-const label = (x: number, y: number, text: string, small = false) =>
+export const ink = (path: string, blue = false) => `<path class="notebook-ink${blue ? " notebook-blue" : ""}" d="${path}"/>`;
+export const label = (x: number, y: number, text: string, small = false) =>
   `<text x="${x}" y="${y}"${small ? ' class="notebook-small"' : ""}>${text}</text>`;
 const box = (x: number, y: number, width: number, height: number) => ink(
   `M${x + 2} ${y + 1} Q${x + width / 2} ${y - 2} ${x + width} ${y + 1} L${x + width - 1} ${y + height} Q${x + width / 2} ${y + height + 2} ${x} ${y + height - 1} Z M${x + 4} ${y + 4} Q${x + width / 2} ${y + 1} ${x + width - 4} ${y + 3}`,
 );
-const arrow = (x1: number, y1: number, x2: number, y2: number, blue = false) => {
+export const arrow = (x1: number, y1: number, x2: number, y2: number, blue = false) => {
   const angle = Math.atan2(y2 - y1, x2 - x1);
   const wing = (offset: number) => `${x2 - 9 * Math.cos(angle + offset)} ${y2 - 9 * Math.sin(angle + offset)}`;
   return ink(`M${x1} ${y1} Q${(x1 + x2) / 2 + 2} ${(y1 + y2) / 2 - 2} ${x2} ${y2} M${wing(.5)} L${x2} ${y2} L${wing(-.5)}`, blue);
 };
-const figure = (title: string, description: string, height: number, drawing: string, boundary: string) => `
+export const figure = (title: string, description: string, height: number, drawing: string, boundary: string) => `
 <figure class="notebook-figure">
   <figcaption><span>Worked drawing</span><strong>${title}</strong><p>${description}</p></figcaption>
   <div class="notebook-scroll" tabindex="0" role="region" aria-label="${title}; scroll horizontally on narrow screens">
