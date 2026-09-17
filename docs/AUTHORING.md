@@ -100,6 +100,15 @@ interactive figure. Record actual execution and its limitations in
 
 ## Before finishing an addition
 
+Lesson diagrams need an automatic walkthrough as well as manual controls.
+Add an explicit adapter in `diagram-walkthroughs.ts` for a new diagram family;
+existing lesson schematics inherit playback automatically. Choose meaningful
+operation stages or a named parameter comparison, preserve calculation and
+reset semantics, and never navigate or open dialogs during playback. See
+[Diagram playback](DIAGRAM_PLAYBACK.md) for visibility, accessibility and pace
+rules. Run `npm run test:animations -- --project=desktop --project=mobile` when
+changing diagrams; its coverage audit catches missing walkthroughs.
+
 Run `npm test` and `npm run build`. The label tests check chapter declarations
 against the curriculum, duplicate authored section IDs, missing section titles,
 stable links under reordering, and legacy caption normalization. They scan the

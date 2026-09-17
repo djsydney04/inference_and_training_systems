@@ -1,5 +1,24 @@
 # Verification record — textbook expansion
 
+## September 16, 2026 — automatic diagram walkthroughs
+
+154 diagram surfaces now have automatic playback, including all 88 lesson
+schematics, numerical examples, chip routes and system views. Controls provide
+pause, reading pace, reduced-motion opt-in and persistent global preferences.
+Wide diagrams bring the selected operation into view horizontally.
+
+All 96 Node tests and the TypeScript/Vite production build pass. The full
+desktop/mobile playback run passed 18 browser checks; two more passed for
+nested-diagram pause and live-region restoration. The final nested fix also
+passed Node tests and a build in a clean checkout. Coverage advances every
+adapter 110 times, checks input validity, and rejects missing walkthroughs.
+Mobile pop-outs and active-step framing were visually inspected at 390 × 844.
+See [playback behavior and validation](docs/DIAGRAM_PLAYBACK.md).
+
+Playback uses teaching pace and existing calculation handlers. Animated
+connectors do not represent measured device time; source-image references
+remain static. No new accelerator execution claim follows from these checks.
+
 ## September 16, 2026 — chip and switch anatomy
 
 Added five detailed component views alongside the GPU, LPU and rack cutaways:
