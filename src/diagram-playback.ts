@@ -11,7 +11,6 @@ type Player = {
   button: HTMLButtonElement;
   status: HTMLElement;
   caption: HTMLElement;
-  progress: HTMLElement;
   paused: boolean;
   override: boolean;
   liveRegions: Map<Element, string>;
@@ -21,8 +20,6 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const readPreference = (key: string) => { try { return localStorage.getItem(key); } catch { return null; } };
 const savePreference = (key: string, value: string) => { try { localStorage.setItem(key, value); } catch { /* Private reading still works. */ } };
 let pausedAll = readPreference("atlas-diagrams-paused") === "true" || reducedMotion.matches;
-let pace = Number(readPreference("atlas-diagrams-pace")) || 6000;
-if (![3000, 6000, 10000].includes(pace)) pace = 6000;
 let globalButton: HTMLButtonElement;
 let initialized = false;
 const playing = (player: Player) => !player.paused && (!pausedAll || player.override);
@@ -77,20 +74,17 @@ export function refreshDiagramPlayback() {
     const bar = document.createElement("div");
     bar.className = "diagram-playback";
     const kind = { flow: "Execution trace", simulation: "Live example" }[walkthrough.kind];
-    bar.innerHTML = `<div class="playback-controls"><button type="button" data-playback-toggle aria-pressed="true">Pause</button><span class="playback-status">Auto</span><span class="playback-kind">${kind}</span><label>Pace<select data-playback-pace aria-label="Diagram reading pace"><option value="3000">3 sec</option><option value="6000">6 sec</option><option value="10000">10 sec</option></select></label></div><p class="playback-caption">Follow the execution steps automatically.</p><div class="playback-progress" aria-hidden="true"><i></i></div>`;
+    bar.innerHTML = `<div class="playback-controls"><button type="button" data-playback-toggle aria-pressed="true">Pause</button><span class="playback-status">Auto</span><span class="playback-kind">${kind}</span></div><p class="playback-caption">Follow the execution steps automatically.</p>`;
     // Keep the original caption first and all playback controls inside expanded figures.
     const caption = root.querySelector(":scope > figcaption, :scope > .three-heading, :scope > .lab-heading");
     if (caption && caption !== root.lastElementChild) caption.after(bar); else root.prepend(bar);
     const player: Player = {
-      root, walkthrough, clock: new DiagramClock(pace), bar,
+      root, walkthrough, clock: new DiagramClock(), bar,
       button: bar.querySelector("button")!, status: bar.querySelector(".playback-status")!,
-      caption: bar.querySelector(".playback-caption")!, progress: bar.querySelector(".playback-progress i")!,
+      caption: bar.querySelector(".playback-caption")!,
       paused: false, override: false, liveRegions: new Map(),
     };
     players.set(root, player);
-    const paceInput = bar.querySelector<HTMLSelectElement>("select")!;
-    paceInput.value = String(pace);
-    paceInput.addEventListener("change", () => { player.clock.interval = Number(paceInput.value); player.clock.reset(); });
     player.button.addEventListener("click", () => {
       if (playing(player)) pause(player);
       else { player.paused = false; player.override = true; player.clock.reset(); update(player); }
@@ -130,11 +124,9 @@ export function initializeDiagramPlayback() {
   initialized = true;
   const settings = document.createElement("div");
   settings.className = "diagram-playback-settings";
-  settings.innerHTML = '<button type="button" data-playback-all></button><label>Reading pace<select data-playback-default-pace aria-label="Default diagram reading pace"><option value="3000">3 seconds</option><option value="6000">6 seconds</option><option value="10000">10 seconds</option></select></label><p>Animations follow execution steps. Other figures stay still. Pace controls reading time, not device timing.</p>';
+  settings.innerHTML = '<button type="button" data-playback-all></button><p>Animations follow execution steps. Other figures stay still.</p>';
   document.querySelector(".reader-reference-links")?.before(settings);
   globalButton = settings.querySelector("button")!;
-  const defaultPace = settings.querySelector<HTMLSelectElement>("select")!;
-  defaultPace.value = String(pace);
   const globalLabel = () => {
     globalButton.textContent = pausedAll ? "Play animations" : "Pause animations";
     globalButton.setAttribute("aria-pressed", String(!pausedAll));
@@ -144,13 +136,6 @@ export function initializeDiagramPlayback() {
     savePreference("atlas-diagrams-paused", String(pausedAll));
     players.forEach(player => { player.paused = false; player.override = false; player.clock.reset(); update(player); });
     globalLabel();
-  });
-  defaultPace.addEventListener("change", () => {
-    pace = Number(defaultPace.value); savePreference("atlas-diagrams-pace", String(pace));
-    players.forEach(player => {
-      player.clock.interval = pace; player.clock.reset();
-      player.bar.querySelector<HTMLSelectElement>("select")!.value = String(pace);
-    });
   });
   reducedMotion.addEventListener("change", () => {
     if (!reducedMotion.matches) return; // Resuming is an explicit choice after reduced motion.
@@ -182,7 +167,6 @@ export function initializeDiagramPlayback() {
       if (player.root.dataset.playbackState !== (playing(player) ? active ? "playing" : "waiting" : "paused")) update(player, active);
       if (active) {
         live(player, true);
-        player.progress.style.transform = `scaleX(${player.clock.progress(now)})`;
       }
     });
   }, 250);

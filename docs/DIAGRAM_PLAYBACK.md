@@ -18,9 +18,10 @@ Decorative token pulsing is removed from the prefill/decode comparison.
 
 ## Playback behavior
 
-Eligible examples play when their drawing is visible. They have Play/Pause and
-3-, 6-, or 10-second pacing. Sidebar animation and default-pace preferences persist
-across reloads; individual pauses and pace overrides last for the session.
+Eligible examples play when their drawing is visible, with a single Play/Pause
+control and a fixed interval. There are no speed selectors or countdown bars.
+The sidebar animation preference persists across reloads; individual pauses last
+for the session.
 
 Selecting a component, changing a setting, using keyboard controls, or manipulating
 a scene pauses its walkthrough. Play resumes from that state. Expanded figures
@@ -56,3 +57,10 @@ modal restoration, hidden chapters, mobile framing, persistent preferences, and
 manually selectable and parameter comparisons keep the reader's values even when
 global animations are enabled. Static artwork retains accessible captions and
 alternatives. Mathematical correctness remains covered by each lab's own tests.
+
+The selective-motion pass passed 181 unit tests, the production build, and all
+40 playback checks at four widths. The production UI audit passed its other 20
+checks; the four hardware cases now verify stable manual inspection instead of
+automatic tours and passed their updated run. Desktop and phone screenshots
+confirmed that static diagrams have no playback strip and execution traces keep
+the active operation visible.

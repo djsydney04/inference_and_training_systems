@@ -116,7 +116,7 @@ such as token execution, accumulation, or scheduling. Component maps, static
 relationships, illustrations, and parameter comparisons need no playback.
 For a temporal example, add an explicit adapter in `diagram-walkthroughs.ts`,
 preserve calculation and reset semantics, and never navigate or open dialogs. See
-[Diagram playback](DIAGRAM_PLAYBACK.md) for visibility, accessibility and pace
+[Diagram playback](DIAGRAM_PLAYBACK.md) for visibility and accessibility
 rules. Run `npm run test:animations -- --project=desktop --project=mobile` when
 changing motion; its audit validates animated examples and manual static figures.
 
@@ -124,7 +124,7 @@ Catalog artwork uses the separate `figure.book-study` form: a captioned external
 image with meaningful alt text. These conceptual studies remain static. The
 coverage audit validates their image/caption and rejects embedded simulation
 controls. Inline mechanism diagrams and live labs can also stay still while
-responding to manual input. Playback pace is presentation time, not device or
+responding to manual input. Playback timing is presentation time, not device or
 network time.
 
 Run `npm test` and `npm run build`. The label tests check chapter declarations

@@ -46,6 +46,13 @@ descriptions, numerical values, and input controls remain visible. The layout
 moves existing DOM nodes to preserve their handlers, calculation state, and
 accessible expansion behavior; it also refreshes after lazy scene initialization.
 
+Motion is reserved for execution traces and stateful examples. Component maps,
+architecture drawings, and parameter comparisons stay still,
+with their manual controls and inspectors intact. Only temporal examples have
+Play/Pause controls; speed selectors and countdown bars are removed from both
+the figures and sidebar. The prefill/decode diagram no longer pulses
+decoratively. See `docs/DIAGRAM_PLAYBACK.md` for the authoring rule and behavior.
+
 The edition footer appears on both the landing page and the reader. Its version
 comes from `package.json`; its date, derived edition number, and notes come from
 `src/release.ts`. Release-note links reveal the matching disclosure.
