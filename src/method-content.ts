@@ -17,6 +17,7 @@ ${ref("https://arxiv.org/abs/1412.6980", "Adam: moment estimates and bias correc
 <h4>Weight decay is not generally the same as adding L2 to Adam's loss</h4>
 <p>A loss penalty <code>λ‖θ‖²/2</code> contributes <code>λθ</code> to g and therefore enters adaptive moment estimates. Decoupled weight decay shrinks θ separately. In this lab, enabling decay changes the parameter update but leaves m and v unchanged at the first step. With θₓ=2, η=0.08 and λ=0.1, the separate shrinkage is 0.016. Frameworks also differ in epsilon placement, parameter exclusions and update ordering: an optimizer name alone is not a complete reproducibility contract.</p>
 ${ref("https://arxiv.org/abs/1711.05101", "AdamW: decoupled weight decay")}
+<p>A framework's update also depends on which parameters are registered, which gradients are connected and how the optimizer stores state. Follow <a href="#framework-autodiff-state">autodiff and state across APIs</a> before translating this rule into a training loop. For a distributed wrapper, check its <a href="#framework-distributed-objective">loss and gradient divisions</a> explicitly.</p>
 ${check("Worked check: an Adam checkpoint restores θ and m but resets v. Is the next step reproducible?", "No. The denominator depends on the second-moment history and its update counter. Even identical next-batch gradients do not reconstruct the missing state. Include moments, counters, schedules, loss-scale state and the parameter-to-slot mapping in the checkpoint contract.")}
 </section>
 

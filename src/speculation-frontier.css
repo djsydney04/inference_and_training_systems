@@ -1,0 +1,20 @@
+.speculation-frontier-lab .tree-visual { overflow-x: auto; overscroll-behavior-x: contain; padding: 16px; }
+.speculation-frontier-lab .tree-visual svg { display: block; width: min(100%, 550px); min-width: 470px; margin: auto; height: auto; font: 14px var(--sans); fill: var(--ink); }
+.speculation-frontier-lab .tree-edge { fill: none; stroke: var(--rule-dark); stroke-width: 1.5; }
+.speculation-frontier-lab .tree-edge-selected { fill: none; stroke: var(--signal); stroke-width: 3; }
+.speculation-frontier-lab .tree-prefix, .speculation-frontier-lab .tree-ancestor { fill: var(--signal-pale); stroke: var(--signal); }
+.speculation-frontier-lab .tree-query { fill: var(--signal); stroke: var(--signal); }
+.speculation-frontier-lab .tree-other { fill: var(--paper); stroke: var(--rule-dark); }
+.speculation-frontier-lab .tree-query-label { fill: #fff; }
+.speculation-frontier-lab .tree-coordinate { font-size: 12px; }
+.speculation-frontier-lab .tree-explanation { margin: 0; padding: 20px 22px; border-block: 1px solid var(--rule); font: 14px/1.65 var(--sans); }
+.speculation-frontier-lab .tree-selected-row { outline: 2px solid var(--signal); outline-offset: -2px; background: var(--signal-pale); }
+.speculation-frontier-lab .tree-visible { font-weight: 600; }
+.speculation-frontier-lab .method-table { padding: 16px 22px; }
+.speculation-frontier-lab .method-toolbar input[type="range"] { width: 130px; max-width: 100%; accent-color: var(--signal); }
+.speculation-frontier-lab .method-toolbar output { font-variant-numeric: tabular-nums; }
+.speculation-frontier-lab .method-toolbar label { max-width: 100%; }
+.speculation-frontier-lab .method-toolbar select { max-width: 100%; }
+@media (max-width: 600px) {
+  .speculation-frontier-lab .tree-explanation, .speculation-frontier-lab .method-table { padding: 16px; }
+}

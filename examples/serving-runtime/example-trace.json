@@ -1,0 +1,10 @@
+{
+  "window_ms": [0, 1000],
+  "objective_ms": {"ttft": 150, "max_gap": 40, "completion": 300},
+  "requests": [
+    {"id": "A", "arrival_ms": 0, "sent_ms": 20, "token_receipts_ms": [100, 120, 140, 160, 180, 200], "terminal_ms": 250, "status": "complete"},
+    {"id": "B", "arrival_ms": 0, "sent_ms": 0, "token_receipts_ms": [100, 105, 110, 115, 120, 200], "terminal_ms": 250, "status": "complete"},
+    {"id": "C", "arrival_ms": 0, "sent_ms": 0, "token_receipts_ms": [100], "terminal_ms": 130, "status": "complete"},
+    {"id": "D", "arrival_ms": 0, "sent_ms": 0, "token_receipts_ms": [90, 120], "terminal_ms": 140, "status": "failed"}
+  ]
+}

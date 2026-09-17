@@ -16,6 +16,18 @@ import { programmingChapter, cudaChapter } from "./cuda-content";
 import { portableKernelChapter } from "./portable-kernel-content";
 import { digitalChapter, fpgaChapter } from "./digital-content";
 import { kernelTrainingLesson } from "./kernel-training-content";
+import { disaggregationLessons } from "./disaggregation-content";
+import { speculationFrontierLessons } from "./speculation-frontier-content";
+import { rolloutTrainingLessons } from "./rollout-training-content";
+import { servingRuntimeLessons } from "./serving-runtime-content";
+import { shardedTrainingLessons } from "./sharded-training-content";
+import { quantizationLessons } from "./quantization-content";
+import { moeExecutionLessons } from "./moe-execution-content";
+import { frameworkChapter } from "./framework-content";
+import { frameworkTimingLesson } from "./framework-timing-content";
+import { frameworkReplayLesson } from "./framework-replay-content";
+import { trainingFrameworkBridgeLesson } from "./framework-training-content";
+import { servingFrameworkBridgeLesson } from "./framework-serving-content";
 import { learningPathForId, readingSequence } from "./learning-path";
 import { labelChapterContents, sectionTitle } from "./reader-structure";
 import {
@@ -43,7 +55,7 @@ export function prepareReader() {
   main.insertAdjacentHTML("afterbegin", landingMarkup + homeMarkup + galleryMarkup);
   main.insertAdjacentHTML(
     "beforeend",
-    foundationsChapter + mathematicsChapter + capstoneChapter + acceleratorChapter + frontierChapter +
+    foundationsChapter + mathematicsChapter + frameworkChapter + capstoneChapter + acceleratorChapter + frontierChapter +
       programmingChapter + cudaChapter + portableKernelChapter + digitalChapter + fpgaChapter + dataChapter +
       optimizationChapter +
       decodingChapter +
@@ -84,6 +96,17 @@ export function prepareReader() {
   byId("training")!.insertAdjacentHTML("beforeend", distributedRuntimeLesson);
   byId("performance")!.insertAdjacentHTML("beforeend", tiledMatmulLesson);
   byId("cuda-kernels")!.insertAdjacentHTML("beforeend", kernelTrainingLesson);
+  byId("decoding")!.insertAdjacentHTML("beforeend", speculationFrontierLessons);
+  byId("serving-lab")!.insertAdjacentHTML("beforeend", servingRuntimeLessons);
+  byId("serving-lab")!.insertAdjacentHTML("beforeend", disaggregationLessons);
+  byId("post-training")!.insertAdjacentHTML("beforeend", rolloutTrainingLessons);
+  byId("parallel-training")!.insertAdjacentHTML("beforeend", shardedTrainingLessons);
+  byId("inference")!.insertAdjacentHTML("beforeend", quantizationLessons);
+  byId("frontier-moe")!.insertAdjacentHTML("afterend", moeExecutionLessons);
+  byId("performance")!.insertAdjacentHTML("beforeend", frameworkTimingLesson);
+  byId("cuda-kernels")!.insertAdjacentHTML("beforeend", frameworkReplayLesson);
+  byId("post-training-loss")!.insertAdjacentHTML("afterend", trainingFrameworkBridgeLesson);
+  byId("inference")!.insertAdjacentHTML("beforeend", servingFrameworkBridgeLesson);
   chapters.forEach((chapter, index) => {
     const el = byId(chapter.id)!;
     main.append(el);
@@ -408,7 +431,8 @@ export function initializeReader() {
           destination === page
             ? page.querySelector<HTMLElement>("h1,h2")!
             : destination.matches("[data-section-number]")
-              ? destination.querySelector<HTMLElement>(":scope > header h3, :scope > h3, .section-reference") ?? destination
+              ? destination.querySelector<HTMLElement>(":scope > header h3, :scope > h3")
+                ?? destination.querySelector<HTMLElement>(".section-reference") ?? destination
               : destination;
         target.setAttribute("tabindex", "-1");
         target.focus({ preventScroll: true });

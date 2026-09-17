@@ -1,5 +1,55 @@
 # Verification record — textbook expansion
 
+## September 16, 2026 — popular frameworks and earlier learning gaps
+
+Added fourteen framework lessons and four bridges in post-training, inference,
+CUDA and profiling. Thirteen original figures connect framework roles,
+derivatives, tracing, labels, distributed normalization, adapters, model/API/cache
+contracts, deployment, replay and asynchronous timing. Canonical labels and
+learning paths integrate them with the existing beginner-to-systems sequence.
+
+**173 Node tests and 14 new standard-library Python tests pass.** Actual native
+CPU PyTorch 2.8.0 and JAX 0.6.2 runs agree with a scalar reference on five cases,
+every gradient and updated parameter, with maximum absolute error 2.22e-16.
+Three graph calls also pass: two Dynamo captures (eager backend, not Inductor)
+and two JAX/XLA CPU specializations. A Transformers 4.57.1/PEFT 0.17.0 CPU run
+checks labels, all gradients, three updates, model/tokenizer restoration,
+adapter restoration and FP32 merge/reload. No Hub model or dataset is downloaded
+by these companion runs.
+
+The new TensorFlow/Keras comparison remains unexecuted after its temporary
+installation exceeded available disk. CUDA replay and accelerator timing are
+syntax-checked examples awaiting a GPU. These evidence boundaries are visible
+in the lessons and companion READMEs. Earlier TensorFlow companion verification
+below applies to its separate programs and environment.
+
+TypeScript and production builds pass. The integrated reader has **31 chapters,
+six learning paths, 184 sections, 220 figures, 89 code listings, 133 checks,
+280 source entries and 54 optional deep dives**. All 34 pages at 1440, 1280,
+820, 390 and 320 pixels pass: **170 page/width checks** with no document overflow,
+duplicate IDs, missing internal targets, numbering errors or mismatched titles.
+The production UI suite also passes all 12 checks across four widths. Controls,
+keyboard scrolling, expanded-figure state/focus and desktop/mobile screenshots
+were checked separately. A reported mobile skip-link overlay was not reproducible:
+the link remains above the viewport when a diagram slider has focus.
+
+Playback integration covers 190 direct players, one diagram family whose children
+own playback, and 29 static catalog studies. The stable full browser run passed
+36 of its 40 cases; the four coverage cases exposed the new image studies being
+treated as simulations. After adding the explicit, validated static-image
+boundary, those four cases passed at desktop, tablet, mobile and narrow widths.
+Every teaching adapter advances 110 times with valid captions and input bounds.
+Manual-reset checks also confirm captions show the simulation's current state.
+The final TypeScript/build and v0.3.0 release-metadata checks pass after that fix.
+
+The [frameworks audit](docs/FRAMEWORKS_AUDIT_2026-09-16.md) records all lesson
+anchors, primary sources, pinned environments, calculations and remaining
+target-hardware experiments. Work is isolated on `codex/atlas-learning-clarity`
+and repeatedly rebased on concurrent GitHub changes. The latest integration
+includes main through `8645d3b`, including 29 inserted conceptual studies, nested
+diagram playback and release v0.3.0 metadata checks. The shared checkout was not
+edited, stashed or reset.
+
 ## September 16, 2026 — automatic diagram walkthroughs
 
 154 diagram surfaces now have automatic playback, including all 88 lesson
@@ -18,6 +68,69 @@ See [playback behavior and validation](docs/DIAGRAM_PLAYBACK.md).
 Playback uses teaching pace and existing calculation handlers. Animated
 connectors do not represent measured device time; source-image references
 remain static. No new accelerator execution claim follows from these checks.
+
+## September 16, 2026 — execution, numerical error and serving progress
+
+Added fifteen lessons: four on sharded state/lifetimes/updates/recovery, four on
+quantization and calibration, three on MoE routing/ownership/derivatives, and four
+on serving iteration/admission/arrivals/measurement. Each addition has numerical
+diagrams, worked checks, primary sources and an executable CPU companion. The
+reader retains the concurrent course-guide and Programming-group changes from
+GitHub `main` through `a124515`.
+
+**138 Node tests and 23 new standard-library Python checks pass.** The new Node
+tests comprise 8 serving, 9 sharding, 7 quantization and 7 MoE checks. CPU evidence
+includes complete AdamW updates and checkpoint redistribution, real INT4 packing,
+independent dense MoE outputs/finite differences, and trace accounting. A separate
+cross-review checked 2,520 MoE finite-difference coordinates (maximum discrepancy
+2.56e-11), 576 capacity configurations and 350 small conservative-admission cases.
+
+TypeScript and production build pass. The existing bundle advisory remains:
+main JavaScript is approximately 1,104 kB minified / 369 kB gzip. Production DOM:
+30 chapters, 163 sections, 175 figures, 77 code listings, 114 checks, 225 source
+entries and 34 deep dives. The totals include the incoming system-buildout lesson
+and cross-platform kernel chapter. The latter's C++ CPU reference passes five
+cases with AddressSanitizer and UndefinedBehaviorSanitizer; CUDA/HIP device
+compilation and execution remain unverified here.
+All 32 pages pass at 1440, 1280, 820, 390 and 320 pixels: **160 checks, no document
+overflow**, duplicate IDs, missing internal targets, numbering errors or title
+mismatches. New controls, keyboard operation and figure popouts were checked
+separately. Scoped research dates survive generated section labels.
+
+The system-buildout inspector now uses an unindexed component label for changing
+selections, so the search index cannot retain a heading removed on the next click.
+The scheduler table distinguishes historical processed positions from live block
+reservations. Older TPOT prose explicitly names its terminal-time convention and
+links to token-receipt measurements.
+
+See [the execution-gap audit](docs/EXECUTION_GAPS_AUDIT_2026-09-16.md) for sources,
+counterexamples and limits. CPU references do not establish real collective
+transport, GPU kernels, model quality, production capacity or distributed recovery.
+
+## September 16, 2026 — speculative inference and asynchronous training
+
+Added eleven lessons within decoding, serving and post-training: modern draft
+models and their training, packed tree attention, acceptance/cost depth,
+prefill/decode separation, cache ownership, handoff latency, fleet capacity,
+rollout records, asynchronous scheduling and policy-probability correction.
+Primary sources are dated or pinned beside the claims. Ten new glossary entries
+and revised latency definitions keep the terminology consistent.
+
+**103 Node tests, 8 inference Python tests and 6 rollout Python tests pass.**
+TypeScript and production build pass. The tests check mathematical contracts
+and CPU control flow; no GPU serving or training performance is claimed. The
+existing bundle advisory remains (main JavaScript about 908 kB minified).
+
+The production reader has 29 chapters, 142 sections, 156 figures, 62 code listings,
+94 checks, 199 source entries and 22 deep dives. All 31 pages at 1440, 1280, 820,
+390 and 320 pixels pass: 155 checks with no document overflow. There are no
+numbering errors, mismatched chapter titles, duplicate IDs or broken internal
+targets. New interactive controls and mobile layouts were checked separately.
+
+This includes the other agent's schematics and figure popouts from GitHub `main`
+through `b4b8801`. Work is isolated on `codex/atlas-learning-clarity`; the shared
+checkout was not edited or stashed. The detailed source, calculation and test
+record is [the inference/training audit](docs/INFERENCE_TRAINING_AUDIT_2026-09-16.md).
 
 ## September 16, 2026 — chip and switch anatomy
 

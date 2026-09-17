@@ -1,0 +1,32 @@
+.pd-route { padding: 24px; display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); gap: 8px; align-items: stretch; font: 13px/1.6 var(--sans); }
+.pd-route > div { border-left: 2px solid var(--signal); padding: 10px 16px; background: var(--paper); }
+.pd-route > div strong, .pd-route > div span { display: block; }
+.pd-route > div span { margin-top: 8px; color: var(--graphite); }
+.pd-route > b { align-self: center; color: var(--signal); transform: rotate(-90deg); }
+.pd-controls { align-items: start; }
+.pd-results, .pd-handoff-state { padding: 24px; }
+.pd-metrics { margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 18px; font: 13px/1.5 var(--sans); }
+.pd-metrics dt { color: var(--graphite); font-size: 11px; margin-bottom: 5px; }
+.pd-metrics dd { margin: 0; font-weight: 500; font-variant-numeric: tabular-nums; }
+.pd-results > p, .pd-handoff-state > p, .pd-capacity-summary { font: 13px/1.7 var(--sans); margin: 20px 0 0; }
+.pd-handoff-state > .pd-event { margin: 0 0 8px; color: var(--signal); font-size: 11px; }
+.pd-state-title { display: block; font: 500 20px/1.4 var(--sans); }
+.pd-handoff-state > .pd-metrics { margin-top: 24px; }
+.pd-timeline { padding: 0 24px 24px; font: 11px/1.5 var(--sans); }
+.pd-timing-heading { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
+.pd-timing-row { display: grid; grid-template-columns: 125px minmax(0, 1fr) 80px; gap: 12px; align-items: center; margin-top: 9px; }
+.pd-timing-row > span:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.pd-timing-track { position: relative; height: 20px; background: var(--paper-deep); }
+.pd-timing-track i { position: absolute; height: 100%; background: var(--signal); }
+.pd-timing-track .pd-phase-0, .pd-timing-track .pd-phase-3 { background: var(--graphite); }
+.pd-timing-track .pd-phase-2 { background: #9b6238; }
+.pd-capacity-summary { padding: 0 24px 24px; }
+@media (max-width: 620px) {
+  .pd-route { display: flex; flex-direction: column; gap: 8px; padding: 18px; }
+  .pd-route > b { transform: none; }
+  .pd-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; }
+  .pd-timing-row { grid-template-columns: 1fr 74px; gap: 6px; }
+  .pd-timing-row > span:first-child { grid-column: 1 / -1; }
+  .pd-results, .pd-handoff-state { padding: 18px; }
+  .pd-timeline { padding: 0 18px 18px; }
+}

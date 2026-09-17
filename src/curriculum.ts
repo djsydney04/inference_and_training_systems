@@ -99,19 +99,19 @@ export const chapters: Chapter[] = [
   {
     id: "parallel-training",
     title: "Splitting work across GPUs",
-    intro: "There are several ways to divide a model and its data. Work through what each device owns, computes and sends to the others.",
+    intro: "There are several ways to divide a model and its data. Follow what each device owns, how temporary tensors change peak memory, and how shards become a complete update.",
     part: "Training",
     outcome:
-      "Verify a sharded layer, trace pipeline activation lifetimes and reconcile rank ownership.",
+      "Verify sharded layers and optimizer updates, trace materialization and pipeline lifetimes, and reconstruct checkpoint ownership.",
     requires: ["training"],
   },
   {
     id: "post-training",
     title: "Post-training",
-    intro: "A trained base model can learn from demonstrations and preferences. Follow the objectives, the data they need and the evaluations that test the result.",
+    intro: "A trained model can learn from demonstrations, preferences and rewards. Follow how generated responses become updates, and what must stay consistent as the policy changes.",
     part: "Training",
     outcome:
-      "Implement response masking and preference objectives; audit a rollout pipeline.",
+      "Implement response masking and preference objectives; trace rollout overlap, policy lag and behavior probabilities.",
     requires: ["parallel-training"],
   },
   {
@@ -213,28 +213,28 @@ export const chapters: Chapter[] = [
   {
     id: "inference",
     title: "Running an LLM",
-    intro: "Generation processes a prompt and then produces tokens one at a time. Follow the cached state and the scheduler that shares a device between requests.",
+    intro: "Generation processes a prompt and then produces tokens. Follow the cached state, then work through how lower-precision weights and activations change storage and numerical error.",
     part: "Inference",
     outcome:
-      "Account for prefill, decode, KV state and dynamic request scheduling.",
+      "Account for prefill and decode state; calculate quantized codes, grouping overhead and activation-dependent output error.",
     requires: ["attention", "machine"],
   },
   {
     id: "decoding",
     title: "Choosing the next token",
-    intro: "Scores become tokens through a decoding rule. Compare sampling choices and work through why speculative decoding can preserve the same distribution.",
+    intro: "Scores become tokens through a decoding rule. Learn how modern drafters propose several tokens, how the target verifies them, and when that extra work pays off.",
     part: "Inference",
     outcome:
-      "Preserve the sampling distribution and reconcile provisional state before claiming a speedup.",
+      "Preserve the sampling distribution, train compatible proposals, reconcile tree state and measure acceptance by depth.",
     requires: ["inference"],
   },
   {
     id: "serving-lab",
     title: "Serving under load",
-    intro: "A fast single request does not tell you how a service behaves under load. Measure user latency and total throughput while controlling the workload.",
+    intro: "A service manages queues, caches and many requests. Build an iteration, admit work that can finish, then follow prefill/decode separation and measure complete answers under load.",
     part: "Inference",
     outcome:
-      "Design a load test, read latency distributions, and define sustainable capacity.",
+      "Trace scheduling and cache pressure, design arrival and measurement contracts, budget handoffs and distinguish capacity from goodput.",
     requires: ["decoding", "performance"],
   },
   {
@@ -243,8 +243,17 @@ export const chapters: Chapter[] = [
     title: "Frontier research",
     intro: "New architectures change what is computed, stored or moved. Derive the main mechanisms and read reported results with their dates, assumptions and limitations.",
     part: "Inference",
-    outcome: "Derive the mechanisms behind MLA, MoE, hybrids, low precision and disaggregated serving, with versioned evidence.",
+    outcome: "Derive MLA, hybrids and low-precision mechanisms; execute MoE routing, ownership, capacity and gradients with versioned evidence.",
     requires: ["attention", "post-training", "inference", "accelerator-atlas"],
+  },
+  {
+    id: "frameworks",
+    title: "Popular frameworks",
+    intro: "Find where the major tools fit. Compare tensor execution, training libraries and serving engines, then trace the contracts that must survive a change of framework.",
+    evidenceChecked: "September 16, 2026",
+    part: "Practice",
+    outcome: "Match numerical updates across frameworks, choose tools by responsibility, and verify labels, model artifacts, cache identity and timing.",
+    requires: ["programming", "optimization", "inference"],
   },
   {
     id: "end-to-end",
@@ -309,7 +318,7 @@ export const learningPaths = [
   {
     id: "training", title: "Training",
     description: "Data, derivatives, optimizer state, distributed execution and a reproducible model experiment.",
-    route: prerequisiteRoute(["post-training", "end-to-end", "projects"]),
+    route: prerequisiteRoute(["post-training", "frameworks", "end-to-end", "projects"]),
   },
   {
     id: "hardware", title: "Hardware and systems",
@@ -324,7 +333,7 @@ export const learningPaths = [
   {
     id: "inference", title: "Inference and serving",
     description: "Cache correctness, decoding, request scheduling, profiling and capacity under load.",
-    route: prerequisiteRoute(["serving-lab", "accelerator-atlas", "end-to-end", "frontier", "projects"]),
+    route: prerequisiteRoute(["serving-lab", "accelerator-atlas", "frameworks", "end-to-end", "frontier", "projects"]),
   },
   {
     id: "circuits", title: "Circuits and accelerators",

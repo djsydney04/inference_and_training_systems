@@ -31,7 +31,7 @@ function selections(root: HTMLElement, selector: string, kind: DiagramWalkthroug
   } };
 }
 
-function steps(root: HTMLElement, next: string, reset: string, limit = Infinity): DiagramWalkthrough {
+function steps(root: HTMLElement, next: string, reset: string, limit = Infinity, readout?: string): DiagramWalkthrough {
   let count = 0;
   return { kind: "simulation", advance() {
     const button = root.querySelector<HTMLButtonElement>(next)!;
@@ -40,18 +40,30 @@ function steps(root: HTMLElement, next: string, reset: string, limit = Infinity)
       return "Start again · initial state";
     }
     click(button); count++;
-    return `Step ${count} · ${label(button)}`;
+    return readout ? label(root.querySelector(readout)!) : `Step ${count} · ${label(button)}`;
   } };
 }
 
-function sweep(root: HTMLElement, selector: string, name: string, values?: string[]): DiagramWalkthrough {
+function sweep(root: HTMLElement, selector: string, name: string, values?: string[], readout?: string): DiagramWalkthrough {
   return { kind: "comparison", advance() {
     const input = root.querySelector<HTMLInputElement | HTMLSelectElement>(selector)!;
     const choices = values ?? [...(input as HTMLSelectElement).options].map(o => o.value);
     const next = (choices.indexOf(input.value) + 1) % choices.length;
     setValue(input, choices[next]);
-    const value = input instanceof HTMLSelectElement ? input.selectedOptions[0].textContent : input.value;
+    const value = readout ? label(root.querySelector(readout)!) : input instanceof HTMLSelectElement ? input.selectedOptions[0].textContent : input.value;
     return `${name}: ${value}`;
+  } };
+}
+
+/** These sliders represent ordered simulation states, not numerical parameters. */
+function phaseSlider(root: HTMLElement, selector: string, readout: string): DiagramWalkthrough {
+  return { kind: "simulation", advance() {
+    const input = root.querySelector<HTMLInputElement>(selector)!;
+    // Re-read bounds because changing the reader's scenario can change its length.
+    const start = Number(input.min), end = Number(input.max), step = Number(input.step) || 1;
+    const value = Number(input.value) >= end ? start : Math.min(end, Number(input.value) + step);
+    setValue(input, String(value));
+    return `${value === start ? "Start again" : "Next state"} · ${label(root.querySelector(readout)!)}`;
   } };
 }
 
@@ -89,6 +101,8 @@ export const diagramHostSelector = "figure, .textbook-lab, .three-lab, .architec
 export function diagramWalkthrough(root: HTMLElement): DiagramWalkthrough | null {
   // The entrance drawing is a quiet, manually explored preview.
   if (root.closest(".atlas-landing")) return null;
+  // Catalog studies are captioned external artwork, separate from live diagrams.
+  if (root.matches("figure.book-study")) return null;
   // A parent figure can contain an independently owned lesson schematic.
   if (root.matches(".lesson-visual")) return selections(root, "[data-lv-node]");
   if (root.matches("[data-nn-inspector]")) return selections(root, "[data-nn-part]");
@@ -139,6 +153,10 @@ export function diagramWalkthrough(root: HTMLElement): DiagramWalkthrough | null
       return `${stage + 1}/4 · ${label(nodes[stage])}`;
     } };
   }
+  if (root.querySelector("[data-sharded-phase]")) return phaseSlider(root, "[data-sharded-phase]", "[data-sharded-phase-name]");
+  if (root.querySelector("[data-serving-stop-step]")) return phaseSlider(root, "[data-serving-stop-step]", "[data-serving-stop-result]");
+  if (root.querySelector("[data-sr-next]")) return steps(root, "[data-sr-next]", "[data-sr-reset]", Infinity, "[data-sr-state] .sr-readout strong");
+  if (root.querySelector("[data-pd-handoff-next]")) return steps(root, "[data-pd-handoff-next]", "[data-pd-handoff-reset]", Infinity, "[data-pd-handoff-state] .pd-state-title");
   const stepRecipes = [
     ["matmul", "next", "reset"], ["ring", "next", "reset"], ["pipe", "next", "reset"],
     ["optimizer", "next", "reset"], ["spec", "next", "reset"], ["systolic", "next", "reset"],
@@ -172,7 +190,9 @@ export function diagramWalkthrough(root: HTMLElement): DiagramWalkthrough | null
     click(root.querySelector("[data-inference-step]")); return label(root.querySelector("[data-phase-readout] strong")!);
   } };
 
-  const comparisons: [string, string, string[]?][] = [
+  // Each recipe changes one named teaching axis; other reader settings stay fixed.
+  // New controls must be selected deliberately here, never discovered and cycled.
+  const comparisons: [string, string, string[]?, string?][] = [
     ["nn-query", "Query position"], ["attention-mode", "Attention pattern"], ["address-layout", "Storage layout"],
     ["memory-stride", "Lane stride"], ["occ-registers", "Registers per thread"], ["capacity-batch", "Concurrent sequences"],
     ["warp-stride", "Word stride"], ["fixed-fraction", "Fraction bits"], ["train-zero", "State sharding"],
@@ -182,9 +202,32 @@ export function diagramWalkthrough(root: HTMLElement): DiagramWalkthrough | null
     ["trace-overlap", "Independent compute (ms)", ["0", "2", "4", "6", "8"]],
     ["kv-tokens", "Cached tokens", ["512", "2048", "8192", "32768"]],
     ["acceptance", "Draft acceptance", ["10", "30", "50", "70", "90", "100"]],
+    ["prefetch-enabled", "Forward gather schedule"],
+    ["update-owners", "Logical owners of the same reduced gradient"],
+    ["framework-shift", "Who shifts the next-token labels"],
+    ["rollout-lag", "Allowed policy-version lag"],
+    ["ratio-current", "Current-policy probability π; behavior probability stays fixed"],
+    ["ft-count", "Calls inside the timer boundary"],
+    ["quant-scale", "Quantization scale s", ["5", "10", "25", "50", "100"], "[data-quant-scale-value]"],
+    ["weight-group", "Weights sharing one quantization scale"],
+    ["tree-query", "Tree query and its visible ancestors"],
+    ["depth-mode", "Draft execution schedule"],
+    ["sr-interval", "Arrival interval (ms); service time stays fixed"],
+    ["sr-buffer", "Client receipt / buffering scenario"],
+    ["pd-emission", "First-token emission boundary"],
+    ["pd-d-workers", "Decode replicas; prefill and link stay fixed", ["1", "2", "4", "8"]],
+    ["moe-token", "Follow token through packing and weighted combination"],
+    ["moe-capacity", "Per-expert capacity under the selected overflow rule"],
+    ["moe-grad-token", "Token whose router and expert derivatives are inspected"],
+    ["fw-reduction", "Classifier loss reduction; valid-target mask stays fixed"],
+    ["fw-phase", "Execution situation in the selected framework"],
+    ["fw-call", "Call ledger through this invocation"],
+    ["framework-divisor", "Backward helper division; compensation preserves the objective"],
+    ["framework-alpha", "Adapter scale", ["0", "0.5", "1", "2"], "[data-framework-alpha-value]"],
+    ["serving-cache-case", "Prefix computation / identity scenario"],
   ];
-  for (const [attribute, name, values] of comparisons) {
-    if (root.querySelector(`[data-${attribute}]`)) return sweep(root, `[data-${attribute}]`, name, values);
+  for (const [attribute, name, values, readout] of comparisons) {
+    if (root.querySelector(`[data-${attribute}]`)) return sweep(root, `[data-${attribute}]`, name, values, readout);
   }
   if (root.querySelector("[data-nn-whole]")) return tour(root, () => all(root, "[data-nn-whole] .nn-node").map(node => ({ nodes: [node], note: label(node) })));
   if (root.closest("#network-embeddings")) return tour(root, () => [7, 2, 9, 4].map((id, row) => ({
@@ -212,8 +255,13 @@ export function diagramWalkthrough(root: HTMLElement): DiagramWalkthrough | null
     { nodes: all(root, ".replica-contract > div"), note: "Both replicas accumulate normalized contributions at the same parameter version." },
     ...all(root, ".replica-reduction > span, .replica-reduction > strong").map(node => ({ nodes: [node], note: label(node) })),
   ]);
+  if (root.id === "framework-deployment-diagram") return tour(root, () => [
+    { nodes: all(root, ".fw-router"), note: "The request router chooses one ready serving replica." },
+    { nodes: all(root, ".fw-replica-row > div"), note: "The two replicas have independent schedulers and request KV state." },
+    { nodes: all(root, ".fw-replica-row p"), note: "Within each replica, its two model ranks communicate to execute the request." },
+  ]);
   // These are authored, ordered flows or side-by-side comparisons, not arbitrary text.
-  for (const selector of [".manual-sequence > div", ".method-flow > li", ".cuda-pipeline > span", ".contract-comparison > div", ".fiber-path > div", ".request-flow > div"]) {
+  for (const selector of [".manual-sequence > div", ".method-flow > li", ".cuda-pipeline > span", ".contract-comparison > div", ".fiber-path > div", ".request-flow > div", ".pd-route > div", ".fw-layers > li", ".framework-responsibility-flow > li"]) {
     if (root.querySelector(selector)) return tour(root, () => all(root, selector).map(node => ({ nodes: [node], note: label(node) })));
   }
   return null;

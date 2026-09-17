@@ -109,7 +109,7 @@ export function initializeSystemBuildout() {
   const plane=figure.querySelector<HTMLSelectElement>("[data-sb-plane]")!;
   const inspect=(key:string)=>{
     const part=info[key];
-    figure.querySelector(".sb-inspector")!.innerHTML=`<div><span>Selected component</span><h4>${esc(part.title)}</h4><p>${esc(part.body)}</p></div><aside><p>${esc(part.note)}</p>${part.next&&part.next!==level?`<button type="button" data-sb-level="${part.next}">Open ${part.next==="facility"?"power and cooling":part.next}</button>`:""}</aside>`;
+    figure.querySelector(".sb-inspector")!.innerHTML=`<div><span>Selected component</span><strong class="sb-component-title">${esc(part.title)}</strong><p>${esc(part.body)}</p></div><aside><p>${esc(part.note)}</p>${part.next&&part.next!==level?`<button type="button" data-sb-level="${part.next}">Open ${part.next==="facility"?"power and cooling":part.next}</button>`:""}</aside>`;
     figure.querySelectorAll("[data-system-part]").forEach(node=>{const active=node.getAttribute("data-system-part")===key;node.classList.toggle("is-selected",active);node.setAttribute("aria-pressed",String(active));});
   };
   const render=()=>{

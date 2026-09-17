@@ -1,5 +1,71 @@
 # Textbook development record
 
+## September 16 frameworks continuation
+
+Added the Popular frameworks chapter with fourteen lessons and four bridges in
+earlier chapters. Thirteen original figures, ten with interactive controls, connect
+framework roles, actual derivatives, tracing, causal labels, global objectives,
+adapters, artifacts, API/stop/cache contracts, deployment, timing and CUDA replay.
+Kept main explanations visible, folded detailed derivations/code, generated all
+labels and linked the chapter into training and inference learning paths.
+
+Actual CPU runs passed for PyTorch/JAX loss, every gradient, updates and graph
+reuse, and for Transformers/PEFT label alignment, three updates, model/tokenizer
+restore, adapter restore and FP32 merge. TensorFlow/Keras comparison and CUDA
+replay remain explicitly unexecuted. The final review corrected a directional
+learning-rate example and checked fixed-buffer and timing explanations.
+
+Committed separate slices and repeatedly fetched/rebased the isolated worktree
+onto GitHub main through 8645d3b, preserving the AI Almanac design, 29 conceptual
+studies, diagram playback and release v0.3.0 metadata. The shared checkout and
+the other agent's local edits were untouched. 173 Node tests, 14 new Python
+checks and the production build pass; 170 production page/width checks find no
+overflow, broken anchors, label or title errors. See
+the [frameworks audit](docs/FRAMEWORKS_AUDIT_2026-09-16.md) and current verification
+record for runtime pins, final UI checks and remaining evidence boundaries.
+
+Completed the incoming playback integration with 34 missing adapters and fixed
+captions after manual reset. The final browser evidence includes 36 passing
+playback cases, four repaired static-study coverage cases rerun across all widths,
+and 12 passing production UI cases. Static artwork is validated separately from
+the 190 direct teaching players; no live lab is exempted from walkthrough checks.
+
+## September 16 execution-gap continuation
+
+Added fifteen lessons in four coordinated slices: sharded training lifetimes and
+updates, quantization/error, MoE execution/gradients, and serving progress/metrics.
+The examples include real INT4 byte packing, logical-rank AdamW and resharded
+restart, explicit expert permutations, a cache-allocation deadlock, and a complete
+delivery-trace denominator. New glossary/gallery entries preserve the learning
+path; a source audit records each reference and the local evidence boundary.
+
+Committed slices independently on the isolated `codex/atlas-learning-clarity`
+worktree, pulling concurrent GitHub work through `a124515`. Kept the new course
+navigation and Programming group. Found and repaired an incoming transient
+inspector heading that could create a stale search target.
+
+Validation: 138 Node tests, 23 new Python checks, build, independent numerical
+cross-review, actual controls and 160 production page/width checks. Inventory:
+163 sections, 175 figures, 77 code listings, 114 checks and 225 sources. No GPU
+execution or production benchmark is inferred from these calculations.
+
+## September 16 inference and training pass
+
+Added eleven connected lessons covering modern speculative proposals and draft
+training, tree attention, optimal depth under assumed costs, prefill/decode
+separation, KV ownership and transfer, fleet bottlenecks, rollout records,
+asynchronous actor/learner scheduling and policy correction. Original diagrams
+and interactive calculations expose the intermediate state; companion Python
+examples exercise handoff ownership and event-driven rollout scheduling.
+
+Saved implementation and glossary checkpoints, pulling and merging concurrent
+GitHub work through `b4b8801` on the isolated `codex/atlas-learning-clarity` branch.
+Preserved both the new labs and incoming figure tools. Final evidence: 103 Node,
+8 inference Python and 6 rollout Python tests; TypeScript/build; 155 production
+page/width checks; new-control and narrow-layout reviews. The reader now indexes
+142 sections and 199 sources. See the dated inference/training audit for exact
+source versions, calculated examples and the unverified target-hardware boundary.
+
 ## September 16 clarity pass
 
 Simplified navigation to one chapter picker and outline; removed the duplicate

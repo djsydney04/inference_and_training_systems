@@ -1,5 +1,70 @@
 # Build roadmap
 
+## September 16, 2026 — popular frameworks and implementation boundaries
+
+The new fourteen-lesson framework chapter connects the tensor/autodiff layer to
+training tools, model artifacts, serving engines and deployment. Four earlier
+lessons now explain causal label ownership, message/token/stream boundaries,
+CUDA replay storage and asynchronous timing. The
+[frameworks audit](docs/FRAMEWORKS_AUDIT_2026-09-16.md) records thirteen figures,
+real CPU framework checks, dated sources and reader integration.
+
+The next experiments should preserve those contracts while adding one dimension:
+
+- Execute the supplied TensorFlow/Keras parity and trace-count paths in a complete
+  environment, then compare mixed precision and actual compiler code generation.
+- Execute fixed-buffer CUDA replay and synchronization-aware timing on a GPU;
+  separate correctness, warm/cold latency and workload throughput.
+- Run an actual distributed fine-tuning job with uneven target counts, verify
+  global gradients and resume the next update from a distributed checkpoint.
+- Compare supported serving engines with identical input tokens, model/adapter
+  revisions, sampling and stop semantics before measuring quality and goodput.
+
+The existing PyTorch/JAX and Transformers/PEFT CPU results establish their stated
+small numerical contracts. They do not establish these remaining device,
+distributed or model-quality results.
+
+## September 16, 2026 — worked execution contracts
+
+Fifteen more lessons now connect named techniques to the values and state needed
+to implement them. The path covers sharded materialization and AdamW recovery;
+quantized codes, real packing and activation-dependent error; MoE route packing,
+capacity and derivatives; and serving admission, arrival models and complete
+stream measurements. The [execution-gap audit](docs/EXECUTION_GAPS_AUDIT_2026-09-16.md)
+records the calculations, sources and independent checks.
+
+The next target-environment experiments follow directly from those contracts:
+
+- Capture actual FSDP allocation/collective timelines and compare them with the
+  declared live-set model; exercise distributed checkpoint failure and restart.
+- Quantize a real checkpoint with representative calibration and held-out tasks;
+  measure supported kernel execution, quality, memory and latency together.
+- Run routed expert work across devices, compare dispatch skew and grouped kernel
+  efficiency, and verify the exact router/capacity contract under real traffic.
+- Record a real streaming workload with intended arrivals, dispatch, output-token
+  receipts and terminal results; include retries, preemption and failed attempts.
+
+These experiments require the relevant runtime and hardware. Their absence does
+not change the passing mathematical and CPU-reference checks, and those checks
+do not establish the experiments' results.
+
+## September 16, 2026 — inference meets the training runtime
+
+Modern speculative drafters now connect to their training, tree masks, KV
+gathering and acceptance/cost tradeoffs. Prefill/decode lessons follow a request
+through cache transfer and then explain how worker pools and network capacity
+limit service. The post-training path follows generated responses into a
+versioned actor/learner pipeline and works through off-policy probability ratios.
+The diagrams, calculations, CPU references, citations and reader integration
+are verified in the [dated audit](docs/INFERENCE_TRAINING_AUDIT_2026-09-16.md).
+
+The next empirical work is a controlled target-hardware comparison: fixed-fleet
+colocated versus split serving, each with and without speculation, using the
+same quality and service objectives. Measure TTFT, individual token gaps,
+completion, KV traffic, failure recovery and cost. For training, measure useful
+accepted groups, policy age and learning quality alongside runtime throughput.
+The educational calculators do not substitute for these experiments.
+
 ## September 14, 2026 — connected implementation path
 
 The reader now has 29 chapters and five prerequisite-complete paths. Eight added

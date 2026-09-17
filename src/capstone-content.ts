@@ -74,6 +74,7 @@ ${code("Read the complete bounded local server", serverSource)}
 <p>To evolve this into a serving engine, separate request metadata from batch membership; preserve per-sequence positions and KV ownership; perform prefill and decode under a token budget; release blocks on completion, cancellation and error; and test prefix sharing with copy-on-write. Then add streaming, bounded queues, deadlines, observability and graceful shutdown. Each step must preserve the already-tested model semantics.</p>
 </section>
 <section class="lesson" id="capstone-vllm" data-lesson="GPU serving with vLLM"><header><span>GPU deployment lab</span><h3>Use a supported checkpoint and pin the engine</h3></header>
+<p>The <a href="#framework-model-artifacts">framework comparison</a> explains the loader and architecture contracts behind this handoff. Keep this exercise's pinned engine version together with its commands; newer engine interfaces are documented separately in that chapter.</p>
 <p>The custom byte decoder is not a vLLM checkpoint format. This second lab uses a supported public OPT checkpoint to learn an actual GPU engine’s lifecycle. Porting a custom architecture requires configuration/tokenizer metadata, weight-name mapping, implementation support and numerical equivalence checks; renaming a .pt file does not perform that conversion.</p>
 <div class="lesson-code"><div><h4>Documented vLLM 0.12.0 exercise on a compatible NVIDIA Linux host</h4></div><pre><code>docker run --rm --gpus all --ipc=host \\
   -p 127.0.0.1:8000:8000 vllm/vllm-openai:v0.12.0 \\

@@ -8,6 +8,10 @@ practice, and reference. Prerequisite-ordered reading paths, chapter search
 (⌘/Ctrl K), a searchable source ledger, and direct section links connect the
 material. The landing page opens a course guide with a recommended starting point.
 
+The current edition contains **31 chapters, six learning paths, 184 sections
+and 220 figures**, with numbered code, worked checks and a searchable source
+ledger. Fonts and figures are served locally.
+
 The sidebar exposes chapter groups and the current chapter’s section outline.
 Optional worked details open within a lesson; search reveals folded targets.
 Chapter titles, introductions, and display numbers come from the curriculum.
@@ -26,7 +30,8 @@ landing page, reader, and diagram conventions.
   tensors, attention, C types/pointers, storage ownership and strided layouts.
 - **Training:** data contracts, packing, optimization, mixed precision,
   recomputation, distributed state, tensor/pipeline/context/expert parallelism,
-  post-training objectives and evaluation.
+  gathered-state lifetimes, sharded optimizer updates and checkpoint redistribution,
+  post-training objectives, asynchronous actor/learner execution, policy lag and evaluation.
 - **Circuits:** gates, two's complement, fixed point, clocked state, setup/hold,
   clock-domain crossings, ready/valid, Verilog simulation, FPGA resources,
   synthesis, pipelined MACs, systolic arrays and ASIC physical implementation.
@@ -36,18 +41,27 @@ landing page, reader, and diagram conventions.
 - **Hardware:** CPU/GPU/LPU, NVIDIA, AMD, Google TPU, AWS Trainium, Cerebras,
   Intel Gaudi, edge/unified-memory systems, interconnect, memory and power.
 - **Serving and frontier:** KV allocation, batching, speculative sampling,
-  MLA, MoE, hybrid state, FlashAttention, FP8/FP4, disaggregation, test-time
-  computation, latency tails and goodput.
+  EAGLE/MTP/block drafters, tree attention, MLA, MoE, hybrid state,
+  FlashAttention, FP8/FP4, prefill/decode disaggregation, cache handoff,
+  expert dispatch/combine and gradients, quantization/calibration error,
+  scheduling and admission, fleet bottlenecks, test-time computation, latency tails and goodput.
 - **End-to-end practice:** train a byte decoder, verify checkpoint restart and
   cached equivalence, evaluate held-out text, export an actual CPU trace and
   serve the checkpoint over HTTP; then follow a pinned vLLM GPU exercise.
+- **Popular frameworks:** PyTorch, JAX, TensorFlow/Keras, Hugging Face training
+  tools, Lightning, distributed runtimes, vLLM, SGLang, TensorRT-LLM, llama.cpp,
+  MLX and deployment layers. Compare actual updates, model/tokenizer contracts,
+  tracing, adapters, cache identity, stop handling and completed-work timing.
 
 The systems gallery includes interactive 2D numerical diagrams and three physical
 Three.js workbenches. Matrix multiplication and all-reduce use clear, selectable
 2D values and preserve the existing calculation models. Hardware
 reference images have [provenance](public/figures/ATTRIBUTION.md). The new source
-review records dated disclosures and corrected comparisons in
-[the September 14 source audit](docs/SOURCE_AUDIT_2026-09-14.md).
+reviews record dated disclosures and corrected comparisons in
+[the hardware source audit](docs/SOURCE_AUDIT_2026-09-14.md),
+[the inference/training audit](docs/INFERENCE_TRAINING_AUDIT_2026-09-16.md),
+[the execution-gap review](docs/EXECUTION_GAPS_AUDIT_2026-09-16.md), and
+[the frameworks audit](docs/FRAMEWORKS_AUDIT_2026-09-16.md).
 
 ## Executable companions
 
@@ -58,8 +72,15 @@ review records dated disclosures and corrected comparisons in
 | [C](examples/c-basics/README.md) | Ownership, padded/transpose views and reference matmul | C17 compiler; ASan/UBSan |
 | [CUDA](examples/cuda/LEARNING_PATH.md) | Reductions, softmax/RMSNorm derivatives and Triton | NVIDIA CUDA host required for device execution |
 | [CUDA to PyTorch](examples/cuda/TORCH_RMSNORM.md) | Custom autograd operation and complete AdamW update comparisons | Analytical CPU path verified; compiled CUDA path requires GPU |
+| [CUDA/HIP baseline](examples/portable-kernels/README.md) | Shared row-major matmul, launch coverage and independent FP64 reference | CPU sanitizer path verified; device paths require CUDA/ROCm hardware |
 | [RTL](examples/rtl/README.md) | Adder, elastic MAC, dot-product FSM, systolic array; synthesized-netlist simulation | Icarus; Yosys or YoWASP for synthesis |
-| [Sampling](examples/inference/README.md) | Exact speculative acceptance and residual sampling | Standard Python |
+| [Inference](examples/inference/README.md) | Exact speculative acceptance, residual sampling and KV-handoff ownership | Standard Python |
+| [Actor/learner runtime](examples/training-runtime/README.md) | Event-driven rollout schedule, bounded policy lag and clipped ratios | Standard Python; declared synthetic durations |
+| [Sharded training](examples/sharded-training/README.md) | Uneven data contributions, complete AdamW updates and checkpoint redistribution | Standard Python; logical CPU ranks |
+| [Quantization](examples/quantization/README.md) | Affine codes, groups, calibration error, K/V error and actual INT4 packing | Standard Python; floating arithmetic |
+| [Mixture of experts](examples/moe/README.md) | Routing, grouped execution, weighted combination, capacity and derivatives | Standard Python; linear experts |
+| [Serving traces](examples/serving-runtime/README.md) | Token receipts, terminal results, goodput and offered-population accounting | Standard Python; declared trace |
+| [Framework contracts](examples/frameworks/README.md) | Same update across APIs, graph reuse, causal labels, adapter reload, stop strings and CUDA replay | Standard Python; PyTorch/JAX and Transformers/PEFT CPU checks verified; TensorFlow/Keras and CUDA replay unexecuted |
 
 The written path is broad; verification boundaries remain specific. CPU tests,
 RTL simulation and generic synthesis do not establish GPU kernel performance,
@@ -92,21 +113,16 @@ npm test
 npm run build
 ```
 
-See the [TensorFlow companion](examples/tensorflow/README.md) for a runnable tiny
-decoder, checkpoint-resume example, post-training losses, adapter, token-weighted
-gradient example, two-replica runtime experiment, and numerical-contract tests. Eighty Node
-tests cover numerical labs, matrix-tile schedules, prerequisite ordering,
-chapter lookup, and camera framing.
-The optimization chapter adds a stateful SGD/momentum/AdamW comparison, clipping
-counterexample, mixed-precision contracts and activation recomputation.
-The separate decoding chapter adds probability accounting, exact speculative
-sampling, provisional-state reconciliation, and break-even reasoning. Its
-[Python reference](examples/inference/README.md) has four additional tests.
-The parallel-training chapter derives a partitioned MLP and compares GPipe-style
-and 1F1B schedules. Four additional TensorFlow tests validate the tensor-shard
-algebra on CPU, including all gradients and explicit counterexamples.
-The [verification record](VERIFICATION.md) states what has actually been checked
-and what has not been measured.
+The integrated suite currently has **173 Node tests**. Companion READMEs contain
+their Python, C, RTL and target-hardware commands. The latest framework additions
+include 14 standard-library Python tests, actual PyTorch/JAX CPU parity and a
+Transformers/PEFT save/reload/merge check. Earlier TensorFlow companion results
+are separate from the new, unexecuted TensorFlow/Keras comparison path.
+
+Browser checks cover every chapter, numerical controls, labels and navigation
+at desktop and phone widths. The [verification record](VERIFICATION.md) states
+the checked revisions and distinguishes numerical examples, actual runtime
+execution and unmeasured hardware performance.
 
 ## Extend the textbook
 
@@ -115,6 +131,12 @@ and what has not been measured.
   of older material into the new chapter sequence.
 - `src/atlas-home.ts`: curriculum overview and original SVG gallery previews.
 - `src/systems-content.ts`: data, profiling, serving, and engineering-project lessons.
+- `src/speculation-frontier-*`, `src/disaggregation-*`, and `src/rollout-training-*`:
+  modern inference and actor/learner lessons, controls and tested numerical models.
+- `src/sharded-training-*`, `src/quantization-*`, `src/moe-execution-*`, and
+  `src/serving-runtime-*`: execution, numerical error, ownership and measurement labs.
+- `src/framework-*` and `examples/frameworks/`: framework responsibility maps,
+  execution/training/serving contracts, timing/replay lessons and CPU companions.
 - `src/scenes.ts` and `src/scene-detail.ts`: Three.js workbenches and guided stages.
 - `src/kernel-content.ts`, `src/kernel-lab.ts`, and `src/kernel-scene.ts`: the
   replica-runtime lesson and value-driven matrix workbench.

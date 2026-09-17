@@ -1,0 +1,17 @@
+.rollout-workbench .rollout-readout { padding: 1rem 24px; border-block: 1px solid var(--line, #d5d5d5); font-family: var(--sans); }
+.rollout-workbench .rollout-readout strong { font-size: 1.08rem; }
+.rollout-workbench .rollout-readout p { font-size: .9rem; line-height: 1.55; }
+.rollout-workbench .rollout-readout p:last-child { margin-bottom: 0; }
+body.atlas-ui .rollout-workbench > .deep-dive { margin: 0; padding: 16px 24px; }
+.rollout-timeline { display: block; min-width: 700px; width: 100%; }
+.rollout-timeline text { font-family: inherit; font-size: 12px; fill: currentColor; }
+.rollout-timeline .rollout-actor { fill: #286184; }
+.rollout-timeline .rollout-learner { fill: #344350; }
+.rollout-timeline .rollout-publish { fill: #ad4c1a; }
+.rollout-timeline rect { stroke: white; stroke-width: 1; }
+.rollout-timeline .rollout-bar-label { fill: white; font-size: 11px; }
+.rollout-workbench .method-toolbar label { min-width: 0; }
+.rollout-workbench .method-toolbar select { max-width: 100%; }
+@media (max-width: 600px) {
+  .rollout-workbench .rollout-readout, body.atlas-ui .rollout-workbench > .deep-dive { padding: 16px; }
+}

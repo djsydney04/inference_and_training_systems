@@ -12,6 +12,31 @@ export const galleryItems = [
     copy: "Dive into every stage of a decoder, follow tensor shapes, and inspect attention and feed-forward arithmetic.",
   },
   {
+    kind: "network", id: "framework-roles", title: "Where does each framework fit?",
+    scope: "Model → training or serving → execution", type: "Framework responsibility map",
+    copy: "Trace six concrete software stacks and identify the first correctness check at each boundary.",
+  },
+  {
+    kind: "trace", id: "framework-benchmark-boundary", title: "When is the result actually ready?",
+    scope: "Host dispatch → queued device work → completion", type: "Framework timing lab",
+    copy: "Separate cold start, warm latency and amortized time in a dependency timeline.",
+  },
+  {
+    kind: "cache", id: "pd-transfer-budget", title: "Where does the handoff delay go?",
+    scope: "Prompt KV → transfer → first output gap", type: "Disaggregated serving lab",
+    copy: "Vary cache reuse, head count and link rate; reconcile wire bytes, TTFT and the second token's arrival.",
+  },
+  {
+    kind: "mask", id: "speculative-tree-attention", title: "Which branch may this token read?",
+    scope: "Tree ancestry → attention mask → cache ownership", type: "Speculative decoding lab",
+    copy: "Inspect a packed draft tree and separate logical positions from provisional cache slots.",
+  },
+  {
+    kind: "training", id: "rollout-pipeline", title: "When does faster generation stop helping?",
+    scope: "Actor → reward → learner → new weights", type: "Training pipeline lab",
+    copy: "Change decode speed and policy lag; follow six rollout groups through an overlapping training schedule.",
+  },
+  {
     kind: "gradient", id: "first-weight-update", title: "Watch six weights learn",
     scope: "Scores → probabilities → loss → derivatives", type: "First-principles lab",
     copy: "Calculate one next-token prediction, inspect every gradient and apply an update yourself.",
@@ -109,6 +134,30 @@ export const galleryItems = [
     scope: "Parameters → gradients → optimizer",
     copy: "Change the ZeRO stage and reconcile model-state memory with a global token budget.",
     type: "Training calculator",
+  },
+  {
+    kind: "training", id: "fsdp-live-memory", title: "What makes a sharded run peak in memory?",
+    scope: "Persistent shards → gathered weights → temporary gradients",
+    copy: "Follow live allocations through forward, backward and reduce-scatter; compare prefetch and resharding.",
+    type: "Training memory lab",
+  },
+  {
+    kind: "matmul", id: "calibration-and-output-error", title: "Which weight error changes the output?",
+    scope: "Integer codes → reconstruction → activation-weighted error",
+    copy: "Change group size and input distribution, then compare weight error with actual layer-output error.",
+    type: "Quantization lab",
+  },
+  {
+    kind: "network", id: "moe-route-pack-combine", title: "Where does each expert contribution return?",
+    scope: "Route → pack by expert → weighted inverse gather",
+    copy: "Trace token assignments, grouped computation and the exact output values after recombination.",
+    type: "MoE execution lab",
+  },
+  {
+    kind: "trace", id: "scheduler-iteration", title: "What fits in the next serving iteration?",
+    scope: "Arrivals → token budget → cache growth → completion",
+    copy: "Step through mixed prefill and decode work, then expose a cache-allocation policy that cannot make progress.",
+    type: "Serving scheduler lab",
   },
   {
     kind: "mask",
