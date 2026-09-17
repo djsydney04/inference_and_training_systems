@@ -248,8 +248,6 @@ export function initializeReader() {
   const chapterLessons = new Map<string, HTMLElement[]>();
   chapters.forEach((chapter) => {
     const el = byId(chapter.id)!;
-    const guide = el.querySelector(".chapter-reading-guide");
-    guide?.remove();
     const requirements = chapter.requires
       .map((id) => chapters.find((c) => c.id === id)!)
       .filter(Boolean);
