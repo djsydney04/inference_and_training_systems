@@ -7,6 +7,9 @@
 .fw-role { grid-row: span 2; font: 12px/1.7 var(--sans); color: var(--graphite); }
 .fw-layers strong { font: 500 17px/1.5 var(--sans); }
 .fw-layers p { margin: 0; font: 15px/1.6 var(--sans); color: var(--graphite); }
+.fw-map > .fw-control { margin: 20px; max-width: min(480px, calc(100% - 40px)); }
+.fw-map > .fw-layers { margin: 0 20px; }
+.fw-map > .fw-proof, .fw-timing > .fw-proof, .fw-timing > .fw-scroll { margin: 20px; }
 .fw-proof { border-left: 3px solid var(--signal); padding-left: 18px; margin: 20px 0; }
 .fw-proof > span { font: 500 12px/1.6 var(--sans); color: var(--signal-dark); }
 .fw-proof p { margin: 6px 0; font: 16px/1.6 var(--sans); }
@@ -15,13 +18,14 @@
 .fw-scroll caption { text-align: left; padding: 12px 0; color: var(--graphite); font-size: 12px; }
 .fw-scroll th,.fw-scroll td { text-align: left; padding: 14px 16px 14px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
 .fw-scroll:focus-visible,.fw-control select:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
-.fw-timing-controls { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 20px; }
+.fw-timing-controls { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 20px; padding: 0 20px; }
+.fw-timing-controls .fw-control { margin: 16px 0; }
 .fw-time-track { position: relative; height: 30px; width: 200px; background: #e7e9e2; }
 .fw-time-track i { position: absolute; height: 10px; }
 .fw-time-host { top: 3px; background: #59625b; }
 .fw-time-device { bottom: 3px; background: var(--signal); }
 .fw-time-note { font: 12px/1.6 var(--sans); color: var(--graphite); }
-.fw-replicas { margin: 26px 0; font: 14px/1.6 var(--sans); }
+.fw-replicas { margin: 26px 20px; font: 14px/1.6 var(--sans); }
 .fw-router { text-align: center; padding-bottom: 24px; }
 .fw-router span,.fw-replica-row span { display: block; color: var(--graphite); font-size: 12px; }
 .fw-replica-row { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }

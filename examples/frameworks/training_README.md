@@ -44,13 +44,13 @@ PyTorch wheel. These pins define the example's environment, not the newest
 available libraries:
 
 ```sh
-python -m pip install torch==2.8.0 transformers==4.57.1 peft==0.17.0 accelerate==1.11.0
+python -m pip install -r examples/frameworks/training_requirements.txt
 python examples/frameworks/training_hf_smoke.py
 ```
 
 `training_hf_smoke.py` creates a seven-token local WordLevel tokenizer, an
 original chat template and a random one-layer GPT-2. It performs no Hub download.
-The intended checks are:
+The executed checks are:
 
 1. Template-provided assistant spans and padded labels have the exact expected
    token positions, including a real EOS target with the same ID as padding.
@@ -65,10 +65,18 @@ The saved files live in a temporary directory and are removed after the check.
 The script disables Hub access and disables Transformers' TensorFlow/Flax backend
 imports so a separate TensorFlow installation does not change this PyTorch test.
 
-Execution status: standard-library reference and six Python tests passed on
-September 16, 2026 (Python 3.14.7). The framework-specific check is pending the
-isolated native dependency environment; do not treat its source as an executed
-result until this paragraph is updated.
+Execution status, September 16, 2026:
+
+- Standard-library reference and six Python tests passed with Python 3.14.7.
+- The complete framework-specific script passed on a native arm64 CPU with
+  Python 3.11.5, Torch 2.8.0, Transformers 4.57.1, PEFT 0.17.0 and Accelerate
+  1.11.0 installed. It compared loss, every named gradient and three SGD updates;
+  the final random-model loss was `1.592381`. Both model/tokenizer restoration
+  and all adapter save/reload/FP32-merge checks passed.
+- The run used `arch -arm64` to keep the universal macOS interpreter native.
+  The same script selects CPU explicitly and requires no device backend or
+  downloaded model. Its default causal-loss fallback emitted an informational
+  message; that loss was checked against explicit cross entropy.
 
 Even a passing framework check does not establish Accelerate distributed
 execution, DDP/FSDP/DeepSpeed/Megatron integration, a TRL training run, quantized

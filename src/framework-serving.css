@@ -3,7 +3,8 @@
 .framework-serving-lab .method-toolbar label { min-width: 0; }
 .framework-serving-lab select { max-width: 100%; }
 .framework-serving-lab .method-toolbar output { display: block; font: 12px/1.5 var(--mono); }
-.framework-serving-result { font-weight: 600; padding-block: 12px; border-block: 1px solid var(--rule); }
+.framework-serving-lab > p:not(.figure-boundary) { margin-inline: 24px; }
+.framework-serving-result { font: 600 14px/1.65 var(--sans); padding-block: 12px; border-block: 1px solid var(--rule); }
 .framework-stop-state { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border-block: 1px solid var(--rule-dark); margin-top: 16px; }
 .framework-stop-state > div { padding: 14px 12px; min-width: 0; border-right: 1px solid var(--rule); }
 .framework-stop-state > div:last-child { border-right: 0; }
@@ -15,7 +16,8 @@
 .framework-engine-table th:first-child { width: 145px; }
 .framework-engine-table td { vertical-align: top; }
 .framework-engine-table small { font-weight: 400; }
-.framework-cache-diagram { max-width: 100%; overflow-x: auto; margin-block: 20px; padding-bottom: 8px; }
+.framework-cache-diagram { max-width: calc(100% - 48px); overflow-x: auto; margin: 20px 24px; padding-bottom: 8px; }
+.framework-serving-lab > .method-table { max-width: calc(100% - 48px); margin-inline: 24px; }
 .framework-cache-rows { min-width: 670px; }
 .framework-cache-row { margin-bottom: 22px; }
 .framework-cache-row > strong { display: block; font: 600 13px/1.5 var(--sans); margin-bottom: 10px; }
@@ -31,6 +33,8 @@
 .framework-cache-token.is-changed { color: #a24c19; border-bottom: 2px solid currentColor; }
 .framework-cache-legend { font: 11px/1.6 var(--sans); }
 @media (max-width: 560px) {
+  .framework-serving-lab > p:not(.figure-boundary) { margin-inline: 16px; }
+  .framework-cache-diagram, .framework-serving-lab > .method-table { max-width: calc(100% - 32px); margin-inline: 16px; }
   .framework-stop-state { grid-template-columns: 1fr; }
   .framework-stop-state > div { border-right: 0; border-bottom: 1px solid var(--rule); }
   .framework-stop-state > div:last-child { border-bottom: 0; }
