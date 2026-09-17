@@ -21,8 +21,9 @@ The expanded collection contains sixteen distinct drawings. It introduces all
 29 larger illustrated studies inside the lessons, and appears in all six course
 parts and 25 diagram-library previews. Lesson studies are numbered before reader
 indexing and share its accessible figure popout.
-The shared schematic styles use matching pale-green surfaces, engraved corners,
-and more generous captions. `src/book-illustrations.ts` and
+The shared schematic styles use matching pale-green surfaces and quiet linework.
+The studies now use full-width drawings and short captions beneath the artwork.
+`src/book-illustrations.ts` and
 `src/illustrated-book.css` connect this artwork to the book. The original SVGs and
 their conceptual scope are documented in `public/illustrations/README.md`.
 
@@ -36,6 +37,14 @@ navigation live in `src/course-guide.ts` and `src/course-guide.css`.
 `src/almanac-design.css` applies the shared design direction;
 `src/ui-refinements.css` fixes measured layout issues. `src/atlas-ui.ts`
 integrates these without changing lesson calculations.
+
+`src/figure-layout.ts` and `src/figure-layout.css` simplify figures throughout the
+reader. Each interactive figure has a compact title, a combined control strip,
+and more space around the drawing. Figure notes collect introductory prose,
+walkthrough commentary, and scope boundaries in one disclosure. Live selection
+descriptions, numerical values, and input controls remain visible. The layout
+moves existing DOM nodes to preserve their handlers, calculation state, and
+accessible expansion behavior; it also refreshes after lazy scene initialization.
 
 The edition footer appears on both the landing page and the reader. Its version
 comes from `package.json`; its date, derived edition number, and notes come from

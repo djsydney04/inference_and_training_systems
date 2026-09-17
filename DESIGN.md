@@ -48,9 +48,9 @@ and share the browser cache. `src/illustrated-book.css` owns this visual layer.
 
 Twenty-nine larger illustrated studies sit beside the relevant explanation.
 They are assembled before reader numbering, so they have ordinary figure labels
-and use the existing accessible popout. Keep their captions in HTML, their
-illustrative scope explicit, and live lab controls separate. Dark plates are
-reserved for circuit, processor, and compiler illustrations. The six course parts
+and use the existing accessible popout. Present these as full-width drawings on
+the page, with a short HTML caption below and their conceptual scope in Figure
+notes. The six course parts
 and all library previews also use the shared collection.
 
 The same pale green paper, fine engraved corners, square borders, and quiet
@@ -59,6 +59,14 @@ meaning for selected data and connections. Decoration must not encode invented
 values, replace meaningful labels, or compete with an active calculation.
 
 ## Diagrams
+
+`src/figure-layout.ts` and `src/figure-layout.css` apply the shared figure layout
+after numbering and control initialization. Use one compact heading, one control
+strip, and generous space around the drawing. Move introductory prose, scope
+boundaries, and walkthrough commentary into the Figure notes disclosure. Keep
+selected-part explanations, exact values, and calculation controls visible.
+Move existing nodes rather than recreating them so state and event handlers
+survive layout changes and expansion. Refresh after lazy workbench initialization.
 
 Choose the representation that makes the relationship easiest to read. Matrix
 values, reduction ownership, and algorithm stages use 2D. Physical package,
