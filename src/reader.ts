@@ -1,5 +1,6 @@
 import { chapters, learningPaths } from "./curriculum";
 import { galleryMarkup, homeMarkup } from "./atlas-home";
+import { landingMarkup } from "./landing";
 import { tiledMatmulLesson, distributedRuntimeLesson } from "./kernel-content";
 import { optimizationChapter } from "./method-content";
 import { decodingChapter } from "./decoding-content";
@@ -38,7 +39,7 @@ export function prepareReader() {
   document.body.classList.add("atlas-reader");
   document.querySelector(".hero")?.remove();
   const main = byId("main-content")!;
-  main.insertAdjacentHTML("afterbegin", homeMarkup + galleryMarkup);
+  main.insertAdjacentHTML("afterbegin", landingMarkup + homeMarkup + galleryMarkup);
   main.insertAdjacentHTML(
     "beforeend",
     foundationsChapter + capstoneChapter + acceleratorChapter + frontierChapter +
@@ -117,15 +118,16 @@ export function prepareReader() {
   brand.setAttribute("aria-label", "Machine Learning Systems Atlas, home");
   brand.querySelector("span:last-child")!.innerHTML =
     "Machine Learning Systems <small>Atlas</small>";
-  document.querySelector(".topbar-progress")!.innerHTML =
-    '<span data-reader-part>Overview</span><span class="breadcrumb-divider">/</span><span data-progress-label>Curriculum</span>';
-  document.querySelector(".index-toggle")!.textContent = "Contents";
-  document
-    .querySelector(".index-toggle")!
-    .insertAdjacentHTML(
-      "beforebegin",
-      '<button class="search-trigger" data-open-search>Search <kbd>⌘ K</kbd></button>',
-    );
+  brand.href = "#welcome";
+  const sidebarHead = document.createElement("div");
+  sidebarHead.className = "sidebar-head";
+  sidebarHead.append(brand);
+  sidebarHead.insertAdjacentHTML("beforeend", '<button type="button" class="search-trigger" data-open-search>Search <kbd>⌘ K</kbd></button>');
+  index.prepend(sidebarHead);
+  const toggle = document.querySelector<HTMLButtonElement>("[data-index-toggle]")!;
+  toggle.textContent = "Contents";
+  document.querySelector(".page-shell")!.before(toggle);
+  document.querySelector(".topbar")!.remove();
   document.querySelectorAll(".footer p, footer p").forEach((el) => {
     if (el.textContent?.includes("The Inference Engineering Atlas"))
       el.textContent = "Machine Learning Systems Atlas";
@@ -141,6 +143,7 @@ export function initializeReader() {
   const narrow = window.matchMedia("(max-width: 820px)");
   const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const topPages = [
+    byId("welcome")!,
     byId("top")!,
     byId("gallery")!,
     ...chapters.map((c) => byId(c.id)!),
@@ -152,6 +155,7 @@ export function initializeReader() {
   const closeDrawer = () => {
     index.classList.remove("is-open");
     toggle.setAttribute("aria-expanded", "false");
+    toggle.textContent = "Contents";
     syncDrawer();
   };
   syncDrawer();
@@ -165,6 +169,7 @@ export function initializeReader() {
   toggle.addEventListener("click", () => {
     const open = index.classList.toggle("is-open");
     toggle.setAttribute("aria-expanded", String(open));
+    toggle.textContent = open ? "Close contents" : "Contents";
     syncDrawer();
     if (open && narrow.matches)
       (
@@ -175,6 +180,7 @@ export function initializeReader() {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Tab" && narrow.matches && index.classList.contains("is-open") && !document.querySelector("dialog[open]")) {
       const controls = [...index.querySelectorAll<HTMLElement>('a[href],button:not(:disabled),select,summary')].filter(element => element.getClientRects().length && !element.closest("[hidden]") && (!element.closest("details:not([open])") || element.tagName === "SUMMARY"));
+      controls.push(toggle);
       const first = controls[0];
       const last = controls.at(-1);
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
@@ -317,15 +323,8 @@ export function initializeReader() {
       .join("");
 
   };
-  const progress = document.createElement("div");
-  progress.className = "reader-progress";
-  progress.setAttribute("aria-hidden", "true");
-  document.querySelector(".topbar")!.append(progress);
   const updateProgress = () => {
-    if (!activePage) return;
-    const range = Math.max(1, activePage.offsetHeight - innerHeight + 64);
-    progress.style.width = `${Math.max(0, Math.min(1, scrollY / range)) * 100}%`;
-    updateLessonPosition();
+    if (activePage) updateLessonPosition();
   };
   let scrollFrame = 0;
   window.addEventListener(
@@ -345,15 +344,16 @@ export function initializeReader() {
     document.dispatchEvent(new Event("atlas:beforenavigate"));
     let id: string;
     try {
-      id = decodeURIComponent(location.hash.slice(1)) || "top";
+      id = decodeURIComponent(location.hash.slice(1)) || "welcome";
     } catch {
-      id = "top";
+      id = "welcome";
     }
-    const destination = byId(id) ?? byId("top")!;
+    const destination = byId(id) ?? byId("welcome")!;
     const page =
       destination.closest<HTMLElement>(
-        ".chapter, .atlas-home, .atlas-gallery",
-      ) ?? byId("top")!;
+        ".chapter, .atlas-home, .atlas-gallery, .atlas-landing",
+      ) ?? byId("welcome")!;
+    document.body.dataset.atlasPage = page.id;
     const changed = activePage !== page;
     topPages.forEach((item) => {
       item.hidden = item !== page;
@@ -384,11 +384,9 @@ export function initializeReader() {
     activePage = page;
     if (changed) syncLessonNav(page);
     const meta = chapters.find((c) => c.id === page.id);
-    document.title = `${meta?.title ?? (page.id === "gallery" ? "Diagrams and labs" : "Overview")} | Machine Learning Systems Atlas`;
-    document.querySelector("[data-reader-part]")!.textContent =
-      meta?.part ?? "Overview";
-    document.querySelector("[data-progress-label]")!.textContent =
-      meta?.title ?? (page.id === "gallery" ? "Diagrams and labs" : "Curriculum");
+    document.title = page.id === "welcome"
+      ? "Machine Learning Systems Atlas"
+      : `${meta?.title ?? (page.id === "gallery" ? "Diagrams and labs" : "Course guide")} | Machine Learning Systems Atlas`;
     index.querySelectorAll<HTMLAnchorElement>("a").forEach((a) => {
       const active = a.hash === `#${page.id}`;
       a.classList.toggle("is-active", active);
