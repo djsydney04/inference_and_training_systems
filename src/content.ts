@@ -609,11 +609,11 @@ print(q.shape, q.dtype, q.device)</code></pre>
           </aside>
         </div>
 
-        <div class="fiber-primer wide-figure">
-          <div class="fiber-copy">
-            <span>Signal primer</span><h3>Copper inside the rack; optics when reach wins</h3>
+        <figure class="fiber-primer wide-figure">
+          <figcaption class="fiber-copy">
+            <span>Signal primer</span><strong>Copper inside the rack; optics when reach wins</strong>
             <p>Bits begin as voltage transitions. A SerDes converts parallel chip data into high-rate serial lanes. Copper carries electrical symbols cheaply over short runs. Optical transceivers modulate light for longer reach and better distance–bandwidth, then photodiodes recover an electrical signal.</p>
-          </div>
+          </figcaption>
           <div class="fiber-path" aria-label="Electrical to optical signal path">
             <div><i class="die-icon"></i><span>GPU</span><small>parallel data</small></div><b>→</b>
             <div><i class="serdes-icon"></i><span>SerDes</span><small>serial symbols</small></div><b>→</b>
@@ -622,7 +622,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
             <div><i class="switch-icon"></i><span>switch</span><small>recover + route</small></div>
           </div>
           <dl class="fiber-terms"><div><dt>Lane</dt><dd>One serial transmit/receive path.</dd></div><div><dt>PAM4</dt><dd>Four voltage levels encode two bits per symbol.</dd></div><div><dt>FEC</dt><dd>Redundant coding corrects a bounded number of bit errors.</dd></div><div><dt>Transceiver</dt><dd>Pluggable or co-packaged electrical–optical conversion.</dd></div></dl>
-        </div>
+        </figure>
         ${rackLesson}
       </section>
 

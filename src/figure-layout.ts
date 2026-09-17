@@ -16,7 +16,7 @@ export function refreshFigureLayouts() {
     const copy = [...caption.querySelectorAll<HTMLElement>(":scope > p")].filter(p => !p.querySelector("button, input, select, [aria-live]"));
     const illustrationScope = caption.querySelector<HTMLElement>(":scope > small");
     if (root.matches(".book-study") && illustrationScope) copy.push(illustrationScope);
-    copy.push(...root.querySelectorAll<HTMLElement>(":scope > .figure-boundary, :scope > .nn-boundary, :scope > .omission"));
+    copy.push(...root.querySelectorAll<HTMLElement>(":scope > .figure-boundary, :scope > .nn-boundary, :scope > .omission, :scope > .fiber-terms"));
     const scope = root.querySelector<HTMLElement>(":scope > .lv-toolbar > span");
     if (scope) copy.push(scope);
     const playback = root.querySelector<HTMLElement>(":scope > .diagram-playback");
