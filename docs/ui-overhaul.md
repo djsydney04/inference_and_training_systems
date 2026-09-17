@@ -1,10 +1,12 @@
-# Atlas UI and course navigation
+# AI Almanac UI and course navigation
 
-The reader uses simple, flat surfaces, square figure frames, fine borders, and
-minimal corner rounding on controls. Depth belongs to the machine diagrams.
-There are no blurred overlays or decorative panel shadows.
+The landing page uses a spacious dark stage, a large AI Almanac wordmark, and an
+interactive package drawing. The restrained contrast and product presentation
+are inspired by [Anduril](https://www.anduril.com/), reviewed September 16, 2026.
+The reader stays light, with square figure frames, fine borders, and quiet
+navigation. There are no blurred overlays or decorative panel shadows.
 
-The root URL opens a separate landing page with a clear **Open the atlas** action,
+The root URL opens a separate landing page with a clear **Open the almanac** action,
 an interactive package drawing, and a short introduction. It leads into the course
 guide at `#top`. Chapter and section links still open directly, and the sidebar
 identity returns to the landing page at `#welcome`.
@@ -16,7 +18,23 @@ Contents button opens the full-height navigation drawer.
 The landing markup and headerless shell live in `src/landing.ts` and
 `src/landing.css`. The shared figure styles live in `src/atlas-ui.css`; the course guide and visible
 navigation live in `src/course-guide.ts` and `src/course-guide.css`.
-`src/atlas-ui.ts` integrates these without changing lesson calculations.
+`src/almanac-design.css` applies the shared design direction;
+`src/ui-refinements.css` fixes measured layout issues. `src/atlas-ui.ts`
+integrates these without changing lesson calculations.
+
+The edition footer appears on both the landing page and the reader. Its version
+comes from `package.json`; its date, derived edition number, and notes come from
+`src/release.ts`. Release-note links reveal the matching disclosure.
+
+Matrix multiplication and all-reduce now use interactive 2D diagrams in
+`src/numerical-diagrams.ts`. Exact values, selected operands, padded cells, and
+contributing ranks stay visible. Both reuse the existing math/state and support
+keyboard selection. Their obsolete 3D renderers have been removed. Physical
+GPU, rack, and LPU workbenches retain 3D views.
+
+The audit fixed mobile overflow in the Transformer explanation and narrow-screen
+attention case studies. The landing preview is excluded from automatic lesson
+playback so it stays uncluttered and responds to manual layer selection.
 
 - The course guide explains the starting point, the first three chapters, the full
   course sequence, and how to read and interact with a chapter.
@@ -34,7 +52,8 @@ navigation live in `src/course-guide.ts` and `src/course-guide.css`.
 
 ## Verification on September 16, 2026
 
-- `npm test`: 90 tests passed during the landing-page pass.
+- `npm test`: 96 tests passed during the UI lint pass.
+- `npm run lint:ui`: all 12 checks passed at 320, 390, 768, and 1440px.
 - `npm run build`: TypeScript and Vite passed. The existing bundle-size warning
   remains; this change does not restructure curriculum loading.
 - `git diff --check`: passed.
@@ -57,9 +76,13 @@ navigation live in `src/course-guide.ts` and `src/course-guide.css`.
 - Reduced-motion preferences disable UI animation.
 - Browser console: no application errors in the final review session.
 
-Screenshots are in the ignored `output/playwright/` folder. Landing-page references:
-`landing-desktop.png`, `landing-mobile.png`, `reader-no-topbar.png`,
-`reader-mobile-no-topbar.png`, and `reader-mobile-contents.png`.
+`npm run lint:ui` runs the checks against an isolated production build, avoiding
+live reloads from other agents. It covers chapter/reference layouts, schematic
+labels, keyboard and numerical behavior, and release metadata at four widths.
+
+Screenshots are in the ignored `output/playwright/` folder. Current references:
+`almanac-landing-final.png`, `almanac-landing-mobile-final.png`,
+`almanac-matmul-2d.png`, and `almanac-ring-2d.png`.
 
 Only the UI files and their integration lines were included in the UI commits.
 Other pending curriculum and rendering work in the shared checkout was preserved.

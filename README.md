@@ -3,21 +3,20 @@
 An interactive, systems-first guide to transformer architecture, training,
 inference, and the machines underneath them.
 
-The textbook has **29 chapters** across foundations, training, hardware,
-inference, practice and reference. Five prerequisite-ordered reading paths,
-chapter search (⌘/Ctrl K), a searchable source ledger and deep links connect the
-material. Start at **How LLMs work** or choose **Circuits and accelerators** for
-the circuit-design path.
+The reader covers foundations, training, hardware, programming, inference,
+practice, and reference. Prerequisite-ordered reading paths, chapter search
+(⌘/Ctrl K), a searchable source ledger, and direct section links connect the
+material. The landing page opens a course guide with a recommended starting point.
 
-The integrated reader indexes 125 sections and 55 figures, with numbered code,
-worked checks and a source ledger. Fonts and figures are served locally; primary-source links lead outward
-when you choose to inspect the research.
+The sidebar exposes chapter groups and the current chapter’s section outline.
+Optional worked details open within a lesson; search reveals folded targets.
+Chapter titles, introductions, and display numbers come from the curriculum.
+The chosen learning path is saved locally and controls previous/next navigation.
+See [the authoring guide](docs/AUTHORING.md) before adding or moving content.
 
-The sidebar has one chapter picker and a short outline. Optional worked details
-open within a lesson; search and direct links reveal folded targets. Chapter
-titles, introductions and display numbers come from the curriculum, and the
-chosen learning path is saved locally and controls previous/next navigation. See
-[the authoring guide](docs/AUTHORING.md) before adding or moving content.
+The edition footer and release notes share metadata from `src/release.ts` and
+the version in `package.json`. The [design direction](DESIGN.md) describes the
+landing page, reader, and diagram conventions.
 
 ## Explore the material
 
@@ -41,8 +40,9 @@ chosen learning path is saved locally and controls previous/next navigation. See
   cached equivalence, evaluate held-out text, export an actual CPU trace and
   serve the checkpoint over HTTP; then follow a pinned vLLM GPU exercise.
 
-The systems gallery includes interactive numerical diagrams and five Three.js
-workbenches. Tables expose the same computed state without WebGL. Hardware
+The systems gallery includes interactive 2D numerical diagrams and three physical
+Three.js workbenches. Matrix multiplication and all-reduce use clear, selectable
+2D values and preserve the existing calculation models. Hardware
 reference images have [provenance](public/figures/ATTRIBUTION.md). The new source
 review records dated disclosures and corrected comparisons in
 [the September 14 source audit](docs/SOURCE_AUDIT_2026-09-14.md).
@@ -136,3 +136,16 @@ The glossary is a topic reference, not copied site content. Paper figures are
 conceptual redraws unless explicitly credited otherwise. TensorFlow and PyTorch provide
 educational implementation paths; GPU serving examples use their native stack
 and do not imply that vLLM runs directly on Groq hardware.
+
+## UI lint
+
+```bash
+npx playwright install chromium
+npm run lint:ui
+```
+
+The lint starts an isolated production preview and checks every chapter and
+reference page at four viewport widths (320, 390, 768, and 1440px). It catches
+clipped content and schematic labels, verifies keyboard/numerical behavior in
+the 2D workbenches, and checks that edition metadata matches the release notes.
+Failure screenshots and traces are written to `output/ui-lint/`.
