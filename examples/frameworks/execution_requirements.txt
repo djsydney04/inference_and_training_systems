@@ -1,0 +1,10 @@
+# Reproduction environment for execution_contract.py; CPU, native Apple Silicon Python 3.11.
+# Torch/JAX pins were executed. TensorFlow/Keras pins are provided for reproduction
+# but were not executed locally; see execution_README.md for the disk-limit boundary.
+# These are teaching pins, not a claim that they are the latest releases.
+torch==2.8.0
+tensorflow==2.20.0
+jax==0.6.2
+jaxlib==0.6.2
+numpy==2.2.6
+keras==3.11.3

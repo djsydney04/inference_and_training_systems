@@ -1,0 +1,16 @@
+.framework-workbench .framework-result { margin: 0; padding: 18px 22px; border-block: 1px solid var(--rule); font: 14px/1.7 var(--sans); }
+.framework-workbench .method-table { padding: 18px 22px; }
+.framework-workbench .method-toolbar label, .framework-workbench .method-toolbar select { max-width: 100%; }
+.framework-workbench .framework-map { overflow-x: auto; overscroll-behavior-x: contain; padding: 12px; }
+.framework-workbench .framework-map svg { display: block; width: 100%; min-width: 860px; height: auto; font: 14px var(--sans); }
+.framework-workbench .framework-stage rect { fill: var(--paper); stroke: var(--rule-dark); }
+.framework-workbench .framework-stage text { fill: var(--ink); font-weight: 600; }
+.framework-workbench .framework-stage .framework-stage-detail { fill: var(--graphite); font-size: 12px; font-weight: 400; }
+.framework-workbench .framework-arrow { fill: none; stroke: var(--signal); stroke-width: 2; }
+.framework-workbench .framework-scroll-hint { display: none; }
+@media(max-width: 1000px) {
+  .framework-workbench .framework-scroll-hint { display: block; margin: 0; padding: 12px 16px 0; font: 12px/1.6 var(--sans); color: var(--graphite); }
+}
+@media(max-width: 600px) {
+  .framework-workbench .framework-result, .framework-workbench .method-table { padding: 16px; }
+}

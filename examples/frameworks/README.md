@@ -6,9 +6,9 @@ fixed inputs; they do not establish model quality or accelerator performance.
 
 | Experiment | Entry point | Environment and evidence |
 | --- | --- | --- |
-| Same loss, gradients and update across tensor APIs | `execution_compare.py` | See the execution README in this directory for the actual entry point, pinned environment and run record. |
+| Same loss, gradients and update across tensor APIs | `execution_contract.py` | [Pinned environment and actual run record](execution_README.md) |
 | Labels, wrapper reductions and adapter identity | `training_reference.py` | [Standard-library reference and native framework check](training_README.md) |
-| Incremental text stops | `serving_contract.py` | [Stop contract and exhaustive chunk tests](serving_README.md) |
+| Incremental text stops | `serving_contract.py` | [Stop contract and exhaustive chunk tests](serving-contract-README.md) |
 | CUDA capture and fixed-buffer replay | `cuda_replay.py` | PyTorch 2.14 API pattern, syntax checked; requires a compatible CUDA device. Device execution is unverified here. |
 
 The browser timing diagram uses declared durations and a checked single-stream
