@@ -11,6 +11,17 @@ an interactive package drawing, and a short introduction. It leads into the cour
 guide at `#top`. Chapter and section links still open directly, and the sidebar
 identity returns to the landing page at `#welcome`.
 
+The landing page continues through three illustrated spreads: models, machines,
+and systems. Original vector studies break up the page with fine linework,
+hatched detail, and alternating paper and dark-green backgrounds. Their links
+lead directly to the relevant chapters; a final reading action opens the guide.
+
+The same drawings introduce all 28 chapters, with the artwork selected by subject.
+The shared schematic styles use matching pale-green surfaces, engraved corners,
+and more generous captions. `src/book-illustrations.ts` and
+`src/illustrated-book.css` connect this artwork to the book. The original SVGs and
+their conceptual scope are documented in `public/illustrations/README.md`.
+
 The horizontal top bar has been removed. Identity and search now live in the
 sidebar, and the reader starts at the top of the viewport. On mobile, a compact
 Contents button opens the full-height navigation drawer.
@@ -75,14 +86,23 @@ playback so it stays uncluttered and responds to manual layer selection.
   and 1440px, or the GPU and gallery pages at 390px.
 - Reduced-motion preferences disable UI animation.
 - Browser console: no application errors in the final review session.
+- The illustration pass reran all 96 unit tests, all 12 UI checks, and the build.
+  Desktop and mobile screenshots verified the new landing spreads and chapter
+  openings. All three image assets loaded, their chapter links worked, and a
+  restyled schematic retained keyboard selection and open/close behavior.
+- Screenshot review caught and fixed caption contrast on the dark spread,
+  disconnected network lines, and the cover caption's inherited right alignment.
 
 `npm run lint:ui` runs the checks against an isolated production build, avoiding
 live reloads from other agents. It covers chapter/reference layouts, schematic
 labels, keyboard and numerical behavior, and release metadata at four widths.
 
 Screenshots are in the ignored `output/playwright/` folder. Current references:
-`almanac-landing-final.png`, `almanac-landing-mobile-final.png`,
-`almanac-matmul-2d.png`, and `almanac-ring-2d.png`.
+`illustrated-landing-full.png`, `illustrated-model-mobile.png`,
+`illustrated-silicon-mobile.png`, `illustrated-chapter-desktop.png`,
+`illustrated-chapter-mobile.png`, and `illustrated-schematic-desktop.png`.
+The numerical workbench review is recorded in `almanac-matmul-2d.png` and
+`almanac-ring-2d.png`.
 
 Only the UI files and their integration lines were included in the UI commits.
 Other pending curriculum and rendering work in the shared checkout was preserved.

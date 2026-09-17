@@ -51,7 +51,7 @@ body[data-atlas-page="welcome"] { background: #0e1110; }
 .landing-machine .plate-layers button { color: #b6c1b8; padding: 8px 12px; font-size: 11px; }
 .landing-machine .plate-layers button[aria-pressed="true"] { background: #263029; color: #f4f6f0; border-color: #627567; }
 .landing-machine .plate-layers button:first-child i { background: #869f93; }
-.landing-machine .machine-plate .plate-description { text-align: left; margin: 15px 0 0; max-width: none; color: #a3b2a7; font-size: 11px; min-height: 36px; }
+.landing-machine .machine-plate .plate-description { justify-self: start; text-align: left; margin: 15px 0 0; max-width: none; color: #a3b2a7; font-size: 11px; min-height: 36px; }
 .landing-machine .machine-plate small { text-align: left; color: #7e8e82; }
 .landing-caption { grid-row: 4; border-top: 1px solid var(--landing-rule); border-bottom: 0; color: #939f95; padding: 23px 0; font-size: 11px; }
 .landing-caption a { color: #e2e8df; }
