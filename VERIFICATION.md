@@ -24,7 +24,7 @@ in the lessons and companion READMEs. Earlier TensorFlow companion verification
 below applies to its separate programs and environment.
 
 TypeScript and production builds pass. The integrated reader has **31 chapters,
-six learning paths, 184 sections, 191 figures, 89 code listings, 133 checks,
+six learning paths, 184 sections, 220 figures, 89 code listings, 133 checks,
 280 source entries and 54 optional deep dives**. All 34 pages at 1440, 1280,
 820, 390 and 320 pixels pass: **170 page/width checks** with no document overflow,
 duplicate IDs, missing internal targets, numbering errors or mismatched titles.
@@ -33,12 +33,21 @@ keyboard scrolling, expanded-figure state/focus and desktop/mobile screenshots
 were checked separately. A reported mobile skip-link overlay was not reproducible:
 the link remains above the viewport when a diagram slider has focus.
 
+Playback integration covers 190 direct players, one diagram family whose children
+own playback, and 29 static catalog studies. The stable full browser run passed
+36 of its 40 cases; the four coverage cases exposed the new image studies being
+treated as simulations. After adding the explicit, validated static-image
+boundary, those four cases passed at desktop, tablet, mobile and narrow widths.
+Every teaching adapter advances 110 times with valid captions and input bounds.
+Manual-reset checks also confirm captions show the simulation's current state.
+The final TypeScript/build and v0.3.0 release-metadata checks pass after that fix.
+
 The [frameworks audit](docs/FRAMEWORKS_AUDIT_2026-09-16.md) records all lesson
 anchors, primary sources, pinned environments, calculations and remaining
 target-hardware experiments. Work is isolated on `codex/atlas-learning-clarity`
 and repeatedly rebased on concurrent GitHub changes. The latest integration
-includes main through `3de391b`, including AI Almanac illustrations, nested
-diagram playback and release metadata checks. The shared checkout was not
+includes main through `8645d3b`, including 29 inserted conceptual studies, nested
+diagram playback and release v0.3.0 metadata checks. The shared checkout was not
 edited, stashed or reset.
 
 ## September 16, 2026 — automatic diagram walkthroughs

@@ -9,7 +9,7 @@ practice, and reference. Prerequisite-ordered reading paths, chapter search
 material. The landing page opens a course guide with a recommended starting point.
 
 The current edition contains **31 chapters, six learning paths, 184 sections
-and 191 figures**, with numbered code, worked checks and a searchable source
+and 220 figures**, with numbered code, worked checks and a searchable source
 ledger. Fonts and figures are served locally.
 
 The sidebar exposes chapter groups and the current chapter’s section outline.

@@ -16,13 +16,19 @@ replay remain explicitly unexecuted. The final review corrected a directional
 learning-rate example and checked fixed-buffer and timing explanations.
 
 Committed separate slices and repeatedly fetched/rebased the isolated worktree
-onto GitHub main, including the AI Almanac design and diagram playback through
-3de391b, including illustrations and release metadata. The shared checkout and
+onto GitHub main through 8645d3b, preserving the AI Almanac design, 29 conceptual
+studies, diagram playback and release v0.3.0 metadata. The shared checkout and
 the other agent's local edits were untouched. 173 Node tests, 14 new Python
-checks and the production build pass; 170 production
-page/width checks find no overflow, broken anchors, label or title errors. See
+checks and the production build pass; 170 production page/width checks find no
+overflow, broken anchors, label or title errors. See
 the [frameworks audit](docs/FRAMEWORKS_AUDIT_2026-09-16.md) and current verification
 record for runtime pins, final UI checks and remaining evidence boundaries.
+
+Completed the incoming playback integration with 34 missing adapters and fixed
+captions after manual reset. The final browser evidence includes 36 passing
+playback cases, four repaired static-study coverage cases rerun across all widths,
+and 12 passing production UI cases. Static artwork is validated separately from
+the 190 direct teaching players; no live lab is exempted from walkthrough checks.
 
 ## September 16 execution-gap continuation
 

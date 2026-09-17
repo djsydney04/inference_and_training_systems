@@ -166,10 +166,10 @@ combined distributed stack.
 - **14 new standard-library Python tests pass**: three execution, six training
   and five serving. All framework Python files pass syntax compilation.
 - TypeScript and the production build pass. The existing bundle advisory remains:
-  main JavaScript is approximately 1,339 kB minified / 447 kB gzip. This expansion
+  main JavaScript is approximately 1,345 kB minified / 448 kB gzip. This expansion
   does not establish a startup-performance improvement.
 - Production inventory: **31 chapters, six learning paths, 184 sections,
-  191 figures, 89 code listings, 133 worked checks, 280 source entries and
+  220 figures, 89 code listings, 133 worked checks, 280 source entries and
   54 optional deep dives**.
 - All 34 pages pass at 1440, 1280, 820, 390 and 320 pixels: **170 page/width
   checks**, with no document overflow, duplicate IDs, missing internal targets,
@@ -186,13 +186,20 @@ combined distributed stack.
   discovery, page navigation or modal opening occurs during playback. The
   coverage check advances every adapter 110 times and validates its captions and
   input bounds; it passes after this integration.
+- Final playback inventory is 190 direct players, one family with independently
+  owned child players, and 29 static catalog-image studies. The stable full run
+  passed 36 cases; its four coverage failures identified the new static images.
+  After a narrow image/caption/no-simulation-controls classification fix, those
+  four coverage cases passed at all four widths. The independent production UI
+  suite passes all 12 cases. Reset/resume captions use actual simulation state,
+  so a playback counter cannot disagree with a manually reset iteration.
 
 Work stayed in `/tmp/atlas-learning-clarity`, on `codex/atlas-learning-clarity`.
 Implementation slices were committed separately and rebased onto concurrent
-GitHub `main` through `3de391b`, preserving the incoming AI Almanac design,
-navigation, 2D workbenches, diagram playback, illustrations and release metadata.
-The shared checkout was never
-edited, stashed or reset. See the latest [verification record](../VERIFICATION.md)
+GitHub `main` through `8645d3b`, preserving the incoming AI Almanac design,
+navigation, 2D workbenches, diagram playback, 29 inserted conceptual studies and
+release v0.3.0 metadata. The shared checkout was never edited, stashed or reset.
+See the latest [verification record](../VERIFICATION.md)
 for final integrated UI-suite results and synchronization evidence.
 
 Remaining empirical work is explicit: TensorFlow/Keras parity, CUDA replay and
