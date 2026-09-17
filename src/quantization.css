@@ -1,0 +1,22 @@
+.quantization-lab .quant-chart { overflow-x: auto; padding: 18px; overscroll-behavior-x: contain; }
+.quantization-lab .quant-chart svg { display: block; width: 100%; min-width: 690px; height: auto; font: 12px var(--sans); fill: var(--ink); }
+.quantization-lab .quant-small { font-size: 10px; }
+.quantization-lab .quant-grid { stroke: var(--rule); stroke-width: 1; }
+.quantization-lab .quant-error { stroke: var(--signal); stroke-width: 2; }
+.quantization-lab .quant-clipped { stroke: #a5482e; stroke-width: 2; }
+.quantization-lab .quant-original { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.quantization-lab .quant-reconstructed { fill: var(--signal); }
+.quantization-lab .quant-result { margin: 0; padding: 20px 22px; border-block: 1px solid var(--rule); font: 14px/1.6 var(--sans); }
+.quantization-lab .method-table { margin: 0; padding: 22px; }
+.quantization-lab .method-toolbar label { max-width: 100%; }
+.quantization-lab .method-toolbar select { max-width: 100%; }
+.quantization-lab input[type="range"] { width: 140px; max-width: 100%; accent-color: var(--signal); }
+.quantization-lab output { font-variant-numeric: tabular-nums; }
+.quantization-lab .quant-weight-matrix { min-width: 570px; }
+.quantization-lab .quant-weight-matrix td > * { display: block; }
+.quantization-lab .quant-weight-matrix td > strong { margin: 5px 0; color: var(--signal-dark); }
+.quantization-lab .quant-weight-matrix .quant-group-start { border-left: 2px solid var(--rule-dark); }
+.quantization-lab .quant-scale-list, .quantization-lab .quant-dot-product { font: 12px/1.65 var(--mono); overflow-wrap: anywhere; margin: 18px 0 0; }
+@media (max-width: 600px) {
+  .quantization-lab .quant-result, .quantization-lab .method-table { padding: 16px; }
+}
