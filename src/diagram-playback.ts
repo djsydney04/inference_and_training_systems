@@ -56,8 +56,8 @@ function pause(player: Player) {
 }
 
 function revealSelected(root: HTMLElement) {
-  const selected = root.querySelector<SVGGraphicsElement>(".nn-node[aria-pressed=true], .nn-node.walkthrough-focus, .lv-node[aria-pressed=true], .sb-node[aria-pressed=true], .architecture-scroll rect.walkthrough-focus, [data-hd-part][aria-pressed=true]");
-  const scroller = selected?.closest<HTMLElement>(".nn-diagram-scroll, .lv-canvas, .sb-canvas, .architecture-scroll, .hd-canvas");
+  const selected = root.querySelector<HTMLElement>(".block-pipeline .is-active, .cpu-flow .is-active, .sequence-buttons .is-active");
+  const scroller = selected?.closest<HTMLElement>(".block-pipeline, .cpu-flow, .sequence-buttons");
   if (!selected || !scroller || scroller.scrollWidth <= scroller.clientWidth) return;
   // Stop a previous pan before deciding that the new selection is already
   // visible; otherwise that older animation can move it out of view afterward.
