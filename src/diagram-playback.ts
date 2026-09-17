@@ -1,0 +1,181 @@
+import "./diagram-playback.css";
+import { DiagramClock } from "./diagram-clock";
+import { diagramHostSelector, diagramWalkthrough } from "./diagram-walkthroughs";
+import type { DiagramWalkthrough } from "./diagram-walkthroughs";
+
+type Player = {
+  root: HTMLElement;
+  walkthrough: DiagramWalkthrough;
+  clock: DiagramClock;
+  bar: HTMLElement;
+  button: HTMLButtonElement;
+  status: HTMLElement;
+  caption: HTMLElement;
+  progress: HTMLElement;
+  paused: boolean;
+  override: boolean;
+  intersecting: boolean;
+  liveRegions: Map<Element, string>;
+};
+const players = new Map<HTMLElement, Player>();
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const readPreference = (key: string) => { try { return localStorage.getItem(key); } catch { return null; } };
+const savePreference = (key: string, value: string) => { try { localStorage.setItem(key, value); } catch { /* Private reading still works. */ } };
+let pausedAll = readPreference("atlas-diagrams-paused") === "true" || reducedMotion.matches;
+let pace = Number(readPreference("atlas-diagrams-pace")) || 6000;
+if (![3000, 6000, 10000].includes(pace)) pace = 6000;
+let globalButton: HTMLButtonElement;
+let initialized = false;
+const playing = (player: Player) => !player.paused && (!pausedAll || player.override);
+
+function live(player: Player, muted: boolean) {
+  player.root.querySelectorAll("[aria-live]").forEach(node => {
+    // A larger diagram can contain another independently paused walkthrough.
+    if (node.closest("[data-diagram-playback]") !== player.root) return;
+    if (!player.liveRegions.has(node)) player.liveRegions.set(node, node.getAttribute("aria-live")!);
+    const value = muted ? "off" : player.liveRegions.get(node)!;
+    if (node.getAttribute("aria-live") !== value) node.setAttribute("aria-live", value);
+  });
+  for (const node of player.liveRegions.keys()) if (!node.isConnected) player.liveRegions.delete(node);
+}
+
+function update(player: Player, active = false) {
+  const enabled = playing(player);
+  player.root.dataset.playbackState = enabled ? active ? "playing" : "waiting" : "paused";
+  player.button.textContent = enabled ? "Pause" : "Play";
+  player.button.setAttribute("aria-label", enabled ? "Pause diagram animation" : "Play diagram animation");
+  player.button.setAttribute("aria-pressed", String(enabled));
+  player.status.textContent = enabled ? "Auto" : "Paused";
+  player.bar.title = enabled ? "Select a component or change a setting to pause and explore." : "Press Play to continue the walkthrough from here.";
+  live(player, enabled);
+}
+
+function pause(player: Player) {
+  player.paused = true; player.override = false; player.clock.reset(); update(player);
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    const player = players.get(entry.target as HTMLElement);
+    if (player) {
+      player.intersecting = entry.isIntersecting;
+      if (!entry.isIntersecting) { player.clock.reset(); update(player); }
+    }
+  });
+});
+
+/** Called again once the lazily imported 3D workbenches have installed their stages. */
+export function refreshDiagramPlayback() {
+  document.querySelectorAll<HTMLElement>(diagramHostSelector).forEach(root => {
+    if (players.has(root) || root.closest(".atlas-gallery") || root.querySelector("[data-figure-open]")) return;
+    const walkthrough = diagramWalkthrough(root);
+    if (!walkthrough) return;
+    root.dataset.diagramPlayback = walkthrough.kind;
+    const bar = document.createElement("div");
+    bar.className = "diagram-playback";
+    const kind = { flow: "Guided flow", simulation: "Live example", comparison: "Compare settings" }[walkthrough.kind];
+    bar.innerHTML = `<div class="playback-controls"><button type="button" data-playback-toggle aria-pressed="true">Pause</button><span class="playback-status">Auto</span><span class="playback-kind">${kind}</span><label>Pace<select data-playback-pace aria-label="Diagram reading pace"><option value="3000">3 sec</option><option value="6000">6 sec</option><option value="10000">10 sec</option></select></label></div><p class="playback-caption">${walkthrough.kind === "comparison" ? "Watch one setting change; the others stay fixed." : "Follow the highlighted stages automatically."}</p><div class="playback-progress" aria-hidden="true"><i></i></div>`;
+    // Keep the original caption first and all playback controls inside expanded figures.
+    const caption = root.querySelector(":scope > figcaption, :scope > .three-heading, :scope > .lab-heading");
+    if (caption && caption !== root.lastElementChild) caption.after(bar); else root.prepend(bar);
+    const player: Player = {
+      root, walkthrough, clock: new DiagramClock(pace), bar,
+      button: bar.querySelector("button")!, status: bar.querySelector(".playback-status")!,
+      caption: bar.querySelector(".playback-caption")!, progress: bar.querySelector(".playback-progress i")!,
+      paused: false, override: false, intersecting: false, liveRegions: new Map(),
+    };
+    players.set(root, player);
+    const paceInput = bar.querySelector<HTMLSelectElement>("select")!;
+    paceInput.value = String(pace);
+    paceInput.addEventListener("change", () => { player.clock.interval = Number(paceInput.value); player.clock.reset(); });
+    player.button.addEventListener("click", () => {
+      if (playing(player)) pause(player);
+      else { player.paused = false; player.override = true; player.clock.reset(); update(player); }
+    });
+    const manual = (event: Event) => {
+      if (!event.isTrusted) return;
+      const target = event.target as Element;
+      if (target.closest("[data-diagram-playback]") !== root || target.closest(".diagram-playback, .figure-tools, .workbench-expand")) return;
+      // Reading notes and opening a larger view do not change the simulated state.
+      if (target.closest("summary, [data-popout-open]")) return;
+      pause(player);
+    };
+    root.addEventListener("pointerdown", manual, true);
+    root.addEventListener("keydown", manual, true);
+    root.addEventListener("input", manual, true);
+    root.addEventListener("change", manual, true);
+    root.addEventListener("focusin", manual);
+    update(player);
+    observer.observe(root);
+  });
+}
+
+function available(player: Player, modal: HTMLDialogElement | undefined) {
+  if (!playing(player) || !player.intersecting || document.hidden || (modal && !modal.contains(player.root))) return false;
+  if (player.root.closest("[hidden], [inert], details:not([open])")) return false;
+  const visual = player.root.querySelector<HTMLElement>("[data-chip-panel]:not([hidden]) .chip-canvas, .three-stage, .lv-canvas, .nn-scroll, .sb-canvas, .architecture-scroll, canvas") ?? player.root;
+  const box = visual.getBoundingClientRect();
+  return box.width > 0 && box.height > 0 && box.bottom > 40 && box.top < window.innerHeight - 40;
+}
+
+export function initializeDiagramPlayback() {
+  if (initialized) return;
+  initialized = true;
+  const settings = document.createElement("div");
+  settings.className = "diagram-playback-settings";
+  settings.innerHTML = '<button type="button" data-playback-all></button><label>Reading pace<select data-playback-default-pace aria-label="Default diagram reading pace"><option value="3000">3 seconds</option><option value="6000">6 seconds</option><option value="10000">10 seconds</option></select></label><p>Diagrams play while in view. Select a part to pause. The pace is for reading, not device timing.</p>';
+  document.querySelector(".reader-reference-links")?.before(settings);
+  globalButton = settings.querySelector("button")!;
+  const defaultPace = settings.querySelector<HTMLSelectElement>("select")!;
+  defaultPace.value = String(pace);
+  const globalLabel = () => {
+    globalButton.textContent = pausedAll ? "Play all diagrams" : "Pause all diagrams";
+    globalButton.setAttribute("aria-pressed", String(!pausedAll));
+  };
+  globalButton.addEventListener("click", () => {
+    pausedAll = !pausedAll;
+    savePreference("atlas-diagrams-paused", String(pausedAll));
+    players.forEach(player => { player.paused = false; player.override = false; player.clock.reset(); update(player); });
+    globalLabel();
+  });
+  defaultPace.addEventListener("change", () => {
+    pace = Number(defaultPace.value); savePreference("atlas-diagrams-pace", String(pace));
+    players.forEach(player => {
+      player.clock.interval = pace; player.clock.reset();
+      player.bar.querySelector<HTMLSelectElement>("select")!.value = String(pace);
+    });
+  });
+  reducedMotion.addEventListener("change", () => {
+    if (!reducedMotion.matches) return; // Resuming is an explicit choice after reduced motion.
+    pausedAll = true;
+    players.forEach(player => { player.override = false; player.clock.reset(); update(player); });
+    globalLabel();
+  });
+  globalLabel();
+  refreshDiagramPlayback();
+  document.addEventListener("visibilitychange", () => {
+    players.forEach(player => { player.clock.reset(); update(player); });
+  });
+  document.addEventListener("atlas:beforenavigate", () => {
+    players.forEach(player => { player.clock.reset(); update(player); });
+  });
+  window.setInterval(() => {
+    const now = performance.now();
+    const modal = [...document.querySelectorAll<HTMLDialogElement>("dialog[open]")].at(-1);
+    players.forEach(player => {
+      const active = available(player, modal);
+      if (player.clock.tick(now, active)) {
+        // All adapters keep focus on the reader's control; no navigation is allowed.
+        const focused = document.activeElement;
+        player.caption.textContent = player.walkthrough.advance();
+        if (focused instanceof HTMLElement && focused.isConnected && document.activeElement !== focused) focused.focus({ preventScroll: true });
+        player.root.dataset.playbackFrames = String(Number(player.root.dataset.playbackFrames ?? 0) + 1);
+      }
+      if (player.root.dataset.playbackState !== (playing(player) ? active ? "playing" : "waiting" : "paused")) update(player, active);
+      if (active) {
+        live(player, true);
+        player.progress.style.transform = `scaleX(${player.clock.progress(now)})`;
+      }
+    });
+  }, 250);
+}

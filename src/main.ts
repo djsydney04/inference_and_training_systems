@@ -31,6 +31,7 @@ import { initializeFoundationsLabs } from "./foundations-labs";
 import { initializeAcceleratorLabs } from "./accelerator-labs";
 import { initializeCudaLabs } from "./cuda-labs";
 import { initializeDigitalLabs } from "./digital-labs";
+import { initializeDiagramPlayback, refreshDiagramPlayback } from "./diagram-playback";
 import { prepareChipAnatomy, initializeChipAnatomy } from "./chip-anatomy";
 
 const app = document.querySelector<HTMLDivElement>("#app");
@@ -65,5 +66,9 @@ initializePortableKernelLab();
 initializeReader();
 initializeAtlasUI();
 initializeFigurePopouts();
+initializeDiagramPlayback();
 
-void import("./scenes").then(({ initializeScenes }) => initializeScenes());
+void import("./scenes").then(({ initializeScenes }) => {
+  initializeScenes();
+  refreshDiagramPlayback();
+});

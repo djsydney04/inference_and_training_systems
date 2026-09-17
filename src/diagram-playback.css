@@ -1,0 +1,50 @@
+.diagram-playback {
+  grid-column: 1 / -1;
+  margin: 10px 0 16px;
+  padding: 9px 12px 0;
+  border-block: 1px solid var(--line, #d6d7ce);
+  background: #f3f4ee;
+  color: #293c31;
+  min-width: 0;
+}
+.playback-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.diagram-playback button, .diagram-playback-settings button {
+  font: 500 12px/1.4 "IBM Plex Sans", sans-serif;
+  color: #173b99; background: transparent; border: 1px solid #a8b8d4;
+  padding: 5px 12px; cursor: pointer; min-height: 32px;
+}
+.diagram-playback button { min-width: 64px; }
+.diagram-playback button:hover, .diagram-playback-settings button:hover { background: #e5ebf8; }
+.diagram-playback :focus-visible, .diagram-playback-settings :focus-visible { outline: 2px solid #2559d6; outline-offset: 3px; }
+.playback-status { font: 500 10px "IBM Plex Mono", monospace; color: #2559d6; }
+.playback-status::before { content: ""; display: inline-block; width: 5px; height: 5px; margin-right: 5px; background: currentColor; border-radius: 50%; }
+[data-playback-state="paused"] > .diagram-playback .playback-status { color: #626760; }
+.playback-kind { font: 12px "IBM Plex Sans", sans-serif; color: #626760; }
+.playback-controls label { margin-left: auto; display: flex; align-items: center; gap: 6px; font: 11px "IBM Plex Sans", sans-serif; }
+.diagram-playback select, .diagram-playback-settings select { font: 11px "IBM Plex Sans", sans-serif; color: #293c31; background: transparent; border: 1px solid #c8cec4; border-radius: 0; padding: 5px 4px; min-height: 30px; width: auto; }
+.diagram-playback .playback-caption { font: 12px/1.55 "IBM Plex Sans", sans-serif; margin: 7px 0 8px; min-height: 2lh; max-width: none; }
+.playback-progress { height: 2px; margin-inline: -12px; overflow: hidden; background: #dce1d7; }
+.playback-progress i { display: block; height: 100%; background: #2559d6; transform: scaleX(0); transform-origin: left; }
+[data-playback-state="playing"] > .diagram-playback .playback-progress i { transition: transform 250ms linear; }
+.diagram-playback-settings { border-top: 1px solid #d6d7ce; padding-top: 14px; margin-top: 18px; }
+.diagram-playback-settings > button { width: 100%; text-align: left; }
+.diagram-playback-settings label { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 10px; font-size: 11px; }
+.diagram-playback-settings p { font: 11px/1.5 "IBM Plex Sans", sans-serif; color: #626760; margin: 8px 0 0; }
+.walkthrough-focus { outline: 2px solid #2559d6; outline-offset: 2px; }
+svg .walkthrough-focus { outline: none; }
+svg rect.walkthrough-focus, svg .walkthrough-focus > rect, svg .walkthrough-focus > circle { stroke: #2559d6 !important; stroke-width: 3px !important; fill: #e2eaff !important; opacity: 1 !important; }
+svg text.walkthrough-focus { fill: #173b99; font-weight: 600; }
+[data-diagram-playback] :is(.nn-node, .lv-node, .chip-part) > rect { transition: fill 350ms, stroke 350ms; }
+[data-diagram-playback] .walkthrough-focus { transition: background-color 350ms, stroke 350ms, fill 350ms; }
+:not(svg) > .walkthrough-focus { background-color: #e8eefb; }
+.three-lab > .diagram-playback { margin: 0; border-inline: 0; }
+@media (max-width: 580px) {
+  .diagram-playback { padding-inline: 9px; }
+  .playback-controls { gap: 7px; }
+  .playback-kind { display: none; }
+  .diagram-playback .playback-caption { min-height: 3lh; }
+  .playback-progress { margin-inline: -9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-diagram-playback] *, [data-diagram-playback] .playback-progress i { transition: none !important; animation: none !important; }
+}
