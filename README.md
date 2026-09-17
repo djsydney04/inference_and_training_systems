@@ -43,6 +43,8 @@ in the next release PR.
 - **Kernels:** CUDA launch/indexing, memory transactions and bank conflicts,
   barriers, reductions, softmax and RMSNorm forward/backward, GEMM tiling,
   tensor-core pipelines, compiler layers, Triton and profiling.
+- **CPU:** instructions, out-of-order execution, branch prediction, caches,
+  translation, memory ordering, SIMD, false sharing, SMT, NUMA and profiling.
 - **Hardware:** CPU/GPU/LPU, NVIDIA, AMD, Google TPU, AWS Trainium, Cerebras,
   Intel Gaudi, edge/unified-memory systems, interconnect, memory and power.
 - **Serving and frontier:** KV allocation, batching, speculative sampling,
@@ -77,6 +79,7 @@ and the boundaries between physical layouts and architectural schematics.
 | --- | --- | --- |
 | [PyTorch](examples/pytorch/README.md) | Decoder, training, exact restart, KV cache, held-out loss, HTTP and CPU trace | Native Python + pinned PyTorch; CPU |
 | [TensorFlow](examples/tensorflow/README.md) | RoPE/RMSNorm/SwiGLU decoder, distributed objective, post-training, tensor parallel algebra | TensorFlow; logical CPU replicas |
+| [CPU experiments](examples/cpu/README.md) | Row/column locality, dependent/independent reductions and vectorization diagnostics | C11 compiler; macOS or Linux; ASan/UBSan |
 | [C](examples/c-basics/README.md) | Ownership, padded/transpose views and reference matmul | C17 compiler; ASan/UBSan |
 | [CUDA](examples/cuda/LEARNING_PATH.md) | Reductions, softmax/RMSNorm derivatives and Triton | NVIDIA CUDA host required for device execution |
 | [CUDA to PyTorch](examples/cuda/TORCH_RMSNORM.md) | Custom autograd operation and complete AdamW update comparisons | Analytical CPU path verified; compiled CUDA path requires GPU |

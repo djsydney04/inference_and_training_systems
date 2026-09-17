@@ -16,7 +16,8 @@ test("focused navigation follows its prerequisite route rather than book order",
   const sequence = readingSequence("fpga-asic", "circuits");
   assert.equal(sequence.inPath, true);
   assert.equal(sequence.previous?.id, "digital-logic");
-  assert.equal(sequence.next?.id, "machine");
+  assert.equal(sequence.next?.id, "cpu");
+  assert.equal(readingSequence("cpu", "circuits").next?.id, "machine");
   const other = readingSequence("tensors", "circuits");
   assert.equal(other.next?.id, "programming");
   assert.equal(readingSequence("tensors", "complete").next?.id, "transformer");

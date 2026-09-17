@@ -1,6 +1,6 @@
 # CPU experiments in C
 
-Companion to **Inside a CPU → Run a small CPU experiment** (`#cpu-practical-lab`). Uses a C11 compiler and POSIX monotonic clock on macOS or Linux; no GPU or extra libraries.
+Companion to **Inside a CPU → Read the same matrix in two orders** (`#cpu-practical-lab`). Uses a C11 compiler and POSIX monotonic clock on macOS or Linux; no GPU or extra libraries.
 
 ```sh
 make check
