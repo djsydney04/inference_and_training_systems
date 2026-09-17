@@ -1,0 +1,93 @@
+/* Shared layout rules load after the individual chapter and figure styles. */
+
+/* Let content reflow within its surface instead of hiding overflow at the page. */
+.atlas-ui :where(.chapter, .atlas-home, .atlas-gallery, .figure-popout, .workbench-dialog)
+  :where(p, h2, h3, h4, figcaption, dd, dt, label, summary) {
+  overflow-wrap: anywhere;
+}
+.atlas-ui :is(.lab-head, .three-head, .figure-tools, .method-toolbar, .lab-action-row,
+  .nn-overview, .lesson-reading, .guide-part, .glossary-entry) > * {
+  min-width: 0;
+}
+.atlas-ui :is(.method-toolbar, .lab-action-row, .model-options) label {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.atlas-ui :is(.method-toolbar, .lab-action-row, .model-options) select {
+  max-width: 100%;
+  min-width: 0;
+}
+.atlas-ui .chapter-pagination a { min-width: 0; margin-inline: 0; }
+.atlas-ui .plate-layers { flex-wrap: wrap; }
+.atlas-ui .guide-visual .machine-plate { margin-inline: 0; }
+.atlas-ui :is(.current-hardware-note, .companion-code-note) a {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.atlas-ui .lab-head { flex-wrap: wrap; align-items: start; }
+.atlas-ui .lab-head figcaption {
+  flex: 1 1 430px;
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+}
+.atlas-ui .lab-head figcaption > p { grid-column: 2; }
+.atlas-ui .lab-head > button { flex-shrink: 0; }
+.atlas-ui .objective-row {
+  grid-template-columns: 130px 110px minmax(0, .9fr) minmax(0, 1.1fr);
+}
+.atlas-ui .objective-row h4 { margin: 0; }
+
+/* The drawings identify scale; long connector pseudo-elements escaped each button. */
+.atlas-ui .scale-ladder { gap: 16px; }
+.atlas-ui .scale-ladder button { min-width: 0; flex: 1; padding-inline: 0; }
+.atlas-ui .scale-ladder button::after { display: none; }
+.atlas-ui .scale-ladder small { height: auto; min-height: 2.8em; }
+.atlas-ui .scale-ladder i { max-width: 100%; }
+.atlas-ui .scale-ladder button:nth-child(4) i { width: 55%; height: auto; aspect-ratio: 1; }
+
+/* Labels sit below duration bars, so short durations retain their true width. */
+.atlas-ui .trace-lane { min-height: 72px; }
+.atlas-ui .trace-bar { overflow: visible; color: var(--ink); }
+.atlas-ui .trace-bar > span {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  font: 10px/1.4 var(--sans);
+  white-space: nowrap;
+}
+
+@media (max-width: 1200px) {
+  .atlas-ui .glossary-entry { grid-template-columns: minmax(130px, .6fr) minmax(0, 1.4fr); }
+  .atlas-ui .glossary-entry .glossary-why {
+    grid-column: 2;
+    border-left: 1px solid var(--rule);
+    border-top: 1px solid var(--rule);
+  }
+  .atlas-ui .glossary-toolbar { grid-template-columns: minmax(0, 1fr); position: relative; }
+  .atlas-ui .glossary-filters { max-width: 100%; }
+  .atlas-ui .objective-row { grid-template-columns: 120px minmax(0, 1fr); }
+  .atlas-ui .objective-row > :is(code, p) { grid-column: 2; }
+}
+@media (max-width: 650px) {
+  .atlas-ui .scale-ladder {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    height: auto;
+    padding: 28px 16px;
+    gap: 28px 16px;
+  }
+  .atlas-ui .scale-ladder button { width: 100%; min-height: 140px; font-size: 12px; }
+  .atlas-ui .scale-ladder i { max-height: 70px; max-width: 65px; }
+  .atlas-ui .scale-ladder small { display: block; font-size: 10px; }
+  .atlas-ui .lab-head figcaption { display: flex; flex-direction: column; flex-basis: auto; }
+  .atlas-ui .textbook-lab > figcaption { display: block; }
+  .atlas-ui .textbook-lab > figcaption > :is(span, strong) { display: block; margin-bottom: 10px; }
+  .atlas-ui .textbook-lab > figcaption > p { margin-block: 10px 0; max-width: 100%; }
+  .atlas-ui .glossary-entry { grid-template-columns: minmax(0, 1fr); }
+  .atlas-ui .glossary-entry > *, .atlas-ui .glossary-entry .glossary-why {
+    grid-column: 1;
+    padding-inline: 0;
+    border-left: 0;
+  }
+}
