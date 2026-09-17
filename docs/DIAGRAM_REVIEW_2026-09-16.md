@@ -64,3 +64,15 @@ engraved chapter studies are excluded from interactive walkthrough coverage.
 
 These are teaching drawings. They do not substitute for a device floorplan,
 mechanical service drawing, measured hardware trace or facility sizing document.
+
+### Completed checks
+
+- Production build and release metadata checks passed.
+- 102 Node tests passed.
+- 24 production-browser checks passed across 320, 390, 768 and 1440 px.
+- 20 animation checks passed on desktop and mobile, including 110 adapter
+  advances per authored diagram, reduced motion and off-screen behavior.
+- Runtime inventory remains 154 walkthroughs: 125 flows, 18 comparisons and
+  11 numerical simulations. Decorative illustrations are counted separately.
+- Reviewed captures for all 88 lesson schematics, the additional live figure
+  families, every new hardware view, and representative phone/popout views.
