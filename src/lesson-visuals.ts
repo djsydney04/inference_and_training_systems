@@ -57,8 +57,8 @@ export function initializeLessonVisuals() {
 export function initializeFigurePopouts() {
   const dialog=document.createElement("dialog");
   dialog.className="figure-popout";
-  dialog.setAttribute("aria-label","Expanded diagram");
-  dialog.innerHTML='<header><strong data-popout-title></strong><button type="button" data-popout-close aria-label="Close expanded diagram">Close <kbd>Esc</kbd></button></header><div data-popout-body></div>';
+  dialog.setAttribute("aria-labelledby","expanded-figure-title");
+  dialog.innerHTML='<header><div class="figure-popout-heading"><span data-popout-reference></span><strong id="expanded-figure-title" data-popout-title></strong></div><button type="button" data-popout-close aria-label="Close expanded diagram">Close <kbd>Esc</kbd></button></header><div data-popout-body></div>';
   document.body.append(dialog);
   let moved:HTMLElement|null=null, placeholder:Comment|null=null, opener:HTMLButtonElement|null=null;
   let navigating=false;
@@ -100,6 +100,7 @@ export function initializeFigurePopouts() {
     button.addEventListener("click",()=>{
       moved=host;opener=button;placeholder=document.createComment("expanded figure position");host.before(placeholder);
       dialog.querySelector("[data-popout-title]")!.textContent=title;
+      dialog.querySelector("[data-popout-reference]")!.textContent=host.querySelector(".figure-reference")?.textContent ?? "";
       dialog.querySelector("[data-popout-body]")!.append(host);
       host.classList.add("is-popped-out");document.body.classList.add("figure-popout-open");
       dialog.showModal();dialog.scrollTop=0;window.dispatchEvent(new Event("resize"));

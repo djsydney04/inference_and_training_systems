@@ -47,7 +47,7 @@
 .atlas-ui .figure-layout .figure-inspection-body :is(aside,.chip-explanation) { padding: 0; border: 0; }
 .atlas-ui .figure-layout .figure-inspection-body :is(button,a) { margin-top: 4px; }
 .atlas-ui .figure-layout :is(.figure-inspection,.figure-dimensions,.figure-notes,.chip-options,.chip-route-details,.chip-reference):not([open]) > :not(summary) { display: none; }
-.atlas-ui .figure-layout .figure-notes-copy { padding: 6px 0 16px; }
+.atlas-ui .figure-layout .figure-notes-copy { display: block; padding: 6px 0 16px; }
 .atlas-ui .figure-layout .figure-notes-copy > :is(p,span,small,a) { display: block; margin: 0 0 12px; padding: 0; border: 0; max-width: 74ch; min-height: 0; color: var(--graphite); font: 13px/1.8 var(--sans); }
 .atlas-ui .figure-layout .figure-notes > div:not(.figure-notes-copy) { padding: 0 0 24px; }
 .atlas-ui .figure-layout .figure-notes-copy > .fiber-terms { grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 24px; padding: 12px 0; border: 0; }
@@ -87,6 +87,20 @@
 .atlas-ui .book-study.figure-layout .figure-caption > .figure-toolbar { grid-column: 3; }
 .figure-popout .book-study.figure-layout .study-image { max-height: 65vh; }
 .figure-popout .figure-layout { border-top: 0; }
+
+/* The expanded view has one heading; keep the original caption accessible. */
+.figure-popout-heading { display: grid; gap: 6px; min-width: 0; }
+.figure-popout-heading > span { color: var(--graphite); font: 11px/1.5 var(--sans); }
+.figure-popout-heading > span:empty { display: none; }
+.figure-popout-heading > strong { font: 500 17px/1.4 var(--sans); letter-spacing: -.02em; }
+.figure-popout .figure-layout.is-popped-out .figure-caption { display: block; margin: 0; padding: 0; border: 0; }
+.figure-popout .figure-caption > :is(.figure-title,.figure-reference,strong) {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+.figure-popout .figure-layout.is-popped-out .figure-tools { display: none; }
+.figure-popout .figure-layout.is-popped-out .figure-toolbar { justify-content: flex-start; max-width: none; }
+.figure-popout .figure-layout.is-popped-out .figure-caption:has(.figure-toolbar > :not(.figure-tools) button, .figure-toolbar > button) { padding-bottom: 24px; }
 
 @media (max-width: 1000px) {
   .atlas-ui .figure-layout .figure-heading { grid-template-columns: minmax(0,1fr); gap: 16px; }
