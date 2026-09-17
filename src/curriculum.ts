@@ -140,13 +140,21 @@ export const chapters: Chapter[] = [
     requires: ["tensors"],
   },
   {
+    id: "runtime-foundations",
+    title: "Processes, memory and execution",
+    intro: "Follow a program into processes, virtual memory and device queues. Work through buffer lifetimes and scaling limits before reading a performance trace.",
+    part: "Hardware",
+    outcome: "Distinguish address translation from data movement, order a device pipeline and derive its performance limits.",
+    requires: ["programming", "machine"],
+  },
+  {
     id: "gpu-resources",
     title: "GPU resource limits",
     intro: "A GPU has limited registers, shared memory and execution slots. Calculate which blocks can run together and where a resource limit causes waiting.",
     part: "Hardware",
     outcome:
       "Calculate resource cliffs, distinguish byte boundaries, and trace asynchronous buffer lifetimes.",
-    requires: ["machine"],
+    requires: ["runtime-foundations"],
   },
   {
     id: "rack",
@@ -217,7 +225,7 @@ export const chapters: Chapter[] = [
     part: "Inference",
     outcome:
       "Account for prefill and decode state; calculate quantized codes, grouping overhead and activation-dependent output error.",
-    requires: ["attention", "machine"],
+    requires: ["attention", "runtime-foundations"],
   },
   {
     id: "decoding",

@@ -21,6 +21,7 @@ export type Study = keyof typeof studies;
 
 export const chapterStudies: Record<string, Study> = {
   "mathematical-foundations": "tensor",
+  "runtime-foundations": "execution",
   orientation: "systems", "first-principles": "model", tensors: "tensor", transformer: "model", attention: "model", programming: "memory",
   data: "data", optimization: "gradient", training: "collective", "parallel-training": "pipeline", "post-training": "decoding",
   "digital-logic": "logic", "fpga-asic": "logic", machine: "execution", "gpu-resources": "memory", rack: "systems", collectives: "collective", lpu: "compiler", "accelerator-atlas": "silicon",
