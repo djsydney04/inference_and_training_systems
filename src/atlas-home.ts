@@ -189,7 +189,15 @@ export const galleryItems = [
   },
   {
     kind: "rack",
-    id: "rack",
+    id: "system-buildout",
+    title: "Build out the whole system",
+    scope: "System → rack → tray → facility",
+    copy: "Open each level, inspect components and separate compute, storage, management, power and cooling paths.",
+    type: "Layered system atlas",
+  },
+  {
+    kind: "rack",
+    id: "rack-model",
     title: "A rack is a network",
     scope: "Tray → switch → fabric",
     copy: "Connect compute, communication, power and cooling at rack scale.",

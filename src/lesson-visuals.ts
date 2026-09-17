@@ -7,6 +7,7 @@ function diagram(topic: LessonVisual, detailed = true, selected = 0) {
   const n = topic.steps.length;
   const arrow = `${topic.id}-visual-arrow`;
   const positions = topic.steps.map((_, i): [number, number, number, number] => {
+    if (topic.id === "math-reading-kit") return [18 + i * 280, 70, 224, 150];
     if (topic.kind === "cycle") return [[34,32,302,76],[478,32,302,76],[478,180,302,76],[34,180,302,76]][i] as [number,number,number,number];
     if (topic.kind === "fork") return [[18,104,218,82],[300,24,218,82],[300,188,218,82],[582,104,218,82]][i] as [number,number,number,number];
     if (topic.kind === "memory") return [28, 18 + i * (260 / n), 764, 240 / n];
@@ -16,7 +17,8 @@ function diagram(topic: LessonVisual, detailed = true, selected = 0) {
   });
   const wire = (points: string) => `<path class="lv-wire" d="${points}" marker-end="url(#${arrow})"/>`;
   let wires = "";
-  if (topic.kind === "fork") wires = wire("M236 145H266V65H298")+wire("M266 145V229H298")+wire("M518 65H550V145H580")+wire("M518 229H550V145");
+  if (topic.id === "math-reading-kit") wires = '<text x="270" y="150" text-anchor="middle" class="lv-operator">×</text><text x="550" y="150" text-anchor="middle" class="lv-operator">=</text>';
+  else if (topic.kind === "fork") wires = wire("M236 145H266V65H298")+wire("M266 145V229H298")+wire("M518 65H550V145H580")+wire("M518 229H550V145");
   else if (topic.kind === "cycle") wires = wire("M336 70H476")+wire("M628 108V178") + (n === 4 ? wire("M478 218H338")+wire("M184 180V110") : wire("M478 218H184V110"));
   else if (!["memory","compare"].includes(topic.kind)) positions.slice(0,-1).forEach(([x,y,w,h],i)=>{
     const [nx,ny] = positions[i+1];
@@ -26,10 +28,14 @@ function diagram(topic: LessonVisual, detailed = true, selected = 0) {
     const [x,y,w,h]=positions[i];
     const compact = ["memory","hierarchy","timeline"].includes(topic.kind);
     let internal="";
-    if(detailed && topic.kind === "matrix") internal=Array.from({length:12},(_,cell)=>`<rect class="lv-cell" x="${x+w/2-40+(cell%4)*21}" y="${y+57+Math.floor(cell/4)*19}" width="17" height="15"/>`).join("");
+    if(detailed && topic.kind === "matrix") {
+      const columns=topic.id==="math-reading-kit"&&i===0?3:4;
+      const rows=topic.id==="math-reading-kit"&&i!==1?2:3;
+      internal=Array.from({length:columns*rows},(_,cell)=>`<rect class="lv-cell" x="${x+w/2-(columns*21-4)/2+(cell%columns)*21}" y="${y+57+Math.floor(cell/columns)*19}" width="17" height="15"/>`).join("");
+    }
     if(detailed && topic.kind === "memory") internal=Array.from({length:10},(_,cell)=>`<rect class="lv-cell" x="${x+w-268+cell*24}" y="${y+h/2-9}" width="19" height="18"/>`).join("");
     const labelX=compact?x+16:x+w/2;
-    return `<g class="lv-node ${selected===i?"is-selected":""}" role="button" tabindex="0" data-lv-node="${i}" aria-label="Inspect ${escape(step.label)}" aria-pressed="${selected===i}"><title>${escape(step.note)}</title><rect x="${x}" y="${y}" width="${w}" height="${h}"/><text x="${labelX}" y="${compact?y+23:y+32}" text-anchor="${compact?"start":"middle"}" class="lv-label">${escape(step.label)}</text>${detailed?`<text x="${labelX}" y="${compact?y+43:topic.kind==="matrix"?y+134:y+57}" text-anchor="${compact?"start":"middle"}" class="lv-detail">${escape(step.detail)}</text>`:""}${internal}${!compact&&topic.kind!=="matrix"?`<path class="lv-detail-line" d="M${x+22} ${y+h-24}H${x+w-22}"/>`:""}</g>`;
+    return `<g class="lv-node ${selected===i?"is-selected":""}" role="button" tabindex="0" data-lv-node="${i}" aria-label="Inspect ${escape(step.label)}" aria-pressed="${selected===i}"><title>${escape(step.note)}</title><rect x="${x}" y="${y}" width="${w}" height="${h}"/><text x="${labelX}" y="${compact?y+23:y+32}" text-anchor="${compact?"start":"middle"}" class="lv-label">${escape(step.label)}</text>${detailed?`<text x="${labelX}" y="${compact?y+43:topic.kind==="matrix"?y+134:y+57}" text-anchor="${compact?"start":"middle"}" class="lv-detail">${escape(step.detail)}</text>`:""}${internal}</g>`;
   }).join("");
   return `<svg viewBox="0 0 820 300" class="lv-svg" aria-labelledby="${topic.id}-visual-title"><title id="${topic.id}-visual-title">${escape(topic.title)}. ${escape(topic.relationship)}.</title><defs><marker id="${arrow}" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7" fill="#2559d6"/></marker></defs>${topic.kind==="timeline"?positions.map(([,y])=>`<path class="lv-time-lane" d="M20 ${y+58}H800"/>`).join(""):""}${wires}${nodes}</svg>`;
 }
@@ -98,12 +104,15 @@ export function initializeFigurePopouts() {
     window.dispatchEvent(new Event("resize"));
     if(!navigating && focus?.isConnected)focus.focus({preventScroll:true});
   };
-  dialog.querySelector("[data-popout-close]")!.addEventListener("click",()=>dialog.close());
-  dialog.addEventListener("close",restore);
-  dialog.addEventListener("click",event=>{if(event.target===dialog)dialog.close();});
+  const close=()=>{dialog.close();restore();};
+  dialog.querySelector("[data-popout-close]")!.addEventListener("click",close);
+  // Restore synchronously: a queued close event must not move a newly opened figure.
+  dialog.addEventListener("cancel",event=>{event.preventDefault();close();});
+  dialog.addEventListener("close",()=>{if(!dialog.open&&moved)restore();});
+  dialog.addEventListener("click",event=>{if(event.target===dialog)close();});
   document.addEventListener("atlas:beforenavigate",()=>{
     if(!dialog.open)return;
-    navigating=true;restore();dialog.close();navigating=false;
+    navigating=true;close();navigating=false;
   });
   const hosts=[...document.querySelectorAll<HTMLElement>("figure, .textbook-lab, .nn-figure, .architecture-figure, .wide-figure")];
   hosts.filter(host=> !host.closest(".three-lab") && !host.closest(".atlas-home, .atlas-gallery") &&
