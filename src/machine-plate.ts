@@ -1,5 +1,5 @@
 // An original explanatory package drawing. The cells imply organization, not a die floorplan.
-export function machinePlate() {
+export function machinePlate(prefix = "plate") {
   const cells = (x: number, y: number) => Array.from({ length: 48 }, (_, i) => {
     const px = x + (i % 8) * 12;
     const py = y + Math.floor(i / 8) * 13;
@@ -9,10 +9,10 @@ export function machinePlate() {
   const routes = Array.from({length:12}, (_,i) => `<path d="M102 ${62+i*15}h${12+(i%4)*5}v${i%2 ? 7 : -7}H145M347 ${62+i*15}h-${12+(i%4)*5}v${i%2 ? -7 : 7}H304"/>`).join("");
   return `<figure class="machine-plate" data-layer="compute" aria-label="Interactive conceptual accelerator package">
     <div class="plate-heading"><span>Inside the accelerator</span><a href="#gpu" aria-label="Open the GPU workbench">Inspect in 3D <span aria-hidden="true">↗</span></a></div>
-    <svg class="plate-svg" viewBox="0 0 620 410" role="img" aria-labelledby="plate-title plate-desc"><title id="plate-title">Compute, memory, and the paths between them</title><desc id="plate-desc">An isometric conceptual accelerator package with two compute dies, six memory stacks, and the interconnect traces between them. Select a layer below to highlight it.</desc>
-      <defs><pattern id="plate-grid" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="#c4c8ca"/></pattern><filter id="plate-shadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="8"/></filter></defs>
-      <rect width="620" height="410" fill="url(#plate-grid)" opacity=".45"/>
-      <ellipse cx="306" cy="290" rx="226" ry="55" fill="#223544" opacity=".12" filter="url(#plate-shadow)"/>
+    <svg class="plate-svg" viewBox="0 0 620 410" role="img" aria-labelledby="${prefix}-title ${prefix}-desc"><title id="${prefix}-title">Compute, memory, and the paths between them</title><desc id="${prefix}-desc">An isometric conceptual accelerator package with two compute dies, six memory stacks, and the interconnect traces between them. Select a layer below to highlight it.</desc>
+      <defs><pattern id="${prefix}-grid" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="#c4c8ca"/></pattern><filter id="${prefix}-shadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="8"/></filter></defs>
+      <rect width="620" height="410" fill="url(#${prefix}-grid)" opacity=".45"/>
+      <ellipse cx="306" cy="290" rx="226" ry="55" fill="#223544" opacity=".12" filter="url(#${prefix}-shadow)"/>
       <g transform="matrix(.79 .34 -.68 .44 242 41)">
         <path d="M20 26H432V297H20Z" fill="#89969a" stroke="#718185"/><path d="M20 285H432v12H20Z" fill="#73868b"/>
         <rect x="20" y="12" width="412" height="273" rx="7" fill="#d3dbd8" stroke="#99aaa6" stroke-width="1.5"/>
@@ -32,4 +32,22 @@ export function machinePlate() {
     </svg>
     <figcaption><div class="plate-layers" role="group" aria-label="Highlight a package layer"><button type="button" data-plate-layer="compute" aria-pressed="true"><i></i>Compute</button><button type="button" data-plate-layer="memory" aria-pressed="false"><i></i>Memory</button><button type="button" data-plate-layer="fabric" aria-pressed="false"><i></i>Interconnect</button></div><p class="plate-description" aria-live="polite">Compute dies execute the model’s matrix and vector operations.</p><small>Conceptual package · not a physical floorplan</small></figcaption>
   </figure>`;
+}
+
+export function initializeMachinePlates(root: ParentNode) {
+  const descriptions: Record<string, string> = {
+    compute: "Compute dies execute the model’s matrix and vector operations.",
+    memory: "Memory stacks supply weights, activations, and cached state.",
+    fabric: "The interconnect carries data between memory and compute.",
+  };
+  root.querySelectorAll<HTMLElement>(".machine-plate").forEach(plate => {
+    plate.querySelectorAll<HTMLButtonElement>("[data-plate-layer]").forEach(button => {
+      button.addEventListener("click", () => {
+        const layer = button.dataset.plateLayer!;
+        plate.dataset.layer = layer;
+        plate.querySelectorAll<HTMLButtonElement>("[data-plate-layer]").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
+        plate.querySelector(".plate-description")!.textContent = descriptions[layer];
+      });
+    });
+  });
 }

@@ -1,5 +1,7 @@
 import "./atlas-ui.css";
 import "./course-guide.css";
+import "./landing.css";
+import { initializeMachinePlates } from "./machine-plate";
 import { initializeCourseGuide } from "./course-guide";
 
 const icon = (name: "search" | "diagram") => {
@@ -55,9 +57,10 @@ export function initializeAtlasUI() {
   const search = document.querySelector(".search-trigger");
   search?.insertAdjacentHTML("afterbegin", icon("search"));
   initializeCourseGuide();
+  initializeMachinePlates(document);
   initializeGalleryFilters();
   const syncPage = () => {
-    const page = document.querySelector<HTMLElement>("#main-content > :not([hidden]):is(.chapter, .atlas-home, .atlas-gallery)");
+    const page = document.querySelector<HTMLElement>("#main-content > :not([hidden]):is(.chapter, .atlas-home, .atlas-gallery, .atlas-landing)");
     document.body.dataset.atlasPage = page?.id ?? "top";
   };
   document.addEventListener("atlas:chapterchange", syncPage);

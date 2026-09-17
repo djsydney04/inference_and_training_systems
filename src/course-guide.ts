@@ -43,19 +43,6 @@ function buildCourseGuide() {
     paths.append(pathSection);
     home.append(paths);
   }
-  const descriptions: Record<string, string> = {
-    compute: "Compute dies execute the model’s matrix and vector operations.",
-    memory: "Memory stacks supply weights, activations, and cached state.",
-    fabric: "The interconnect carries data between memory and compute.",
-  };
-  home.querySelectorAll<HTMLButtonElement>("[data-plate-layer]").forEach(button => {
-    button.addEventListener("click", () => {
-      const layer = button.dataset.plateLayer!;
-      home.querySelector(".machine-plate")!.setAttribute("data-layer", layer);
-      home.querySelectorAll<HTMLButtonElement>("[data-plate-layer]").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
-      home.querySelector(".plate-description")!.textContent = descriptions[layer];
-    });
-  });
 }
 
 export function initializeCourseGuide() {
@@ -88,7 +75,7 @@ export function initializeCourseGuide() {
   if (chapterPanel) panelHome.append(chapterPanel);
   let previous = "";
   const sync = () => {
-    const page = document.querySelector<HTMLElement>("#main-content > :not([hidden]):is(.chapter, .atlas-home, .atlas-gallery)");
+    const page = document.querySelector<HTMLElement>("#main-content > :not([hidden]):is(.chapter, .atlas-home, .atlas-gallery, .atlas-landing)");
     const id = page?.id ?? "top";
     const chapter = chapters.find(item => item.id === id);
     nav.querySelectorAll<HTMLAnchorElement>(".course-chapter-link").forEach(link => {
@@ -111,8 +98,6 @@ export function initializeCourseGuide() {
     const activeGroup = nav.querySelector<HTMLDetailsElement>(`[data-course-part="${chapter?.part ?? "Foundations"}"]`);
     if (activeGroup) activeGroup.open = true;
     if (id === "top") {
-      document.querySelector("[data-reader-part]")!.textContent = "Start here";
-      document.querySelector("[data-progress-label]")!.textContent = "Course guide";
       document.title = "Course guide | Machine Learning Systems Atlas";
     }
   };
