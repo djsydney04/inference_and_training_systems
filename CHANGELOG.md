@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/djsydney04/inference_and_training_systems/compare/v0.4.0...v0.4.1) (2026-09-17)
+
+
+### Maintenance
+
+* ignore local deployment metadata and environment files ([43b79b8](https://github.com/djsydney04/inference_and_training_systems/commit/43b79b8fc94e17b544e903514524ee62d7b125df))
+
 ## [0.4.0](https://github.com/djsydney04/inference_and_training_systems/compare/v0.3.0...v0.4.0) (2026-09-17)
 
 
