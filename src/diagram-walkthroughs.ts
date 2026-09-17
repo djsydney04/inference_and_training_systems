@@ -103,6 +103,10 @@ export function diagramWalkthrough(root: HTMLElement): DiagramWalkthrough | null
   if (root.closest(".atlas-landing")) return null;
   // Catalog studies are captioned external artwork, separate from live diagrams.
   if (root.matches("figure.book-study")) return null;
+  if (root.matches(".notebook-figure")) return { kind: "flow", advance() {
+    click(root.querySelector("[data-notebook-next]"));
+    return label(root.querySelector("[data-notebook-status]")!);
+  } };
   // A parent figure can contain an independently owned lesson schematic.
   if (root.matches(".lesson-visual")) return selections(root, "[data-lv-node]");
   if (root.matches("[data-nn-inspector]")) return selections(root, "[data-nn-part]");

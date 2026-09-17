@@ -9,6 +9,17 @@ type GlossaryEntry = {
 };
 
 const entries = ([
+  { term: "Broadcasting", category: "training", definition: "Reusing values across compatible array axes, such as adding one feature bias at every token position.", why: "A compatible shape can still encode the wrong axis meaning. Backward sums contributions across the axes that reused a value." },
+  { term: "Conditional probability", category: "training", definition: "The probability of an event given specified information; p(B|A)=p(A,B)/p(A) when p(A)>0.", why: "An autoregressive model factors sequence probability into next-token probabilities conditioned on preceding tokens." },
+  { term: "Expectation", category: "training", definition: "A probability-weighted average of a numerical quantity across possible outcomes.", why: "A minibatch estimates a population objective; its mean need not equal the loss or gradient of any one example." },
+  { term: "Jacobian", category: "training", definition: "The array of partial derivatives of every output coordinate with respect to every input coordinate of a function.", why: "Reverse-mode differentiation usually needs its product with an upstream gradient, without storing the whole Jacobian." },
+  { term: "KL divergence", aliases: "Kullback Leibler divergence", category: "training", definition: "For discrete distributions, the p-weighted sum of ln(p/q), measuring distribution mismatch in a specified direction.", why: "Its argument order matters. Cross-entropy against a fixed target distribution equals target entropy plus this mismatch." },
+  { term: "Matrix rank", category: "training", definition: "The number of independent directions a matrix's output can span.", why: "A low-rank factorization constrains a linear update even when its output retains many stored coordinates." },
+  { term: "Probability calibration", category: "inference", definition: "Agreement between stated probabilities and observed event frequencies in the relevant population.", why: "Token likelihood, answer correctness and confidence are different events. Calibration requires a defined outcome and evaluation protocol." },
+  { term: "Process", category: "hardware", definition: "A running program instance with an address space and operating-system resources, containing one or more threads.", why: "Separate server or training processes do not share model allocations merely because their variables have the same names." },
+  { term: "Strong scaling", category: "performance", definition: "Increasing processing resources while holding the total workload fixed.", why: "Its latency speedup differs from the throughput improvement obtained by growing the workload with device count." },
+  { term: "TLB", aliases: "translation lookaside buffer", category: "hardware", definition: "A cache of recent virtual-to-physical address translations.", why: "A translation miss is different from a data-cache miss and does not, by itself, imply a page fault or disk access." },
+  { term: "Virtual memory", category: "hardware", definition: "An address-space abstraction that maps a process's virtual addresses to backing storage with access permissions.", why: "A contiguous tensor can span scattered physical pages. An address alone does not identify location, residency or access cost." },
   { term: "Autodiff", aliases: "automatic differentiation", category: "training", definition: "Applying derivative rules through a recorded or transformed computation to obtain derivatives of its outputs with respect to chosen inputs.", why: "The derivative follows the executed or staged program. Detached values, masks and loss reduction determine which gradients exist." },
   { term: "Execution provider", category: "performance", definition: "An ONNX Runtime interface through which a backend claims and executes supported graph operations.", why: "Installing a runtime does not establish that every operation runs on the intended accelerator; inspect provider support and placement." },
   { term: "Framework", category: "training", definition: "Reusable software for expressing, executing or coordinating computations and their state.", why: "Tensor execution, model libraries, training loops and serving engines own different responsibilities even when all are called frameworks." },
@@ -202,6 +213,18 @@ const escapeHTML = (value: string) => value
   .replaceAll("'", "&#039;");
 
 const workedContexts: Record<string, { id: string; title: string }> = {
+  "Broadcasting": { id: "indices-and-reductions", title: "Indices and broadcasting" },
+  "Conditional probability": { id: "conditional-sequences", title: "Sequence probabilities" },
+  "Expectation": { id: "expectation-and-batches", title: "Expectation and minibatches" },
+  "Jacobian": { id: "chain-rule-and-sharing", title: "The chain rule" },
+  "KL divergence": { id: "likelihood-and-information", title: "Likelihood and information" },
+  "Matrix rank": { id: "vectors-and-linear-maps", title: "Vectors and rank" },
+  "Probability calibration": { id: "evaluation-calibration", title: "Evaluate probabilities" },
+  "Process": { id: "processes-and-threads", title: "Processes and threads" },
+  "Strong scaling": { id: "latency-throughput-and-scaling", title: "Scaling limits" },
+  "TLB": { id: "virtual-memory-and-locality", title: "Address translation" },
+  "Virtual memory": { id: "virtual-memory-and-locality", title: "Virtual addresses and pages" },
+  "RoPE": { id: "position-rotations", title: "Position as a rotation" },
   "Autodiff": { id: "framework-autodiff-state", title: "Autodiff and state" },
   "Execution provider": { id: "framework-deployment-layers", title: "Runtimes and deployment" },
   "Framework": { id: "framework-roles", title: "Find the right layer" },

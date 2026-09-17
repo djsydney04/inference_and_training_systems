@@ -7,6 +7,7 @@ import "./kernel.css";
 import "./methods.css";
 import "./manual.css";
 import "./notebook.css";
+import { initializeNotebookFigures } from "./notebook-figures";
 import "./accelerator.css";
 import "./cuda.css";
 import "./digital.css";
@@ -105,6 +106,7 @@ prepareBookStudies();
 initializeReader();
 initializeAtlasUI();
 initializeFigurePopouts();
+initializeNotebookFigures();
 initializeDiagramPlayback();
 refreshFigureLayouts();
 
