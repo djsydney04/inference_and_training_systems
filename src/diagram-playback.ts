@@ -31,7 +31,9 @@ const playing = (player: Player) => !player.paused && (!pausedAll || player.over
 function live(player: Player, muted: boolean) {
   player.root.querySelectorAll("[aria-live]").forEach(node => {
     // A larger diagram can contain another independently paused walkthrough.
-    if (node.closest("[data-diagram-playback]") !== player.root) return;
+    // Registration visits outer figures first; a nested figure may not yet
+    // have its playback marker. Do not overwrite its original live setting.
+    if (node.closest(diagramHostSelector) !== player.root) return;
     if (!player.liveRegions.has(node)) player.liveRegions.set(node, node.getAttribute("aria-live")!);
     const value = muted ? "off" : player.liveRegions.get(node)!;
     if (node.getAttribute("aria-live") !== value) node.setAttribute("aria-live", value);

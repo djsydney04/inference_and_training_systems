@@ -93,6 +93,18 @@ test("global pause and reading pace persist across reloads", async ({ page }) =>
   expect(await page.locator('[data-playback-state="playing"]').count()).toBe(0);
 });
 
+test("a nested schematic restores announcements and stops motion independently", async ({ page }) => {
+  await start(page, "training-state");
+  const diagram = page.locator('#training-state .lesson-visual');
+  await diagram.locator('.lv-canvas').scrollIntoViewIfNeeded();
+  await page.clock.runFor(1000);
+  await diagram.locator('[data-lv-node="1"]').click();
+  await expect(diagram).toHaveAttribute("data-playback-state", "paused");
+  await expect(diagram.locator('.lv-selection')).toHaveAttribute("aria-live", "polite");
+  const motion = await diagram.evaluate(root => getComputedStyle(root).getPropertyValue("--walkthrough-motion").trim());
+  expect(motion).toBe("paused");
+});
+
 test("every authored diagram has a walkthrough and repeated cycles remain valid", async ({ page }) => {
   await start(page, "orientation");
   const failures = await page.evaluate(async () => {
