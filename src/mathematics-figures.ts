@@ -52,7 +52,7 @@ export const matrixProductPage = figure(
   matrix(30, 72, [[2, -1, 3], [0, 4, 1]], 62) + label(249, 117, "×") +
   matrix(289, 53, [[4, 1], [5, 2], [-2, 3]], 62) + label(451, 117, "=") +
   matrix(495, 72, [[-3, 9], [18, 11]], 69) +
-  ink("M41 107 Q123 110 204 106", true) + ink("M321 56 Q317 108 321 165", true) +
+  ink("M41 107 Q123 110 204 106", true) + ink("M344 56 Q348 108 344 165", true) +
   rule(195) + label(30, 226, "Choose one row of A and one column of B.", true) +
   label(30, 265, "C[0,0] = 2×4 + (−1)×5 + 3×(−2) = −3") +
   label(30, 309, "C[0,1] = 2×1 + (−1)×2 + 3×3 = 9") +
@@ -104,13 +104,13 @@ export const attentionPage = figure(
   "From two scores to one weighted output",
   "For one query q=[1,0], keys [0,1] and [2,0] give scores 0 and square root of 2 after division by square root of 2. Softmax gives approximately [0.1956,0.8044]. Mixing values [2,0] and [0,4] gives [0.3911,3.2177].",
   432,
-  label(30, 37, "q = [1,0]     k₀ = [0,1]     k₁ = [2,0]") +
+  label(30, 37, "q = [1,0];   k₀ = [0,1];   k₁ = [2,0]") +
   rule(59) + label(30, 97, "1. Dot products:  q·k₀ = 0;   q·k₁ = 2") +
-  label(30, 145, "2. Scale by √2:   s = [0, 1.4142…]") +
+  label(30, 145, "2. Divide by √2:   s = [0, 1.4142…]") +
   label(30, 193, "3. Subtract max:  [−1.4142…, 0]") +
   label(30, 241, "4. Exponentiate:  [0.2431…, 1]") +
   label(30, 289, "5. Divide by sum:  p ≈ [0.1956, 0.8044]") +
-  rule(314) + label(30, 354, "6. Mix:  0.1956…[2,0] + 0.8044…[0,4]") +
+  rule(314) + label(30, 354, "6. Mix:  0.19557…[2,0] + 0.80443…[0,4]") +
   answer(30, 399, "Output ≈ [0.3911, 3.2177]", 305),
   "One query, two allowed keys, key width 2, value width 2. Rounded labels are for reading; calculate with unrounded values. This isolates scaled dot-product attention before its output projection, with no dropout. Masking is explained in the lesson.",
 );
@@ -136,8 +136,8 @@ export const derivativePage = figure(
   label(30, 83, "f(2) = 4") + label(30, 127, "f(2+h) = (2+h)(2+h) = 4 + 4h + h²") +
   label(30, 175, "Change in output = 4h + h²") +
   label(30, 223, "Change per unit input = (4h + h²) / h = 4 + h") +
-  rule(248) + label(30, 284, "h = 0.1 → 4.1     h = 0.01 → 4.01", true) +
-  label(30, 315, "h = −0.01 → 3.99     Both sides approach 4.", true) +
+  rule(248) + label(30, 284, "h = 0.1 → 4.1;   h = 0.01 → 4.01", true) +
+  label(30, 315, "h = −0.01 → 3.99.   Both sides approach 4.", true) +
   answer(30, 355, "f′(2) = 4", 108),
   "Divide only when h is nonzero, then take the limit as h approaches zero. The derivative is a local rate; a finite step still includes the h squared term.",
 );

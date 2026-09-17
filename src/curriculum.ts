@@ -29,9 +29,9 @@ export const chapters: Chapter[] = [
   {
     id: "mathematical-foundations",
     title: "Mathematics for model building",
-    intro: "Read sums and shapes, calculate sequence probabilities, and derive gradients through shared computations. Worked examples connect the notation to a trainable model.",
+    intro: "Start with ordinary arithmetic, learn vectors and matrices by hand, then work through attention, probability and gradients. No linear algebra or calculus background is assumed.",
     part: "Foundations",
-    outcome: "Derive a sequence likelihood and a matrix gradient, and explain what averaging and finite precision change.",
+    outcome: "Multiply matrices, calculate a small attention output, and trace a prediction’s loss back into its weights.",
     requires: ["first-principles"],
   },
   {

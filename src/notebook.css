@@ -10,6 +10,7 @@
 .notebook-scroll .notebook-small { font-size: 16px; }
 .notebook-ink { fill: none; stroke: var(--ink); stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; }
 .notebook-blue { stroke: var(--signal); stroke-width: 2; }
+.notebook-rule { fill: none; stroke: var(--rule); stroke-width: 1; }
 .notebook-figure > .figure-boundary { padding: 8px 24px 20px; }
 @media (max-width: 680px) {
   .notebook-scroll::after { content: "Scroll to follow the full drawing."; display: block; position: sticky; left: 0; width: fit-content; padding-top: 14px; font: 12px/1.6 var(--sans); color: var(--graphite); }

@@ -8,6 +8,7 @@ import math
 import statistics
 import struct
 import unittest
+from itertools import product
 
 
 def centered_difference(function, values, index, epsilon=1e-5):
@@ -28,6 +29,136 @@ def dot(a, b):
 
 
 class WorkedExamples(unittest.TestCase):
+    def test_vector_operations_and_dot_products(self):
+        x, y = [2, -3], [-1, 5]
+        self.assertEqual([a + b for a, b in zip(x, y)], [1, 2])
+        self.assertEqual([3 * a for a in x], [6, -9])
+        self.assertEqual([a - b for a, b in zip(x, y)], [3, -8])
+        self.assertEqual(math.hypot(3, 4), 5)
+        self.assertEqual(dot([2, -1, 3], [4, 5, -2]), -3)
+        self.assertEqual(dot([1, 2, -1], [3, 0, 4]), -1)
+        self.assertEqual(dot([3, 4], [4, -3]), 0)
+        self.assertEqual(dot([3, 4], [6, 8]), 50)
+        self.assertEqual(dot([3, 4], [6, 8]) / (5 * 10), 1)
+
+    def test_full_matrix_product_and_transpose(self):
+        def multiply(a, b):
+            return [[dot(row, col) for col in zip(*b)] for row in a]
+
+        a = [[2, -1, 3], [0, 4, 1]]
+        b = [[4, 1], [5, 2], [-2, 3]]
+        self.assertEqual(multiply(a, b), [[-3, 9], [18, 11]])
+        self.assertEqual(list(map(list, zip(*a))), [[2, 0], [-1, 4], [3, 1]])
+        self.assertEqual(multiply([[1, 2], [3, 4]], [[2, 0], [-1, 5]]),
+                         [[0, 10], [2, 20]])
+        scale, swap = [[2, 0], [0, 1]], [[0, 1], [1, 0]]
+        self.assertEqual(multiply(scale, swap), [[0, 2], [1, 0]])
+        self.assertEqual(multiply(swap, scale), [[0, 1], [2, 0]])
+        identity = [[1, 0], [0, 1]]
+        self.assertEqual(multiply([[2, 0], [0, 2]], [[.5, 0], [0, .5]]), identity)
+        self.assertEqual(multiply([[3, 4]], identity), [[3, 4]])
+
+    def test_basis_images_and_rank_one_factors(self):
+        x = [3, 4]
+        rows = [[1, 2], [-1, 1]]
+        by_columns = [dot(x, column) for column in zip(*rows)]
+        by_basis = [sum(x[i] * rows[i][j] for i in range(2)) for j in range(2)]
+        self.assertEqual(by_columns, [-1, 10])
+        self.assertEqual(by_columns, by_basis)
+        a, b = [1, 2], [3, 4, 5]
+        matrix = [[ai * bj for bj in b] for ai in a]
+        self.assertEqual(matrix, [[3, 4, 5], [6, 8, 10]])
+        # Every 2x2 minor vanishes, while a nonzero entry rules out rank zero.
+        for left, right in [(0, 1), (0, 2), (1, 2)]:
+            self.assertEqual(matrix[0][left] * matrix[1][right] -
+                             matrix[0][right] * matrix[1][left], 0)
+        self.assertNotEqual(matrix[0][0], 0)
+        self.assertEqual(1 * (4 + 6), 10)
+        self.assertLess(1 * (4 + 6), 4 * 6)
+        self.assertGreater(3 * (4 + 6), 4 * 6)  # Rank alone does not promise savings.
+
+    def test_reductions_centering_and_bias_broadcast(self):
+        x = [[1, 3, 5], [2, 4, 6]]
+        self.assertEqual([statistics.mean(row) for row in x], [3, 4])
+        self.assertEqual([statistics.mean(col) for col in zip(*x)], [1.5, 3.5, 5.5])
+        self.assertEqual(statistics.mean(value for row in x for value in row), 3.5)
+        centered = [[value - statistics.mean(row) for value in row] for row in x]
+        self.assertEqual(centered, [[-2, 0, 2], [-2, 0, 2]])
+        self.assertTrue(all(sum(row) == 0 for row in centered))
+        bias = [10, 20, 30]
+        self.assertEqual([[value + offset for value, offset in zip(row, bias)]
+                          for row in x], [[11, 23, 35], [12, 24, 36]])
+
+    def test_attention_scores_probabilities_values_and_mask(self):
+        query, keys, values = [1, 0], [[0, 1], [2, 0]], [[2, 0], [0, 4]]
+        scores = [dot(query, key) / math.sqrt(len(query)) for key in keys]
+        weights = [math.exp(score - max(scores)) for score in scores]
+        probabilities = [weight / sum(weights) for weight in weights]
+        # Independent two-class logistic expression, then exact convex mixing.
+        second = 1 / (1 + math.exp(-math.sqrt(2)))
+        self.assertAlmostEqual(probabilities[1], second)
+        self.assertAlmostEqual(sum(probabilities), 1)
+        output = [dot(probabilities, column) for column in zip(*values)]
+        self.assertEqual([round(value, 4) for value in probabilities], [.1956, .8044])
+        self.assertEqual([round(value, 4) for value in output], [.3911, 3.2177])
+        self.assertEqual([dot([1, 0], col) for col in zip(*values)], [2, 0])
+        self.assertEqual([dot([.5, .5], col) for col in zip(*values)], [1, 2])
+        self.assertNotEqual([probabilities[0] * value for value in values[0]], [2, 0])
+
+    def test_derivative_limits_chain_rule_and_descent(self):
+        for step in [.1, .01, -.01]:
+            self.assertAlmostEqual(((2 + step) ** 2 - 4) / step, 4 + step)
+        self.assertAlmostEqual(centered_difference(lambda v: (3 * v[0]) ** 2,
+                                                   [2.], 0), 36)
+        for weight, gradient, updated in [(1, -4, 1.4), (5, 4, 4.6)]:
+            self.assertAlmostEqual(centered_difference(lambda v: (v[0] - 3) ** 2,
+                                                       [weight], 0, .01), gradient)
+            self.assertAlmostEqual(weight - .1 * gradient, updated)
+            self.assertAlmostEqual((updated - 3) ** 2, 2.56)
+        self.assertEqual((1 - 2 * (-4) - 3) ** 2, 36)
+        for index, expected in enumerate([-2, 3]):
+            self.assertAlmostEqual(centered_difference(lambda v: v[0] ** 2 + 3 * v[1],
+                                                       [-1., 2.], index), expected)
+
+    def test_softmax_loss_gradient_and_complete_weight_update(self):
+        def log_loss(logits, target=1):
+            maximum = max(logits)
+            return math.log(sum(math.exp(z - maximum) for z in logits)) + (maximum - logits[target])
+
+        logits = [0., math.log(3)]  # Probabilities exactly 1/4, 3/4 in real arithmetic.
+        for index, expected in enumerate([.25, -.25]):
+            self.assertAlmostEqual(centered_difference(log_loss, logits, index), expected)
+
+        features = [1., 2.]
+        weights = [1., -1., 0., 1.]
+
+        def scores(w):
+            return [features[0] * w[0] + features[1] * w[2],
+                    features[0] * w[1] + features[1] * w[3]]
+
+        self.assertEqual(scores(weights), [1, 1])
+        self.assertAlmostEqual(log_loss(scores(weights)), math.log(2))
+        gradient = [.5, -.5, 1., -1.]
+        for index, expected in enumerate(gradient):
+            self.assertAlmostEqual(centered_difference(lambda w: log_loss(scores(w)),
+                                                       weights, index), expected)
+        updated = [w - .1 * g for w, g in zip(weights, gradient)]
+        self.assertEqual(updated, [.95, -.95, -.1, 1.1])
+        for actual, expected in zip(scores(updated), [.75, 1.25]):
+            self.assertAlmostEqual(actual, expected)
+        self.assertAlmostEqual(log_loss(scores(updated)), .4740769841801067)
+        self.assertAlmostEqual(math.exp(-log_loss(scores(updated))), .6224593312018546)
+
+    def test_independent_batch_variance_by_enumeration(self):
+        population = [10, 10, 10, 50]
+        # Enumerate all equally likely batches rather than invoking sigma^2/B.
+        for size in [1, 2, 4]:
+            means = [statistics.mean(batch) for batch in product(population, repeat=size)]
+            self.assertEqual(statistics.mean(means), 20)
+            self.assertEqual(statistics.pvariance(means), 300 / size)
+        duplicated_means = [statistics.mean([value] * 4) for value in population]
+        self.assertEqual(statistics.pvariance(duplicated_means), 300)
+
     def test_probability_tree_and_conditioning(self):
         leaves = {"Ax": .6 * .5, "Ay": .6 * .5,
                   "Bx": .4 * .9, "By": .4 * .1}
