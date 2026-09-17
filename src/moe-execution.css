@@ -5,9 +5,9 @@
 .moe-workbench .moe-route-muted path { stroke: var(--rule-dark); fill: none; stroke-width: 1; opacity: .65; }
 .moe-workbench .moe-route-active path { stroke: var(--signal); fill: none; stroke-width: 2.5; }
 .moe-workbench .moe-route-active text { fill: var(--signal); font-weight: 650; paint-order: stroke; stroke: var(--paper); stroke-width: 5px; stroke-linejoin: round; }
-.moe-workbench .moe-node rect { fill: var(--paper); stroke: var(--rule-dark); }
+.moe-workbench .moe-node .inference-sketch-box { fill: var(--paper); stroke: var(--rule-dark); }
 .moe-workbench .moe-node text { fill: var(--ink); }
-.moe-workbench .moe-node-selected rect { fill: var(--signal-pale); stroke: var(--signal); stroke-width: 2; }
+.moe-workbench .moe-node-selected .inference-sketch-box { fill: var(--signal-pale); stroke: var(--signal); stroke-width: 2; }
 .moe-workbench .moe-node-selected text { fill: var(--ink); }
 .moe-workbench .moe-summary { margin: 0; padding: 18px 22px; border-block: 1px solid var(--rule); font: 14px/1.7 var(--sans); }
 .moe-workbench .method-table { padding: 18px 22px; }
