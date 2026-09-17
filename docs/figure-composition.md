@@ -40,3 +40,22 @@ Validation:
 Wide technical drawings retain an explicit horizontal scrolling surface on
 phones so their labels remain readable. The existing production bundle-size
 warning remains; it does not fail the build.
+
+## Expanded-view follow-up
+
+Expanded diagrams now use one numbered heading. Their original captions remain
+accessible, embedded figures keep their own titles, and closing restores the
+in-page layout and keyboard focus. Expanded illustrations no longer leave an
+empty caption band. Figure-note introductions now use a reading column instead
+of inheriting the narrow label column intended for worked examples.
+
+Verified on the integrated CPU-chapter revision:
+
+- Production build and all 185 unit tests passed.
+- All 24 UI checks passed at 320, 390, 768 and 1440 pixels.
+- Eight focused browser checks passed for expanded playback, static component
+  selection, Escape restoration and keyboard focus across the same viewports.
+- Opened 233 figure-note disclosures at each of 320, 390 and 1440 pixels;
+  no page overflow or narrow introductory text columns were found.
+- Reviewed desktop and phone captures, plus an expanded illustration and a
+  calculator containing its own schematic; embedded headings stay visible.
