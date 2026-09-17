@@ -40,7 +40,7 @@ explain the artwork without requiring color perception.
 
 `src/illustration-catalog.ts` connects each subject to its chapters, lessons,
 course parts, and library previews. `src/book-illustrations.ts` shares the assets
-between the landing spreads, 28 chapters, and two reference pages. Chapter images
+between the landing spreads, 30 chapters, and two reference pages. Chapter images
 are decorative, selected by subject,
 and omitted from the accessibility tree so they do not repeat the introduction.
 Use external, lazy-loaded SVGs with intrinsic dimensions to keep layout stable
