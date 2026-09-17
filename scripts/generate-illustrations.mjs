@@ -69,7 +69,7 @@ layerX.forEach((x,i)=>{
 b+=backward('M392 424V449');
 b+=grid(301,445,6,6,6)+grid(450,445,6,6,6,(r,c)=>r===2||c===4);
 b+=path('M347 462H436',ink,1.3,'marker-end="url(#forward-arrow)"');
-b+=trainingLabel(318,443,'θ',18)+trainingLabel(467,443,'θ′',18)+trainingLabel(392,509,'Weight update');
+b+=trainingLabel(392,509,'Weight update');
 b+=path('M494 462H625V139H284',blue,1.5);
 // Pale bridges distinguish crossing paths from joins.
 b+=path('M625 187V213M625 290V310','#f4f5f0',5)+path('M625 187V213M625 290V310',blue,1.5);
