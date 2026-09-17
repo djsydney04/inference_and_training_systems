@@ -22,6 +22,8 @@ export function refreshFigureLayouts() {
     const playback = root.querySelector<HTMLElement>(":scope > .diagram-playback");
     const stepNote = playback?.querySelector<HTMLElement>(".playback-caption");
     if (stepNote) copy.push(stepNote);
+    const traceNote = root.querySelector<HTMLElement>(":scope > .transformer-controls > [data-transformer-status]");
+    if (traceNote) copy.push(traceNote);
 
     let notes = root.querySelector<HTMLDetailsElement>(":scope > .figure-notes, :scope > .lv-notes");
     if (copy.length || notes) {
