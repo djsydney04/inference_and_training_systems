@@ -5,10 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
+    "prebuild": "npm run check:release",
     "build": "tsc --noEmit && vite build",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "preview": "vite preview --host 0.0.0.0",
     "check": "tsc --noEmit",
+    "check:release": "node --experimental-strip-types scripts/check-release.ts",
     "lint:ui": "playwright test --config playwright.config.ts",
     "test:animations": "playwright test --config playwright.playback.config.ts"
   },

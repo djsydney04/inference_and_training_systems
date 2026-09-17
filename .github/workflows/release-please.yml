@@ -1,0 +1,82 @@
+name: Release Please
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-please-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    uses: ./.github/workflows/verify.yml
+
+  release:
+    if: github.ref == 'refs/heads/main'
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      statuses: write
+    outputs:
+      pr-sha: ${{ steps.candidate.outputs.sha }}
+    steps:
+      - uses: googleapis/release-please-action@8b8fd2cc23b2e18957157a9d923d75aa0c6f6ad5 # v4
+        id: release
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+      # GITHUB_TOKEN-created PRs do not trigger pull_request workflows.
+      # Capture and verify the exact generated commit within this workflow.
+      - name: Identify the generated release commit
+        if: steps.release.outputs.pr != ''
+        id: candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ fromJSON(steps.release.outputs.pr || '{}').number }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          release_sha=$(gh api "repos/$GH_REPO/pulls/$PR_NUMBER" --jq .head.sha)
+          echo "sha=$release_sha" >> "$GITHUB_OUTPUT"
+          gh api --method POST "repos/$GH_REPO/statuses/$release_sha" \
+            -f state=pending -f context=release-validation \
+            -f description="Checking generated version, tests, build and footer" \
+            -f target_url="$RUN_URL"
+
+  verify-release-pr:
+    needs: release
+    if: needs.release.outputs.pr-sha != ''
+    uses: ./.github/workflows/verify.yml
+    with:
+      ref: ${{ needs.release.outputs.pr-sha }}
+
+  release-pr-status:
+    needs: [release, verify-release-pr]
+    if: always() && needs.release.outputs.pr-sha != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      statuses: write
+    steps:
+      - name: Report validation on the release PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_SHA: ${{ needs.release.outputs.pr-sha }}
+          RESULT: ${{ needs.verify-release-pr.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          state=failure
+          if [ "$RESULT" = success ]; then state=success; fi
+          gh api --method POST "repos/$GH_REPO/statuses/$RELEASE_SHA" \
+            -f state="$state" -f context=release-validation \
+            -f description="Release validation: $RESULT" -f target_url="$RUN_URL"

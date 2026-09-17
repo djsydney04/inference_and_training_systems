@@ -14,8 +14,10 @@ Chapter titles, introductions, and display numbers come from the curriculum.
 The chosen learning path is saved locally and controls previous/next navigation.
 See [the authoring guide](docs/AUTHORING.md) before adding or moving content.
 
-The edition footer and release notes share metadata from `src/release.ts` and
-the version in `package.json`. The [design direction](DESIGN.md) describes the
+Release Please updates the package version and changelog together. The edition
+footer and release notes read those files automatically; production builds reject
+version mismatches. See [releasing](docs/RELEASING.md) for version rules and the
+release PR workflow. The [design direction](DESIGN.md) describes the
 landing page, reader, and diagram conventions.
 
 ## Explore the material
