@@ -41,6 +41,7 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
       - name: Version the material changes
+        id: content
         if: steps.release.outputs.pr != ''
         env:
           GH_TOKEN: ${{ github.token }}
@@ -55,10 +56,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          PR_NUMBER: ${{ fromJSON(steps.release.outputs.pr || '{}').number }}
+          RELEASE_SHA: ${{ steps.content.outputs.sha }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          release_sha=$(gh api "repos/$GH_REPO/pulls/$PR_NUMBER" --jq .head.sha)
+          release_sha="$RELEASE_SHA"
           echo "sha=$release_sha" >> "$GITHUB_OUTPUT"
           gh api --method POST "repos/$GH_REPO/statuses/$release_sha" \
             -f state=pending -f context=release-validation \
