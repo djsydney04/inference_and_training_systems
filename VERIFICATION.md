@@ -1,5 +1,53 @@
 # Verification record — textbook expansion
 
+## September 16, 2026 — whole-book first-principles audit
+
+The assembled book contains **34 chapters, 221 sections and 235 rendered
+figures**. The [review index](docs/audits/README.md) links lesson-by-lesson
+reports for foundations, hardware, training and inference, with primary sources,
+corrections and execution limits. This pass adds basic arithmetic/functions,
+learning across examples and attention cost models, expands first-use definitions
+and derivations, and orders prerequisites before their dependent lessons.
+
+Verification was performed in the isolated `textbook-first-principles-audit`
+worktree, after merging the other contributors' layout, illustration and
+changelog changes through `4ad19a2`:
+
+- **198 Node tests pass** (`npm test`), including the curriculum prerequisite
+  order, contiguous navigation groups, fixed-window/sparse connectivity,
+  rectangular MLA identities, recurrent-state arithmetic and corrected transfer
+  amortization. The TypeScript, release metadata and production build pass.
+- **24 production browser checks pass** at 1440, 768, 390 and 320px widths
+  (`ALMANAC_UI_PORT=4471 npm run lint:ui`), including every chapter and diagram
+  label, numerical controls, keyboard inspection and the merged changelog.
+- **20 desktop/mobile playback checks pass** using the existing playback suite
+  on a dedicated 4475 dev server: progression, pause/resume, reduced motion,
+  hidden chapters, expanded figures, focus restoration and repeated cycles.
+- Browser review checks the canonical chapter order against the actual sidebar,
+  course guide and selector: all agree. All internal fragments resolve, IDs are
+  unique, and search finds the new arithmetic, shared-learning and attention-cost
+  lessons.
+- Direct attention interaction gives 58 permitted pairs at T=16 and 154 at T=40
+  for the fixed four-key window. Recurrent mode reports 16 state updates at T=16
+  and shows the dependency chain with its accessible description. The narrow
+  browser has 320px document width at a 320px viewport.
+- Screenshots review the arithmetic and shared-learning lessons, recurrent-state
+  diagram, MLA and speculative-tree schematics, and corrected conceptual plates.
+  The model plate distinguishes attention weights from the final vocabulary
+  projection and softmax. Corrected model, logic and tiling assets reproduce
+  byte-for-byte from `scripts/generate-illustrations.mjs`.
+- Domain checks pass: 10 dependency-free foundations checks, 27 training/framework
+  reference checks and 24 inference/serving reference checks; native C correctness
+  checks; and all four RTL simulation benches (including 65,536 adder pairs and
+  1,620 systolic PE-cycle checks). Details and commands are in the domain reports.
+
+These checks cover teaching arithmetic, example contracts and rendered behavior.
+They do not reproduce GPU kernel speed, distributed training, device placement,
+model quality or vendor benchmark results. TensorFlow/PyTorch/JAX execution paths
+were source-reviewed but not rerun in this worktree where dependencies were
+unavailable; historical framework execution evidence below retains its original
+date and versions. Browser screenshots and logs remain local QA artifacts.
+
 ## September 16, 2026 — Inside a CPU
 
 The dedicated CPU chapter has 14 lessons: the existing core overview and 13 new

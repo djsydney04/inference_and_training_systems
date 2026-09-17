@@ -92,3 +92,16 @@ links resolved and authored/generated IDs were unique at this check.
 | `sources` | 0 | 0 |
 
 Total: 34 chapters, 221 sections and 235 rendered figures.
+
+## Integrated verification
+
+After merging the other contributors' layout and illustration changes: 198 Node
+tests, 24 production browser tests and 20 desktop/mobile playback tests pass.
+TypeScript, release checks and the production build pass. The actual reader's
+sidebar, course guide and chapter selector agree on chapter order; there are no
+duplicate IDs or broken internal fragments. New lessons are searchable.
+
+The [verification record](../../VERIFICATION.md) separates these results from
+native C, RTL and dependency-free Python checks, and from hardware/framework
+experiments that were not rerun. Screenshot and DOM inventories are local QA
+artifacts; the lesson-level review tables remain the content coverage record.

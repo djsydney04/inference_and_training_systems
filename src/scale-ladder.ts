@@ -74,12 +74,12 @@ const cluster = `
   <circle class="scale-packet" cx="70" cy="158" r="3"/>`;
 
 const levels = [
-  { name: "Scalar", detail: "One value", target: "tensors", drawing: scalar },
-  { name: "Tensor", detail: "Values with shape", target: "tensors", drawing: tensor },
+  { name: "Scalar", detail: "One value", target: "numbers-and-functions", drawing: scalar },
+  { name: "Tensor", detail: "Values with shape", target: "math-reading-kit", drawing: tensor },
   { name: "Layer", detail: "Connected operations", target: "transformer", drawing: layer },
   { name: "Chip", detail: "Compute + memory", target: "gpu", drawing: chip },
-  { name: "Rack", detail: "A scale-up domain", target: "rack", drawing: rack },
-  { name: "Cluster", detail: "Connected domains", target: "training", drawing: cluster },
+  { name: "Rack", detail: "Shared enclosure", target: "rack", drawing: rack },
+  { name: "Cluster", detail: "Connected machines", target: "training", drawing: cluster },
 ];
 
 export const scaleLadderMarkup = `<nav class="scale-ladder scale-atlas" data-scale-ladder aria-label="Explore the scale ladder">
