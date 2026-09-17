@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 560" fill="none" role="img" aria-labelledby="title desc">
 <title id="title">Logic between clock edges</title>
-<desc id="desc">Fine wires connect combinational gates between two registers. A clock waveform sits underneath. Blue highlights a data path; this illustration does not specify a complete circuit or timing budget.</desc>
+<desc id="desc">Fine wires connect combinational gates between two registers. A clock waveform underneath connects to the triangular clock inputs on both registers. Blue highlights a data path; this illustration does not specify a complete circuit or timing budget.</desc>
 <defs>
 <pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse">
 <path d="M-1 1L1-1M0 5L5 0M4 6L6 4" stroke="#939d86" stroke-width=".55"/>
@@ -23,13 +23,13 @@
 <path d="M265 272h25a30 30 0 0 1 0 60h-25Z" stroke="#61775b" fill="#dce4d4"/>
 <path d="M480 195h25a30 30 0 0 1 0 60h-25Z" stroke="#61775b" fill="#dce4d4"/>
 <path d="M163 176H211V133H265M163 224H229V287H265M163 248H193V317H265M320 148H387V210H480M320 302H408V240H480M535 225H670" stroke="#2559d6" stroke-width="1.5" fill="none" />
-<path d="M66 104H218V163H265M66 352H375V258H457V240H480" stroke="#61775b" stroke-width="1" fill="none" />
+<path d="M66 104H218V163H265" stroke="#61775b" stroke-width="1" fill="none" />
 <rect x="363" y="86" width="10" height="18" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
 <rect x="379" y="86" width="10" height="18" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
 <rect x="395" y="86" width="10" height="18" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
 <rect x="411" y="86" width="10" height="18" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
 <rect x="427" y="86" width="10" height="18" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
-<path d="M128 268V392H705V268M128 392V421" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M78 244H93M78 244V392H655V244H670M128 392V464" stroke="#61775b" stroke-width="0.8" fill="none" />
 <path d="M82 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />
 <path d="M134 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />
 <path d="M186 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />

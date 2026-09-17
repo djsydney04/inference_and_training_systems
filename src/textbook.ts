@@ -94,28 +94,6 @@ function initPagedCache() {
   render();
 }
 
-function initReadingTools() {
-  const objectives: Record<string, string> = {
-    tensors: "Trace shapes, compute a gradient, and explain the label shift.",
-    transformer: "Follow information through a decoder block and identify its persistent state.",
-    attention: "Distinguish connectivity, cache compression, recurrence, and IO optimization.",
-    training: "Reconcile token counts, model-state memory, objective, and checkpoint state.",
-    machine: "Map software work to execution resources and explain a memory bottleneck.",
-    rack: "Trace a tensor between GPUs and distinguish scale-up from scale-out paths.",
-    inference: "Account for cache growth and explain latency under changing load.",
-    lpu: "Explain a compiler-scheduled dataflow and its capacity constraints.",
-  };
-  document.querySelectorAll<HTMLElement>(".chapter").forEach((chapter) => {
-    if (!objectives[chapter.id]) return;
-    const lessons = [...chapter.querySelectorAll<HTMLElement>("[data-lesson]")];
-    const guide = document.createElement("div");
-    guide.className = "chapter-reading-guide";
-    const minutes = Math.max(3, Math.ceil((chapter.textContent?.trim().split(/\s+/).length ?? 0) / 190));
-    guide.innerHTML = `<div><span>${minutes} min reading + labs</span><p>${objectives[chapter.id]}</p></div>${lessons.length ? `<nav aria-label="Lessons in ${chapter.dataset.chapter}">${lessons.map((lesson) => `<a href="#${lesson.id}">${lesson.dataset.lesson}</a>`).join("")}</nav>` : ""}`;
-    chapter.querySelector(".chapter-title")?.after(guide);
-  });
-}
-
 function initFigureViewer() {
   const dialog = document.createElement("dialog");
   dialog.className = "figure-dialog";
@@ -134,6 +112,5 @@ function initFigureViewer() {
 
 export function initializeTextbook() {
   initSoftmax(); initCPU(); initCoalescing(); initPagedCache();
-  if (!document.body.classList.contains("atlas-reader")) initReadingTools();
   initFigureViewer();
 }

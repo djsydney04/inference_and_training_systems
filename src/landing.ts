@@ -1,5 +1,5 @@
 import { machinePlate } from "./machine-plate";
-import { release, releaseNotesMarkup, contentHistoryMarkup } from "./release";
+import { release } from "./release";
 import { studyImage } from "./book-illustrations";
 
 export const landingMarkup = `
@@ -10,7 +10,7 @@ export const landingMarkup = `
     <div class="landing-introduction">
       <p>Explore the models, code, and machines behind artificial intelligence.</p>
       <a class="landing-enter" href="#top">Open the almanac <span aria-hidden="true">→</span></a>
-      <span class="landing-entry-note">Start with the foundations. Explore at your own pace.</span>
+      <span class="landing-entry-note">Start with the foundations.</span>
     </div>
     <div class="landing-machine">${machinePlate("landing-plate")}</div>
     <div class="landing-caption"><span>From first principles to full systems</span><a href="#gallery">Explore the diagrams <span aria-hidden="true">↗</span></a></div>
@@ -62,6 +62,4 @@ export const landingMarkup = `
     <div><p>Read. Inspect. Experiment.</p><h2 id="landing-begin-title">Start with a question.<br>Follow it all the way down.</h2></div>
     <div><a class="landing-enter" href="#top">Start reading <span aria-hidden="true">→</span></a><a class="landing-browse" href="#gallery">Or browse the diagrams</a></div>
   </section>
-  ${contentHistoryMarkup}
-  ${releaseNotesMarkup}
 </section>`;

@@ -88,3 +88,14 @@ test("canonical book order satisfies prerequisites and the full path covers ever
     chapters.filter((chapter) => chapter.part !== "Reference").map((chapter) => chapter.id));
   assert.throws(() => prerequisiteRoute(["missing-chapter"]), /Unknown chapter/);
 });
+
+test("course-guide parts cannot silently reorder the chronological chapter sequence", () => {
+  const completedParts = new Set<string>();
+  let previous = "";
+  for (const chapter of chapters) {
+    if (chapter.part === previous) continue;
+    assert.ok(!completedParts.has(chapter.part), `${chapter.part} resumes after another part and would reorder grouped navigation`);
+    if (previous) completedParts.add(previous);
+    previous = chapter.part;
+  }
+});

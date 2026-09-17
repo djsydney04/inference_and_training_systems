@@ -21,14 +21,19 @@ float dot(const float *a, const float *b, size_t count) {
     return sum;
 }`)}
 <p><code>i = 0</code> initializes the loop counter; <code>i &lt; count</code> decides whether to continue; <code>++i</code> advances it. <code>a[i]</code> reads one element. The pointers a and b identify storage belonging to the caller. <code>const</code> makes this access path read-only; it does not allocate data or prove that another pointer cannot change it. The function requires at least count valid elements in each input. C does not automatically carry that length with a pointer.</p>
+<p>Read <code>const float *a</code> as “a is a pointer through which we read float elements.” The star is part of the pointer declaration here; between values in <code>a[i] * b[i]</code> it means multiplication. <code>sum += value</code> is shorthand for adding value to sum and storing the result. The directive <code>#include</code> brings declarations from a header into the source. For a=(2,3), b=(4,5) and count=2, the loop visits i=0 and i=1, changing sum from 0 to 8 to 23. The <a href="#c-pointers-arrays">pointer lesson</a> then derives the exact addresses.</p>
 <p>Use <code>sizeof</code> to ask for the size of a type or object. Do not assume <code>int</code>, <code>long</code> or a pointer has the same size everywhere. A matrix with 3×5 FP32 elements occupies 60 bytes when each element is four bytes; a pointer to that matrix occupies only the bytes needed to represent an address. Shapes describe meaning, and storage describes representation.</p>
 ${ref("https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf", "C committee draft: types, expressions and storage duration")}
 ${check("Check: does passing a 1 GB tensor to a function necessarily copy 1 GB?", "No. Passing a pointer and shape can copy only the small descriptor. Whether the data is copied depends on the implementation and ownership contract. A pointer alone also does not tell the function that the allocation contains 1 GB.")}
 </section>
 
 <section class="lesson" id="c-arithmetic-contracts" data-lesson="Integer and floating-point arithmetic"><header><span>Before optimizing arithmetic</span><h3>The representation changes which operations are valid</h3></header>
-<p>Unsigned arithmetic wraps modulo its representable range. Signed integer overflow in C is undefined behavior: the compiler is allowed to assume it does not happen. These are different contracts. Tensor offsets should be calculated in an appropriate size type, and the products used for allocations must be checked before multiplication. Checking after an overflow cannot reconstruct the intended size.</p>
-${code("Guard the multiplication before allocating", `if (count > SIZE_MAX / sizeof(float)) {
+<p>Arithmetic performed in an unsigned integer type wraps modulo one more than that type's maximum value. Signed integer overflow in C is undefined behavior: the compiler is allowed to assume it does not happen. Small integer types can first be promoted to <code>int</code>, so an eight-bit variable does not imply every intermediate uses eight-bit arithmetic. Tensor offsets should be calculated in an appropriate size type, and the products used for allocations must be checked before multiplication. Checking after an overflow cannot reconstruct the intended size.</p>
+${code("Guard the multiplication before allocating", `#include <stdint.h> // SIZE_MAX
+#include <stdlib.h> // malloc, NULL
+
+// Fragment inside a function returning float *; count is size_t.
+if (count > SIZE_MAX / sizeof(float)) {
     /* reject: count * sizeof(float) would overflow */
     return NULL;
 }
@@ -36,7 +41,7 @@ float *data = malloc(count * sizeof(float));
 if (data == NULL) {
     /* handle allocation failure before dereferencing data */
 }`)}
-<p>Floating-point addition is not associative. In FP32, around 100,000,000, a change of 1 is too small to represent. <code>(100000000 − 100000000) + 1</code> produces 1, while <code>100000000 + (−100000000 + 1)</code> can produce 0. Parallel reductions change the addition tree, so a correct GPU result need not match a serial CPU sum bit for bit. Fused multiply-add also rounds a multiply plus add once, which can differ from two separately rounded instructions.</p>
+<p>Floating-point addition is not associative. In FP32, around 100,000,000, a change of 1 is too small to represent. With each addition rounded to FP32 using nearest/even, <code>(100000000.0f + −100000000.0f) + 1.0f</code> produces 1, while <code>100000000.0f + (−100000000.0f + 1.0f)</code> produces 0. These expressions specify floating-point values; writing only integer literals in C would demonstrate integer arithmetic instead. Parallel reductions change the addition tree, so a correct GPU result need not match a serial CPU sum bit for bit. Fused multiply-add also rounds a multiply plus add once, which can differ from two separately rounded instructions.</p>
 <p>Define a comparison such as <code>|actual − reference| ≤ atol + rtol × |reference|</code>. Absolute tolerance matters near zero; relative tolerance scales with magnitude. Reject unexpected NaNs explicitly because <code>abs(NaN) &gt; tolerance</code> is false. A single tolerance suitable for a seven-element FP32 row may be inappropriate for a million-element reduction, a low-precision matrix instruction or a numerically ill-conditioned input.</p>
 <p>Distinguish accumulation precision from storage precision. Inputs may be 16-bit, products may feed a wider accumulator, and the output may round back down. Ask which exact conversion happens at each boundary. The <a href="#mixed-precision">training numerics lesson</a> connects these choices to loss scaling and update state.</p>
 ${ref("https://docs.nvidia.com/cuda/floating-point/index.html", "NVIDIA: floating-point order, FMA and accuracy")}
@@ -127,7 +132,9 @@ ${code("CUDA C++: reuse each thread for more indices", `__global__ void axpy_str
 }
 // Device buffers must already contain valid inputs.
 if (n != 0) {
-    axpy_strided<<<(n + 255) / 256, 256>>>(d_x, d_y, d_out, n, 0.5f);
+    // A declared legal teaching grid; the loop covers the remaining indices.
+    // For a general API, also bound n so the index increment cannot overflow.
+    axpy_strided<<<2, 256>>>(d_x, d_y, d_out, n, 0.5f);
     CUDA_CHECK(cudaGetLastError());       // Launch configuration errors
     CUDA_CHECK(cudaDeviceSynchronize()); // Runtime execution errors
 }`)}
@@ -139,6 +146,7 @@ ${check("Check: can block 0 initialize a flag and every other block spin until i
 </section>
 
 <section class="lesson" id="cuda-coalescing" data-lesson="Warps and memory access"><header><span>Inspect the addresses, not just the loop</span><h3>Nearby threads should usually request nearby words</h3></header>
+<p>A <strong>lane</strong> identifies one thread position within a warp. Here a warp has 32 lanes; a lane is active for an instruction when that thread participates in it. <strong>Global memory</strong> is the device-wide address space used by the arrays, while <strong>shared memory</strong> is explicitly managed scratch storage available to cooperating threads in a block. A <strong>sector</strong> is the fixed-size region counted by the simplified memory-request model below.</p>
 <p>Coalescing combines a warp's global-memory accesses into requests for the memory regions they touch. Consider 32 active lanes each reading one four-byte word. With adjacent aligned words, the address set covers four 32-byte sectors. Shifting the first word by four bytes touches five sectors. Reading every second word touches eight sectors, although only half the bytes are useful distinct words. This is an address accounting model; caches and the architecture determine the eventual lower-level traffic.</p>
 <figure class="textbook-lab cuda-lab" id="warp-address-lab"><figcaption><span>Interactive K.1</span><strong>One instruction, 32 addresses</strong><p>Read the byte address, 32-byte sector and hypothetical shared-memory bank for each active lane.</p></figcaption><div class="cuda-toolbar"><label>Word stride<select data-warp-stride><option value="1">1 · neighboring words</option><option value="2">2 · every other word</option><option value="8">8 · one word per sector</option><option value="32">32 · one shared bank</option><option value="33">33 · padded column</option><option value="0">0 · broadcast</option></select></label><label>Starting word<select data-warp-offset><option value="0">0 · sector aligned</option><option value="1">1 · four bytes shifted</option><option value="7">7 · end of a sector</option></select></label></div><div data-warp-diagram></div><p class="cuda-result" data-warp-result aria-live="polite"></p><details><summary>Read every address</summary><div class="cuda-scroll" data-warp-table></div></details><p class="figure-boundary">Original model: 32 active lanes, one aligned FP32 word per lane, 32-byte sectors, and a separate 32-bank/4-byte shared-memory interpretation. Global sectors and shared banks describe different memory spaces. Counts are neither measured HBM transactions nor elapsed cycles.</p></figure>
 <p>Shared memory has a different issue: bank conflicts. Under the illustrative 32-bank, four-byte-word model, word w maps to bank <code>w mod 32</code>. If lanes access distinct words in the same bank, the bank must service multiple words. If they all read the same word, a broadcast is possible; counting lanes alone would falsely call that a 32-way conflict. A column of a shared array with row stride 32 hits the same bank, while stride 33 rotates through banks.</p>
@@ -170,7 +178,7 @@ ${ref("https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#data-mo
 <p>For a finite row x of length D, let <code>m=max(x)</code>, <code>eᵢ=exp(xᵢ−m)</code>, <code>s=Σeᵢ</code> and <code>yᵢ=eᵢ/s</code>. Subtracting the same maximum leaves the exact mathematical probability unchanged. The largest exponential becomes one, so a row such as [1000,1001] can be normalized without evaluating exp(1001) directly. This does not define behavior for an all-negative-infinity masked row: subtracting negative infinity from itself is undefined numerically, so that row needs an explicit policy.</p>
 <p>The baseline assigns one block to each row. Threads make a strided pass for the maximum, another for the exponential sum, and a final pass to write probabilities. This trades repeated reads and exponentials for a simple bounded register footprint. A fused register-resident row can keep intermediate values and reduce traffic, but a wider row can increase register use, spill, or lower residency. Fusion changes both data movement and resource pressure.</p>
 <h4>Derive backward without allocating a D×D Jacobian</h4>
-<p>The derivative is <code>∂yᵢ/∂xⱼ = yᵢ(δᵢⱼ−yⱼ)</code>. Given an upstream gradient gᵢ=∂L/∂yᵢ, expand the chain rule: <code>∂L/∂xⱼ = Σᵢgᵢyᵢδᵢⱼ − Σᵢgᵢyᵢyⱼ = yⱼ(gⱼ − Σᵢgᵢyᵢ)</code>. Backward therefore needs one row dot product and an elementwise expression. It can reuse saved probabilities y; it does not need to store a dense Jacobian.</p>
+<p>The derivative is <code>∂yᵢ/∂xⱼ = yᵢ(δᵢⱼ−yⱼ)</code>, where δᵢⱼ is one when i=j and zero otherwise. A <strong>Jacobian</strong> is the table of all these output-by-input derivatives. Given an upstream gradient gᵢ=∂L/∂yᵢ, expand the chain rule: <code>∂L/∂xⱼ = Σᵢgᵢyᵢδᵢⱼ − Σᵢgᵢyᵢyⱼ = yⱼ(gⱼ − Σᵢgᵢyᵢ)</code>. Backward therefore needs one row dot product and an elementwise expression. It can reuse saved probabilities y; it does not need to store a dense Jacobian.</p>
 ${code("Softmax gradient contract", `dot = sum(y[i] * upstream[i] for i in range(D))
 dx[i] = y[i] * (upstream[i] - dot)
 

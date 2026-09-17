@@ -19,7 +19,8 @@ numerical values. The brand leads the landing page, with generous empty space.
 
 Content plan: AI Almanac and the interactive package drawing → short introduction
 → three illustrated spreads for models, machines, and systems → reading action
-→ edition and release notes. Alternate light paper, dark green, and pale green
+→ edition footer. Content changes and site release history live on their own
+publication page, linked from the footer. Alternate light paper, dark green, and pale green
 to separate these subjects without enclosing them in cards. The reader presents
 a grouped syllabus, an illustrated chapter opening, its lessons, then the next
 chapter. There is no horizontal top bar.

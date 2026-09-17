@@ -14,6 +14,8 @@ export const trainingExpansionMarkup = `
       <article role="listitem"><span>05 / time</span><h4>Why did the step take this long?</h4><p>Break the critical path into input, forward, backward, optimizer, checkpoint, exposed collectives, bubbles, and stragglers.</p></article>
     </div>
 
+    <div class="derivation"><h4>Build the byte count from one parameter</h4><p>In this declared recipe, one parameter has a two-byte compute weight, a two-byte gradient, a four-byte update weight, and two four-byte Adam moments: <code>2+2+4+4+4=16 bytes</code>. The gradient says which way to move; the moments retain update history; the higher-precision update weight accumulates changes before rounding the compute copy. These are separately stored numbers, not sixteen bytes inside a single weight.</p><p>Let P be the parameter count and R the number of data-parallel ranks. Ordinary replication retains <code>16P</code> bytes per rank. Sharding optimizer state gives <code>P(2+2+12/R)</code>; additionally sharding gradients gives <code>P(2+14/R)</code>; sharding all three categories gives <code>16P/R</code>. These are ZeRO stages 1, 2 and 3 in the calculator. A shard is an owned slice, so computation may still temporarily gather more state. The <a href="#sharded-state-ownership">sharding lesson</a> follows those temporary lifetimes.</p><p>At 7 billion parameters, replication is 112 billion bytes, or about 104.31 GiB, on each rank. On eight ranks the stage-3 retained model state is 14 billion bytes, about 13.04 GiB per rank. One GiB is 2³⁰ bytes. Neither retained total includes the activations or temporary allocations that decide the actual peak.</p></div>
+
     <div class="training-calculator wide-figure" id="training-state" data-lesson="Model-state and token budgets">
       <div class="lab-head">
         <figcaption><span>Interactive 4.3</span><strong>Model-state and token-budget ledger</strong><p>Estimate one dense decoder run. Change the ZeRO stage to see replication turn into communication.</p></figcaption>
@@ -51,8 +53,9 @@ export const trainingExpansionMarkup = `
           <p data-train-explanation>All model state is replicated. Eight ranks allocate eight complete copies.</p>
         </div>
       </div>
-      <div class="omission"><strong>Model boundary:</strong> the memory estimate excludes activations, attention matrices, temporary workspaces, communication buffers, fragmentation, embeddings with unusual precision, and framework-specific state. The rough <code>6 × parameters × tokens</code> compute rule is for dense-decoder training and is not a wall-time estimate.</div>
+      <div class="omission"><strong>Model boundary:</strong> the memory estimate excludes activations, attention matrices, temporary workspaces, communication buffers, fragmentation, embeddings with unusual precision, and framework-specific state. Batch arithmetic assumes the selected sequence length counts valid prediction targets per sequence: an input/target pair constructed from T+1 recorded tokens provides T such targets. Padding and response masks require the actual valid count. The rough <code>6 × parameters × tokens</code> compute rule is for dense-decoder training and is not a wall-time estimate.</div>
     </div>
+    <div class="derivation"><h4>Where the token and compute products come from</h4><p>The default update uses <code>8 ranks × 2 sequences × 4,096 targets × 8 microsteps = 524,288 targets</code>. An accumulation microstep computes another contribution at unchanged weights; the optimizer changes the weights only after all eight contributions have been combined. Reaching one trillion targets needs <code>ceil(10¹²/524,288)=1,907,349</code> full updates, with either a shorter final update or a small budget overshoot declared explicitly.</p><p>For a dense matrix, one multiply and one add count as two floating-point operations. Forward applies its weights once per token; backward forms an input derivative and a weight derivative, each with a matrix multiplication of similar arithmetic cost. Counting those three products gives roughly six operations per matrix parameter per token. Extending that approximation to a dense decoder gives <code>6PT</code> for P parameters and T training tokens. Attention pairwise products, recomputation and other operations require additional accounting. An exaFLOP-day means <code>10¹⁸×86,400</code> operations; dividing by it expresses an amount of work, not measured days on a machine.</p></div>
 
     <div class="checkpoint-transaction">
       <div class="checkpoint-diagram" aria-label="A distributed checkpoint commit protocol">
@@ -61,7 +64,7 @@ export const trainingExpansionMarkup = `
       <div class="checkpoint-copy">
         <span>Failure semantics</span>
         <h3>A checkpoint is a transaction, not a folder of tensors</h3>
-        <p>Each rank writes immutable shards. A coordinator records sizes and hashes, verifies that the complete set exists, then atomically publishes a manifest. Readers ignore uncommitted attempts.</p>
+        <p>One checkpoint protocol has each rank write immutable shards for the same completed update. A coordinator records sizes and hashes, verifies that the complete set exists, then publishes a manifest through the storage system's atomic commit mechanism. The manifest lists the exact shards belonging to that checkpoint; readers ignore uncommitted attempts. Atomic visibility and durability after a power failure are separate properties, so the filesystem or object store must supply the required write, flush and publication guarantees.</p>
         <dl>
           <div><dt>Numerical state</dt><dd>parameters, optimizer moments, loss scale, scheduler, step</dd></div>
           <div><dt>Stochastic state</dt><dd>Python/framework/device RNG and sampling generators</dd></div>
@@ -76,17 +79,18 @@ export const trainingExpansionMarkup = `
         <span>Post-training objectives</span>
         <h3>What signal changes the policy?</h3>
       </div>
+      <p>A policy πθ is the model's conditional probability distribution, with trainable parameters θ. Here x denotes the prompt and y the response; <code>log πθ(y|x)=Σₜ log πθ(yₜ|x,y&lt;ₜ)</code>. The sum follows response positions, including any selected end token. The rows below preview different sources of training signal. They can be combined in one recipe; they are not a required four-step sequence. The <a href="#post-training-loss">post-training lessons</a> derive their masks and objectives.</p>
       <div class="objective-row">
-        <span>Demonstration</span><h4>SFT</h4><code>−Σ log πθ(yₜ | x, y&lt;ₜ)</code><p>Teacher-forced next-token learning on desired responses. It is stable and dense, but it only imitates what demonstrations contain.</p>
+        <span>Demonstration</span><h4>SFT</h4><code>−Σ log πθ(yₜ | x, y&lt;ₜ)</code><p>Supervised fine-tuning uses recorded responses as next-token targets. Each selected response token supplies a direct loss; quality still depends on the data and optimization recipe.</p>
       </div>
       <div class="objective-row">
-        <span>Pairwise preference</span><h4>DPO</h4><code>−log σ(β[(log πθ−log πref)chosen − (log πθ−log πref)rejected])</code><p>Raises a chosen response relative to a rejected response while anchoring the update to a reference policy.</p>
+        <span>Pairwise preference</span><h4>DPO</h4><code>−log σ(β[(log πθ−log πref)chosen − (log πθ−log πref)rejected])</code><p>Direct preference optimization rewards a larger chosen-versus-rejected likelihood margin relative to a frozen reference. Here σ(z)=1/(1+exp(−z)) and β&gt;0 sets the margin scale. This pair loss does not enforce a hard bound on distance from the reference.</p>
       </div>
       <div class="objective-row">
-        <span>Sampled outcomes</span><h4>RLVR</h4><code>prompt → K rollouts → verifier → advantages → constrained update</code><p>A deterministic checker can score math, code, or formal outputs. The systems cost shifts toward generation, variable-length packing, reward evaluation, and on-policy freshness.</p>
+        <span>Sampled outcomes</span><h4>RLVR</h4><code>prompt → K rollouts → verifier → advantages → policy update</code><p>Reinforcement learning with verifiable rewards uses a checker to score generated responses. An advantage compares a sampled outcome to a baseline. A program test checks the supplied cases; it need not prove correctness for every input. Generation, scoring and sample age become part of the run.</p>
       </div>
       <div class="objective-row">
-        <span>Learned judgment</span><h4>RLHF</h4><code>rollouts → reward model / judge → policy optimization</code><p>Supports qualities without exact checkers, but reward-model bias, hacking, and distribution shift become part of the specification.</p>
+        <span>Human feedback</span><h4>RLHF</h4><code>human judgments → reward model → rollouts → policy optimization</code><p>Reinforcement learning from human feedback can fit a reward model to human judgments, then optimize sampled responses using that reward. An AI judge supplies a different feedback source unless its relationship to human supervision is specified. Reward-model error and exploitation need independent evaluation.</p>
       </div>
     </div>
 
@@ -101,7 +105,7 @@ export const trainingExpansionMarkup = `
         <article><span>Data · 2025</span><h4>FineWeb2</h4><p>The released pipeline adapts filtering and deduplication across more than 1,000 languages and explicitly ablates choices instead of treating “web text” as one undifferentiated source.</p><a href="https://arxiv.org/abs/2506.20920" target="_blank" rel="noreferrer">Read the paper →</a></article>
         <article><span>Optimizer · 2025</span><h4>Muon at scale</h4><p>Moonshot’s Moonlight work studies how matrix orthogonalization can be made practical for a multi-trillion-token MoE run. Treat its recipe as optimizer research, not a drop-in guarantee.</p><a href="https://github.com/MoonshotAI/Moonlight" target="_blank" rel="noreferrer">Read the project →</a></article>
         <article><span>Reasoning RL · 2025</span><h4>DAPO</h4><p>The open system documents asymmetric clipping, dynamic prompt sampling, token-level policy loss, and overlong-response shaping as interventions against entropy collapse and noisy updates.</p><a href="https://arxiv.org/abs/2503.14476" target="_blank" rel="noreferrer">Read the paper →</a></article>
-        <article><span>MoE RL · 2025</span><h4>GSPO</h4><p>Qwen’s method moves the importance ratio and clipping unit from individual tokens to sequence likelihood, motivated by instability in long-response and MoE policy optimization.</p><a href="https://arxiv.org/abs/2507.18071" target="_blank" rel="noreferrer">Read the paper →</a></article>
+        <article><span>MoE RL · 2025</span><h4>GSPO</h4><p>Qwen’s method uses a length-normalized sequence likelihood ratio—exp of the mean response-token log ratio—and applies clipping at the sequence level. That quantity differs from both one token's ratio and an unnormalized product across the response.</p><a href="https://arxiv.org/abs/2507.18071" target="_blank" rel="noreferrer">Read the paper →</a></article>
         <article><span>Frontier system · 2026</span><h4>Kimi K3</h4><p>The disclosed stack combines hybrid KDA/MLA, very sparse MoE, multimodal training, pipeline-bubble scheduling, and quantization-aware post-training. It is evidence that architecture, training, and serving co-design are now inseparable.</p><a href="https://github.com/MoonshotAI/Kimi-K3" target="_blank" rel="noreferrer">Read the report →</a></article>
       </div>
     </div>

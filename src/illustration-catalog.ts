@@ -1,6 +1,6 @@
 /** Original conceptual drawings; live labs own all numerical results. */
 export const studies = {
-  model: { title: "Tokens to predictions", alt: "Token vectors enter a causal attention matrix and flow toward a prediction. Hatching marks future positions; blue highlights selected values." },
+  model: { title: "Tokens to predictions", alt: "Token vectors produce causal attention weights, which mix values. Omitted model operations lead to the final-position vocabulary projection and softmax. The probability bars represent vocabulary tokens, not attention positions. Hatching excludes future keys." },
   silicon: { title: "Inside the accelerator", alt: "A top-down accelerator study with repeated compute tiles, memory banks, and fine interconnect traces. Blue follows data between them." },
   systems: { title: "Connected machines", alt: "Eight compute nodes joined by fine communication paths. A blue route traces data between machines." },
   tensor: { title: "Shapes and storage", alt: "Stacked tensor planes connect to rows of stored values. A selected row and its storage positions are blue." },
@@ -24,12 +24,12 @@ export const chapterStudies: Record<string, Study> = {
   "runtime-foundations": "execution",
   orientation: "systems", "first-principles": "model", tensors: "tensor", transformer: "model", attention: "model", programming: "memory",
   data: "data", optimization: "gradient", training: "collective", "parallel-training": "pipeline", "post-training": "decoding",
-  "digital-logic": "logic", "fpga-asic": "logic", cpu: "execution", machine: "execution", "gpu-resources": "memory", rack: "systems", collectives: "collective", lpu: "compiler", "accelerator-atlas": "silicon",
+  "digital-logic": "logic", "fpga-asic": "logic", cpu: "execution", machine: "silicon", "gpu-resources": "memory", rack: "systems", collectives: "collective", lpu: "compiler", "accelerator-atlas": "silicon",
   "cuda-kernels": "tiling", "portable-kernels": "compiler", performance: "pipeline", inference: "cache", decoding: "decoding", "serving-lab": "serving", frontier: "model", "end-to-end": "data", projects: "serving",
   glossary: "tensor", sources: "data",
 };
 export const partStudies: Record<string, Study> = {
-  Foundations: "tensor", Training: "gradient", Hardware: "silicon", Programming: "tiling", Inference: "cache", Practice: "serving",
+  Foundations: "tensor", Training: "gradient", "Training and generation": "gradient", "Accelerator designs": "silicon", Hardware: "silicon", Programming: "tiling", Inference: "cache", Practice: "serving",
 };
 export const galleryStudies: Record<string, Study> = {
   network: "model", circuit: "logic", gradient: "gradient", occupancy: "memory", ring: "collective", probability: "decoding", matmul: "tiling", replicas: "collective", training: "gradient", mask: "data", cpu: "execution", gpu: "silicon", rack: "systems", lpu: "compiler", cache: "cache", trace: "pipeline", attention: "model",
@@ -63,6 +63,6 @@ export const lessonStudies: { target: string; study: Study; title: string; note:
   { target: "load-test", study: "serving", title: "The queue changes the experience", note: "A request can wait before useful work begins. Arrival rate, batching, memory pressure, and scheduling all contribute to the latency a user sees." },
   { target: "frontier-moe", study: "systems", title: "Route tokens to their parameter owners", note: "An expert router can send unequal work to different owners. Dispatch and combination become part of the layer, alongside the expert calculations." },
   { target: "capstone-forward", study: "model", title: "Make the complete path inspectable", note: "Tokens, intermediate tensors, logits, and a loss belong to one reproducible computation. Small examples let you check the contract at each boundary." },
-  { target: "capstone-http", study: "serving", title: "A model becomes a service", note: "An HTTP boundary adds request validation, queueing, cancellation, and a response contract around the model’s calculation." },
+  { target: "capstone-http", study: "serving", title: "A model becomes a service", note: "The companion validates requests, admits one generation or returns HTTP 503, then sends a complete JSON response. Queues, streaming and active cancellation are separate extensions." },
   { target: "engineering-report", study: "pipeline", title: "Turn a trace into an explanation", note: "Connect the result to the work that produced it. State the workload, measure the relevant boundaries, and explain which dependency or resource limits progress." },
 ];

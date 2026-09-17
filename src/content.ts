@@ -1,6 +1,7 @@
 import { trainingExpansionMarkup } from "./training-content";
 import { networkOverview, networkLessons } from "./network-content";
 import { tensorLesson, attentionLesson, postTrainingLesson, hardwareLesson, rackLesson, inferenceLesson, lpuLesson } from "./textbook-content";
+import { scaleLadderMarkup } from "./scale-ladder";
 
 export const atlasMarkup = `
   <a class="skip-link" href="#main-content">Skip to the almanac</a>
@@ -95,21 +96,28 @@ export const atlasMarkup = `
           <p class="chapter-summary">Every training or inference bottleneck is a shortage of compute, memory capacity, memory bandwidth, communication bandwidth, or orchestration efficiency. Start by locating the scarce resource.</p>
         </div>
 
+        <section class="lesson" id="reading-from-zero" data-lesson="How to read from the beginning"><header><span>Start here</span><h3>Build one explanation at a time</h3></header>
+        <p>This book follows a language model from the simplest stored numbers to a running service. A language model assigns probabilities to possible continuations of text. “Large” describes the scale of its learned numerical state; it does not change the basic operation. We will begin with a tiny example whose arithmetic you can inspect.</p>
+        <p>First learn what a token is. Then work with numbers, functions, lists and matrices; use probability to score a prediction and derivatives to change the weights. Combine those operations into a Transformer. Only then follow the program through memory, processors and networks, before scaling training and serving across devices.</p>
+        <p>Read the visible explanation before inspecting a diagram. A box names an operation or a stored value; an arrow may indicate a dependency, a transfer or a timeline, as specified by its caption. Colors help you follow the example; they do not establish a measured speed or physical scale. Predict a small result before moving a control, and use each folded check to test your reasoning.</p>
+        <p>The full book is the default path. Focused paths include their required foundations. Code listings make the calculations concrete; if a language is unfamiliar, continue with the worked arithmetic and revisit the listing after the programming chapter. Paper-specific comparisons appear after the mechanism they modify. Their dates, versions and measurement assumptions are part of the claim.</p>
+        </section>
+
         <div class="concept-strip" role="list" id="systems-mental-models" data-lesson="Model, machine and system">
           <article role="listitem">
             <span>Model</span>
-            <h3>A graph of tensor operations</h3>
-            <p>The architecture says which arrays exist, how they transform, and which values must survive for backward or future tokens.</p>
+            <h3>A recipe using learned numbers</h3>
+            <p>The model converts its input into numbers, combines them using learned weights, and produces prediction scores. Training adjusts the weights; generation repeatedly uses them.</p>
           </article>
           <article role="listitem">
             <span>Machine</span>
             <h3>A hierarchy that moves bytes</h3>
-            <p>Fast arithmetic only matters when registers, SRAM, HBM, links, and storage deliver operands on time.</p>
+            <p>A processor performs arithmetic on stored numbers. Memory holds those numbers; connections move them to where they are needed. A calculation can wait for data even when arithmetic units are free.</p>
           </article>
           <article role="listitem">
             <span>System</span>
-            <h3>A scheduler under uncertainty</h3>
-            <p>Training coordinates one large job. Serving coordinates many arrivals with different prompts, deadlines, and output lengths.</p>
+            <h3>Programs sharing finite resources</h3>
+            <p>Training programs coordinate examples and weight updates. A service also decides which incoming requests run next and where to keep their temporary state.</p>
           </article>
         </div>
 
@@ -117,16 +125,9 @@ export const atlasMarkup = `
           <figcaption>
             <span>Figure 0.1</span>
             <strong>The scale ladder</strong>
-            <p>Click a level to follow the reading path. Sizes are conceptual, not drawn to scale.</p>
+            <p>Follow a level into its lesson. These conceptual drawings show how values become work, then how machines connect; sizes and component counts are illustrative.</p>
           </figcaption>
-          <div class="scale-ladder" data-scale-ladder>
-            <button data-scroll="tensors"><i style="--size: .22"></i><span>scalar</span><small>one number</small></button>
-            <button data-scroll="tensors"><i style="--size: .34"></i><span>tensor</span><small>shaped numbers</small></button>
-            <button data-scroll="transformer"><i style="--size: .47"></i><span>layer</span><small>operations</small></button>
-            <button data-scroll="gpu"><i style="--size: .61"></i><span>chip</span><small>compute + memory</small></button>
-            <button data-scroll="rack"><i style="--size: .78"></i><span>rack</span><small>scale-up domain</small></button>
-            <button data-scroll="training"><i style="--size: 1"></i><span>cluster</span><small>scale-out fabric</small></button>
-          </div>
+          ${scaleLadderMarkup}
           <div class="omission"><strong>Model boundary:</strong> the ladder omits storage, power, cooling, host software, and failures; revisit them in <a href="#training">distributed training</a>, <a href="#machine">CPU and GPU architecture</a>, <a href="#rack">racks and interconnects</a>, and <a href="#serving-lab">serving experiments</a>.</div>
         </figure>
       </section>
@@ -142,7 +143,7 @@ export const atlasMarkup = `
         <div class="reading-grid">
           <div class="prose">
             <h3>Shape is the first debugging tool</h3>
-            <p>Suppose a batch contains <em>B</em> sequences, each with <em>T</em> tokens, represented by <em>D</em> features. The residual stream has shape <code>[B, T, D]</code>. A learned projection <code>Wq</code> with shape <code>[D, H × Dh]</code> turns it into queries, then a reshape exposes heads: <code>[B, H, T, Dh]</code>.</p>
+            <p>Suppose a batch contains <em>B</em> sequences, each with <em>T</em> tokens, represented by <em>D</em> features. Their activation array has shape <code>[B, T, D]</code>. A learned matrix W with shape <code>[D, M]</code> changes each position from D features to M features, producing <code>[B, T, M]</code>. The same matrix is reused for every position and example.</p>
             <p>Axes are contracts. If an operation is hard to explain with axis names, it is usually hard to distribute or optimize correctly.</p>
 
             <div class="equation-block" aria-label="Matrix multiplication shape equation">
@@ -154,7 +155,7 @@ export const atlasMarkup = `
             <h3>Four quantities to track</h3>
             <dl class="definition-list">
               <div><dt>Shape</dt><dd>Which logical axes exist and their lengths.</dd></div>
-              <div><dt>Dtype</dt><dd>How each number is represented: FP32, BF16, FP8, INT8, and so on.</dd></div>
+              <div><dt>Dtype</dt><dd>The number format. FP32 stores a floating-point value in 32 bits; INT8 stores an integer in 8 bits. Format changes range, precision and bytes per value.</dd></div>
               <div><dt>Layout</dt><dd>How logical indices map onto contiguous memory addresses.</dd></div>
               <div><dt>Device</dt><dd>Which physical memory owns the bytes right now.</dd></div>
             </dl>
@@ -172,7 +173,7 @@ export const atlasMarkup = `
           </figure>
         </div>
 
-        <div class="code-study">
+        <div class="code-study" id="tensor-head-layout" data-lesson="Reshape and transpose attention heads">
           <div class="code-heading">
             <div><span>TensorFlow example</span><h3>Watch the axes move</h3></div>
             <button class="copy-button" type="button" data-copy-target="tensor-code">Copy code</button>
@@ -190,7 +191,7 @@ q = tf.transpose(q, [<span class="num">0</span>, <span class="num">2</span>, <sp
 
 tf.debugging.assert_shapes([(q, (B, H, T, Dh))])
 print(q.shape, q.dtype, q.device)</code></pre>
-          <div class="code-notes"><span>Why transpose?</span><p>Attention multiplies each head’s <code>T × Dh</code> query matrix by a <code>Dh × T</code> key matrix. Putting heads before sequence lets a batched matmul express that directly.</p></div>
+          <div class="code-notes"><span>Why transpose?</span><p>First reshape [B,T,D] to [B,T,H,Dh], then transpose the middle axes to [B,H,T,Dh]. Reshape alone does not swap token and head axes. Attention multiplies each head’s <code>T × Dh</code> query matrix by a <code>Dh × T</code> key matrix. Putting heads before sequence lets a batched matmul express that directly.</p></div>
         </div>
         ${tensorLesson}
       </section>
@@ -259,19 +260,20 @@ print(q.shape, q.dtype, q.device)</code></pre>
 
 <span class="kw">def</span> <span class="fn">causal_attention</span>(q, k, v):
     <span class="cm"># q, k, v: [batch, heads, tokens, head_dim]</span>
-    scale = tf.cast(tf.shape(k)[-<span class="num">1</span>], q.dtype) ** -<span class="num">0.5</span>
-    scores = tf.matmul(q, k, transpose_b=<span class="kw">True</span>) * scale
+    scale = tf.cast(tf.shape(k)[-<span class="num">1</span>], tf.float32) ** -<span class="num">0.5</span>
+    scores = tf.matmul(tf.cast(q, tf.float32),
+                       tf.cast(k, tf.float32), transpose_b=<span class="kw">True</span>) * scale
 
     tokens = tf.shape(scores)[-<span class="num">1</span>]
     allowed = tf.linalg.band_part(tf.ones([tokens, tokens]), -<span class="num">1</span>, <span class="num">0</span>)
-    scores = tf.where(tf.cast(allowed, tf.bool), tf.cast(scores, tf.float32), -1e9)
+    scores = tf.where(tf.cast(allowed, tf.bool), scores, -float("inf"))
 
     weights = tf.nn.softmax(scores, axis=-<span class="num">1</span>)
-    output = tf.matmul(tf.cast(weights, v.dtype), v)
+    output = tf.cast(tf.matmul(weights, tf.cast(v, tf.float32)), v.dtype)
     <span class="kw">return</span> output, weights
 
 <span class="cm"># Production kernels fuse several of these steps to avoid HBM round trips.</span></code></pre>
-          <div class="code-notes"><span>Correct, not fast</span><p>This pedagogical version materializes the score matrix. FlashAttention computes exact attention in tiles so intermediate scores remain in on-chip SRAM instead of HBM.</p></div>
+          <div class="code-notes"><span>Full-sequence reference</span><p>Assume equal positive query/key lengths, matching batch and head counts, finite inputs, and no padding. Q/K score arithmetic and the value sum use FP32; the result returns to V’s dtype. Each row includes its own position, so no row is fully masked. This upper-left mask is for full self-attention; cached decode requires a position offset. This pedagogical version materializes the score matrix. FlashAttention computes exact attention in tiles so intermediate scores remain in on-chip SRAM instead of HBM.</p></div>
         </div>
         ${networkLessons}
       </section>
@@ -284,15 +286,21 @@ print(q.shape, q.dtype, q.device)</code></pre>
           <p class="chapter-summary">Full attention is expressive but expensive at long context. Current systems reduce KV heads, select a sparse set of tokens, compress keys and values, or mix attention with a recurrent state.</p>
         </div>
 
+        <section class="lesson" id="attention-cost-models" data-lesson="Attention work and retained state"><header><span>Start from the dense calculation</span><h3>Separate which tokens are read from how their values are stored</h3></header>
+        <p>The Transformer chapter derived one attention head: compare a query with allowed keys, normalize the scores, then blend values. For T positions, causal row 0 reads one key, row 1 reads two, and the last reads T. Adding 1+2+…+T gives T(T+1)/2 permitted pairs. This grows roughly as T²: doubling a long sequence nearly quadruples the pair count.</p>
+        <p>The notation O(T²) describes growth as T increases, with other dimensions fixed; it is not a measured duration. A fixed window of W keys has at most TW pairs. A learned selection method also has to find its keys: fewer selected pairs alone does not prove that the whole algorithm is linear. One cached decode query is a different workload from all T queries together.</p>
+        <p>Multi-head attention (MHA) gives every query head its own key and value heads. Grouped-query attention (GQA) lets several query heads share a key/value head; multi-query attention (MQA) shares one across all query heads. A key/value cache stores these past vectors for reuse. Multi-head latent attention (MLA) stores a compressed representation instead; the later research chapter derives its projection algebra.</p>
+        <p>A recurrent layer keeps a state of fixed shape and updates it for each input. Earlier inputs influence later outputs through that state, even though they are not individually reread as cache entries. A hybrid model uses different mechanisms in different layers. The controls below distinguish a pairwise connectivity map, a recurrent dependency chain and a layer schedule; their marks represent different objects.</p>
+        </section>
         <div class="attention-lab wide-figure">
           <div class="lab-head">
-            <figcaption><span>Interactive 3.1</span><strong>Who can each token read?</strong><p>Change the policy and sequence length. Each blue cell is one permitted query–key interaction.</p></figcaption>
+            <figcaption><span>Interactive 3.1</span><strong>Who can each token read?</strong><p>Change the policy and sequence length. Matrix modes show permitted query–key pairs. Recurrent mode shows a state passed between tokens; hybrid mode shows the schedule across layers.</p></figcaption>
             <div class="lab-controls">
               <label>Policy
                 <select data-attention-mode>
                   <option value="causal">Causal full attention</option>
-                  <option value="sliding">Sliding window</option>
-                  <option value="sparse">Learned sparse selection</option>
+                  <option value="sliding">Fixed window · 4 keys</option>
+                  <option value="sparse">Fixed sparse pattern · at most 4 keys</option>
                   <option value="hybrid">Hybrid: 3 linear + 1 full</option>
                   <option value="kda">KDA recurrent state</option>
                 </select>
@@ -305,9 +313,9 @@ print(q.shape, q.dtype, q.device)</code></pre>
           <div class="attention-workbench">
             <canvas data-attention-canvas width="720" height="480" aria-label="Attention connectivity matrix"></canvas>
             <div class="lab-readout">
-              <div><span>Visible pairs</span><strong data-pair-count>136</strong></div>
+              <div><span data-structure-count-label>Permitted pairs</span><strong data-pair-count>136</strong></div>
               <div><span>Asymptotic work</span><strong data-complexity>O(T²)</strong></div>
-              <p data-attention-description>Every query reads all earlier keys. Exact and general, but the score work and KV traffic grow with context.</p>
+              <p data-attention-description>Every query reads itself and all earlier keys. The complete sequence has T(T+1)/2 permitted pairs.</p>
             </div>
           </div>
           <div class="omission"><strong>Model boundary:</strong> cell count is a structural proxy, not runtime. Kernel tiling, dtype, head dimension, sparsity overhead, and hardware utilization decide measured speed.</div>
@@ -318,11 +326,11 @@ print(q.shape, q.dtype, q.device)</code></pre>
           <div class="mechanism-row" role="row"><strong>MHA</strong><span>Each query head owns K and V heads</span><span>Largest KV cache</span><span>Maximum head independence</span></div>
           <div class="mechanism-row" role="row"><strong>GQA / MQA</strong><span>Groups share K/V heads</span><span>Smaller in proportion to KV heads</span><span>Cheaper decode with some sharing</span></div>
           <div class="mechanism-row" role="row"><strong>MLA</strong><span>Cache a low-rank latent representation</span><span>Compressed latent cache</span><span>Extra projections; implementation-specific absorption</span></div>
-          <div class="mechanism-row" role="row"><strong>Sparse</strong><span>Score a learned or fixed subset</span><span>Selected tokens plus index state</span><span>Subquadratic work; selection quality matters</span></div>
+          <div class="mechanism-row" role="row"><strong>Sparse</strong><span>Score a learned or fixed subset</span><span>Often the full candidate history plus index state</span><span>Fewer value reads; include selection cost and quality</span></div>
           <div class="mechanism-row" role="row"><strong>Linear / recurrent</strong><span>Accumulate a fixed-size state</span><span>State independent of T</span><span>Efficient decode; lossy compression of history</span></div>
         </div>
 
-        <div class="case-studies">
+        <div class="case-studies" id="attention-research-cases" data-lesson="Hybrid model case studies">
           <article class="case-study">
             <div class="case-meta"><span>Model card checked September 2026</span><a href="https://huggingface.co/zai-org/GLM-5.3-Flash" target="_blank" rel="noreferrer">Official model card</a></div>
             <h3>GLM‑5.3 Flash: sparse + linear</h3>
@@ -336,10 +344,10 @@ print(q.shape, q.dtype, q.device)</code></pre>
           <article class="case-study">
             <div class="case-meta"><span>Kimi Linear, 2025 → Kimi K3, 2026</span><a href="https://arxiv.org/abs/2510.26692" target="_blank" rel="noreferrer">Technical report</a></div>
             <h3>Kimi Linear: KDA + MLA</h3>
-            <p>Kimi Delta Attention treats recent input as writes to a matrix-valued recurrent memory. A fine-grained decay gate controls forgetting by channel; a delta-rule correction removes an old key association before writing the new value. Kimi Linear’s published hybrid uses three KDA layers for each MLA layer. Kimi K3 is a separate checkpoint with its own layer configuration.</p>
+            <p>Kimi Delta Attention treats recent input as writes to a matrix-valued recurrent memory. A fine-grained decay gate controls forgetting by channel; a delta-rule correction compares the new value with what the decayed state predicts for that key, then adjusts that prediction. It is not an unconditional deletion of the entire old association. Kimi Linear’s published hybrid uses three KDA layers for each MLA layer. Kimi K3 is a separate checkpoint with its own layer configuration.</p>
             <div class="equation-block compact">
               <span class="equation-label">Conceptual KDA update</span>
-              <div><var>S</var><sub>t</sub> ← decay(<var>S</var><sub>t−1</sub>) + correction(<var>k</var><sub>t</sub>, <var>v</var><sub>t</sub>)</div>
+              <div><var>S</var><sub>t</sub> ← decay(<var>S</var><sub>t−1</sub>) + correction(decayed <var>S</var>, <var>k</var><sub>t</sub>, <var>v</var><sub>t</sub>)</div>
               <p>Training uses a chunkwise parallel form; token-by-token decode uses the recurrence.</p>
             </div>
             <p class="claim-note"><strong>Reported result:</strong> the Kimi Linear paper reports 2.3× faster decoding than its MLA baseline at one-million-token context with batch size one. Its headline 6.3× result uses the larger batch sizes made feasible by reduced state. These are distinct author comparisons on the stated setup, not universal speedups.</p>
@@ -390,7 +398,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
           <section>
             <span>Phase A</span>
             <h3>Pre-training</h3>
-            <p>Predict held-out tokens from context. The objective is simple; the system is not. Dataset mixture, deduplication, contamination control, sequence packing, learning-rate schedule, optimizer, precision, and fault recovery all shape the result.</p>
+            <p>Learn from recorded text by predicting its next token. Each training example provides both a prefix and the next token to predict. Reserve separate text for evaluation; held-out evaluation examples do not update the weights.</p>
             <ul>
               <li><strong>Data:</strong> acquire → license → filter → deduplicate → classify → mix → tokenize → pack.</li>
               <li><strong>Objective:</strong> usually next-token cross entropy; multimodal models may interleave text, image, audio, or action tokens.</li>
@@ -401,11 +409,11 @@ print(q.shape, q.dtype, q.device)</code></pre>
           <section>
             <span>Phase B</span>
             <h3>Post-training</h3>
-            <p>Turn a base distribution into a useful policy. SFT demonstrates desired responses. Preference optimization separates chosen from rejected behavior. RLVR uses verifiable rewards for domains such as code and mathematics.</p>
+            <p>Starting with a trained model, use examples of desired answers, comparisons between answers, or scores from a task to adjust its behavior. A policy is the probability rule used to choose outputs. These methods need not form one mandatory sequence.</p>
             <ol>
-              <li><strong>SFT:</strong> imitate curated demonstrations and tool trajectories.</li>
-              <li><strong>Preference:</strong> DPO-like losses optimize relative likelihood without an online reward loop.</li>
-              <li><strong>RL:</strong> sample trajectories, score outcomes, estimate advantages, and update under a trust constraint.</li>
+              <li><strong>Supervised fine-tuning (SFT):</strong> imitate example responses, including recorded tool-use steps.</li>
+              <li><strong>Preference learning:</strong> learn from a chosen answer paired with a rejected one.</li>
+              <li><strong>Reinforcement learning (RL):</strong> generate outputs, score their outcomes, and use those scores to guide an update. Verifiable rewards (RLVR) use a check such as passing a test.</li>
               <li><strong>Evaluation:</strong> test helpfulness, regressions, robustness, reward hacking, and deployment behavior.</li>
             </ol>
           </section>
@@ -490,7 +498,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
         </div>
 
         <div class="hardware-primer">
-          <section><span>CPU</span><h3>Minimize one thread’s latency</h3><p>Large caches, branch prediction, out-of-order execution, and a few sophisticated cores handle control-heavy, irregular work.</p></section>
+          <section><span>CPU</span><h3>Minimize one thread’s latency</h3><p>Caches, branch prediction and out-of-order execution support per-thread control and latency. Server CPUs may contain many cores; core count alone does not define the distinction.</p></section>
           <section><span>GPU</span><h3>Maximize parallel throughput</h3><p>Many simpler lanes execute warps, hiding stalls by switching among ready work. Tensor cores accelerate dense matrix fragments.</p></section>
           <section><span>LPU</span><h3>Schedule the whole dataflow</h3><p>A compiler places operations and movement on deterministic functional slices, trading dynamic hardware flexibility for predictable inference.</p></section>
         </div>
@@ -498,12 +506,12 @@ print(q.shape, q.dtype, q.device)</code></pre>
         <div class="hardware-mount wide-figure" id="gpu"><div id="gpu-scene"></div></div>
 
         <div class="anatomy-list">
-          <article><span>01</span><div><h3>Grid → block → warp → thread</h3><p>A kernel launches a grid of thread blocks. Blocks are assigned to SMs. An SM issues instructions for warps—groups of 32 threads on NVIDIA GPUs. Divergent branches serialize paths within a warp.</p></div><code>software hierarchy</code></article>
+          <article><span>01</span><div><h3>Grid → block → warp → thread</h3><p>A kernel launches a grid of thread blocks. Blocks are assigned to streaming multiprocessors (SMs), the GPU’s groups of execution units, registers and local storage. An SM issues instructions for warps—groups of 32 threads on NVIDIA GPUs. Divergent branches serialize paths within a warp.</p></div><code>software hierarchy</code></article>
           <article><span>02</span><div><h3>Warp schedulers and scoreboards</h3><p>Schedulers choose ready warps. The scoreboard tracks dependencies so an instruction waits until operands are available. Occupancy is useful only when the extra resident warps hide a real latency.</p></div><code>control</code></article>
           <article><span>03</span><div><h3>Registers</h3><p>Each active thread owns registers allocated from an on-SM register file. They are the fastest programmer-visible storage, but high per-thread use can reduce resident warps or spill to local memory in device DRAM.</p></div><code>per thread</code></article>
-          <article><span>04</span><div><h3>Shared memory / L1</h3><p>On-chip SRAM shared by a thread block stages tiles and enables reuse. Bank conflicts serialize some accesses; asynchronous copy engines and TMA move multidimensional tiles with less thread bookkeeping.</p></div><code>per block</code></article>
+          <article><span>04</span><div><h3>Shared memory and L1 cache</h3><p>Shared memory is on-chip storage explicitly managed by a program and normally scoped to a thread block. L1 is a hardware-managed cache of memory accesses. They may share physical SRAM capacity, but they have different ownership and access rules. Bank conflicts can delay shared-memory accesses; tile-copy engines reduce the instructions needed to stage data.</p></div><code>per block</code></article>
           <article><span>05</span><div><h3>CUDA and tensor cores</h3><p>CUDA cores execute scalar/vector arithmetic per lane. Tensor cores perform matrix multiply-accumulate on tiles with supported dtypes. Keeping them fed requires coordinated layout, instruction choice, and pipeline depth.</p></div><code>execution</code></article>
-          <article><span>06</span><div><h3>L2, HBM, and coalescing</h3><p>L2 serves the whole GPU. HBM offers enormous bandwidth but far more latency than registers or shared memory. Adjacent lanes should request adjacent addresses so hardware combines transactions.</p></div><code>device memory</code></article>
+          <article><span>06</span><div><h3>L2, HBM, and coalescing</h3><p>The L2 cache serves the whole GPU. High-bandwidth memory (HBM) is stacked off-die DRAM on the accelerator package. It offers large capacity and bandwidth but far more latency than registers or shared memory. Adjacent lanes should request adjacent addresses so hardware combines transactions.</p></div><code>device memory</code></article>
         </div>
 
         <figure class="wide-figure roofline-figure">
@@ -588,17 +596,17 @@ print(q.shape, q.dtype, q.device)</code></pre>
         <div class="chapter-number">07</div>
         <div class="chapter-title">
           <p class="chapter-kicker">Inference architecture</p>
-          <h2>Prefill is a matrix problem. Decode is a memory-and-scheduling problem.</h2>
+          <h2>Prompt processing and generation expose different bottlenecks</h2>
           <p class="chapter-summary">A serving engine converts irregular requests into efficient batches, places their KV blocks, chooses kernels, coordinates replicas, and streams tokens while meeting latency targets.</p>
         </div>
 
         <div class="prefill-decode wide-figure">
           <div class="lab-head"><figcaption><span>Interactive 7.1</span><strong>One request, two operating regimes</strong><p>Step through a prompt, then decode. Watch arithmetic parallelism collapse to one new position per sequence.</p></figcaption><button type="button" data-inference-step>Advance one phase</button></div>
           <div class="phase-track" data-phase-track>
-            <div class="phase prefill is-active"><span>Prefill</span><strong>Prompt positions in parallel</strong><div class="token-line"><i aria-label="Prompt position 1">1</i><i aria-label="Prompt position 2">2</i><i aria-label="Prompt position 3">3</i><i aria-label="Prompt position 4">4</i><i aria-label="Prompt position 5">5</i><i aria-label="Prompt position 6">6</i><i aria-label="Prompt position 7">7</i><i aria-label="Prompt position 8">8</i></div><small>Large GEMMs · high arithmetic intensity · writes KV</small></div>
-            <div class="phase decode"><span>Decode</span><strong>One position, repeatedly</strong><div class="token-line"><i class="cached" aria-label="Cached position 1">1</i><i class="cached" aria-label="Cached position 2">2</i><i class="cached" aria-label="Cached position 3">3</i><i class="cached" aria-label="Cached position 4">4</i><i class="cached" aria-label="Cached position 5">5</i><i class="cached" aria-label="Cached position 6">6</i><i class="cached" aria-label="Cached position 7">7</i><i class="cached" aria-label="Cached position 8">8</i><i class="new" aria-label="New position 9">9</i></div><small>Small GEMMs/GEMVs · reads growing KV · latency-sensitive</small></div>
+            <div class="phase prefill is-active"><span>Prefill</span><strong>Prompt positions in parallel</strong><div class="token-line"><i aria-label="Prompt position 1">1</i><i aria-label="Prompt position 2">2</i><i aria-label="Prompt position 3">3</i><i aria-label="Prompt position 4">4</i><i aria-label="Prompt position 5">5</i><i aria-label="Prompt position 6">6</i><i aria-label="Prompt position 7">7</i><i aria-label="Prompt position 8">8</i></div><small>Many known positions · reuses weights · writes prompt KV</small></div>
+            <div class="phase decode"><span>Decode</span><strong>One position, repeatedly</strong><div class="token-line"><i class="cached" aria-label="Cached position 1">1</i><i class="cached" aria-label="Cached position 2">2</i><i class="cached" aria-label="Cached position 3">3</i><i class="cached" aria-label="Cached position 4">4</i><i class="cached" aria-label="Cached position 5">5</i><i class="cached" aria-label="Cached position 6">6</i><i class="cached" aria-label="Cached position 7">7</i><i class="cached" aria-label="Cached position 8">8</i><i class="new" aria-label="New position 9">9</i></div><small>One new input per sequence · reads and extends KV</small></div>
           </div>
-          <div class="phase-readout" data-phase-readout><strong>Time to first token (TTFT)</strong><p>Prefill processes the whole prompt and creates a key/value entry for each layer and position. Longer prompts raise TTFT.</p></div>
+          <div class="phase-readout" data-phase-readout><strong>Time to first token (TTFT)</strong><p>Prefill processes the prompt and produces the scores for the first output token. With hardware, cache reuse and load fixed, longer prompts generally add work. A token just selected from those scores is not cached until it is processed on the next pass.</p></div>
         </div>
 
         <div class="kv-lab wide-figure">
