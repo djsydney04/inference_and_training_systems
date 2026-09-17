@@ -118,3 +118,16 @@ Verification:
 
 Concurrent optimizer landscape/history changes from main are included. The
 existing production bundle-size advisory remains.
+
+## Training illustration
+
+The shared training artwork now shows a batch, parameterized model layers, loss,
+matching gradient tensors, and a weight-update loop. The ten existing placements
+use the same static SVG. Captions and alternative text describe the computation;
+cell counts and layer counts are explicitly illustrative. The numerical optimizer
+lab continues to plot its calculated states.
+
+The production build and all four chapter-layout checks pass at 320, 390, 768
+and 1440 pixels. Desktop, phone and expanded-view captures were reviewed. SVG
+labels stay within the canvas; expansion preserves the figure and restores
+keyboard focus. The illustration has no playback controls.
