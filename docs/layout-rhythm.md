@@ -71,3 +71,27 @@ owned by their existing modules.
 - Visual artifacts and the additional audit scripts are in the worktree's
   ignored `output/playwright/` directory. The development preview uses port
   4197; the shared checkout and other agents' servers were not modified.
+
+## Illustrated scale ladder
+
+Visual thesis: six small technical drawings form one open sequence, using ink,
+quiet material shading and a blue value or connection to distinguish each scale.
+The palette stays with paper `#f8f9f4`, pale structure `#e2e7e0`, shaded structure
+`#c1cac0`, deep ink `#303d37`, data blue `#2559d6` and blue fill `#c6d6ff`.
+IBM Plex Sans carries the labels; monospace is reserved for the example value.
+
+Composition: scalar → array → operation graph → compute and memory → rack →
+connected domains. All six share a baseline on wide screens, three columns on
+tablets and two on phones. Labels stay in HTML, and each illustration is a native
+lesson link. The scope note identifies dimensions and component counts as
+conceptual. This is an orientation drawing, not a hardware specification.
+
+Motion: one short assembly sequence when the figure first enters view; a small
+lift and tray movement on hover or keyboard focus; a revealed navigation arrow.
+Reduced motion removes the assembly and movement. The drawing remains visible
+without JavaScript. No animation runs continuously.
+
+Review: desktop and mobile screenshots inspected; six widths from 320 to 2048px
+show no element or page overflow. All six links navigate by keyboard, and reduced
+motion has zero active animations and no lift transition. Review artifacts are
+in `output/playwright/scale-ladder-*`.

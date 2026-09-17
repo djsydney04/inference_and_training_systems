@@ -61,6 +61,7 @@ import { initializeFrameworkExecutionLabs } from "./framework-execution-labs";
 import { initializeFrameworkTrainingLabs } from "./framework-training-labs";
 import { initializeFrameworkServingLabs } from "./framework-serving-labs";
 import "./layout.css";
+import { initializeScaleLadder } from "./scale-ladder";
 
 import { prepareHardwareDrawings, initializeHardwareDrawings } from "./hardware-drawings";
 
@@ -77,6 +78,7 @@ prepareLessonVisuals();
 
 initializeGlossary();
 initializeInteractions();
+initializeScaleLadder();
 initializeNetworkLabs();
 initializeTrainingSystems();
 initializeTextbook();
@@ -114,4 +116,3 @@ initializeAtlasUI();
 initializeFigurePopouts();
 initializeDiagramPlayback();
 refreshFigureLayouts();
-

@@ -38,14 +38,6 @@
 }
 .atlas-ui .objective-row h4 { margin: 0; }
 
-/* The drawings identify scale; long connector pseudo-elements escaped each button. */
-.atlas-ui .scale-ladder { gap: 16px; }
-.atlas-ui .scale-ladder button { min-width: 0; flex: 1; padding-inline: 0; }
-.atlas-ui .scale-ladder button::after { display: none; }
-.atlas-ui .scale-ladder small { height: auto; min-height: 2.8em; }
-.atlas-ui .scale-ladder i { max-width: 100%; }
-.atlas-ui .scale-ladder button:nth-child(4) i { width: 55%; height: auto; aspect-ratio: 1; }
-
 /* Labels sit below duration bars, so short durations retain their true width. */
 .atlas-ui .trace-lane { min-height: 72px; }
 .atlas-ui .trace-bar { overflow: visible; color: var(--ink); }
@@ -70,16 +62,6 @@
   .atlas-ui .objective-row > :is(code, p) { grid-column: 2; }
 }
 @media (max-width: 650px) {
-  .atlas-ui .scale-ladder {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    height: auto;
-    padding: 28px 16px;
-    gap: 28px 16px;
-  }
-  .atlas-ui .scale-ladder button { width: 100%; min-height: 140px; font-size: 12px; }
-  .atlas-ui .scale-ladder i { max-height: 70px; max-width: 65px; }
-  .atlas-ui .scale-ladder small { display: block; font-size: 10px; }
   .atlas-ui .lab-head figcaption { display: flex; flex-direction: column; flex-basis: auto; }
   .atlas-ui .textbook-lab > figcaption { display: block; }
   .atlas-ui .textbook-lab > figcaption > :is(span, strong) { display: block; margin-bottom: 10px; }
