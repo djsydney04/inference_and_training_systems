@@ -1,8 +1,8 @@
 # Mathematics chapter review — September 16, 2026
 
 The chapter now starts with ordinary arithmetic and assumes no previous linear
-algebra or calculus. It contains twelve lessons, twelve original pen-style
-worked drawings (ten new), and 21 questions with worked answers. All existing
+algebra or calculus. It contains fourteen lessons, twelve original pen-style
+worked drawings (ten new), and 24 questions with worked answers. All existing
 lesson anchors remain available. Derivatives precede minibatch gradients.
 
 ## Mathematical review
@@ -66,12 +66,12 @@ teaching prose and small drawings are original.
 
 ## Site validation
 
-- `npm test`: 185 passing tests.
+- `npm test`: 198 passing tests after integration with the newer main branch.
 - `npm run build`: TypeScript, release consistency and Vite production build pass.
 - Existing chapter layout checks pass at 320, 390, 768 and 1440 pixels.
 - Local HTTP preview returns 200. Screenshot review covers all twelve drawings;
   the matrix column guide was moved beside the numbers so it cannot cross them.
-- Browser inspection confirms twelve lessons, twelve figures, 21 questions,
+- Browser inspection confirms fourteen lessons, twelve figures, 24 questions,
   no overlapping or out-of-bounds SVG labels, no duplicate IDs, and no broken
   internal chapter links.
 - Keyboard answer reveals, expanded-figure opening/Escape/restoration, and
@@ -80,3 +80,14 @@ teaching prose and small drawings are original.
 
 These checks verify the declared examples and local rendering. They are not a
 formal proof of the entire book or validation of trained-model behavior.
+
+## Integration with the newer main branch
+
+The merge retains the new numbers/functions lesson and the relocated tensor-shape
+lesson, bringing the integrated mathematics chapter to fourteen lessons and 24
+worked questions. It also retains the move of applied loss and weight-update
+lessons into the subsequent tensors chapter. All mathematics additions and
+corrections from this review remain in the integrated reading sequence.
+
+The integrated version passes all 198 Node tests, the eighteen Python numerical
+checks, the production build, and the four existing chapter layout checks.

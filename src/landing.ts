@@ -10,7 +10,7 @@ export const landingMarkup = `
     <div class="landing-introduction">
       <p>Explore the models, code, and machines behind artificial intelligence.</p>
       <a class="landing-enter" href="#top">Open the almanac <span aria-hidden="true">→</span></a>
-      <span class="landing-entry-note">Start with the foundations. Explore at your own pace.</span>
+      <span class="landing-entry-note">Start with the foundations.</span>
     </div>
     <div class="landing-machine">${machinePlate("landing-plate")}</div>
     <div class="landing-caption"><span>From first principles to full systems</span><a href="#gallery">Explore the diagrams <span aria-hidden="true">↗</span></a></div>

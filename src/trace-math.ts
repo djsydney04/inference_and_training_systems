@@ -19,7 +19,9 @@ export function trainingTrace(
     communication,
     overlapped,
     exposed,
-    communicationStart: input + compute - overlapped,
+    // The producer becomes ready before the independent suffix begins.
+    // A short collective need not be delayed until it ends with compute.
+    communicationStart: input + compute - Math.min(compute, independentCompute),
     step: input + compute + exposed,
     speedup: (input + compute + communication) / (input + compute + exposed),
   };

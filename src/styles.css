@@ -133,18 +133,6 @@ figcaption > strong { font-size: 13px; font-weight: 600; }
 figcaption > p { margin: 0; max-width: 520px; justify-self: end; color: var(--graphite); font-size: 11px; line-height: 1.45; }
 .omission { padding: 11px 0 0; color: var(--graphite); border-top: 1px solid var(--rule); font: 10px/1.45 var(--sans); }
 .omission strong { color: var(--ink); font-weight: 600; }
-.scale-ladder { height: 410px; display: flex; align-items: end; justify-content: space-between; padding: 42px 4% 24px; }
-.scale-ladder button { position: relative; width: 15%; height: 100%; border: 0; background: transparent; cursor: pointer; display: flex; flex-direction: column; justify-content: end; align-items: center; gap: 10px; font: 500 12px var(--sans); }
-.scale-ladder button::after { content: ""; position: absolute; left: 50%; top: calc(100% - 42px); width: calc(100% + 32px); height: 1px; background: var(--rule-dark); z-index: -1; }
-.scale-ladder button:last-child::after { display: none; }
-.scale-ladder i { display: block; width: calc(150px * var(--size)); height: calc(150px * var(--size)); min-width: 18px; min-height: 18px; max-width: 11vw; max-height: 11vw; border: 1px solid var(--ink); background: color-mix(in srgb, var(--paper-deep) 70%, transparent); transition: background 180ms, transform 180ms, border-color 180ms; }
-.scale-ladder button:nth-child(1) i { border-radius: 50%; background: var(--signal); border-color: var(--signal); }
-.scale-ladder button:nth-child(2) i { background-image: linear-gradient(90deg, transparent 46%, var(--rule-dark) 48%, var(--rule-dark) 52%, transparent 54%), linear-gradient(transparent 46%, var(--rule-dark) 48%, var(--rule-dark) 52%, transparent 54%); }
-.scale-ladder button:nth-child(4) i { transform: rotateX(55deg) rotateZ(35deg); box-shadow: 6px 8px 0 var(--rule-dark); }
-.scale-ladder button:nth-child(5) i { width: calc(100px * var(--size)); }
-.scale-ladder button:hover i { border-color: var(--signal); background-color: var(--signal-pale); transform: translateY(-5px); }
-.scale-ladder button:nth-child(4):hover i { transform: translateY(-5px) rotateX(55deg) rotateZ(35deg); }
-.scale-ladder small { height: 16px; color: var(--muted); font-size: 9px; }
 
 .reading-grid { margin-top: 74px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(250px, .54fr); gap: clamp(42px, 7vw, 100px); align-items: start; }
 .prose { max-width: var(--reading); }
@@ -543,7 +531,6 @@ footer { max-width: var(--max); margin: 0 auto; min-height: 150px; padding: 35px
   .chapter { grid-template-columns: 25px minmax(0, 1fr); padding-left: 14px; padding-right: 17px; }
   .chapter-number { font-size: 10px; }
   .chapter-summary { font-size: 17px; }
-  .scale-ladder { height: 320px; padding-left: 0; padding-right: 0; }.scale-ladder small { display: none; }.scale-ladder button { font-size: 9px; }.scale-ladder i { max-width: 14vw; max-height: 14vw; }
   .wide-figure > figcaption, .three-head figcaption, .lab-head figcaption { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
   .reading-grid { gap: 45px; }.prose p { font-size: 16px; }
   .code-heading { align-items: flex-start; }.code-heading h3 { font-size: 18px; }.copy-button { flex: 0 0 auto; }

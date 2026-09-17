@@ -21,9 +21,9 @@ export const chapters: Chapter[] = [
   {
     id: "first-principles",
     title: "How LLMs work",
-    intro: "A language model predicts the next token. Work through the numbers behind one prediction, then see how training changes them.",
+    intro: "Begin with text, token IDs and learned numbers. Establish what a model does before introducing the mathematics of prediction and learning.",
     part: "Foundations",
-    outcome: "Calculate a next-token probability and follow its derivative into a weight update.",
+    outcome: "Explain what changes between training and prompting, and trace text into token IDs and learned vectors.",
     requires: ["orientation"],
   },
   {
@@ -53,15 +53,6 @@ export const chapters: Chapter[] = [
     requires: ["tensors"],
   },
   {
-    id: "attention",
-    title: "Attention",
-    intro: "Attention lets a token use information from other positions. Compare which positions it reads, what it stores, and how the calculation runs.",
-    part: "Foundations",
-    outcome:
-      "Distinguish connectivity, cached state, recurrence, and memory-efficient kernels.",
-    requires: ["transformer"],
-  },
-  {
     id: "programming",
     title: "C and memory",
     intro: "A program stores numbers at memory addresses. Use small C examples to understand types, pointers, array layouts and numerical errors.",
@@ -70,65 +61,12 @@ export const chapters: Chapter[] = [
     requires: ["tensors"],
   },
   {
-    id: "data",
-    title: "Training data",
-    intro: "The training objective depends on which text arrives and how it is prepared. Build examples, pack sequences and keep track of the tokens that count toward the loss.",
-    part: "Training",
-    outcome:
-      "Specify a versioned data mixture and an experiment whose result you can trust.",
-    requires: ["tensors", "transformer"],
-  },
-  {
-    id: "optimization",
-    title: "Optimizers and precision",
-    intro: "An optimizer turns gradients into weight updates. Compare update rules, stored state and the effects of limited numerical precision.",
-    part: "Training",
-    outcome:
-      "Derive a stateful update and verify clipping, scaling and recomputation contracts.",
-    requires: ["data", "attention"],
-  },
-  {
-    id: "training",
-    title: "Distributed training",
-    intro: "Large training runs use many devices. Follow one update across them and account for memory, communication and recovery after a failure.",
-    part: "Training",
-    outcome:
-      "Reconcile global loss, memory, communication, and recovery across workers.",
-    requires: ["optimization"],
-  },
-  {
-    id: "parallel-training",
-    title: "Splitting work across GPUs",
-    intro: "There are several ways to divide a model and its data. Follow what each device owns, how temporary tensors change peak memory, and how shards become a complete update.",
-    part: "Training",
-    outcome:
-      "Verify sharded layers and optimizer updates, trace materialization and pipeline lifetimes, and reconstruct checkpoint ownership.",
-    requires: ["training"],
-  },
-  {
-    id: "post-training",
-    title: "Post-training",
-    intro: "A trained model can learn from demonstrations, preferences and rewards. Follow how generated responses become updates, and what must stay consistent as the policy changes.",
-    part: "Training",
-    outcome:
-      "Implement response masking and preference objectives; trace rollout overlap, policy lag and behavior probabilities.",
-    requires: ["parallel-training"],
-  },
-  {
     id: "digital-logic",
     title: "Digital logic",
     intro: "Computers represent numbers as bits and update stored state at clock edges. Build from gates and arithmetic to a small working pipeline.",
     part: "Hardware",
     outcome: "Derive signed arithmetic, trace clocked state and preserve transactions under backpressure.",
     requires: ["programming"],
-  },
-  {
-    id: "fpga-asic",
-    title: "Verilog, FPGAs and ASICs",
-    intro: "Verilog describes hardware that operates concurrently. Simulate a small design, then follow the steps needed to turn it into a working circuit.",
-    part: "Hardware",
-    outcome: "Simulate a pipelined datapath, map its resources and reason about timing and physical implementation.",
-    requires: ["digital-logic"],
   },
   {
     id: "cpu",
@@ -165,13 +103,21 @@ export const chapters: Chapter[] = [
     requires: ["runtime-foundations"],
   },
   {
+    id: "fpga-asic",
+    title: "Verilog, FPGAs and ASICs",
+    intro: "Verilog describes hardware that operates concurrently. Simulate a small design, then follow the steps needed to turn it into a working circuit.",
+    part: "Hardware",
+    outcome: "Simulate a pipelined datapath, map its resources and reason about timing and physical implementation.",
+    requires: ["digital-logic"],
+  },
+  {
     id: "rack",
     title: "Connecting accelerators",
     intro: "Multiple accelerators need to exchange data. Follow the links inside a server, across a rack and between racks.",
     part: "Hardware",
     outcome:
       "Map collectives onto scale-up and scale-out communication domains.",
-    requires: ["machine", "training"],
+    requires: ["machine", "runtime-foundations"],
   },
   {
     id: "collectives",
@@ -183,20 +129,92 @@ export const chapters: Chapter[] = [
     requires: ["rack"],
   },
   {
+    id: "attention",
+    title: "Attention",
+    intro: "Start from the attention calculation you derived inside a Transformer. Compare connectivity and retained state, then calculate the same dense result using less intermediate memory.",
+    part: "Training and generation",
+    outcome:
+      "Distinguish connectivity, cached state, recurrence, and memory-efficient kernels.",
+    requires: ["transformer", "machine"],
+  },
+  {
+    id: "data",
+    title: "Training data",
+    intro: "The training objective depends on which text arrives and how it is prepared. Build examples, pack sequences and keep track of the tokens that count toward the loss.",
+    part: "Training and generation",
+    outcome:
+      "Specify a versioned data mixture and an experiment whose result you can trust.",
+    requires: ["tensors", "transformer"],
+  },
+  {
+    id: "optimization",
+    title: "Optimizers and precision",
+    intro: "An optimizer turns gradients into weight updates. Compare update rules, stored state and the effects of limited numerical precision.",
+    part: "Training and generation",
+    outcome:
+      "Derive a stateful update and verify clipping, scaling and recomputation contracts.",
+    requires: ["data", "attention"],
+  },
+  {
+    id: "training",
+    title: "Distributed training",
+    intro: "Large training runs use many devices. Follow one update across them and account for memory, communication and recovery after a failure.",
+    part: "Training and generation",
+    outcome:
+      "Reconcile global loss, memory, communication, and recovery across workers.",
+    requires: ["optimization", "collectives"],
+  },
+  {
+    id: "parallel-training",
+    title: "Splitting work across GPUs",
+    intro: "There are several ways to divide a model and its data. Follow what each device owns, how temporary tensors change peak memory, and how shards become a complete update.",
+    part: "Training and generation",
+    outcome:
+      "Verify sharded layers and optimizer updates, trace materialization and pipeline lifetimes, and reconstruct checkpoint ownership.",
+    requires: ["training"],
+  },
+  {
+    id: "inference",
+    title: "Running an LLM",
+    intro: "Generation processes a prompt and then produces tokens. Follow the cached state, then work through how lower-precision weights and activations change storage and numerical error.",
+    part: "Training and generation",
+    outcome:
+      "Account for prefill and decode state; calculate quantized codes, grouping overhead and activation-dependent output error.",
+    requires: ["attention", "runtime-foundations"],
+  },
+  {
+    id: "decoding",
+    title: "Choosing the next token",
+    intro: "Scores become tokens through a decoding rule. Learn how modern drafters propose several tokens, how the target verifies them, and when that extra work pays off.",
+    part: "Training and generation",
+    outcome:
+      "Preserve the sampling distribution, train compatible proposals, reconcile tree state and measure acceptance by depth.",
+    requires: ["inference"],
+  },
+  {
+    id: "post-training",
+    title: "Post-training",
+    intro: "A trained model can learn from demonstrations, preferences and rewards. Follow how generated responses become updates, and what must stay consistent as the policy changes.",
+    part: "Training and generation",
+    outcome:
+      "Implement response masking and preference objectives; trace rollout overlap, policy lag and behavior probabilities.",
+    requires: ["parallel-training", "decoding"],
+  },
+  {
     id: "lpu",
     title: "LPUs and dataflow",
     intro: "A scheduled processor moves data according to a plan made by its compiler. Use the Groq architecture to understand that tradeoff.",
-    part: "Hardware",
+    part: "Accelerator designs",
     outcome:
       "Explain software-addressed SRAM and compiler-scheduled tensor movement.",
-    requires: ["machine", "attention"],
+    requires: ["machine", "inference", "collectives"],
   },
   {
     id: "accelerator-atlas",
     evidenceChecked: "September 14, 2026",
     title: "Comparing accelerators",
     intro: "A chip’s peak arithmetic rate is only part of its behavior. Compare memory, data movement, execution and software support against the same workload.",
-    part: "Hardware",
+    part: "Accelerator designs",
     outcome: "Compare accelerator memory, execution, interconnect and compiler contracts against a workload.",
     requires: ["machine"],
   },
@@ -227,24 +245,6 @@ export const chapters: Chapter[] = [
     requires: ["gpu-resources"],
   },
   {
-    id: "inference",
-    title: "Running an LLM",
-    intro: "Generation processes a prompt and then produces tokens. Follow the cached state, then work through how lower-precision weights and activations change storage and numerical error.",
-    part: "Inference",
-    outcome:
-      "Account for prefill and decode state; calculate quantized codes, grouping overhead and activation-dependent output error.",
-    requires: ["attention", "runtime-foundations"],
-  },
-  {
-    id: "decoding",
-    title: "Choosing the next token",
-    intro: "Scores become tokens through a decoding rule. Learn how modern drafters propose several tokens, how the target verifies them, and when that extra work pays off.",
-    part: "Inference",
-    outcome:
-      "Preserve the sampling distribution, train compatible proposals, reconcile tree state and measure acceptance by depth.",
-    requires: ["inference"],
-  },
-  {
     id: "serving-lab",
     title: "Serving under load",
     intro: "A service manages queues, caches and many requests. Build an iteration, admit work that can finish, then follow prefill/decode separation and measure complete answers under load.",
@@ -269,7 +269,7 @@ export const chapters: Chapter[] = [
     evidenceChecked: "September 16, 2026",
     part: "Practice",
     outcome: "Match numerical updates across frameworks, choose tools by responsibility, and verify labels, model artifacts, cache identity and timing.",
-    requires: ["programming", "optimization", "inference"],
+    requires: ["programming", "optimization", "inference", "training"],
   },
   {
     id: "end-to-end",
@@ -277,7 +277,7 @@ export const chapters: Chapter[] = [
     intro: "Put the pieces together in a runnable byte-level decoder. Train it, verify its checkpoint and cache, then profile and serve its output.",
     part: "Practice",
     outcome: "Train a decoder, prove exact restart and cached equivalence, serve it and collect a real operator trace.",
-    requires: ["programming", "optimization", "inference"],
+    requires: ["programming", "optimization", "inference", "decoding"],
   },
   {
     id: "projects",

@@ -1,5 +1,13 @@
 // An original explanatory package drawing. The cells imply organization, not a die floorplan.
 export function machinePlate(prefix = "plate") {
+  const packageMatrix = [.79, .34, -.68, .44, 242, 41] as const;
+  // Anchor labels in package coordinates so they follow the drawn components.
+  const callout = (layer: string, x: number, y: number, leader: string) => {
+    const [a, b, c, d, e, f] = packageMatrix;
+    const px = Number((a * x + c * y + e).toFixed(2));
+    const py = Number((b * x + d * y + f).toFixed(2));
+    return `<path d="M${px} ${py}${leader}"/><circle data-plate-anchor="${layer}" cx="${px}" cy="${py}" r="2" fill="#2559d6"/>`;
+  };
   const cells = (x: number, y: number) => Array.from({ length: 48 }, (_, i) => {
     const px = x + (i % 8) * 12;
     const py = y + Math.floor(i / 8) * 13;
@@ -8,12 +16,12 @@ export function machinePlate(prefix = "plate") {
   const memory = [[52, 53], [52, 122], [52, 191], [347, 53], [347, 122], [347, 191]].map(([x, y]) => `<g class="plate-memory">${[9, 6, 3, 0].map(z => `<rect x="${x}" y="${y + z}" width="50" height="48" rx="2" fill="${z ? "#7c8d9b" : "#e0e7ee"}" stroke="#8a99a6" stroke-width="1"/>`).join("")}<rect x="${x + 6}" y="${y + 6}" width="38" height="34" rx="1" fill="#bdcbd9"/>${Array.from({length:5}, (_,i) => `<path d="M${x + 10} ${y + 11 + i*6}h30" stroke="#8b9aaa" stroke-width=".7"/>`).join("")}</g>`).join("");
   const routes = Array.from({length:12}, (_,i) => `<path d="M102 ${62+i*15}h${12+(i%4)*5}v${i%2 ? 7 : -7}H145M347 ${62+i*15}h-${12+(i%4)*5}v${i%2 ? -7 : 7}H304"/>`).join("");
   return `<figure class="machine-plate" data-layer="compute" aria-label="Interactive conceptual accelerator package">
-    <div class="plate-heading"><span>Inside the accelerator</span><a href="#gpu" aria-label="Open the GPU workbench">Inspect in 3D <span aria-hidden="true">↗</span></a></div>
+    <div class="plate-heading"><span>Inside the accelerator</span><a href="#gpu" aria-label="Open the GPU workbench">Inspect the GPU <span aria-hidden="true">↗</span></a></div>
     <svg class="plate-svg" viewBox="0 0 620 410" role="img" aria-labelledby="${prefix}-title ${prefix}-desc"><title id="${prefix}-title">Compute, memory, and the paths between them</title><desc id="${prefix}-desc">An isometric conceptual accelerator package with two compute dies, six memory stacks, and the interconnect traces between them. Select a layer below to highlight it.</desc>
       <defs><pattern id="${prefix}-grid" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="#c4c8ca"/></pattern><filter id="${prefix}-shadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="8"/></filter></defs>
       <rect width="620" height="410" fill="url(#${prefix}-grid)" opacity=".45"/>
       <ellipse cx="306" cy="290" rx="226" ry="55" fill="#223544" opacity=".12" filter="url(#${prefix}-shadow)"/>
-      <g transform="matrix(.79 .34 -.68 .44 242 41)">
+      <g class="plate-package" transform="matrix(${packageMatrix.join(" ")})">
         <path d="M20 26H432V297H20Z" fill="#89969a" stroke="#718185"/><path d="M20 285H432v12H20Z" fill="#73868b"/>
         <rect x="20" y="12" width="412" height="273" rx="7" fill="#d3dbd8" stroke="#99aaa6" stroke-width="1.5"/>
         <rect x="32" y="24" width="388" height="249" rx="3" fill="#e3e8e3" stroke="#b8c6bd"/>
@@ -27,7 +35,11 @@ export function machinePlate(prefix = "plate") {
         </g>${memory}
         ${[[38,38],[410,38],[38,258],[410,258]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="4" fill="#b1bcb6" stroke="#8f9f95"/><circle cx="${x}" cy="${y}" r="1.4" fill="#e9eee9"/>`).join("")}
       </g>
-      <g fill="none" stroke="#88949d" stroke-width="1"><path d="M321 159v-77h77"/><circle cx="321" cy="159" r="2" fill="#2559d6"/><path d="M161 217H75v45"/><circle cx="161" cy="217" r="2" fill="#2559d6"/><path d="M371 277v58h79"/><circle cx="371" cy="277" r="2" fill="#2559d6"/></g>
+      <g fill="none" stroke="#88949d" stroke-width="1" pointer-events="none">
+        ${callout("compute", 209.5, 95, "V82H398")}
+        ${callout("memory", 77, 215, "H75V262")}
+        ${callout("fabric", 330, 227, "L330 278V335H450")}
+      </g>
       <g font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#596770"><text x="404" y="85">Compute dies</text><text x="42" y="280">Memory stacks</text><text x="458" y="339">Interconnect</text></g>
     </svg>
     <figcaption><div class="plate-layers" role="group" aria-label="Highlight a package layer"><button type="button" data-plate-layer="compute" aria-pressed="true"><i></i>Compute</button><button type="button" data-plate-layer="memory" aria-pressed="false"><i></i>Memory</button><button type="button" data-plate-layer="fabric" aria-pressed="false"><i></i>Interconnect</button></div><p class="plate-description" aria-live="polite">Compute dies execute the model’s matrix and vector operations.</p><small>Conceptual package · not a physical floorplan</small></figcaption>

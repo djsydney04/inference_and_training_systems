@@ -1,3 +1,4 @@
+import { canReadPosition } from "./attention-connectivity";
 type AttentionMode = "causal" | "sliding" | "sparse" | "hybrid" | "kda";
 type ParallelMode = "data" | "tensor" | "pipeline" | "context" | "expert";
 
@@ -169,21 +170,13 @@ function initAttentionLab() {
   if (!ctx) return;
 
   const descriptions: Record<AttentionMode, [string, string]> = {
-    causal: ["O(T²)", "Every query reads all earlier keys. Exact and general, but score work and KV traffic grow with context."],
-    sliding: ["O(T × W)", "Each query reads a fixed recent window. Cost grows linearly with sequence length, but distant exact recall needs another path."],
-    sparse: ["O(T × K)", "A small learned or rule-based set of keys is selected per query. The indexer adds work and can miss a useful token."],
-    hybrid: ["mixed", "Three cheap recurrent mixers are followed by one content-addressed attention layer: a common way to restore lookup while containing cost."],
+    causal: ["O(T²)", "Every query reads itself and all earlier keys. The number of pairs across the whole sequence grows quadratically; one cached query reads a linear-length history."],
+    sliding: ["O(T × W)", "Each query reads itself and up to 3 preceding keys (W=4, held fixed as T changes). This pair count grows linearly with T; information beyond the window needs another path."],
+    sparse: ["O(T), K ≤ 4", "A fixed teaching rule directly addresses at most four keys: the first, current, previous and midpoint positions. This is not learned selection. A real learned indexer has its own cost and may retain the full candidate history."],
+    hybrid: ["mixed", "Every token passes through three recurrent layers and one full causal layer. The full layer still has quadratic pair count; this schedule reduces its frequency, not its asymptotic order."],
     kda: ["O(T × state)", "History is compressed into a fixed-size recurrent matrix state. Decode updates the state rather than revisiting every cached key."],
   };
 
-  const canRead = (mode: AttentionMode, query: number, key: number, tokens: number) => {
-    if (key > query) return false;
-    if (mode === "causal") return true;
-    if (mode === "sliding") return query - key < Math.max(3, Math.floor(tokens / 5));
-    if (mode === "sparse") return key === 0 || query - key < 2 || ((key * 7 + query * 3) % Math.max(3, Math.floor(tokens / 4)) === 0);
-    if (mode === "hybrid") return query % 4 === 3 ? true : key === 0 || key === query;
-    return key === query;
-  };
 
   const render = () => {
     const mode = modeInput.value as AttentionMode;
@@ -195,6 +188,48 @@ function initAttentionLab() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, rect.width, rect.height);
 
+    canvas.setAttribute("aria-label", mode === "kda" ? "Recurrent state passed from one token update to the next; earlier tokens influence later states" : mode === "hybrid" ? "Three recurrent layers and one full attention layer process every token" : "Causal query-key connectivity matrix");
+    const countLabel = qs<HTMLElement>("[data-structure-count-label]");
+    if (countLabel) countLabel.textContent = mode === "kda" ? "State updates" : mode === "hybrid" ? "Layer schedule" : "Permitted pairs";
+    if (mode === "kda") {
+      const center = rect.width / 2;
+      const top = Math.max(45, (rect.height - 300) / 2);
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#626760";
+      ctx.font = "11px IBM Plex Sans, sans-serif";
+      ctx.fillText("state carries information forward", center, top - 20);
+      const labels = ["S₋₁ = 0", "S₀ = update(S₋₁, k₀, v₀)", "S₁ = update(S₀, k₁, v₁)", `S${tokens - 1}: after ${tokens} input tokens`];
+      labels.forEach((label, index) => {
+        const y = top + index * 65;
+        const width = Math.min(270, rect.width - 32);
+        const left = center - width / 2;
+        ctx.fillStyle = "#e7ecf7";
+        ctx.fillRect(left, y, width, 37);
+        ctx.strokeStyle = "#173b99";
+        ctx.beginPath(); ctx.moveTo(left + 1, y + 1);
+        ctx.quadraticCurveTo(center, y - 2, left + width, y + 1);
+        ctx.lineTo(left + width - 1, y + 37);
+        ctx.quadraticCurveTo(center, y + 39, left, y + 36);
+        ctx.closePath(); ctx.stroke();
+        ctx.fillStyle = "#173b99";
+        ctx.fillText(label, center, y + 23);
+        if (index < labels.length - 1) {
+          ctx.beginPath(); ctx.moveTo(center, y + 39);
+          ctx.quadraticCurveTo(center + 2, y + 47, center, y + 62);
+          ctx.lineTo(center - 4, y + 57); ctx.moveTo(center, y + 62); ctx.lineTo(center + 4, y + 57); ctx.stroke();
+          if (index === 2) ctx.fillText("…", center + 24, y + 54);
+        }
+      });
+      ctx.fillStyle = "#626760";
+      ctx.fillText("The current query reads the updated state.", center, top + 265);
+      ctx.fillText("Fixed state shape; earlier inputs still matter.", center, top + 283);
+      ctx.textAlign = "start";
+      if (tokenOutput) tokenOutput.value = String(tokens);
+      if (pairOutput) pairOutput.textContent = String(tokens);
+      if (complexityOutput) complexityOutput.textContent = descriptions.kda[0];
+      if (description) description.textContent = descriptions.kda[1];
+      return;
+    }
     // A hybrid is a schedule across layers, not a different policy per query row.
     if (mode === "hybrid") {
       const left = 68;
@@ -244,31 +279,17 @@ function initAttentionLab() {
 
     for (let query = 0; query < tokens; query += 1) {
       for (let key = 0; key < tokens; key += 1) {
-        const active = canRead(mode, query, key, tokens);
+        const active = canReadPosition(mode, query, key);
         if (active) pairs += 1;
-        ctx.fillStyle = active ? (mode === "kda" ? "#173b99" : "#2559d6") : "rgba(98,103,96,.09)";
+        ctx.fillStyle = active ? "#2559d6" : "rgba(98,103,96,.09)";
         const gap = tokens > 28 ? 0.5 : 1;
         ctx.fillRect(originX + key * cell + gap, originY + query * cell + gap, Math.max(1, cell - gap * 2), Math.max(1, cell - gap * 2));
       }
     }
 
-    if (mode === "kda") {
-      const stateX = Math.min(rect.width - 35, originX + size + 15);
-      ctx.strokeStyle = "#2559d6";
-      ctx.fillStyle = "#dbe5ff";
-      ctx.fillRect(stateX, originY, 18, size);
-      ctx.strokeRect(stateX, originY, 18, size);
-      ctx.save();
-      ctx.fillStyle = "#173b99";
-      ctx.font = "9px IBM Plex Sans, sans-serif";
-      ctx.translate(stateX + 15, originY + size / 2 + 28);
-      ctx.rotate(-Math.PI / 2);
-      ctx.fillText("recurrent state", 0, 0);
-      ctx.restore();
-    }
 
     if (tokenOutput) tokenOutput.value = String(tokens);
-    if (pairOutput) pairOutput.textContent = mode === "kda" ? `${tokens} state updates` : pairs.toLocaleString();
+    if (pairOutput) pairOutput.textContent = pairs.toLocaleString();
     if (complexityOutput) complexityOutput.textContent = descriptions[mode][0];
     if (description) description.textContent = descriptions[mode][1];
   };
@@ -370,7 +391,7 @@ function initInferenceLabs() {
   const readout = qs<HTMLElement>("[data-phase-readout]");
   let phase = 0;
   const details = [
-    ["Time to first token (TTFT)", "Prefill processes the whole prompt and creates a key/value entry for each layer and position. Longer prompts raise TTFT."],
+    ["Time to first token (TTFT)", "Prefill processes the prompt and scores the first output token. With hardware, cache reuse and load fixed, longer prompts generally add work. The selected token enters KV only when processed on the next pass."],
     ["Time per output token (TPOT)", "Decode repeatedly reads weights and the growing cache to produce one position per active sequence. Batching amortizes weight reads but can add queueing."],
   ];
   stepButton?.addEventListener("click", () => {

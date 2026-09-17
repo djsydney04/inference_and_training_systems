@@ -1,0 +1,239 @@
+/* Shared layout rules load after the individual chapter and figure styles. */
+
+/* Let content reflow within its surface instead of hiding overflow at the page. */
+.atlas-ui :where(.chapter, .atlas-home, .atlas-gallery, .figure-popout, .workbench-dialog)
+  :where(p, h2, h3, h4, figcaption, dd, dt, label, summary) {
+  overflow-wrap: anywhere;
+}
+.atlas-ui :is(.lab-head, .three-head, .figure-tools, .method-toolbar, .lab-action-row,
+  .nn-overview, .lesson-reading, .guide-part, .glossary-entry) > * {
+  min-width: 0;
+}
+.atlas-ui :is(.method-toolbar, .lab-action-row, .model-options) label {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.atlas-ui :is(.method-toolbar, .lab-action-row, .model-options) select {
+  max-width: 100%;
+  min-width: 0;
+}
+.atlas-ui .chapter-pagination a { min-width: 0; margin-inline: 0; }
+.atlas-ui .plate-layers { flex-wrap: wrap; }
+.atlas-ui .guide-visual .machine-plate { margin-inline: 0; }
+.atlas-ui :is(.current-hardware-note, .companion-code-note) a {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.atlas-ui .lab-head { flex-wrap: wrap; align-items: start; }
+.atlas-ui .lab-head figcaption {
+  flex: 1 1 430px;
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+}
+.atlas-ui .lab-head figcaption > p { grid-column: 2; }
+.atlas-ui .lab-head > button { flex-shrink: 0; }
+.atlas-ui .objective-row {
+  grid-template-columns: 130px 110px minmax(0, .9fr) minmax(0, 1.1fr);
+}
+.atlas-ui .objective-row h4 { margin: 0; }
+
+/* Labels sit below duration bars, so short durations retain their true width. */
+.atlas-ui .trace-lane { min-height: 72px; }
+.atlas-ui .trace-bar { overflow: visible; color: var(--ink); }
+.atlas-ui .trace-bar > span {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  font: 10px/1.4 var(--sans);
+  white-space: nowrap;
+}
+
+@media (max-width: 1200px) {
+  .atlas-ui .glossary-entry { grid-template-columns: minmax(130px, .6fr) minmax(0, 1.4fr); }
+  .atlas-ui .glossary-entry .glossary-why {
+    grid-column: 2;
+    border-left: 1px solid var(--rule);
+    border-top: 1px solid var(--rule);
+  }
+  .atlas-ui .glossary-toolbar { grid-template-columns: minmax(0, 1fr); position: relative; }
+  .atlas-ui .glossary-filters { max-width: 100%; }
+  .atlas-ui .objective-row { grid-template-columns: 120px minmax(0, 1fr); }
+  .atlas-ui .objective-row > :is(code, p) { grid-column: 2; }
+}
+@media (max-width: 650px) {
+  .atlas-ui .lab-head figcaption { display: flex; flex-direction: column; flex-basis: auto; }
+  .atlas-ui .textbook-lab > figcaption { display: block; }
+  .atlas-ui .textbook-lab > figcaption > :is(span, strong) { display: block; margin-bottom: 10px; }
+  .atlas-ui .textbook-lab > figcaption > p { margin-block: 10px 0; max-width: 100%; }
+  .atlas-ui .glossary-entry { grid-template-columns: minmax(0, 1fr); }
+  .atlas-ui .glossary-entry > *, .atlas-ui .glossary-entry .glossary-why {
+    grid-column: 1;
+    padding-inline: 0;
+    border-left: 0;
+  }
+}
+
+/* Separation is carried by spacing and surface changes. Keep diagram wires,
+   table rules, progress, and focus outlines: those lines carry information. */
+body.atlas-ui {
+  --surface-diagram: #e9eeec;
+  --surface-note: #eeeee7;
+  --surface-selection: #e8eef9;
+}
+.atlas-ui .chapter-index { border: 0; background: #eeefe9; }
+.atlas-ui :is(.syllabus-links, .reader-reference-links, .diagram-playback-settings) { border: 0; }
+.atlas-ui .index-inner .course-navigation .chapter-lessons { border-left: 0; }
+.atlas-ui .reader-orientation { border: 0; padding-bottom: 0; }
+.atlas-ui .lesson { margin-top: clamp(76px, 8vw, 112px); }
+.atlas-ui .lesson:first-of-type { margin-top: 58px; }
+.atlas-ui .lesson > header { border: 0; padding-top: 0; margin-bottom: 24px; }
+.atlas-ui .lesson header h3 { margin-top: 10px; }
+.atlas-ui :is(.chapter-title, .lesson > header) { max-width: 78ch; }
+.atlas-ui .chapter-pagination { border: 0; margin-top: 88px; padding-top: 0; }
+.atlas-ui .chapter-pagination a { background: var(--surface-note); padding: 22px; }
+.atlas-ui .chapter-pagination a:hover { background: #e2e7e2; }
+
+.atlas-ui :is(.three-lab, .textbook-lab, .lesson-visual, .nn-figure, .chip-explorer, .architecture-figure) {
+  border: 0;
+  background: var(--surface-diagram);
+  margin-block: 38px 48px;
+}
+.atlas-ui .nn-figure { padding-top: 0; }
+.atlas-ui :is(.figure-popout, .workbench-dialog) :is(.is-popped-out, .three-lab) { margin-block: 0; }
+.atlas-ui :is(.three-head, .textbook-lab > figcaption, .figure-tools) {
+  border: 0;
+  background: transparent;
+}
+.atlas-ui .figure-tools { padding: 18px 24px 10px; align-items: baseline; }
+.atlas-ui :is(.nn-figure, .lesson-visual) > figcaption { padding-top: 16px; }
+.atlas-ui :is(.nn-figure, .lesson-visual) figcaption > strong {
+  font: 500 21px/1.4 var(--sans);
+  letter-spacing: -.025em;
+}
+.atlas-ui :is(.three-stage, .scene-key, .model-options, .lab-action-row, .method-toolbar,
+  .figure-boundary, .nn-boundary, .lv-notes, .chip-canvas, .chip-legend, .diagram-explanation) {
+  border: 0;
+}
+.atlas-ui :is(.scene-canvas, .numerical-canvas, .digital-diagram, .chip-canvas) {
+  background-color: var(--surface-diagram);
+}
+.atlas-ui :is(.scene-inspector, .method-inspector, .nn-shape-notes) {
+  border: 0;
+  background: #f6f8f4;
+}
+.atlas-ui .nn-shape-notes { padding: 24px; margin-top: 12px; }
+.atlas-ui .nn-shapes > div { border: 0; padding-block: 10px; }
+.atlas-ui :is(.model-options, .method-toolbar, .lab-action-row) { background: #f2f5f0; }
+.atlas-ui .diagram-playback { border: 0; background: #e1e7e2; }
+.atlas-ui :is(.figure-boundary, .nn-boundary) { padding-block: 22px; }
+.atlas-ui :is(.lv-selection, .nn-inspector) {
+  border: 0;
+  padding: 20px 24px;
+  background: var(--surface-selection);
+}
+.atlas-ui :is(.lv-selection, .nn-inspector) > strong { color: var(--signal-dark); }
+.atlas-ui .lv-notes { background: #f2f5f0; }
+.atlas-ui .numerical-workbench .scene-inspector { border: 0; }
+.atlas-ui :is(.numerical-legend, .matrix-transfer) { border: 0; }
+.atlas-ui .matrix-output { border: 0; }
+.atlas-ui .ring-rank { border-color: transparent; background: #f6f8f4; }
+.atlas-ui .ring-rank.is-selected { outline-color: var(--signal); }
+
+.atlas-ui :is(.deep-dive, .knowledge-check) {
+  border: 0;
+  margin-block: 32px;
+  padding: 24px;
+  background: var(--surface-note);
+}
+.atlas-ui :is(.deep-dive, .knowledge-check)[open] { background: #e9eee8; }
+.atlas-ui :is(.deep-dive, .knowledge-check) > summary { line-height: 1.65; }
+.atlas-ui :is(.margin-note, .lesson-reading aside) {
+  border: 0;
+  padding: 24px;
+  background: var(--surface-note);
+}
+.atlas-ui :is(.lesson-code > div, .lesson-code .code-reference) { border: 0; }
+.atlas-ui :is(.concept-strip, .hardware-primer, .case-studies, .field-note-grid, .source-ledger) {
+  border: 0;
+  gap: 36px;
+}
+.atlas-ui :is(.concept-strip article, .hardware-primer section, .case-study,
+  .field-note-grid article, .source-ledger article) {
+  border: 0;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+}
+.atlas-ui :is(.concept-strip, .hardware-primer, .case-studies) { margin-block: 64px; }
+.atlas-ui :is(.field-note-grid, .source-ledger) { padding-block: 30px; }
+.atlas-ui .section-rule-title { border: 0; margin-bottom: 20px; }
+.atlas-ui .gallery-toolbar { border: 0; padding-bottom: 0; }
+.atlas-ui .gallery-list { gap: 48px 32px; }
+.atlas-ui .gallery-entry { border: 0; padding-bottom: 0; }
+.atlas-ui .gallery-preview { background: var(--surface-diagram); }
+
+/* The syllabus reads in groups, with open chapter links inside each surface. */
+.atlas-ui :is(.guide-intro, .guide-start, .guide-part, .guide-visual, .guide-how,
+  .guide-first-lessons, .guide-first-lessons li + li, .guide-part li a, .guide-visual nav a) { border: 0; }
+.atlas-ui .guide-start { gap: 40px; padding-block: 16px 40px; }
+.atlas-ui .guide-first-lessons { display: grid; gap: 8px; }
+.atlas-ui .guide-first-lessons a { padding: 14px 18px; background: var(--surface-diagram); }
+.atlas-ui .guide-first-lessons li:first-child a { padding-top: 14px; }
+.atlas-ui .guide-course { margin-top: 52px; }
+.atlas-ui .guide-course > header { margin-bottom: 36px; }
+.atlas-ui .guide-part { padding-block: 0; margin-block: 36px; align-items: start; }
+.atlas-ui .guide-part-intro { padding-top: 18px; }
+.atlas-ui .guide-part ol { padding: 14px 22px; background: var(--surface-diagram); }
+.atlas-ui .guide-part li a { padding-block: 12px; }
+.atlas-ui .guide-first-lessons a:hover, .atlas-ui .guide-part li a:hover { background: #dde5e0; }
+.atlas-ui .guide-visual { margin-block: 70px 40px; padding-block: 24px; }
+.atlas-ui .guide-how { padding-block: 24px 40px; }
+.atlas-ui .guide-paths { padding-top: 28px; }
+
+/* Let the shared landing illustrations carry the section breaks. */
+.atlas-ui .landing-machine .plate-layers { border: 0; }
+.atlas-ui .landing-caption { border: 0; }
+.atlas-ui .release-notes > summary { border: 0; }
+
+@media (max-width: 820px) {
+  .atlas-ui .chapter-index { background: #eeefe9; }
+  .atlas-ui .guide-start { gap: 28px; }
+}
+@media (max-width: 600px) {
+  .atlas-ui .lesson { margin-top: 72px; }
+  .atlas-ui .lesson:first-of-type { margin-top: 46px; }
+  .atlas-ui .guide-part { margin-block: 32px; gap: 18px; }
+  .atlas-ui .guide-part-intro { padding-top: 0; }
+  .atlas-ui .guide-visual { margin-top: 48px; }
+  .atlas-ui :is(.deep-dive, .knowledge-check, .margin-note, .lesson-reading aside) { padding: 20px; }
+  .atlas-ui :is(.lv-selection, .nn-inspector) { margin-inline: 14px; padding: 18px; }
+  .atlas-ui .figure-tools { padding-inline: 16px; }
+  .atlas-ui .nn-shape-notes { padding: 18px; }
+  .atlas-ui .chapter-pagination { margin-top: 64px; }
+}
+
+/* A chapter entrance and disclosure feedback, never scroll-triggered hiding. */
+@media (prefers-reduced-motion: no-preference) {
+  .atlas-ui .chapter:not([hidden]) > .chapter-title { animation: chapter-arrive 280ms ease-out both; }
+  .atlas-ui .atlas-landing:not([hidden]) .landing-machine { animation: chapter-arrive 520ms ease-out both; }
+  .atlas-ui :is(.knowledge-check, .deep-dive, .lv-notes)[open] > :not(summary) {
+    animation: disclosure-arrive 180ms ease-out both;
+  }
+  .atlas-ui :is(.guide-first-lessons a, .guide-part li a, .gallery-preview) {
+    transition: background-color 160ms ease;
+  }
+  .atlas-ui .gallery-entry:is(:hover, :focus-visible) .gallery-preview { background: #dce5e0; }
+}
+@keyframes chapter-arrive {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes disclosure-arrive {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media print {
+  .atlas-ui :is(.chapter, .chapter-title, .landing-machine) { animation: none; }
+  .atlas-ui .lesson { margin-top: 40px; }
+}
