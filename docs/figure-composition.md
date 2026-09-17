@@ -90,7 +90,7 @@ scale and CUDA launch dimensions, partitioned matrices, vector lanes, a two-thre
 publication protocol, NUMA pages, translation/cache examples, a weighted value
 read, and tile reuse. Feedback cycles use circular paths; independent comparisons
 use open columns or a two-by-two arrangement. Actual ordered processes retain
-flow arrows. The schematic catalog now uses 23 drawing forms.
+flow arrows. The schematic catalog now uses 22 drawing forms.
 
 The miniatures state their scope in Notes. For example, the NUMA diagrams keep
 six pages fixed while changing placement; the 4 × 4 traversal sums 0–15 to 120;
