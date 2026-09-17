@@ -180,7 +180,7 @@ export function initializeReader() {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Tab" && narrow.matches && index.classList.contains("is-open") && !document.querySelector("dialog[open]")) {
       const controls = [...index.querySelectorAll<HTMLElement>('a[href],button:not(:disabled),select,summary')].filter(element => element.getClientRects().length && !element.closest("[hidden]") && (!element.closest("details:not([open])") || element.tagName === "SUMMARY"));
-      controls.push(toggle);
+      controls.unshift(toggle);
       const first = controls[0];
       const last = controls.at(-1);
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
