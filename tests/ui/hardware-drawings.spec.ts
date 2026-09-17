@@ -52,3 +52,20 @@ test('hardware walkthrough automatically crosses component and view boundaries',
   await gpu.locator('[data-hd-part="tensor"]').first().click();
   await expect(gpu).toHaveAttribute('data-playback-state','paused');
 });
+
+test('tensor views preserve values, byte offsets and channel ownership',async({page})=>{
+  await page.emulateMedia({reducedMotion:'reduce'});
+  await page.goto('/#tensors');
+  const figure=page.locator('.tensor-figure');
+  await expect(figure.locator('.tensor-entry')).toHaveCount(24);
+  await expect(figure.locator('.tensor-entry').first()).toHaveText('1');
+  await expect(figure.locator('.tensor-entry').last()).toHaveText('24');
+  await figure.getByRole('button',{name:'Memory layout',exact:true}).click();
+  await expect(figure.locator('.tensor-entry').nth(12)).toHaveText('@48');
+  await expect(figure.locator('.tensor-entry').last()).toHaveText('@92');
+  await figure.getByRole('button',{name:'Device shards',exact:true}).click();
+  await expect(figure.locator('.tensor-device-0')).toHaveCount(12);
+  await expect(figure.locator('.tensor-device-1')).toHaveCount(12);
+  await figure.getByRole('button',{name:'Open figure',exact:true}).click();
+  await expect(page.locator('dialog[open] .tensor-entry')).toHaveCount(24);
+});

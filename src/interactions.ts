@@ -103,19 +103,24 @@ function initHero() {
 function initTensorFigure() {
   const stack = qs<HTMLElement>(".tensor-stack");
   const caption = qs<HTMLElement>("[data-tensor-caption]");
+  if (!stack || !caption) return;
   const copy: Record<string, string> = {
-    shape: "Each plane is one token position; features run across, sequences run into the page.",
-    layout: "The same logical tensor can be row-major, tiled, transposed, or padded. Kernels care because contiguous requests combine into fewer memory transactions.",
-    shard: "A distributed tensor adds a device-mesh mapping: each color owns a slice, while collectives reconstruct or reduce the logical value."
+    shape: "Two batches × three token positions × four channels. Numbers are declared toy activations; each row is one token vector.",
+    layout: "Contiguous FP32 example: byte offset = 4 × (b × 12 + t × 4 + d). Channel stride is 4 bytes, token stride 16 bytes, batch stride 48 bytes.",
+    shard: "Channel sharding: device 0 owns d0–d1 and device 1 owns d2–d3 for every batch and token. Combining the channel shards restores this logical tensor."
   };
-  qsa<HTMLButtonElement>("[data-tensor-view]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const view = button.dataset.tensorView ?? "shape";
-      qsa<HTMLButtonElement>("[data-tensor-view]").forEach((item) => item.classList.toggle("is-active", item === button));
-      if (stack) stack.dataset.view = view;
-      if (caption) caption.textContent = copy[view] ?? copy.shape;
+  const render = (view: string) => {
+    stack.dataset.view = view;
+    stack.setAttribute("aria-label", copy[view]);
+    stack.innerHTML = `<div class="tensor-shape-label">X [2, 3, 4] · FP32</div>${[0,1].map(batch=>`<div class="tensor-batch"><strong>Batch ${batch}</strong><div class="tensor-grid"><span></span>${[0,1,2,3].map(d=>`<span class="tensor-axis">d${d}</span>`).join('')}${[0,1,2].map(t=>`<span class="tensor-axis">t${t}</span>${[0,1,2,3].map(d=>{const offset=batch*12+t*4+d;return `<span class="tensor-entry ${view==='shard'?(d<2?'tensor-device-0':'tensor-device-1'):''}">${view==='layout'?`@${offset*4}`:offset+1}</span>`;}).join('')}`).join('')}</div></div>`).join('')}${view==='shard'?'<div class="tensor-shard-key"><span>Blue: device 0</span><span>Green: device 1</span></div>':''}`;
+    caption.textContent = copy[view];
+    qsa<HTMLButtonElement>("[data-tensor-view]").forEach(button=>{
+      const active=button.dataset.tensorView===view;
+      button.classList.toggle("is-active",active);button.setAttribute("aria-pressed",String(active));
     });
-  });
+  };
+  qsa<HTMLButtonElement>("[data-tensor-view]").forEach(button=>button.addEventListener("click",()=>render(button.dataset.tensorView??"shape")));
+  render("shape");
 }
 
 function initTransformerTrace() {

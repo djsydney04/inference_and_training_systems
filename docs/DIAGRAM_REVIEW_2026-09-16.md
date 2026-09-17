@@ -37,6 +37,9 @@ The matrix reading lesson shows a numerical 2×3 by 3×4 product and highlights 
 complete dot product. Embedding lookup copies declared toy values exactly into
 the output. Attention includes a triangular causal mask and per-head tensor
 shapes. SwiGLU shows 24 expanded channels and the return to eight channels.
+The tensor overview replaces its perspective planes with exact [2, 3, 4]
+activation tables, contiguous FP32 byte offsets and two channel shards. Prefill
+and decode show the same eight prompt positions, then one new decode position.
 The five chip-anatomy views use named resource categories rather than arbitrary
 cell patterns. The system overview uses flat rack elevations and shares the
 corrected tray grouping with the detailed hardware drawing.
@@ -53,6 +56,11 @@ manual pause, reduced motion, hidden chapters and expanded figures.
 Playback eligibility reads the current drawing bounds rather than retaining an
 IntersectionObserver snapshot after a live figure moves into a dialog. Hidden
 chapters, off-screen drawings and figures behind a modal still stop advancing.
+A new selected component cancels the previous horizontal pan before deciding
+whether another pan is needed. Automatic horizontal repositioning is immediate,
+so overlapping compositor animations cannot hide a newly selected operation. The test clock starts before page navigation, as
+required by the [Playwright clock API](https://playwright.dev/docs/clock). Static
+engraved chapter studies are excluded from interactive walkthrough coverage.
 
 These are teaching drawings. They do not substitute for a device floorplan,
 mechanical service drawing, measured hardware trace or facility sizing document.

@@ -72,9 +72,12 @@ function revealSelected(root: HTMLElement) {
   const selected = root.querySelector<SVGGraphicsElement>(".nn-node[aria-pressed=true], .nn-node.walkthrough-focus, .lv-node[aria-pressed=true], .sb-node[aria-pressed=true], .architecture-scroll rect.walkthrough-focus, [data-hd-part][aria-pressed=true]");
   const scroller = selected?.closest<HTMLElement>(".nn-diagram-scroll, .lv-canvas, .sb-canvas, .architecture-scroll, .hd-canvas");
   if (!selected || !scroller || scroller.scrollWidth <= scroller.clientWidth) return;
+  // Stop a previous pan before deciding that the new selection is already
+  // visible; otherwise that older animation can move it out of view afterward.
+  scroller.scrollTo({ left: scroller.scrollLeft, behavior: "instant" });
   const part = selected.getBoundingClientRect(), area = scroller.getBoundingClientRect();
   if (part.left >= area.left + 8 && part.right <= area.right - 8) return;
-  scroller.scrollTo({ left: scroller.scrollLeft + part.left - area.left - (area.width - part.width) / 2, behavior: reducedMotion.matches ? "instant" : "smooth" });
+  scroller.scrollTo({ left: scroller.scrollLeft + part.left - area.left - (area.width - part.width) / 2, behavior: "instant" });
 }
 
 /** Register authored walkthroughs; safe to call after inserting additional figures. */

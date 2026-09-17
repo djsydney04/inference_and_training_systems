@@ -2,9 +2,9 @@ import { expect, test, type Page } from "@playwright/test";
 
 async function start(page: Page, hash = "network-attention") {
   await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.clock.install();
   await page.goto(`/#${hash}`);
   await expect(page.locator("[data-diagram-playback]").first()).toBeAttached();
-  await page.clock.install();
   await page.clock.pauseAt(Date.now() + 1000);
 }
 
@@ -62,10 +62,10 @@ test("opening a diagram immediately keeps autoplay enabled", async ({ page }) =>
 
 test("reduced motion starts paused and an explicit play opts in", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.clock.install();
   await page.goto("/#network-feedforward");
   const figure = page.locator('[data-nn-inspector="feedforward"]');
   await expect(figure).toHaveAttribute("data-playback-state", "paused");
-  await page.clock.install();
   await page.clock.pauseAt(Date.now() + 1000);
   await page.clock.runFor(14000);
   expect(await figure.getAttribute("data-playback-frames")).toBeNull();
@@ -114,6 +114,8 @@ test("every authored diagram has a walkthrough and repeated cycles remain valid"
     const errors: string[] = [];
     for (const root of document.querySelectorAll<HTMLElement>(diagramHostSelector)) {
       if (root.closest(".atlas-gallery, .atlas-landing") || root.querySelector("[data-figure-open]")) continue;
+      // Engraved chapter studies are static reference art, separate from live diagrams.
+      if (root.matches(".book-study") && root.querySelector("img.study-image")) continue;
       const adapter = diagramWalkthrough(root);
       const name = root.closest("[data-lesson]")?.id || root.id || root.className;
       if (root.matches("figure.book-study, figure.notebook-figure")) {
@@ -170,12 +172,11 @@ test("wide diagrams reveal the active operation without scrolling the page", asy
   const scroller = figure.locator(".nn-diagram-scroll");
   await scroller.scrollIntoViewIfNeeded();
   await page.clock.runFor(14000);
-  const visible = await scroller.evaluate(root => {
+  await expect.poll(() => scroller.evaluate(root => {
     const selected = root.querySelector('[aria-pressed="true"]')!.getBoundingClientRect();
     const bounds = root.getBoundingClientRect();
     return selected.left >= bounds.left - 1 && selected.right <= bounds.right + 1;
-  });
-  expect(visible).toBe(true);
+  })).toBe(true);
 });
 
 test("the transformer trace shares the same pause control", async ({ page }) => {

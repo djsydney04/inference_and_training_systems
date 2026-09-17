@@ -36,10 +36,10 @@ The September 16, 2026 browser inventory contains 154 playback surfaces:
 - Portable kernels follow operand movement, accumulation and storage, advance
   K slices, and continue through H100, MI300X, TPU and Trainium examples.
 - System buildout visits its components and four levels. GPU, LPU and rack
-  workbenches reuse their sequences. Chip schematics traverse every route and
+  drawings tour named components and automatically move between their 2D views. Chip schematics traverse every route and
   available view.
 
-Source photographs and source-image figures stay static. Gallery thumbnails
+Source photographs, source-image figures and engraved chapter studies stay static. Gallery thumbnails
 and the landing package preview are navigation surfaces, not lesson walkthroughs.
 Animations describe dependencies and comparisons; their seconds and moving
 connectors do not report device latency or measured throughput. Existing source

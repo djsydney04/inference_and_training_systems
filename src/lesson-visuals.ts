@@ -83,7 +83,7 @@ export function initializeFigurePopouts() {
   const hosts=[...document.querySelectorAll<HTMLElement>("figure, .textbook-lab, .nn-figure, .architecture-figure, .wide-figure")];
   hosts.filter(host=> !host.closest(".three-lab") && !host.closest(".atlas-home, .atlas-gallery, .atlas-landing") &&
     !hosts.some(parent=>parent!==host&&parent.contains(host)) &&
-    !!host.querySelector("svg, canvas, input, select, [data-lv-topic], .block-pipeline, .fiber-path, .request-flow, .token-line, .lab-controls, img")).forEach(host=>{
+    !!host.querySelector("svg, canvas, input, select, [data-lv-topic], .block-pipeline, .fiber-path, .request-flow, .token-line, .tensor-stack, .lab-controls, img")).forEach(host=>{
     const caption=host.querySelector("figcaption");
     const title=caption?.querySelector("strong")?.textContent ?? host.querySelector("h3,h4")?.textContent ?? "Lesson diagram";
     const tools=document.createElement("div");tools.className="figure-tools";

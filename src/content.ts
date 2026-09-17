@@ -161,17 +161,14 @@ export const atlasMarkup = `
           </div>
 
           <figure class="margin-figure tensor-figure">
-            <figcaption><span>Figure 1.1</span><strong>One activation, four views</strong></figcaption>
-            <div class="tensor-stack" aria-hidden="true">
-              <div class="tensor-plane p3"></div><div class="tensor-plane p2"></div><div class="tensor-plane p1"></div>
-              <div class="tensor-bracket tensor-b">B</div><div class="tensor-bracket tensor-t">T</div><div class="tensor-bracket tensor-d">D</div>
-            </div>
+            <figcaption><span>Figure 1.1</span><strong>One tensor, three views</strong></figcaption>
+            <div class="tensor-stack" role="img" aria-label="Tensor with two batches, three token positions and four channels"></div>
             <ol>
               <li><button data-tensor-view="shape" class="is-active">Logical shape</button></li>
               <li><button data-tensor-view="layout">Memory layout</button></li>
               <li><button data-tensor-view="shard">Device shards</button></li>
             </ol>
-            <p data-tensor-caption>Each plane is one token position; features run across, sequences run into the page.</p>
+            <p data-tensor-caption>Two batches, each with three rows of four channels. The numbers are declared toy activation values.</p>
           </figure>
         </div>
 
@@ -595,8 +592,8 @@ print(q.shape, q.dtype, q.device)</code></pre>
         <div class="prefill-decode wide-figure">
           <div class="lab-head"><figcaption><span>Interactive 7.1</span><strong>One request, two operating regimes</strong><p>Step through a prompt, then decode. Watch arithmetic parallelism collapse to one new position per sequence.</p></figcaption><button type="button" data-inference-step>Advance one phase</button></div>
           <div class="phase-track" data-phase-track>
-            <div class="phase prefill is-active"><span>Prefill</span><strong>Prompt positions in parallel</strong><div class="token-line"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><small>Large GEMMs · high arithmetic intensity · writes KV</small></div>
-            <div class="phase decode"><span>Decode</span><strong>One position, repeatedly</strong><div class="token-line"><i class="cached"></i><i class="cached"></i><i class="cached"></i><i class="cached"></i><i class="new"></i></div><small>Small GEMMs/GEMVs · reads growing KV · latency-sensitive</small></div>
+            <div class="phase prefill is-active"><span>Prefill</span><strong>Prompt positions in parallel</strong><div class="token-line"><i aria-label="Prompt position 1">1</i><i aria-label="Prompt position 2">2</i><i aria-label="Prompt position 3">3</i><i aria-label="Prompt position 4">4</i><i aria-label="Prompt position 5">5</i><i aria-label="Prompt position 6">6</i><i aria-label="Prompt position 7">7</i><i aria-label="Prompt position 8">8</i></div><small>Large GEMMs · high arithmetic intensity · writes KV</small></div>
+            <div class="phase decode"><span>Decode</span><strong>One position, repeatedly</strong><div class="token-line"><i class="cached" aria-label="Cached position 1">1</i><i class="cached" aria-label="Cached position 2">2</i><i class="cached" aria-label="Cached position 3">3</i><i class="cached" aria-label="Cached position 4">4</i><i class="cached" aria-label="Cached position 5">5</i><i class="cached" aria-label="Cached position 6">6</i><i class="cached" aria-label="Cached position 7">7</i><i class="cached" aria-label="Cached position 8">8</i><i class="new" aria-label="New position 9">9</i></div><small>Small GEMMs/GEMVs · reads growing KV · latency-sensitive</small></div>
           </div>
           <div class="phase-readout" data-phase-readout><strong>Time to first token (TTFT)</strong><p>Prefill processes the whole prompt and creates a key/value entry for each layer and position. Longer prompts raise TTFT.</p></div>
         </div>
