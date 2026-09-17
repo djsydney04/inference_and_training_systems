@@ -132,7 +132,7 @@ export const chapters: Chapter[] = [
     id: "attention",
     title: "Attention",
     intro: "Start from the attention calculation you derived inside a Transformer. Compare connectivity and retained state, then calculate the same dense result using less intermediate memory.",
-    part: "Foundations",
+    part: "Training and generation",
     outcome:
       "Distinguish connectivity, cached state, recurrence, and memory-efficient kernels.",
     requires: ["transformer", "machine"],
@@ -141,7 +141,7 @@ export const chapters: Chapter[] = [
     id: "data",
     title: "Training data",
     intro: "The training objective depends on which text arrives and how it is prepared. Build examples, pack sequences and keep track of the tokens that count toward the loss.",
-    part: "Training",
+    part: "Training and generation",
     outcome:
       "Specify a versioned data mixture and an experiment whose result you can trust.",
     requires: ["tensors", "transformer"],
@@ -150,7 +150,7 @@ export const chapters: Chapter[] = [
     id: "optimization",
     title: "Optimizers and precision",
     intro: "An optimizer turns gradients into weight updates. Compare update rules, stored state and the effects of limited numerical precision.",
-    part: "Training",
+    part: "Training and generation",
     outcome:
       "Derive a stateful update and verify clipping, scaling and recomputation contracts.",
     requires: ["data", "attention"],
@@ -159,7 +159,7 @@ export const chapters: Chapter[] = [
     id: "training",
     title: "Distributed training",
     intro: "Large training runs use many devices. Follow one update across them and account for memory, communication and recovery after a failure.",
-    part: "Training",
+    part: "Training and generation",
     outcome:
       "Reconcile global loss, memory, communication, and recovery across workers.",
     requires: ["optimization", "collectives"],
@@ -168,7 +168,7 @@ export const chapters: Chapter[] = [
     id: "parallel-training",
     title: "Splitting work across GPUs",
     intro: "There are several ways to divide a model and its data. Follow what each device owns, how temporary tensors change peak memory, and how shards become a complete update.",
-    part: "Training",
+    part: "Training and generation",
     outcome:
       "Verify sharded layers and optimizer updates, trace materialization and pipeline lifetimes, and reconstruct checkpoint ownership.",
     requires: ["training"],
@@ -177,7 +177,7 @@ export const chapters: Chapter[] = [
     id: "inference",
     title: "Running an LLM",
     intro: "Generation processes a prompt and then produces tokens. Follow the cached state, then work through how lower-precision weights and activations change storage and numerical error.",
-    part: "Inference",
+    part: "Training and generation",
     outcome:
       "Account for prefill and decode state; calculate quantized codes, grouping overhead and activation-dependent output error.",
     requires: ["attention", "runtime-foundations"],
@@ -186,7 +186,7 @@ export const chapters: Chapter[] = [
     id: "decoding",
     title: "Choosing the next token",
     intro: "Scores become tokens through a decoding rule. Learn how modern drafters propose several tokens, how the target verifies them, and when that extra work pays off.",
-    part: "Inference",
+    part: "Training and generation",
     outcome:
       "Preserve the sampling distribution, train compatible proposals, reconcile tree state and measure acceptance by depth.",
     requires: ["inference"],
@@ -195,7 +195,7 @@ export const chapters: Chapter[] = [
     id: "post-training",
     title: "Post-training",
     intro: "A trained model can learn from demonstrations, preferences and rewards. Follow how generated responses become updates, and what must stay consistent as the policy changes.",
-    part: "Training",
+    part: "Training and generation",
     outcome:
       "Implement response masking and preference objectives; trace rollout overlap, policy lag and behavior probabilities.",
     requires: ["parallel-training", "decoding"],
@@ -204,7 +204,7 @@ export const chapters: Chapter[] = [
     id: "lpu",
     title: "LPUs and dataflow",
     intro: "A scheduled processor moves data according to a plan made by its compiler. Use the Groq architecture to understand that tradeoff.",
-    part: "Hardware",
+    part: "Accelerator designs",
     outcome:
       "Explain software-addressed SRAM and compiler-scheduled tensor movement.",
     requires: ["machine", "inference", "collectives"],
@@ -214,7 +214,7 @@ export const chapters: Chapter[] = [
     evidenceChecked: "September 14, 2026",
     title: "Comparing accelerators",
     intro: "A chip’s peak arithmetic rate is only part of its behavior. Compare memory, data movement, execution and software support against the same workload.",
-    part: "Hardware",
+    part: "Accelerator designs",
     outcome: "Compare accelerator memory, execution, interconnect and compiler contracts against a workload.",
     requires: ["machine"],
   },

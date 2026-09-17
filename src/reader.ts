@@ -117,7 +117,7 @@ export function prepareReader() {
   byId("post-training-loss")!.insertAdjacentHTML("afterend", trainingFrameworkBridgeLesson);
   byId("inference")!.insertAdjacentHTML("beforeend", servingFrameworkBridgeLesson);
   // Assemble from components to the complete block; keep all authored anchors.
-  const transformerOrder = ["network-map", "network-embeddings", "attention-by-hand", "position-rotations", "network-residual", "normalization-and-residual-math", "network-attention", "network-feedforward", "network-output", "decoder-block", "attention-and-mlp", "attention-primitives", "transformer-parameter-budget"];
+  const transformerOrder = ["network-map", "network-embeddings", "attention-by-hand", "position-rotations", "network-residual", "normalization-and-residual-math", "network-attention", "network-feedforward", "network-output", "decoder-block", "attention-and-mlp", "attention-primitives", "tensor-head-layout", "transformer-parameter-budget"];
   transformerOrder.forEach(id => byId("transformer")!.append(byId(id)!));
   // Recent checkpoint comparisons are applications of the mechanism, after its foundations.
   const attentionCases = document.querySelector("#attention .case-studies");

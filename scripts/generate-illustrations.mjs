@@ -1,6 +1,7 @@
-/** Original vector studies. Run: node scripts/generate-illustrations.mjs */
+/** Original vector studies. Run all, or choose one: node scripts/generate-illustrations.mjs model */
 import { writeFileSync } from 'node:fs';
 const output = new URL('../public/illustrations/', import.meta.url);
+const requestedStudy = process.argv[2];
 const ink = '#61775b', line = '#9bab91', pale = '#dce3d4', blue = '#2559d6';
 const rect = (x,y,w,h,fill='none',stroke=line,extra='') => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}" stroke-width=".8" ${extra}/>`;
 const path = (d,stroke=line,width=.8,extra='') => `<path d="${d}" stroke="${stroke}" stroke-width="${width}" fill="none" ${extra}/>`;
@@ -9,6 +10,7 @@ const repeat = (n,fn) => Array.from({length:n},(_,i)=>fn(i)).join('');
 const grid = (x,y,cols,rows,size,select=()=>false) => repeat(rows,r=>repeat(cols,c=>rect(x+c*size,y+r*size,size-4,size-4,select(r,c)?blue:(r+c)%3===0?'#bccbb0':'#e1e7d9',select(r,c)?blue:line)));
 const ticks = (x,y,n,step=12,vertical=false) => repeat(n,i=>path(vertical?`M${x} ${y+i*step}h7`:`M${x+i*step} ${y}v7`));
 function save(name,title,description,body,defs='') {
+  if (requestedStudy && requestedStudy !== name) return;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 560" fill="none" role="img" aria-labelledby="title desc">
 <title id="title">${title}</title><desc id="desc">${description}</desc>
 <defs>
@@ -20,6 +22,59 @@ ${defs}</defs>
 ${body}
 </svg>`;
   writeFileSync(new URL(`${name}-study.svg`,output),svg.replaceAll('><','>\n<')+'\n');
+}
+
+// The attention matrix mixes positions; the vocabulary distribution is a later operation.
+// Pen-like boundaries belong to conceptual stages; cell positions and bar widths stay exact.
+{
+  const text = (x,y,value,size=13,extra='') => `<text x="${x}" y="${y}" font-family="Arial, sans-serif" font-size="${size}" fill="#52624f" ${extra}>${value}</text>`;
+  const penBox = (x,y,w,h) => path(`M${x+1} ${y+1} Q${x+w*.5} ${y-1.5} ${x+w-1} ${y+.7} Q${x+w+1.5} ${y+h*.5} ${x+w-.5} ${y+h-1} Q${x+w*.5} ${y+h+1.5} ${x+.7} ${y+h-.5} Q${x-1.5} ${y+h*.5} ${x+1} ${y+1} Z`,ink,1.1);
+  const arrow = (x1,y1,x2,y2) => path(`M${x1} ${y1} Q${(x1+x2)/2} ${(y1+y2)/2+1.2} ${x2} ${y2}`,blue,1.4,'marker-end="url(#arrow)"');
+  let model = text(66,75,'From a prefix to the next-token distribution',18);
+  model += text(65,113,'8 positions · 6 features',12);
+  for(let r=0;r<8;r++) {
+    model += text(51,155+r*25,String(r),10);
+    for(let c=0;c<6;c++) model += rect(65+c*18,142+r*25,14,18,(r+c)%3===0?'#bccbb0':'#e1e7d9',line);
+  }
+  model += arrow(183,238,251,238);
+  model += text(265,113,'Stored positions (keys)',12);
+  for(let r=0;r<8;r++) {
+    model += text(252,155+r*25,String(r),10);
+    for(let c=0;c<8;c++) model += rect(266+c*22,142+r*25,18,18,c>r?'url(#hatch)':r===7?'#dce6fb':'#dce3d4',c>r?line:r===7?blue:ink);
+  }
+  model += penBox(261,137,183,201);
+  model += arrow(451,239,478,179);
+  model += penBox(482,137,155,83);
+  model += text(559,158,'Value mixing',13,'text-anchor="middle"');
+  model += text(559,178,'+ rest of model',13,'text-anchor="middle"');
+  model += text(559,203,'(operations omitted)',11,'text-anchor="middle"');
+  model += arrow(559,222,559,241);
+  model += penBox(482,246,155,82);
+  model += text(559,266,'Final position only',12,'text-anchor="middle"');
+  model += text(559,287,'Vocabulary projection',12,'text-anchor="middle"');
+  model += text(559,309,'one logit per token',11,'text-anchor="middle"');
+  model += arrow(559,332,559,351);
+  model += penBox(482,355,155,61);
+  model += text(559,378,'Softmax',13,'text-anchor="middle"');
+  model += text(559,399,'probabilities sum to 1',11,'text-anchor="middle"');
+  model += path('M639 385 Q651 386 653 373 L653 242 Q653 238 659 238',blue,1.4,'marker-end="url(#arrow)"');
+  model += penBox(660,134,153,231);
+  const percentages=[5,15,10,5,40,10,5,10];
+  model += text(667,113,'Vocabulary token',12);
+  percentages.forEach((percent,i)=>{
+    const y=143+i*27;
+    model += text(665,y+13,String.fromCharCode(65+i),11);
+    model += rect(680,y,percent*2.5,17,i===4?blue:'url(#fine)',i===4?blue:ink);
+    model += text(684+percent*2.5,y+13,`${percent}%`,10);
+  });
+  model += text(65,380,'Token vectors',13);
+  model += text(266,380,'Causal attention weights',13);
+  model += text(266,399,'Rows: query positions',11);
+  model += text(266,416,'Hatching: future positions',11);
+  model += text(666,380,'Next-token',13)+text(666,399,'probabilities',13);
+  model += text(65,462,'Q/K/V projections are omitted. Value vectors also enter the value-mixing step.',12);
+  model += text(65,484,'Cells and bars are illustrative: the bars are not calculated from the displayed matrix.',12);
+  save('model','From a prefix to the next-token distribution','Eight token-position vectors lead to an eight-by-eight causal attention-weight matrix. Future key positions are hatched. Attention weights feed value mixing and omitted model operations. The final position then passes through a vocabulary projection and softmax to an illustrative eight-token distribution whose percentages sum to one hundred. Position rows are not vocabulary classes. Q, K and V projections are omitted; value vectors also feed value mixing.',model);
 }
 
 // A tensor's planes share a linear address space.
@@ -97,11 +152,11 @@ const gate=(x,y)=>`<path d="M${x} ${y}h25a30 30 0 0 1 0 60h-25Z" stroke="${ink}"
 b=register(93,152)+register(670,152);
 b+=gate(265,118)+gate(265,272)+gate(480,195);
 b+=path('M163 176H211V133H265M163 224H229V287H265M163 248H193V317H265M320 148H387V210H480M320 302H408V240H480M535 225H670',blue,1.5);
-b+=path('M66 104H218V163H265M66 352H375V258H457V240H480',ink,1);
+b+=path('M66 104H218V163H265',ink,1);
 b+=repeat(5,i=>rect(363+i*16,86,10,18,'url(#fine)'));
-b+=path('M128 268V392H705V268M128 392V421',ink)+repeat(13,i=>path(`M${82+i*52} 464h13v-24h26v24h13`,ink));
+b+=path('M78 244H93M78 244V392H655V244H670M128 392V464',ink)+repeat(13,i=>path(`M${82+i*52} 464h13v-24h26v24h13`,ink));
 b+=path('M65 421H772',line,.7,'stroke-dasharray="3 5"')+dot(128,392,3,ink)+dot(408,302,2,ink);
-save('logic','Logic between clock edges','Fine wires connect combinational gates between two registers. A clock waveform sits underneath. Blue highlights a data path; this illustration does not specify a complete circuit or timing budget.',b);
+save('logic','Logic between clock edges','Fine wires connect combinational gates between two registers. A clock waveform underneath connects to the triangular clock inputs on both registers. Blue highlights a data path; this illustration does not specify a complete circuit or timing budget.',b);
 
 // Increasingly distant storage layers, with regular bank structure.
 b='';
@@ -118,12 +173,12 @@ b+=path('M89 81V456M83 81h12M83 456h12M738 456H768',ink);
 save('memory','Layers of memory','Narrow local storage connects to progressively wider layers of cache and memory. Hatching suggests banks; blue follows an access. Widths are illustrative and do not encode capacity, bandwidth, or latency.',b);
 
 // Three matrix fields, with a tile brought close to the output.
-b=grid(96,188,8,8,24,(r,c)=>r>=2&&r<4&&c<2)+grid(461,70,10,6,24,(r,c)=>r<2&&c>=3&&c<5)+grid(461,290,10,8,24,(r,c)=>r>=2&&r<4&&c>=3&&c<5);
-b+=path('M296 248H352V350H453M556 218V282',blue,1.6,'marker-end="url(#arrow)"');
+b=grid(96,188,8,8,24,(r,c)=>r>=2&&r<4&&c<2)+grid(461,70,10,8,24,(r,c)=>r<2&&c>=3&&c<5)+grid(461,290,10,8,24,(r,c)=>r>=2&&r<4&&c>=3&&c<5);
+b+=path('M296 248H352V350H453M569 112H727V277H569V282',blue,1.6,'marker-end="url(#arrow)"');
 b+=rect(334,225,62,62,'#edf0e8',ink)+grid(343,234,2,2,23,()=>true);
-b+=path('M85 176h-8v207h8M449 58h-8v150h8M709 278h8v207h-8',ink);
+b+=path('M85 176h-8v207h8M449 58h-8v198h8M709 278h8v207h-8',ink);
 b+=path('M117 125h159M197 91v68M758 343v112M737 399h42',line,1);
-save('tiling','Bring a tile to the computation','Three fields represent matrix operands and output. Blue marks selected tiles, with a small local tile between the larger arrays. It illustrates reuse, not particular matrix dimensions or values.',b);
+save('tiling','Bring a tile to the computation','Three fields represent matrix operands and output. Blue marks selected tiles, with a small local tile between the larger arrays. The visible grids have compatible shapes: A is 8 by 8, B is 8 by 10, and C is 8 by 10. The selected two-term tiles illustrate reuse; no numerical values or hardware tile shape are prescribed.',b);
 
 // A source listing branches into an IR graph and becomes scheduled work.
 b=rect(64,110,172,323,'#eef0e8',ink)+repeat(23,r=>path(`M${79+(r%4===2?13:0)} ${128+r*12}h${85+(r*13)%47}`,r%6===0?blue:line,r%6===0?1.3:.7));
