@@ -1,6 +1,6 @@
 # Diagram coverage audit — September 16, 2026
 
-The rendered curriculum contains 130 named lessons. All contain a figure, diagram,
+At commit `31d8587`, the rendered curriculum contained 130 named lessons. All contained a figure, diagram,
 or visual lab. This pass adds 84 authored interactive schematics and the four-level
 system atlas. The shared pop-out control is available on 122 figures; the 3D labs
 retain their existing workbench expansion controls.

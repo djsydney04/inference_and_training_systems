@@ -69,7 +69,7 @@ partial[M, N] = zeros_in_PSUM(float32)
 for each K tile:
     s = load_stationary_tile_to_SBUF()
     v = load_moving_tile_to_SBUF()
-    partial += tensor_engine(s.T, v)
+    partial += engine_matmul(stationary=s, moving=v)  # computes s.T @ v
 result = copy_or_cast_to_store_buffer(partial)
 store_valid_output(result)`)}
 <p>The transpose must be accounted for: a caller may already supply that layout, or the implementation must create it. Merely renaming a buffer does not transpose its data. The Neuron tutorial builds executable kernels around the actual instruction, layout and tile limits; our pseudocode isolates ownership and accumulation.</p>

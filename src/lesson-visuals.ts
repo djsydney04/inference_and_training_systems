@@ -136,7 +136,7 @@ export function initializeFigurePopouts() {
       dialog.querySelector("[data-popout-title]")!.textContent=title;
       dialog.querySelector("[data-popout-body]")!.append(host);
       host.classList.add("is-popped-out");document.body.classList.add("figure-popout-open");
-      dialog.showModal();window.dispatchEvent(new Event("resize"));
+      dialog.showModal();dialog.scrollTop=0;window.dispatchEvent(new Event("resize"));
       (dialog.querySelector("[data-popout-close]") as HTMLButtonElement).focus();
     });
   });

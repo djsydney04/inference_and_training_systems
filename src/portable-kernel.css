@@ -2,7 +2,7 @@
 .portable-kernel-lab figcaption { display: block; padding: 24px; }
 .portable-kernel-lab figcaption > span, .portable-kernel-lab figcaption > strong { display: block; margin-bottom: 12px; }
 .portable-kernel-lab figcaption > strong { font: 500 24px/1.4 var(--serif); }
-.portable-kernel-lab figcaption p { font: 14px/1.65 var(--sans); max-width: 72ch; }
+.portable-kernel-lab figcaption p { font: 14px/1.65 var(--sans); max-width: 72ch; justify-self: start; }
 .pk-backends { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); padding-inline: 24px; }
 .pk-backends button { text-align: left; background: transparent; border: 0; border-bottom: 2px solid var(--rule); padding: 14px 10px; color: var(--ink); font: 500 14px/1.5 var(--sans); cursor: pointer; }
 .pk-backends button[aria-pressed=true] { border-color: var(--signal); color: var(--signal-dark); }

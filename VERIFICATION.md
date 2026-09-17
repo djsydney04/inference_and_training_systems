@@ -1,5 +1,21 @@
 # Verification record — textbook expansion
 
+## September 16, 2026 — programming across accelerators
+
+CUDA and profiling moved into Programming, with a separate kernel-programming
+path. Five new lessons compare an operation on H100, AMD MI300X, TPU v5p and
+Trainium2. See [the implementation and evidence record](docs/PORTABLE_KERNELS.md).
+
+The clean `b8d5cd3` snapshot passed all 90 tests and its production build. The
+C++17 CPU companion passed all five numerical cases under AddressSanitizer and
+UndefinedBehaviorSanitizer; maximum absolute error was about 3.76e-6. Browser
+checks covered backend and shape changes, tile edges, keyboard inspection,
+pop-outs, lesson navigation and 320/390px layouts.
+
+GPU compilation/execution and actual TPU/Trainium runs remain unverified. The
+CUDA/HIP companion is a scalar FP32 correctness baseline; the browser illustrates
+separate BF16 tensor-unit pipelines. TPU and NKI listings are labeled pseudocode.
+
 ## September 16, 2026 — simpler reading flow and missing steps
 
 Replaced the two sidebar modes and second fixed navigation bar with one chapter
