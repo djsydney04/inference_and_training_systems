@@ -20,15 +20,9 @@
 .playback-status::before { content: ""; display: inline-block; width: 5px; height: 5px; margin-right: 5px; background: currentColor; border-radius: 50%; }
 [data-playback-state="paused"] > .diagram-playback .playback-status { color: #626760; }
 .playback-kind { font: 12px "IBM Plex Sans", sans-serif; color: #626760; }
-.playback-controls label { margin-left: auto; display: flex; align-items: center; gap: 6px; font: 11px "IBM Plex Sans", sans-serif; }
-.diagram-playback select, .diagram-playback-settings select { font: 11px "IBM Plex Sans", sans-serif; color: #293c31; background: transparent; border: 1px solid #c8cec4; border-radius: 0; padding: 5px 4px; min-height: 30px; width: auto; }
 .diagram-playback .playback-caption { font: 12px/1.55 "IBM Plex Sans", sans-serif; margin: 7px 0 8px; min-height: 2lh; max-width: none; }
-.playback-progress { height: 2px; margin-inline: -12px; overflow: hidden; background: #dce1d7; }
-.playback-progress i { display: block; height: 100%; background: #2559d6; transform: scaleX(0); transform-origin: left; }
-[data-playback-state="playing"] > .diagram-playback .playback-progress i { transition: transform 250ms linear; }
 .diagram-playback-settings { border-top: 1px solid #d6d7ce; padding-top: 14px; margin-top: 18px; }
 .diagram-playback-settings > button { width: 100%; text-align: left; }
-.diagram-playback-settings label { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 10px; font-size: 11px; }
 .diagram-playback-settings p { font: 11px/1.5 "IBM Plex Sans", sans-serif; color: #626760; margin: 8px 0 0; }
 .walkthrough-focus { outline: 2px solid #2559d6; outline-offset: 2px; }
 svg .walkthrough-focus { outline: none; }
@@ -52,10 +46,9 @@ svg text.walkthrough-focus { fill: #173b99; font-weight: 600; }
   .playback-controls { gap: 7px; }
   .playback-kind { display: none; }
   .diagram-playback .playback-caption { min-height: 3lh; }
-  .playback-progress { margin-inline: -9px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  [data-diagram-playback] *, [data-diagram-playback] .playback-progress i { transition: none !important; animation: none !important; }
+  [data-diagram-playback] * { transition: none !important; animation: none !important; }
 }
 
 .diagram-playback { margin-block: 8px 12px; background: transparent; }

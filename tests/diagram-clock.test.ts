@@ -7,7 +7,6 @@ test("visible diagrams begin once, then give each frame a full reading interval"
   assert.equal(clock.tick(0, false), false);
   assert.equal(clock.tick(2000, true), true);
   assert.equal(clock.tick(5000, true), false);
-  assert.equal(clock.progress(5000), 0.5);
   assert.equal(clock.tick(8000, true), true);
 });
 
@@ -15,7 +14,6 @@ test("offscreen, paused and background time never accumulate steps", () => {
   const clock = new DiagramClock(6000);
   clock.tick(0, true);
   assert.equal(clock.tick(5000, false), false);
-  assert.equal(clock.progress(5000), 0);
   assert.equal(clock.tick(600000, false), false);
   assert.equal(clock.tick(600001, true), false);
   assert.equal(clock.tick(606000, true), false);
@@ -30,15 +28,11 @@ test("a delayed timer advances one frame without a catch-up burst", () => {
   assert.equal(clock.tick(606000, true), true);
 });
 
-test("changing pace starts a fresh interval and progress is bounded", () => {
+test("resetting a paused diagram gives its current step a full interval", () => {
   const clock = new DiagramClock();
   clock.tick(0, true);
-  clock.interval = 10000;
   clock.reset();
   assert.equal(clock.tick(3000, true), false);
-  assert.equal(clock.tick(9000, true), false);
-  assert.equal(clock.progress(9000), 0.6);
-  assert.equal(clock.progress(99999), 1);
-  assert.equal(clock.progress(0), 0);
-  assert.equal(clock.tick(13000, true), true);
+  assert.equal(clock.tick(8999, true), false);
+  assert.equal(clock.tick(9000, true), true);
 });

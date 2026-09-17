@@ -102,18 +102,16 @@ test("reduced motion starts paused and an explicit play opts in", async ({ page 
   await expect(figure).toHaveAttribute("data-playback-state", "paused");
 });
 
-test("global pause and reading pace persist across reloads", async ({ page }) => {
+test("global pause persists without pacing controls", async ({ page }) => {
   await start(page);
   await page.evaluate(() => {
     document.querySelector<HTMLButtonElement>("[data-playback-all]")!.click();
-    const pace = document.querySelector<HTMLSelectElement>("[data-playback-default-pace]")!;
-    pace.value = "10000";
-    pace.dispatchEvent(new Event("change", { bubbles: true }));
   });
   await page.reload();
   const figure = page.locator("#decoder-block");
   await expect(figure).toHaveAttribute("data-playback-state", "paused");
-  await expect(figure.locator("[data-playback-pace]")).toHaveValue("10000");
+  await expect(page.locator("[data-playback-pace], [data-playback-default-pace], .playback-progress")).toHaveCount(0);
+  await expect(page.locator(".diagram-playback select, .diagram-playback-settings select")).toHaveCount(0);
   expect(await page.locator('[data-playback-state="playing"]').count()).toBe(0);
 });
 
@@ -184,7 +182,6 @@ test("diagram controls and captions fit a narrow viewport", async ({ page }) => 
   await start(page, "decoder-block");
   const figure = page.locator("#decoder-block");
   await figure.locator(".diagram-playback").scrollIntoViewIfNeeded();
-  await figure.locator("[data-playback-pace]").selectOption("3000");
   await page.clock.runFor(10000);
   const overflow = await page.evaluate(() => ({ page: document.documentElement.scrollWidth > innerWidth + 1,
     controls: [...document.querySelectorAll<HTMLElement>('.chapter:not([hidden]) .playback-controls')].some(el => el.scrollWidth > el.clientWidth + 1) }));

@@ -57,7 +57,7 @@ export function refreshFigureLayouts() {
     }
     if (toolbar) {
       toolbar.append(...controls);
-      // Reading pace first, diagram-specific options next, expansion at the end.
+      // Playback first, diagram-specific options next, expansion at the end.
       for (const selector of [".diagram-playback", ".lv-toolbar", ".three-controls", ".transformer-controls", "button", ".figure-tools"]) {
         const control = toolbar.querySelector<HTMLElement>(`:scope > ${selector}`);
         if (control) toolbar.append(control);

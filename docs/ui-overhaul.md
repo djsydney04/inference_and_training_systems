@@ -48,8 +48,9 @@ accessible expansion behavior; it also refreshes after lazy scene initialization
 
 Motion is reserved for execution traces and stateful examples. Component maps,
 architecture drawings, and parameter comparisons stay still,
-with their manual controls and inspectors intact. Play/Pause and pace controls
-appear only on temporal examples. The prefill/decode diagram no longer pulses
+with their manual controls and inspectors intact. Only temporal examples have
+Play/Pause controls; speed selectors and countdown bars are removed from both
+the figures and sidebar. The prefill/decode diagram no longer pulses
 decoratively. See `docs/DIAGRAM_PLAYBACK.md` for the authoring rule and behavior.
 
 The edition footer appears on both the landing page and the reader. Its version

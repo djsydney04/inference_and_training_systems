@@ -2,7 +2,7 @@
 export class DiagramClock {
   private due: number | null = null;
   private started = false;
-  interval: number;
+  private readonly interval: number;
   constructor(interval = 6000) { this.interval = interval; }
 
   reset() { this.due = null; }
@@ -17,9 +17,5 @@ export class DiagramClock {
     if (now < this.due) return false;
     this.due = now + this.interval;
     return true;
-  }
-
-  progress(now: number): number {
-    return this.due === null ? 0 : Math.max(0, Math.min(1, 1 - (this.due - now) / this.interval));
   }
 }

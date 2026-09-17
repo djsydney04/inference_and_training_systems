@@ -19,10 +19,6 @@
 .atlas-ui .figure-layout .figure-toolbar .diagram-playback { flex: 0 1 auto; min-width: 0; margin: 0; padding: 0; border: 0; background: transparent; }
 .figure-toolbar .playback-controls { gap: 10px; }
 .figure-toolbar .playback-status, .figure-toolbar .playback-kind { display: none; }
-.figure-toolbar .playback-controls label { margin-left: 0; font-size: 10px; }
-.figure-toolbar .playback-controls select { min-height: 36px; padding: 6px; border-color: var(--rule); }
-.figure-toolbar .playback-progress { height: 1px; margin: 5px 0 -6px; background: transparent; }
-.figure-layout[data-playback-state="playing"] > .figure-toolbar .playback-progress i { transition: transform 250ms linear; }
 .atlas-ui .figure-layout.is-popped-out .figure-toolbar .figure-tools > button { display: none; }
 
 .atlas-ui .figure-layout > .lv-canvas,
@@ -83,9 +79,6 @@
   .atlas-ui .book-study.figure-layout .figure-caption > .figure-toolbar { grid-column: 2; grid-row: 1 / 3; }
   .atlas-ui .figure-layout .numerical-canvas { padding: 26px 18px; }
   .atlas-ui .figure-layout .scene-inspector { padding: 26px 18px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .figure-layout .playback-progress i { transition: none !important; }
 }
 @media print {
   .figure-toolbar { display: none !important; }

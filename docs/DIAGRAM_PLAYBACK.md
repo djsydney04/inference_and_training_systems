@@ -18,9 +18,10 @@ Decorative token pulsing is removed from the prefill/decode comparison.
 
 ## Playback behavior
 
-Eligible examples play when their drawing is visible. They have Play/Pause and
-3-, 6-, or 10-second pacing. Sidebar animation and default-pace preferences persist
-across reloads; individual pauses and pace overrides last for the session.
+Eligible examples play when their drawing is visible, with a single Play/Pause
+control and a fixed interval. There are no speed selectors or countdown bars.
+The sidebar animation preference persists across reloads; individual pauses last
+for the session.
 
 Selecting a component, changing a setting, using keyboard controls, or manipulating
 a scene pauses its walkthrough. Play resumes from that state. Expanded figures
