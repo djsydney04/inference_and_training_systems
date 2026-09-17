@@ -8,9 +8,13 @@ The site shows the new version when the merged source is built and deployed.
 ## What updates together
 
 The bot updates `package.json`, both root versions in `package-lock.json`,
-`.release-please-manifest.json`, and `CHANGELOG.md` in the same PR. The footer and
-in-page release notes read the package version and latest changelog entry,
-including its date. There is no separate date or version to maintain in TypeScript.
+`.release-please-manifest.json`, and `CHANGELOG.md` in the same PR. The footer
+reads the package version and latest changelog entry, including its date. The changelog at the bottom of the landing page renders the complete
+`CHANGELOG.md` history with its categories and GitHub commit links. The latest
+release is expanded; older releases can be opened individually. Every page links
+to it from the footer. Both are bundled at build time, so a release appears on
+the site when its source is deployed; no browser API request or token is needed.
+There is no separate date or version to maintain in TypeScript.
 
 `npm run check:release` rejects mismatches, missing release notes and invalid
 dates. It also runs automatically before every production build. Optionally pass

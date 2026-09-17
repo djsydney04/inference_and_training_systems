@@ -89,16 +89,26 @@ test("2D numerical workbenches preserve calculations and keyboard selection", as
   await expect(ring.locator(".ring-chunk.is-complete")).toHaveCount(0);
 });
 
-test("edition footer leads to the matching release notes", async ({ page }) => {
+test("edition footer leads to the GitHub changelog and older releases", async ({ page }) => {
   await page.goto("/");
   const footer = page.locator(".almanac-footer");
   await expect(footer).toBeVisible();
   const edition = await footer.locator(".footer-edition").textContent();
   const version = edition!.match(/v(\d+\.\d+\.\d+)/)![1];
-  await footer.getByRole("link", { name: "Release notes" }).click();
-  await expect(page.locator("#release-notes")).toHaveAttribute("open", "");
-  await expect(page.locator("#release-notes summary")).toContainText(version);
-  await expect(page.locator("#release-notes time")).toHaveAttribute("datetime", await footer.locator("time").getAttribute("datetime") ?? "");
+  await footer.getByRole("link", { name: "Changelog" }).click();
+  const changelog = page.locator("#release-notes");
+  await expect(changelog.getByRole("heading", { name: "Changelog", exact: true })).toBeVisible();
+  const latest = changelog.locator(".changelog-release").first();
+  await expect(latest).toHaveAttribute("open", "");
+  await expect(latest.locator("summary")).toContainText(version);
+  await expect(latest.locator("time")).toHaveAttribute("datetime", await footer.locator("time").getAttribute("datetime") ?? "");
+  await expect(changelog.getByRole("link", { name: "View on GitHub" })).toHaveAttribute("href", /github\.com\/djsydney04\/inference_and_training_systems\/blob\/main\/CHANGELOG\.md$/);
+  const older = changelog.locator(".changelog-release").nth(1);
+  await expect(older).not.toHaveAttribute("open", "");
+  await older.locator("summary").focus();
+  await page.keyboard.press("Enter");
+  await expect(older).toHaveAttribute("open", "");
+  await expect(older.locator("li").first()).toBeVisible();
   await footer.getByRole("link", { name: "Content changes", exact: true }).click();
   const history = page.locator("#content-changes");
   await expect(history).toHaveAttribute("open", "");
