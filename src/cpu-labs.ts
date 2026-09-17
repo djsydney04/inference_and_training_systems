@@ -78,7 +78,7 @@ export function initializeCpuLabs() {
     drawing+=text(24,332,'T: taken · N: not taken · ✓ correct · × incorrect','cpu-small');
     root.querySelector('[data-cpu-drawing]')!.innerHTML=svg('cpu-branch-chart',358,'Two-bit saturating branch predictor and resolved outcomes',drawing);
     const misses=reached.filter(e=>!e.correct).length;
-    root.querySelector('[data-cpu-result]')!.innerHTML=`<strong>${step} / ${trace.length} resolved · ${misses} mispredictions</strong><span>${last?`Predicted ${last.predicted?'taken':'not taken'}; actual ${last.taken?'taken':'not taken'}. State ${last.before} → ${last.after}.`:'Initially weakly not taken. Predict, resolve, then update.'}</span>`;
+    root.querySelector('[data-cpu-result]')!.innerHTML=`<strong>${step} / ${trace.length} resolved · ${misses} ${misses===1?'misprediction':'mispredictions'}</strong><span>${last?`Predicted ${last.predicted?'taken':'not taken'}; actual ${last.taken?'taken':'not taken'}. State ${last.before} → ${last.after}.`:'Initially weakly not taken. Predict, resolve, then update.'}</span>`;
     root.querySelector('[data-cpu-ledger]')!.innerHTML=table(['Branch','Before','Prediction','Outcome','After','Correct'],reached.map((e,i)=>[i+1,e.before,e.predicted?'T':'N',e.taken?'T':'N',e.after,e.correct?'yes':'no']),'Every counter update; no hidden history');
     return trace.length;
   });
