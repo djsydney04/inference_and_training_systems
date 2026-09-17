@@ -78,6 +78,11 @@ and results. Move existing nodes rather than recreating them so state and event
 handlers survive layout changes and expansion. Refresh after lazy workbench
 initialization without adding duplicate headings or disclosures.
 
+Expanded figures use one numbered heading in the dialog. Keep the original
+caption accessible and restore it when closing; embedded figures retain their
+own headings. Introductory figure notes use a normal reading column, separate
+from the label-and-answer grid used by worked examples.
+
 Choose the representation that makes the relationship easiest to read. Matrix
 values, reduction ownership, algorithm stages and hardware use 2D. Prefer an
 accurate front elevation, top view or architectural block diagram to a decorative
