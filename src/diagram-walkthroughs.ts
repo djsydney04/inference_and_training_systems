@@ -101,6 +101,8 @@ export const diagramHostSelector = "figure, .textbook-lab, .three-lab, .architec
 export function diagramWalkthrough(root: HTMLElement): DiagramWalkthrough | null {
   // The entrance drawing is a quiet, manually explored preview.
   if (root.closest(".atlas-landing")) return null;
+  // Catalog studies are captioned external artwork, separate from live diagrams.
+  if (root.matches("figure.book-study")) return null;
   // A parent figure can contain an independently owned lesson schematic.
   if (root.matches(".lesson-visual")) return selections(root, "[data-lv-node]");
   if (root.matches("[data-nn-inspector]")) return selections(root, "[data-nn-part]");

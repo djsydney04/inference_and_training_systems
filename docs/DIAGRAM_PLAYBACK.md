@@ -100,3 +100,18 @@ to measure training, device or network time. The coverage test checks every
 adapter through 110 advances, including repeated resets and valid input bounds.
 See the [frameworks audit](FRAMEWORKS_AUDIT_2026-09-16.md) for the numerical
 and actual CPU-runtime checks, separate from playback behavior.
+
+The incoming `figure.book-study` illustrations are a separate static form. The
+coverage audit requires a captioned external study image with alt text and no
+embedded simulation controls. It allows the reader's figure tools, while
+rejecting inline SVG mechanisms, canvases and live labs under that exception.
+Every teaching diagram outside this narrowly defined image form retains its
+walkthrough requirement.
+
+Final integrated verification: 173 Node tests, TypeScript, production build and
+release-metadata checks pass. A stable four-width playback run passed 36 cases;
+the four static-study coverage cases passed on the focused rerun after the
+classification fix. All 12 production layout/numerical/footer cases also pass.
+Inventory: 190 direct players, one independently owned child-diagram family and
+29 static catalog studies. Manual reset/resume checks confirm semantic captions
+stay aligned with the simulation state.

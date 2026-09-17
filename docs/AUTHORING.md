@@ -109,6 +109,13 @@ reset semantics, and never navigate or open dialogs during playback. See
 rules. Run `npm run test:animations -- --project=desktop --project=mobile` when
 changing diagrams; its coverage audit catches missing walkthroughs.
 
+Catalog artwork uses the separate `figure.book-study` form: a captioned external
+image with meaningful alt text. These conceptual studies remain static. The
+coverage audit validates their image/caption and rejects embedded simulation
+controls. Reserve this form for study artwork; inline mechanism diagrams and
+live labs still require explicit walkthroughs. Playback pace is presentation
+time, not device or network time.
+
 Run `npm test` and `npm run build`. The label tests check chapter declarations
 against the curriculum, duplicate authored section IDs, missing section titles,
 stable links under reordering, and legacy caption normalization. They scan the
