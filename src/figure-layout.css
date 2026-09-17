@@ -135,8 +135,8 @@
 .atlas-ui .figure-layout .chip-support > details { border: 0; }
 .chip-support > details[open] { flex-basis: 100%; order: 1; }
 /* Subtle surfaces keep boundaries legible without filling the figure with boxes. */
-.atlas-ui .figure-layout .lv-node > .lv-node-body { fill: #fafbf8; }
-.atlas-ui .figure-layout .lv-node.is-selected > .lv-node-body { fill: #edf2fc; }
+.atlas-ui .figure-layout .lv-node > .lv-node-body { fill: var(--lv-node-fill, #fafbf8); }
+.atlas-ui .figure-layout .lv-node.is-selected > .lv-node-body { fill: var(--lv-node-selected, #edf2fc); }
 .atlas-ui .figure-layout .chip-node-body { fill: #fafbf8; }
 .atlas-ui .figure-layout .chip-node[aria-pressed=true] .chip-node-body { fill: #edf2fc; }
 

@@ -77,3 +77,33 @@
 /* Selected matrices keep their per-value dot-product highlights distinct. */
 .atlas-ui .lesson-visual .lv-node > .lv-value-cell { fill: #f8faf6; stroke: #d1d8ce; stroke-width: .8; }
 .atlas-ui .lesson-visual .lv-node > .lv-value-cell.is-dot-product { fill: #dce7f9; stroke: #97afd5; }
+
+/* Subject-specific plates use the data marks as their selectable surface. */
+.atlas-ui .figure-layout .lv-subject-node > .lv-node-body { fill: transparent; stroke: transparent; }
+.atlas-ui .figure-layout .lv-subject-node:hover > .lv-node-body { fill: #edf0e966; }
+.atlas-ui .figure-layout .lv-nested-node > .lv-node-body { fill: transparent; stroke: var(--rule-dark); }
+.atlas-ui .figure-layout .lv-nested-node.is-selected > .lv-node-body { stroke: var(--signal); stroke-width: 1.8; }
+.lv-art-cell { fill: #f9faf7; stroke: #b8c2b8; stroke-width: 1; }
+.lv-art-active { fill: #dce7f9; stroke: #7897cc; }
+.lv-art-mask { fill: #eceee9; stroke: #abb4aa; stroke-dasharray: 3 3; }
+.lv-art-label { fill: var(--graphite); font: 13px var(--sans); }
+.lv-art-value { fill: var(--ink); font: 13px var(--mono); }
+.lv-art-equation { fill: var(--signal-dark); font: 22px var(--mono); }
+.lv-art-line { fill: none; stroke: var(--rule-dark); stroke-width: 1.2; }
+.lv-art-divider { fill: none; stroke: var(--rule); stroke-dasharray: 4 6; }
+.lv-subject-node.is-selected .lv-art-active { fill: #cbdcf7; stroke: var(--signal); }
+.atlas-ui .figure-layout .lv-compare .lv-node > .lv-node-body { fill: transparent; stroke: none; }
+.lv-compare .lv-node .lv-label { text-decoration: underline; text-decoration-color: #bec7bd; text-underline-offset: 12px; }
+.lv-compare .lv-node.is-selected .lv-label { fill: var(--signal-dark); text-decoration-color: var(--signal); }
+.lv-cycle .lv-node > .lv-node-body { rx: 38px; }
+.atlas-ui .figure-layout .lv-notes > .lv-reference { display: block; max-width: 74ch; padding: 0 0 20px; }
+.atlas-ui .figure-layout .lv-reference > p { margin: 0 0 12px; font: 13px/1.75 var(--sans); }
+.atlas-ui .figure-layout .lv-notes > .lv-selection { display: block; margin: 0; padding: 8px 0 20px; min-height: 0; border: 0; }
+.atlas-ui .figure-layout .lv-notes > .lv-selection[hidden] { display: none; }
+.atlas-ui .figure-layout .lv-notes > .lv-selection strong { font: 500 14px/1.5 var(--sans); }
+.atlas-ui .figure-layout .lv-notes > .lv-selection p { font: 14px/1.75 var(--sans); margin: 8px 0 0; }
+.lv-subject, .lv-compare { --lv-node-fill: transparent; --lv-node-selected: transparent; }
+.lv-node.lv-subject-node > .lv-art-cell { fill: #f9faf7; stroke: #b8c2b8; stroke-width: 1; }
+.lv-node.lv-subject-node > .lv-art-active { fill: #dce7f9; stroke: #7897cc; }
+.lv-node.lv-subject-node > .lv-art-mask { fill: #eceee9; stroke: #abb4aa; stroke-dasharray: 3 3; }
+.lv-subject-node.is-selected > .lv-label { fill: var(--signal-dark); }

@@ -1,3 +1,4 @@
+import { subjectNotes } from "./lesson-subject-diagrams";
 import { lessonDiagram } from "./lesson-diagram-renderer";
 import "./lesson-visuals.css";
 import type { LessonVisual } from "./lesson-visual-data";
@@ -7,7 +8,7 @@ const escape = (value: string) => value.replace(/[&<>"']/g, char => ({"&":"&amp;
 const diagram = lessonDiagram;
 
 function markup(topic: LessonVisual) {
-  return `<figure class="lesson-visual" data-lv-topic="${topic.id}" id="${topic.id}-visual"><figcaption><span>Interactive schematic</span><strong>${escape(topic.title)}</strong><p>${escape(topic.relationship)}. Select a part to inspect its role.</p></figcaption><div class="lv-toolbar"><button type="button" data-lv-depth aria-pressed="false">Show annotations</button><span>${topic.kind==="timeline"?"Dependency order · widths are not durations":"Conceptual relationships · not physical scale"}</span></div><div class="lv-canvas" tabindex="0" aria-label="Interactive diagram; scroll horizontally on narrow screens">${diagram(topic)}</div><div class="lv-selection" aria-live="polite"><strong>${escape(topic.steps[0].label)}</strong><p>${escape(topic.steps[0].note)}</p></div><details class="lv-notes"><summary>Worked note and assumptions</summary><div><h4>Keep this true</h4><p>${escape(topic.invariant)}</p><h4>Work through it</h4><p>${escape(topic.example)}</p></div></details></figure>`;
+  return `<figure class="lesson-visual" data-lv-topic="${topic.id}" id="${topic.id}-visual"><figcaption><span>Interactive schematic</span><strong>${escape(topic.title)}</strong></figcaption><div class="lv-toolbar"><button type="button" data-lv-depth aria-pressed="false" aria-label="Show annotations">Labels</button></div><div class="lv-canvas" tabindex="0" aria-label="Interactive diagram; scroll horizontally on narrow screens">${diagram(topic)}</div><details class="lv-notes"><summary>Notes</summary><div class="lv-selection" aria-live="polite" hidden><strong>${escape(topic.steps[0].label)}</strong><p>${escape(topic.steps[0].note)}</p></div><div class="lv-reference"><p>${escape(subjectNotes[topic.id] ?? topic.relationship)}</p><p>${escape(topic.invariant)}</p><p>${escape(topic.example)}</p></div></details></figure>`;
 }
 
 /** Assemble before reader numbering and search indexing. */
@@ -32,6 +33,8 @@ export function initializeLessonVisuals() {
     };
     const select=(node: Element)=>{
       selected=Number(node.getAttribute("data-lv-node"));
+      figure.querySelector<HTMLElement>(".lv-selection")!.hidden=false;
+      figure.querySelector<HTMLDetailsElement>(".lv-notes")!.open=true;
       canvas.querySelectorAll("[data-lv-node]").forEach(el=>{
         el.setAttribute("aria-pressed",String(el===node));
         el.classList.toggle("is-selected",el===node);
@@ -47,7 +50,7 @@ export function initializeLessonVisuals() {
       detailed=!detailed;
       const button=event.currentTarget as HTMLButtonElement;
       button.setAttribute("aria-pressed",String(detailed));
-      button.textContent=detailed?"Hide annotations":"Show annotations";
+      button.setAttribute("aria-label",detailed?"Hide annotations":"Show annotations");
       render();
     });
   });
@@ -87,7 +90,7 @@ export function initializeFigurePopouts() {
     const caption=host.querySelector("figcaption");
     const title=caption?.querySelector("strong")?.textContent ?? host.querySelector("h3,h4")?.textContent ?? "Lesson diagram";
     const tools=document.createElement("div");tools.className="figure-tools";
-    const button=document.createElement("button");button.type="button";button.textContent="Open figure";button.setAttribute("aria-haspopup","dialog");
+    const button=document.createElement("button");button.type="button";button.textContent="Expand";button.setAttribute("aria-label","Open figure");button.setAttribute("aria-haspopup","dialog");
     tools.append(button);
     const note=caption?.querySelector("p")?.textContent;
     const boundary=host.querySelector(".nn-boundary, .figure-boundary, .omission")?.textContent;

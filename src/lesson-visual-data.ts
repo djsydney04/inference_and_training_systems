@@ -1,3 +1,4 @@
+import { figureTitles } from "./lesson-visual-titles.ts";
 export type VisualKind = "flow" | "fork" | "cycle" | "memory" | "matrix" | "timeline" | "hierarchy" | "compare";
 export type VisualStep = { label: string; detail: string; note: string };
 export type LessonVisual = {
@@ -5,7 +6,7 @@ export type LessonVisual = {
   relationship: string; invariant: string; example: string;
 };
 export const s = (label: string, detail: string, note: string): VisualStep => ({ label, detail, note });
-export const v = (id: string, kind: VisualKind, title: string, relationship: string, invariant: string, example: string, ...steps: VisualStep[]): LessonVisual => ({ id, kind, title, relationship, invariant, example, steps });
+export const v = (id: string, kind: VisualKind, title: string, relationship: string, invariant: string, example: string, ...steps: VisualStep[]): LessonVisual => ({ id, kind, title: figureTitles[id] ?? title, relationship, invariant, example, steps });
 
 /** Authored conceptual schematics. Geometry shows relationships, not measured timing. */
 export const lessonVisuals: LessonVisual[] = [

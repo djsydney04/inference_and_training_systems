@@ -72,11 +72,11 @@ export function refreshFigureLayouts() {
     if (copy.length || notes) {
       if (!notes) {
         notes = document.createElement("details");
-        notes.innerHTML = "<summary>Figure notes</summary>";
+        notes.innerHTML = "<summary>Notes</summary>";
         root.append(notes);
       }
       notes.classList.add("figure-notes");
-      notes.querySelector("summary")!.textContent = "Figure notes";
+      notes.querySelector("summary")!.textContent = "Notes";
       let body = notes.querySelector<HTMLElement>(":scope > .figure-notes-copy");
       if (!body) {
         body = document.createElement("div");
@@ -125,7 +125,7 @@ export function refreshFigureLayouts() {
       [".sb-inspector", ".sb-component-title", "[data-system-part]"],
     ]) {
       const body = root.querySelector<HTMLElement>(selector);
-      if (body) foldInspection(body, title, trigger, root);
+      if (body && !body.closest("details")) foldInspection(body, title, trigger, root);
     }
     root.querySelectorAll<HTMLElement>(".chip-view").forEach(panel => {
       const body = panel.querySelector<HTMLElement>(".chip-inspector");
