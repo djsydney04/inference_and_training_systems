@@ -3,7 +3,7 @@ body.atlas-ui { --paper: #f5f5f1; --paper-deep: #e9eae5; --ink: #151817; --graph
 .atlas-ui .chapter, .atlas-ui .atlas-home, .atlas-ui .atlas-gallery { padding-top: 56px; }
 .atlas-ui .chapter-title { margin-bottom: 38px; }
 .atlas-ui .chapter h2 { font-weight: 500; letter-spacing: -.045em; }
-.atlas-ui .chapter-index { background: #eceedf00; border-right-color: var(--rule); }
+.atlas-ui .chapter-index { background: transparent; border-right-color: var(--rule); }
 .atlas-ui .index-inner { padding-top: 32px; }
 .atlas-ui .sidebar-head { padding-bottom: 28px; }
 .atlas-ui .sidebar-head .wordmark > span:last-child { font-size: 21px; letter-spacing: -.04em; }
@@ -46,11 +46,12 @@ body[data-atlas-page="welcome"] { background: #0e1110; }
 .landing-machine .plate-svg > rect { opacity: .13; }
 .landing-machine .plate-svg > g:last-child { fill: #c2cec6; }
 .landing-machine .plate-svg > g:nth-last-child(2) { stroke: #74867c; }
+.landing-machine .machine-plate figcaption { display: block; }
 .landing-machine .plate-layers { justify-content: flex-start; gap: 4px; margin-top: 22px; border-top: 1px solid var(--landing-rule); padding-top: 16px; }
 .landing-machine .plate-layers button { color: #b6c1b8; padding: 8px 12px; font-size: 11px; }
 .landing-machine .plate-layers button[aria-pressed="true"] { background: #263029; color: #f4f6f0; border-color: #627567; }
 .landing-machine .plate-layers button:first-child i { background: #869f93; }
-.landing-machine .plate-description { text-align: left; margin: 15px 0 0; max-width: none; color: #a3b2a7; font-size: 11px; min-height: 36px; }
+.landing-machine .machine-plate .plate-description { text-align: left; margin: 15px 0 0; max-width: none; color: #a3b2a7; font-size: 11px; min-height: 36px; }
 .landing-machine .machine-plate small { text-align: left; color: #7e8e82; }
 .landing-caption { grid-row: 4; border-top: 1px solid var(--landing-rule); border-bottom: 0; color: #939f95; padding: 23px 0; font-size: 11px; }
 .landing-caption a { color: #e2e8df; }

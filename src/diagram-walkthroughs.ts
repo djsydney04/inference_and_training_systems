@@ -87,6 +87,8 @@ function staticArchitecture(root: HTMLElement): DiagramWalkthrough {
 export const diagramHostSelector = "figure, .textbook-lab, .three-lab, .architecture-figure, .wide-figure, [data-spec-lab]";
 
 export function diagramWalkthrough(root: HTMLElement): DiagramWalkthrough | null {
+  // The entrance drawing is a quiet, manually explored preview.
+  if (root.closest(".atlas-landing")) return null;
   // A parent figure can contain an independently owned lesson schematic.
   if (root.matches(".lesson-visual")) return selections(root, "[data-lv-node]");
   if (root.matches("[data-nn-inspector]")) return selections(root, "[data-nn-part]");

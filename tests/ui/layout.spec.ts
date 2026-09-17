@@ -49,12 +49,14 @@ test("chapter layouts and schematic labels fit their reading surfaces", async ({
 test("2D numerical workbenches preserve calculations and keyboard selection", async ({ page }) => {
   await page.goto("/#tiled-matmul");
   const matmul = page.locator("#matmul-workbench");
+  await matmul.locator("[data-matmul-reset]").click();
   await expect(matmul.locator("canvas")).toHaveCount(0);
   const selected = matmul.locator('[data-output-cell="0,1"]');
   await selected.focus();
   await page.keyboard.press("Enter");
   await expect(selected).toHaveAttribute("aria-pressed", "true");
   await expect(selected).toBeFocused();
+  await expect(matmul).toHaveAttribute("data-playback-state", "paused");
   const next = matmul.locator("[data-matmul-next]");
   for (let step = 0; step < 13; step++) await next.click();
   await expect(next).toBeDisabled();
@@ -66,11 +68,13 @@ test("2D numerical workbenches preserve calculations and keyboard selection", as
 
   await navigate(page, "ring-allreduce");
   const ring = page.locator("#ring-workbench");
+  await ring.locator("[data-ring-reset]").click();
   await expect(ring.locator("canvas")).toHaveCount(0);
   await ring.locator('[data-rank="2"]').focus();
   await page.keyboard.press("Enter");
   await expect(ring.locator('[data-rank="2"]')).toHaveAttribute("aria-pressed", "true");
   await expect(ring.locator('[data-rank="2"]')).toBeFocused();
+  await expect(ring).toHaveAttribute("data-playback-state", "paused");
   for (let step = 0; step < 6; step++) await ring.locator("[data-ring-next]").click();
   await expect(ring.locator(".ring-chunk.is-complete")).toHaveCount(16);
   await expect(ring.locator("[data-ring-next]")).toBeDisabled();

@@ -18,7 +18,6 @@ body[data-atlas-page="welcome"] .page-shell { display: block; max-width: none; }
 .atlas-landing { max-width: 1440px; margin: 0 auto; padding: 0 clamp(24px, 6vw, 88px); font-family: var(--sans); }
 .landing-cover { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: center; column-gap: 36px; padding-top: 38px; }
 .landing-identity { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; margin: 0 0 50px; font-size: 13px; font-weight: 500; }
-.landing-identity > span { font-size: 24px; color: var(--signal-dark); line-height: 1; }
 .landing-cover h1 { grid-column: 1 / -1; margin: 0; font: 500 clamp(44px, 6.4vw, 88px)/1.02 var(--sans); letter-spacing: -.055em; }
 .landing-introduction { align-self: center; padding: 18px 0 36px; }
 .landing-introduction > p { max-width: 32ch; font-size: 19px; line-height: 1.65; color: var(--graphite); margin: 0 0 29px; }

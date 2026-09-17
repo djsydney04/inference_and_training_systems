@@ -13,5 +13,6 @@ export default defineConfig({
     { name: "mobile", use: { viewport: { width: 390, height: 844 } } },
     { name: "narrow", use: { viewport: { width: 320, height: 740 } } },
   ],
-  webServer: { command: "npm run dev -- --host 127.0.0.1 --port 4195 --strictPort", url: "http://127.0.0.1:4195", reuseExistingServer: !process.env.CI },
+  // An isolated production build avoids live-reload changes from other agents.
+  webServer: { command: "npm run build -- --outDir output/ui-preview && npm run preview -- --outDir output/ui-preview --host 127.0.0.1 --port 4195 --strictPort", url: "http://127.0.0.1:4195", reuseExistingServer: false },
 });

@@ -5,6 +5,7 @@ dist/
 .playwright-cli/
 output/playwright/
 output/ui-lint/
+output/ui-preview/
 playwright-report/
 *.log
 __pycache__/
