@@ -39,6 +39,7 @@ automation changes are recorded separately in CHANGELOG.md.
 
 ### Corrected
 
+- The accelerator package in the [course guide](https://inference-and-training-systems.vercel.app/#top) now anchors “Memory stacks” to a memory stack and “Interconnect” to the blue connection traces. The shared landing-page drawing uses the same corrected callouts.
 - [Autodiff](https://inference-and-training-systems.vercel.app/#autodiff) explicitly uses half squared error so the stated gradient matches the objective. Lesson schematics remove unsupported storage-cell counts, fixed tile shapes and misleading branch or cycle arrows.
 
 ## 0.3.0 (2026-09-17)
