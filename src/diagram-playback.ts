@@ -70,8 +70,8 @@ function traceIncoming(root: HTMLElement) {
 }
 
 function revealSelected(root: HTMLElement) {
-  const selected = root.querySelector<SVGGraphicsElement>(".nn-node[aria-pressed=true], .nn-node.walkthrough-focus, .lv-node[aria-pressed=true], .sb-node[aria-pressed=true], .architecture-scroll rect.walkthrough-focus");
-  const scroller = selected?.closest<HTMLElement>(".nn-diagram-scroll, .lv-canvas, .sb-canvas, .architecture-scroll");
+  const selected = root.querySelector<SVGGraphicsElement>(".nn-node[aria-pressed=true], .nn-node.walkthrough-focus, .lv-node[aria-pressed=true], .sb-node[aria-pressed=true], .architecture-scroll rect.walkthrough-focus, [data-hd-part][aria-pressed=true]");
+  const scroller = selected?.closest<HTMLElement>(".nn-diagram-scroll, .lv-canvas, .sb-canvas, .architecture-scroll, .hd-canvas");
   if (!selected || !scroller || scroller.scrollWidth <= scroller.clientWidth) return;
   const part = selected.getBoundingClientRect(), area = scroller.getBoundingClientRect();
   if (part.left >= area.left + 8 && part.right <= area.right - 8) return;
@@ -88,7 +88,7 @@ const observer = new IntersectionObserver(entries => {
   });
 });
 
-/** Called again once the lazily imported 3D workbenches have installed their stages. */
+/** Register authored walkthroughs; safe to call after inserting additional figures. */
 export function refreshDiagramPlayback() {
   document.querySelectorAll<HTMLElement>(diagramHostSelector).forEach(root => {
     if (players.has(root) || root.closest(".atlas-gallery") || root.querySelector("[data-figure-open]")) return;
@@ -140,7 +140,7 @@ export function refreshDiagramPlayback() {
 function available(player: Player, modal: HTMLDialogElement | undefined) {
   if (!playing(player) || !player.intersecting || document.hidden || (modal && !modal.contains(player.root))) return false;
   if (player.root.closest("[hidden], [inert], details:not([open])")) return false;
-  const visual = player.root.querySelector<HTMLElement>("[data-chip-panel]:not([hidden]) .chip-canvas, .three-stage, .lv-canvas, .nn-diagram-scroll, .nn-whole, .sb-canvas, .architecture-scroll, canvas") ?? player.root;
+  const visual = player.root.querySelector<HTMLElement>("[data-chip-panel]:not([hidden]) .chip-canvas, .three-stage, .lv-canvas, .nn-diagram-scroll, .nn-whole, .sb-canvas, .architecture-scroll, .hd-canvas, canvas") ?? player.root;
   const box = visual.getBoundingClientRect();
   return box.width > 0 && box.height > 0 && box.bottom > 40 && box.top < window.innerHeight - 40;
 }

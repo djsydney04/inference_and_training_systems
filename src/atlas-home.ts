@@ -181,7 +181,7 @@ export const galleryItems = [
     title: "Inside the GPU",
     scope: "Package → SM → operand",
     copy: "Inspect execution partitions, register banks and staged matrix operands.",
-    type: "3D workbench",
+    type: "Hardware drawing",
   },
   {
     kind: "rack",
@@ -197,7 +197,7 @@ export const galleryItems = [
     title: "A rack is a network",
     scope: "Tray → switch → fabric",
     copy: "Connect compute, communication, power and cooling at rack scale.",
-    type: "3D workbench",
+    type: "Hardware drawing",
   },
   {
     kind: "lpu",
@@ -205,7 +205,7 @@ export const galleryItems = [
     title: "Scheduled tensor streams",
     scope: "SRAM → matrix → vector",
     copy: "Step through the compiler-owned path of an activation tile.",
-    type: "3D workbench",
+    type: "Hardware drawing",
   },
   {
     kind: "attention",

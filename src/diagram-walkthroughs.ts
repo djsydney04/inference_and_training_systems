@@ -124,6 +124,18 @@ export function diagramWalkthrough(root: HTMLElement): DiagramWalkthrough | null
     }
     return root.querySelector("[data-chip-panel]:not([hidden]) [data-chip-status]")!.textContent!;
   } };
+  if (root.matches(".hardware-drawing")) return { kind: "flow", advance() {
+    let nodes = all<SVGElement>(root, "[data-hd-part]").filter((node, i, list) => list.findIndex(n => n.dataset.hdPart === node.dataset.hdPart) === i);
+    let next = nodes.findIndex(node => node.getAttribute("aria-pressed") === "true") + 1;
+    if (next >= nodes.length) {
+      const tabs = all(root, "[data-hd-view]");
+      click(tabs[(tabs.findIndex(t => t.getAttribute("aria-pressed") === "true") + 1) % tabs.length]);
+      nodes = all<SVGElement>(root, "[data-hd-part]").filter((node, i, list) => list.findIndex(n => n.dataset.hdPart === node.dataset.hdPart) === i);
+      next = 0;
+    }
+    click(nodes[next]);
+    return `${next + 1}/${nodes.length} · ${root.querySelector(".hd-inspector h4")!.textContent}`;
+  } };
   if (root.matches(".system-buildout")) {
     let part = -1;
     return { kind: "flow", advance() {
