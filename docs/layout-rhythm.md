@@ -55,8 +55,19 @@ owned by their existing modules.
   `prefers-reduced-motion: no-preference`.
 - Rebased onto the shared illustrated-book work and retained its original
   landing and chapter illustrations.
-- Production build and 96 unit tests passed. Browser inspection covered desktop
+- Production build, release metadata check, and 101 unit tests passed. Browser inspection covered desktop
   and mobile chapter openings, diagram surfaces, the course guide, and the
   illustrated landing sections. A DOM overflow audit passed 198 combinations:
   33 pages at 320, 390, 768, 900, 1024, and 1440px. Duration-bar labels deliberately
   sit below their bars; code and wide diagram viewports retain local scrolling.
+
+- All 12 existing UI tests passed using an isolated production preview on port
+  4198, including four viewport widths, schematic label bounds, keyboard
+  selection, numerical completion, and release-footer navigation.
+- Expanded disclosures passed 99 additional page/viewport combinations at 320,
+  900, and 1440px. A live figure popout fit its container and Escape restored
+  focus to its opener. The chapter entrance computed to 280ms in normal mode
+  and no animation under reduced motion. Popouts omit the inter-figure margin.
+- Visual artifacts and the additional audit scripts are in the worktree's
+  ignored `output/playwright/` directory. The development preview uses port
+  4197; the shared checkout and other agents' servers were not modified.

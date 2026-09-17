@@ -118,6 +118,7 @@ body.atlas-ui {
   margin-block: 38px 48px;
 }
 .atlas-ui .nn-figure { padding-top: 0; }
+.atlas-ui :is(.figure-popout, .workbench-dialog) :is(.is-popped-out, .three-lab) { margin-block: 0; }
 .atlas-ui :is(.three-head, .textbook-lab > figcaption, .figure-tools) {
   border: 0;
   background: transparent;
