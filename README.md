@@ -8,6 +8,10 @@ practice, and reference. Prerequisite-ordered reading paths, chapter search
 (⌘/Ctrl K), a searchable source ledger, and direct section links connect the
 material. The landing page opens a course guide with a recommended starting point.
 
+The current edition contains **31 chapters, six learning paths, 184 sections
+and 191 figures**, with numbered code, worked checks and a searchable source
+ledger. Fonts and figures are served locally.
+
 The sidebar exposes chapter groups and the current chapter’s section outline.
 Optional worked details open within a lesson; search reveals folded targets.
 Chapter titles, introductions, and display numbers come from the curriculum.
@@ -44,6 +48,10 @@ landing page, reader, and diagram conventions.
 - **End-to-end practice:** train a byte decoder, verify checkpoint restart and
   cached equivalence, evaluate held-out text, export an actual CPU trace and
   serve the checkpoint over HTTP; then follow a pinned vLLM GPU exercise.
+- **Popular frameworks:** PyTorch, JAX, TensorFlow/Keras, Hugging Face training
+  tools, Lightning, distributed runtimes, vLLM, SGLang, TensorRT-LLM, llama.cpp,
+  MLX and deployment layers. Compare actual updates, model/tokenizer contracts,
+  tracing, adapters, cache identity, stop handling and completed-work timing.
 
 The systems gallery includes interactive 2D numerical diagrams and three physical
 Three.js workbenches. Matrix multiplication and all-reduce use clear, selectable
@@ -51,8 +59,9 @@ Three.js workbenches. Matrix multiplication and all-reduce use clear, selectable
 reference images have [provenance](public/figures/ATTRIBUTION.md). The new source
 reviews record dated disclosures and corrected comparisons in
 [the hardware source audit](docs/SOURCE_AUDIT_2026-09-14.md),
-[the inference/training audit](docs/INFERENCE_TRAINING_AUDIT_2026-09-16.md), and
-[the execution-gap review](docs/EXECUTION_GAPS_AUDIT_2026-09-16.md).
+[the inference/training audit](docs/INFERENCE_TRAINING_AUDIT_2026-09-16.md),
+[the execution-gap review](docs/EXECUTION_GAPS_AUDIT_2026-09-16.md), and
+[the frameworks audit](docs/FRAMEWORKS_AUDIT_2026-09-16.md).
 
 ## Executable companions
 
@@ -71,6 +80,7 @@ reviews record dated disclosures and corrected comparisons in
 | [Quantization](examples/quantization/README.md) | Affine codes, groups, calibration error, K/V error and actual INT4 packing | Standard Python; floating arithmetic |
 | [Mixture of experts](examples/moe/README.md) | Routing, grouped execution, weighted combination, capacity and derivatives | Standard Python; linear experts |
 | [Serving traces](examples/serving-runtime/README.md) | Token receipts, terminal results, goodput and offered-population accounting | Standard Python; declared trace |
+| [Framework contracts](examples/frameworks/README.md) | Same update across APIs, graph reuse, causal labels, adapter reload, stop strings and CUDA replay | Standard Python; PyTorch/JAX and Transformers/PEFT CPU checks verified; TensorFlow/Keras and CUDA replay unexecuted |
 
 The written path is broad; verification boundaries remain specific. CPU tests,
 RTL simulation and generic synthesis do not establish GPU kernel performance,
@@ -103,27 +113,16 @@ npm test
 npm run build
 ```
 
-The integrated suite currently has 138 Node tests. The new sharding, quantization,
-MoE and serving-trace companions add 23 standard-library Python checks, alongside
-the earlier inference and actor/learner examples. Their READMEs contain the
-commands. Browser checks cover the reader and its numerical controls at desktop
-and phone widths; the verification record states the exact checked revision.
+The integrated suite currently has **168 Node tests**. Companion READMEs contain
+their Python, C, RTL and target-hardware commands. The latest framework additions
+include 14 standard-library Python tests, actual PyTorch/JAX CPU parity and a
+Transformers/PEFT save/reload/merge check. Earlier TensorFlow companion results
+are separate from the new, unexecuted TensorFlow/Keras comparison path.
 
-See the [TensorFlow companion](examples/tensorflow/README.md) for a runnable tiny
-decoder, checkpoint-resume example, post-training losses, adapter, token-weighted
-gradient example, two-replica runtime experiment, and numerical-contract tests. Eighty Node
-tests cover numerical labs, matrix-tile schedules, prerequisite ordering,
-chapter lookup, and camera framing.
-The optimization chapter adds a stateful SGD/momentum/AdamW comparison, clipping
-counterexample, mixed-precision contracts and activation recomputation.
-The separate decoding chapter adds probability accounting, exact speculative
-sampling, provisional-state reconciliation, and break-even reasoning. Its
-[Python reference](examples/inference/README.md) has four additional tests.
-The parallel-training chapter derives a partitioned MLP and compares GPipe-style
-and 1F1B schedules. Four additional TensorFlow tests validate the tensor-shard
-algebra on CPU, including all gradients and explicit counterexamples.
-The [verification record](VERIFICATION.md) states what has actually been checked
-and what has not been measured.
+Browser checks cover every chapter, numerical controls, labels and navigation
+at desktop and phone widths. The [verification record](VERIFICATION.md) states
+the checked revisions and distinguishes numerical examples, actual runtime
+execution and unmeasured hardware performance.
 
 ## Extend the textbook
 
@@ -136,6 +135,8 @@ and what has not been measured.
   modern inference and actor/learner lessons, controls and tested numerical models.
 - `src/sharded-training-*`, `src/quantization-*`, `src/moe-execution-*`, and
   `src/serving-runtime-*`: execution, numerical error, ownership and measurement labs.
+- `src/framework-*` and `examples/frameworks/`: framework responsibility maps,
+  execution/training/serving contracts, timing/replay lessons and CPU companions.
 - `src/scenes.ts` and `src/scene-detail.ts`: Three.js workbenches and guided stages.
 - `src/kernel-content.ts`, `src/kernel-lab.ts`, and `src/kernel-scene.ts`: the
   replica-runtime lesson and value-driven matrix workbench.

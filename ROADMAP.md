@@ -1,5 +1,29 @@
 # Build roadmap
 
+## September 16, 2026 — popular frameworks and implementation boundaries
+
+The new fourteen-lesson framework chapter connects the tensor/autodiff layer to
+training tools, model artifacts, serving engines and deployment. Four earlier
+lessons now explain causal label ownership, message/token/stream boundaries,
+CUDA replay storage and asynchronous timing. The
+[frameworks audit](docs/FRAMEWORKS_AUDIT_2026-09-16.md) records thirteen figures,
+real CPU framework checks, dated sources and reader integration.
+
+The next experiments should preserve those contracts while adding one dimension:
+
+- Execute the supplied TensorFlow/Keras parity and trace-count paths in a complete
+  environment, then compare mixed precision and actual compiler code generation.
+- Execute fixed-buffer CUDA replay and synchronization-aware timing on a GPU;
+  separate correctness, warm/cold latency and workload throughput.
+- Run an actual distributed fine-tuning job with uneven target counts, verify
+  global gradients and resume the next update from a distributed checkpoint.
+- Compare supported serving engines with identical input tokens, model/adapter
+  revisions, sampling and stop semantics before measuring quality and goodput.
+
+The existing PyTorch/JAX and Transformers/PEFT CPU results establish their stated
+small numerical contracts. They do not establish these remaining device,
+distributed or model-quality results.
+
 ## September 16, 2026 — worked execution contracts
 
 Fifteen more lessons now connect named techniques to the values and state needed

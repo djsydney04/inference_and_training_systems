@@ -1,5 +1,28 @@
 # Textbook development record
 
+## September 16 frameworks continuation
+
+Added the Popular frameworks chapter with fourteen lessons and four bridges in
+earlier chapters. Thirteen original figures, ten with interactive controls, connect
+framework roles, actual derivatives, tracing, causal labels, global objectives,
+adapters, artifacts, API/stop/cache contracts, deployment, timing and CUDA replay.
+Kept main explanations visible, folded detailed derivations/code, generated all
+labels and linked the chapter into training and inference learning paths.
+
+Actual CPU runs passed for PyTorch/JAX loss, every gradient, updates and graph
+reuse, and for Transformers/PEFT label alignment, three updates, model/tokenizer
+restore, adapter restore and FP32 merge. TensorFlow/Keras comparison and CUDA
+replay remain explicitly unexecuted. The final review corrected a directional
+learning-rate example and checked fixed-buffer and timing explanations.
+
+Committed separate slices and repeatedly fetched/rebased the isolated worktree
+onto GitHub main, including the AI Almanac design and diagram playback through
+5464cc9. The shared checkout and the other agent's local edits were untouched.
+168 Node tests, 14 new Python checks and the production build pass; 170 production
+page/width checks find no overflow, broken anchors, label or title errors. See
+the [frameworks audit](docs/FRAMEWORKS_AUDIT_2026-09-16.md) and current verification
+record for runtime pins, final UI checks and remaining evidence boundaries.
+
 ## September 16 execution-gap continuation
 
 Added fifteen lessons in four coordinated slices: sharded training lifetimes and

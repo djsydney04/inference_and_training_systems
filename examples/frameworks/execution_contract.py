@@ -3,7 +3,7 @@
 
 --backend all runs each framework in its own fresh subprocess. PyTorch graph
 capture uses an eager backend deliberately: it exercises Dynamo, not Inductor.
-No downloads, random initialization, datasets, GPU timing or performance claim.
+No downloads, random starting parameters, datasets, GPU timing or performance claim.
 """
 from __future__ import annotations
 
