@@ -514,7 +514,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
                 <path class="roof-grid" d="M54 40V292H612M134 40V292M214 40V292M294 40V292M374 40V292M454 40V292M534 40V292M612 40V292M54 79H612M54 143H612M54 207H612M54 271H612"/>
                 <path class="roof-bandwidth" d="M54.4 270.6L377.808 79.2"/><path class="roof-ceiling" d="M377.808 79.2H612"/>
               </svg><div class="roof-point" data-roof-point></div>
-              <span class="axis-y">relative ceiling</span><span class="axis-x">arithmetic intensity →</span>
+              <span class="axis-y">relative ceiling · log scale</span><span class="axis-x">arithmetic intensity · log scale →</span>
             </div>
             <label>FLOPs per byte <output data-intensity-output>16</output><input type="range" min="1" max="128" value="16" data-intensity /></label>
             <p data-roofline-copy>At this intensity, moving operands is likely to set the ceiling. Fuse operations or reuse tiles before chasing peak FLOPs.</p>
