@@ -1,8 +1,10 @@
 import { networkExample, networkShapes } from "./network-math";
 
 export const shapeLabel = (shape: number[]) => `[${shape.join(", ")}]`;
+const outline = (x: number, y: number, w: number, h = 52) =>
+  `<path class="nn-outline" d="M${x + 1} ${y + 1} Q${x + w / 2} ${y - 1.5} ${x + w} ${y + 1} L${x + w - 1} ${y + h - 1} Q${x + w / 2} ${y + h + 1.5} ${x} ${y + h - 1} Z"/>`;
 const box = (x: number, y: number, w: number, title: string, sub: string, attributes = "") =>
-  `<g class="nn-node" ${attributes}><rect x="${x}" y="${y}" width="${w}" height="52" rx="2"/><text x="${x + w / 2}" y="${y + 22}" class="nn-node-title">${title}</text><text x="${x + w / 2}" y="${y + 40}" class="nn-node-sub">${sub}</text></g>`;
+  `<g class="nn-node" ${attributes}>${outline(x, y, w)}<text x="${x + w / 2}" y="${y + 22}" class="nn-node-title">${title}</text><text x="${x + w / 2}" y="${y + 40}" class="nn-node-sub">${sub}</text></g>`;
 const linkBox = (x: number, y: number, w: number, title: string, sub: string, target: string) =>
   `<a href="#${target}" aria-label="Explore ${title}">${box(x, y, w, title, sub)}</a>`;
 const partBox = (x: number, y: number, w: number, title: string, sub: string, part: string) =>

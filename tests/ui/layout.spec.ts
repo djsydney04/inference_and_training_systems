@@ -13,7 +13,7 @@ test("chapter layouts and schematic labels fit their reading surfaces", async ({
   await expect(page.locator("#landing-title")).toHaveText("AI Almanac");
   const routes = await page.locator(".course-chapter-link").evaluateAll(links => links.map(link => link.getAttribute("href")!.slice(1)));
   const findings: string[] = [];
-  for (const id of ["welcome", "top", "gallery", ...routes, "glossary", "sources"]) {
+  for (const id of ["welcome", "content-changes", "top", "gallery", ...routes, "glossary", "sources"]) {
     await navigate(page, id);
     const issues = await page.locator(`#${id}`).evaluate(async root => {
       const problems: string[] = [];
@@ -89,16 +89,52 @@ test("2D numerical workbenches preserve calculations and keyboard selection", as
   await expect(ring.locator(".ring-chunk.is-complete")).toHaveCount(0);
 });
 
-test("landing omits release sections and the footer links to GitHub history", async ({ page }) => {
+test("edition footer leads to educational changes and optional site releases", async ({ page }) => {
   await page.goto("/");
   const footer = page.locator(".almanac-footer");
   await expect(footer).toBeVisible();
+  await expect(page.locator("#content-changes")).toBeHidden();
+  await expect(page.locator("#welcome .changelog")).toHaveCount(0);
   const edition = await footer.locator(".footer-edition").textContent();
   const version = edition!.match(/v(\d+\.\d+\.\d+)/)![1];
-  await expect(page.locator("#content-changes, #release-notes")).toHaveCount(0);
-  await expect(footer.getByRole("link", { name: "Release notes" })).toHaveAttribute("href", `https://github.com/djsydney04/inference_and_training_systems/releases/tag/v${version}`);
-  await expect(footer.getByRole("link", { name: "Content changes", exact: true })).toHaveAttribute("href", "https://github.com/djsydney04/inference_and_training_systems/blob/main/CONTENT_CHANGELOG.md");
+  await footer.getByRole("link", { name: "Content changes", exact: true }).click();
+  const content = page.locator("#content-changes");
+  await expect(page.locator("#welcome")).toBeHidden();
+  await expect(page).toHaveTitle("Content changes | AI Almanac");
+  await expect(page.locator("#changelog-title")).toBeFocused();
+  await expect(content.getByRole("heading", { name: "Content changes", exact: true })).toBeVisible();
+  await expect(content.locator(".content-edition").first()).toHaveAttribute("open", "");
+  await expect(page.locator("#release-notes")).not.toHaveAttribute("open", "");
+  await expect(content.getByRole("link", { name: "View on GitHub" })).toHaveAttribute("href", /\/CONTENT_CHANGELOG\.md$/);
+  const missingLessons = await content.locator(".content-history li a").evaluateAll(links => links.map(link => link.getAttribute("href")!).filter(href => !href.startsWith("#") || !document.getElementById(href.slice(1))));
+  expect(missingLessons).toEqual([]);
+  const lesson = content.locator(".content-history li a").first();
+  const lessonTarget = await lesson.getAttribute("href");
+  await lesson.click();
+  await expect(page.locator(lessonTarget!)).toBeVisible();
+  await expect(content).toBeHidden();
+  await page.goBack();
+  await expect(content).toBeVisible();
+  await page.goForward();
+  await expect(page.locator(lessonTarget!)).toBeVisible();
+  await page.goto("/#content-changes");
+  await expect(content.getByRole("heading", { name: "Content changes", exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+  await footer.getByRole("link", { name: "Site releases", exact: true }).click();
+  const changelog = page.locator("#release-notes");
+  await expect(page.locator("#welcome")).toBeHidden();
+  await expect(changelog).toHaveAttribute("open", "");
+  const latest = changelog.locator(".changelog-release").first();
+  await expect(latest).toHaveAttribute("open", "");
+  await expect(latest.locator("summary")).toContainText(version);
+  await expect(latest.locator("time")).toHaveAttribute("datetime", await footer.locator("time").getAttribute("datetime") ?? "");
+  await expect(changelog.getByRole("link", { name: "GitHub release history" })).toHaveAttribute("href", /github\.com\/djsydney04\/inference_and_training_systems\/blob\/main\/CHANGELOG\.md$/);
+  const older = changelog.locator(".changelog-release").nth(1);
+  await expect(older).not.toHaveAttribute("open", "");
+  await older.locator("summary").focus();
+  await page.keyboard.press("Enter");
+  await expect(older).toHaveAttribute("open", "");
+  await expect(older.locator("li").first()).toBeVisible();
   await footer.getByRole("link", { name: "AI Almanac", exact: true }).click();
   await page.getByRole("link", { name: "Open the almanac", exact: true }).click();
   await expect(page.locator("#top")).toBeVisible();

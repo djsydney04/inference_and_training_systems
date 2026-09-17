@@ -1,6 +1,7 @@
 import { chapters, learningPaths } from "./curriculum";
 import { galleryMarkup, homeMarkup } from "./atlas-home";
 import { landingMarkup } from "./landing";
+import { publicationMarkup } from "./release";
 import { tiledMatmulLesson, distributedRuntimeLesson } from "./kernel-content";
 import { optimizationChapter } from "./method-content";
 import { decodingChapter } from "./decoding-content";
@@ -56,7 +57,7 @@ export function prepareReader() {
   document.body.classList.add("atlas-reader");
   document.querySelector(".hero")?.remove();
   const main = byId("main-content")!;
-  main.insertAdjacentHTML("afterbegin", landingMarkup + homeMarkup + galleryMarkup);
+  main.insertAdjacentHTML("afterbegin", landingMarkup + publicationMarkup + homeMarkup + galleryMarkup);
   main.insertAdjacentHTML(
     "beforeend",
     foundationsChapter + mathematicsChapter + runtimeFoundationsChapter + cpuChapter + frameworkChapter + capstoneChapter + acceleratorChapter + frontierChapter +
@@ -116,6 +117,17 @@ export function prepareReader() {
   byId("cuda-kernels")!.insertAdjacentHTML("beforeend", frameworkReplayLesson);
   byId("post-training-loss")!.insertAdjacentHTML("afterend", trainingFrameworkBridgeLesson);
   byId("inference")!.insertAdjacentHTML("beforeend", servingFrameworkBridgeLesson);
+  // Assemble from components to the complete block; keep all authored anchors.
+  const transformerOrder = ["network-map", "network-embeddings", "attention-by-hand", "position-rotations", "network-residual", "normalization-and-residual-math", "network-attention", "network-feedforward", "network-output", "decoder-block", "attention-and-mlp", "attention-primitives", "tensor-head-layout", "transformer-parameter-budget"];
+  transformerOrder.forEach(id => byId("transformer")!.append(byId(id)!));
+  // Recent checkpoint comparisons are applications of the mechanism, after its foundations.
+  const attentionCases = document.querySelector("#attention .case-studies");
+  const attentionPlate = document.querySelector("#attention .paper-plate");
+  if (attentionCases) byId("frontier")!.append(attentionCases);
+  if (attentionPlate) byId("frontier")!.append(attentionPlate);
+  // Introduce sampling before its speculative acceleration.
+  const speculationPreview = document.querySelector("#inference .speculative-section");
+  if (speculationPreview) byId("speculative-exactness")!.before(speculationPreview);
   chapters.forEach((chapter, index) => {
     const el = byId(chapter.id)!;
     main.append(el);
@@ -145,8 +157,7 @@ export function prepareReader() {
     });
   });
   const index = document.querySelector(".index-inner")!;
-  const parts = [...new Set(chapters.map((chapter) => chapter.part))];
-  index.innerHTML = `<div class="syllabus-links"><a class="syllabus-overview" href="#top">Overview</a><a class="syllabus-overview" href="#gallery">Diagrams and labs</a></div><label class="reader-path-label" for="reader-chapter">Chapters</label><select id="reader-chapter" data-reader-chapter><option value="top">Choose a chapter</option>${parts.map(part => `<optgroup label="${escape(part)}">${chapters.filter(c => c.part === part).map(c => `<option value="${c.id}">${String(chapters.indexOf(c) + 1).padStart(2, "0")} ${escape(c.title)}</option>`).join("")}</optgroup>`).join("")}</select><section data-chapter-panel><a class="current-chapter-link" data-current-chapter-link>Chapter overview</a><nav class="chapter-lessons" aria-label="Current chapter sections"></nav></section><details class="reader-path-settings"><summary>Reading path <span data-path-name></span></summary><label class="reader-path-label" for="reader-path">Choose a path</label><select id="reader-path" data-reader-path>${learningPaths.map(path => `<option value="${path.id}">${escape(path.title)}</option>`).join("")}</select><a href="#learning-paths">View this path</a></details><div class="reader-reference-links"><a href="#glossary">Glossary</a><a href="#sources">Sources</a></div>`;
+  index.innerHTML = `<div class="syllabus-links"><a class="syllabus-overview" href="#top">Overview</a><a class="syllabus-overview" href="#gallery">Diagrams and labs</a></div><label class="reader-path-label" for="reader-chapter">Chapters</label><select id="reader-chapter" data-reader-chapter><option value="top">Choose a chapter</option>${chapters.map((c, i) => `<option value="${c.id}">${String(i + 1).padStart(2, "0")} ${escape(c.title)}</option>`).join("")}</select><section data-chapter-panel><a class="current-chapter-link" data-current-chapter-link>Chapter overview</a><nav class="chapter-lessons" aria-label="Current chapter sections"></nav></section><details class="reader-path-settings"><summary>Reading path <span data-path-name></span></summary><label class="reader-path-label" for="reader-path">Choose a path</label><select id="reader-path" data-reader-path>${learningPaths.map(path => `<option value="${path.id}">${escape(path.title)}</option>`).join("")}</select><a href="#learning-paths">View this path</a></details><div class="reader-reference-links"><a href="#glossary">Glossary</a><a href="#sources">Sources</a></div>`;
   const brand = document.querySelector<HTMLAnchorElement>(".wordmark")!;
   brand.setAttribute("aria-label", "AI Almanac, home");
   brand.querySelector("span:last-child")!.innerHTML =
@@ -177,6 +188,7 @@ export function initializeReader() {
   const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const topPages = [
     byId("welcome")!,
+    byId("content-changes")!,
     byId("top")!,
     byId("gallery")!,
     ...chapters.map((c) => byId(c.id)!),
@@ -238,8 +250,6 @@ export function initializeReader() {
   const chapterLessons = new Map<string, HTMLElement[]>();
   chapters.forEach((chapter) => {
     const el = byId(chapter.id)!;
-    const guide = el.querySelector(".chapter-reading-guide");
-    guide?.remove();
     const requirements = chapter.requires
       .map((id) => chapters.find((c) => c.id === id)!)
       .filter(Boolean);
@@ -384,7 +394,7 @@ export function initializeReader() {
     const destination = byId(id) ?? byId("welcome")!;
     const page =
       destination.closest<HTMLElement>(
-        ".chapter, .atlas-home, .atlas-gallery, .atlas-landing",
+        ".chapter, .atlas-home, .atlas-gallery, .atlas-landing, .atlas-publication",
       ) ?? byId("welcome")!;
     document.body.dataset.atlasPage = page.id;
     const changed = activePage !== page;
@@ -419,7 +429,7 @@ export function initializeReader() {
     const meta = chapters.find((c) => c.id === page.id);
     document.title = page.id === "welcome"
       ? "AI Almanac"
-      : `${meta?.title ?? (page.id === "gallery" ? "Diagrams and labs" : "Course guide")} | AI Almanac`;
+      : `${meta?.title ?? page.dataset.pageTitle ?? (page.id === "gallery" ? "Diagrams and labs" : "Course guide")} | AI Almanac`;
     index.querySelectorAll<HTMLAnchorElement>("a").forEach((a) => {
       const active = a.hash === `#${page.id}`;
       a.classList.toggle("is-active", active);

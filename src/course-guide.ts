@@ -10,7 +10,8 @@ const number = (id: string) => String(chapters.findIndex(chapter => chapter.id =
 const parts = [...new Set(chapters.filter(chapter => chapter.part !== "Reference").map(chapter => chapter.part))];
 const partDescriptions: Record<string, string> = {
   Foundations: "Understand a prediction, follow the math, and learn how the numbers are stored.",
-  Training: "Turn data into weight updates, then distribute the work across devices.",
+  "Training and generation": "Use the model on real data: learn its weights, distribute updates, generate tokens and refine its behavior.",
+  "Accelerator designs": "Compare scheduled dataflow and accelerator families after understanding the workloads they execute.",
   Hardware: "Follow the computation through circuits, processors, memory, and networks.",
   Programming: "Write kernels, port operations between backends, and use profiles to improve the software.",
   Inference: "Generate tokens and serve requests within a memory and latency budget.",
@@ -25,11 +26,11 @@ function buildCourseGuide() {
   const first = chapters[0];
   home.innerHTML = `<header class="guide-intro illustrated-guide-intro"><div class="guide-intro-copy"><p class="guide-eyebrow">Course guide</p><h1 id="home-title">Machine learning systems</h1><p>Understand how a language model works, how it learns, and how the hardware runs it.</p></div><div class="guide-cover-art" aria-hidden="true">${studyImage("systems", true)}</div></header>
     <section class="guide-start" aria-labelledby="guide-start-title">
-      <div class="guide-start-copy"><span class="guide-label">New to the subject?</span><h2 id="guide-start-title">Start with the foundations.</h2><p>Begin with the big picture. Then work through one prediction and one weight update before moving into training or hardware.</p><a class="primary-action" href="#${first.id}">Begin chapter ${number(first.id)} <span aria-hidden="true">→</span></a><p class="guide-prerequisites">No machine learning background required. Basic algebra helps; programming is introduced along the way.</p></div>
+      <div class="guide-start-copy"><span class="guide-label">New to the subject?</span><h2 id="guide-start-title">Start with the foundations.</h2><p>Begin with text and token IDs. Build the arithmetic and probability tools, calculate a weight update, then follow the model into hardware and larger systems.</p><a class="primary-action" href="#${first.id}">Begin chapter ${number(first.id)} <span aria-hidden="true">→</span></a><p class="guide-prerequisites">No machine learning background required. Arithmetic and notation are explained before the equations; programming is introduced along the way.</p></div>
       <ol class="guide-first-lessons" aria-label="Your first three chapters">${chapters.slice(0,3).map((chapter, index) => `<li><a href="#${chapter.id}"><span class="guide-chapter-number">${number(chapter.id)}</span><div><strong>${escape(chapter.title)}</strong><p>${[
         "See how the model, program, and machine fit together.",
-        "Calculate a prediction and change a weight yourself.",
-        "Learn the shapes and derivatives behind the computation.",
+        "Understand token IDs, learned vectors, training and prompting.",
+        "Start with numbers and functions; build toward probability and derivatives.",
       ][index]}</p></div><span aria-hidden="true">↗</span></a></li>`).join("")}</ol>
     </section>
     <section class="guide-course" aria-labelledby="guide-course-title"><header><h2 id="guide-course-title">The course, in order</h2><p>Each chapter builds on the ones before it. Open any chapter to see its prerequisites.</p></header><div class="guide-course-parts">${parts.map((part, index) => {
@@ -77,7 +78,7 @@ export function initializeCourseGuide() {
   if (chapterPanel) panelHome.append(chapterPanel);
   let previous = "";
   const sync = () => {
-    const page = document.querySelector<HTMLElement>("#main-content > :not([hidden]):is(.chapter, .atlas-home, .atlas-gallery, .atlas-landing)");
+    const page = document.querySelector<HTMLElement>("#main-content > :not([hidden]):is(.chapter, .atlas-home, .atlas-gallery, .atlas-landing, .atlas-publication)");
     const id = page?.id ?? "top";
     const chapter = chapters.find(item => item.id === id);
     nav.querySelectorAll<HTMLAnchorElement>(".course-chapter-link").forEach(link => {

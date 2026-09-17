@@ -12,7 +12,7 @@
 .nn-overview { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(210px, 1fr); align-items: start; gap: 12px; padding: 0 24px 20px; }
 .nn-whole { min-width: 0; }
 .nn-svg { display: block; width: 100%; height: auto; overflow: visible; font-family: var(--sans); }
-.nn-svg .nn-node rect, .nn-svg .nn-node circle { fill: #faf9f5; stroke: #8e968c; stroke-width: 1; transition: fill 160ms, stroke 160ms; }
+.nn-svg .nn-node rect, .nn-svg .nn-node circle, .nn-svg .nn-node .nn-outline { fill: #faf9f5; stroke: #8e968c; stroke-width: 1; transition: fill 160ms, stroke 160ms; }
 .nn-svg .nn-node-title { fill: var(--ink); font: 500 14px var(--sans); text-anchor: middle; }
 .nn-svg .nn-node-sub { fill: #59625b; font: 11px var(--sans); text-anchor: middle; }
 .nn-svg .nn-annotation { fill: #59625b; font: 11px var(--sans); }
@@ -20,7 +20,7 @@
 .nn-svg .nn-bypass { stroke-dasharray: 5 4; }
 .nn-svg .nn-block-boundary { fill: #efefe7; stroke: #c8cdc3; stroke-dasharray: 5 4; }
 .nn-svg a, .nn-svg [role="button"] { cursor: pointer; text-decoration: none; }
-.nn-svg a:hover rect, .nn-svg .nn-node:hover rect, .nn-svg [aria-pressed="true"] rect, .nn-svg [aria-pressed="true"] circle { fill: #e4ebfc; stroke: #2559d6; stroke-width: 1.8; }
+.nn-svg a:hover rect, .nn-svg .nn-node:hover rect, .nn-svg [aria-pressed="true"] rect, .nn-svg [aria-pressed="true"] circle, .nn-svg .nn-node:hover .nn-outline, .nn-svg [aria-pressed="true"] .nn-outline { fill: #e4ebfc; stroke: #2559d6; stroke-width: 1.8; }
 .nn-svg a:focus-visible, .nn-svg [role="button"]:focus-visible { outline: 2px solid var(--signal); outline-offset: 4px; }
 .nn-svg .nn-plus { fill: var(--signal); font: 28px var(--sans); }
 .nn-svg .nn-tile { fill: #ebece4; stroke: var(--rule); }
@@ -96,7 +96,7 @@
 .nn-svg .nn-bypass { stroke: #647b68; stroke-dasharray: none; stroke-width: 1.8; }
 .nn-svg .nn-block-boundary { fill: #f0f3ec; stroke: #c4cdc0; stroke-dasharray: none; }
 .nn-operation-region { fill: #f0f3ec; stroke: #d3dacf; }
-.nn-svg .nn-node rect, .nn-svg .nn-node circle { fill: #fcfcf9; stroke: #a4b19f; }
+.nn-svg .nn-node rect, .nn-svg .nn-node circle, .nn-svg .nn-node .nn-outline { fill: #fcfcf9; stroke: #a4b19f; }
 .nn-mask-cell { fill: #dce7d1; stroke: #b4c2a8; stroke-width: .7; }
 .nn-mask-cell.is-masked { fill: #f0f1eb; stroke: #d6dbd0; }
 .nn-mask-mark { font: 12px var(--sans); fill: #8d9789; text-anchor: middle; }

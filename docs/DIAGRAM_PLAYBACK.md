@@ -19,7 +19,8 @@ Decorative token pulsing is removed from the prefill/decode comparison.
 ## Playback behavior
 
 Eligible examples play when their drawing is visible, with a single Play/Pause
-control and a fixed interval. There are no speed selectors or countdown bars.
+control and a fixed interval. There are no speed selectors, countdown bars,
+reading-time estimates, or pacing prompts in the reader.
 There is no global animation control or persisted global pause preference. Each
 example owns its Play/Pause control; individual pauses last for the session.
 The retired `atlas-diagrams-paused` preference is ignored.

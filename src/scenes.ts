@@ -1150,7 +1150,7 @@ function createLPUScene() {
         key: "mem-west",
         title: "MEM",
         color: colors.memory,
-        x: -5.25,
+        x: -1.9,
         width: 1.3,
         info: {
           eyebrow: "Selected / memory slice",
@@ -1166,7 +1166,7 @@ function createLPUScene() {
         key: "mxm-west",
         title: "MXM",
         color: colors.compute,
-        x: -3.55,
+        x: -5.25,
         width: 1.55,
         info: {
           eyebrow: "Selected / matrix slice",
@@ -1182,7 +1182,7 @@ function createLPUScene() {
         key: "sxm-west",
         title: "SXM",
         color: colors.signal,
-        x: -1.9,
+        x: -3.55,
         width: 1.0,
         info: {
           eyebrow: "Selected / switch slice",
@@ -1214,7 +1214,7 @@ function createLPUScene() {
         key: "sxm-east",
         title: "SXM",
         color: colors.signal,
-        x: 1.9,
+        x: 3.55,
         width: 1.0,
         info: {
           eyebrow: "Selected / switch slice",
@@ -1230,7 +1230,7 @@ function createLPUScene() {
         key: "mxm-east",
         title: "MXM",
         color: colors.compute,
-        x: 3.55,
+        x: 5.25,
         width: 1.55,
         info: {
           eyebrow: "Selected / matrix slice",
@@ -1246,12 +1246,12 @@ function createLPUScene() {
         key: "mem-east",
         title: "MEM",
         color: colors.memory,
-        x: 5.25,
+        x: 1.9,
         width: 1.3,
         info: {
           eyebrow: "Selected / memory slice",
           title: "MEM: distributed SRAM",
-          body: "SRAM banks at both sides feed the pipeline with low, predictable latency. Large models spread weights across many chips, turning chip-to-chip streaming into part of execution.",
+          body: "SRAM banks on both sides of the central vector unit feed the pipeline with low, predictable latency. Large models spread weights across many chips, turning chip-to-chip streaming into part of execution.",
           facts: [
             ["Bandwidth", "up to 80 TB/s product-sheet claim"],
             ["Capacity scaling", "additive across chips"],

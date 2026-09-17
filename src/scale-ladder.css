@@ -1,0 +1,63 @@
+/* Six conceptual illustrations, sharing one open page and one blue data accent. */
+.atlas-ui .scale-ladder.scale-atlas {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(8px, 1.4vw, 24px);
+  height: auto;
+  padding: 32px clamp(18px, 3vw, 40px) 46px;
+  align-items: end;
+}
+.scale-atlas .scale-level {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  padding: 12px 0;
+  color: var(--ink);
+  text-align: center;
+  text-decoration: none;
+  border: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.scale-atlas .scale-level:focus-visible { outline: 2px solid var(--signal); outline-offset: 5px; }
+.scale-atlas svg { display: block; width: 100%; height: auto; overflow: visible; margin-bottom: 20px; fill: none; stroke: var(--ink); stroke-width: 1.15; stroke-linecap: round; stroke-linejoin: round; }
+.scale-atlas .scale-ground { fill: #dde2dc; stroke: none; }
+.scale-atlas .scale-back { fill: #e2e7e0; }
+.scale-atlas .scale-paper { fill: #f8f9f4; }
+.scale-atlas .scale-side { fill: #c1cac0; }
+.scale-atlas .scale-ink-face { fill: #303d37; }
+.scale-atlas .scale-die-cell { fill: #75877a; stroke: #a7b5a9; stroke-width: .8; }
+.scale-atlas .scale-muted { stroke: #819086; }
+.scale-atlas .scale-pin { stroke: #78867c; stroke-width: 3; }
+.scale-atlas .scale-wash { fill: #e7edfb; stroke: none; }
+.scale-atlas .scale-value { fill: #c6d6ff; stroke: #2559d6; }
+.scale-atlas .scale-blue-side { fill: #98b3f3; stroke: #2559d6; }
+.scale-atlas .scale-blue-ink { stroke: #2559d6; }
+.scale-atlas .scale-wire { stroke: #a8b4a9; }
+.scale-atlas .scale-signal { stroke: #2559d6; stroke-width: 1.8; }
+.scale-atlas .scale-packet { fill: #2559d6; stroke: none; }
+.scale-atlas .scale-number { fill: #234da9; stroke: none; text-anchor: middle; font: 500 18px var(--mono); }
+.scale-atlas .scale-function { fill: var(--ink); stroke: none; text-anchor: middle; font: italic 27px var(--serif); }
+.scale-atlas .scale-label { position: relative; display: block; padding-inline: 18px; font: 500 16px/1.5 var(--sans); }
+.scale-atlas .scale-link-arrow { position: absolute; right: 0; color: var(--signal); opacity: 0; }
+.atlas-ui .scale-atlas small { display: block; margin-top: 5px; min-height: 2.8em; height: auto; max-width: 16ch; color: var(--graphite); font: 12px/1.5 var(--sans); }
+.scale-atlas .scale-level:is(:hover, :focus-visible) .scale-label { color: var(--signal-dark); }
+.scale-atlas .scale-level:is(:hover, :focus-visible) .scale-link-arrow { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .scale-atlas .scale-lift, .scale-atlas .scale-tray { transition: transform 260ms cubic-bezier(.2,.7,.2,1); }
+  .scale-atlas .scale-ground, .scale-atlas .scale-link-arrow { transition: opacity 180ms ease; }
+  .scale-atlas .scale-level:is(:hover, :focus-visible) .scale-lift { transform: translateY(-7px); }
+  .scale-atlas .scale-level:is(:hover, :focus-visible) .scale-tray { transform: translateX(-4px); }
+  .scale-atlas .scale-level:is(:hover, :focus-visible) .scale-ground { opacity: .5; }
+  .scale-atlas.scale-arrived .scale-level > svg { animation: scale-assemble 650ms cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--scale-step) * 65ms); }
+  @keyframes scale-assemble { from { opacity: .35; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+}
+@media (max-width: 1050px) {
+  .atlas-ui .scale-ladder.scale-atlas { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 26px; }
+  .scale-atlas svg { max-width: 190px; margin-bottom: 12px; }
+}
+@media (max-width: 520px) {
+  .atlas-ui .scale-ladder.scale-atlas { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 20px; padding: 16px 18px 28px; }
+  .scale-atlas .scale-label { font-size: 15px; }
+  .atlas-ui .scale-atlas small { font-size: 11px; }
+}

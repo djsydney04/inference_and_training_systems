@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 560" fill="none" role="img" aria-labelledby="title desc">
 <title id="title">Bring a tile to the computation</title>
-<desc id="desc">Three fields represent matrix operands and output. Blue marks selected tiles, with a small local tile between the larger arrays. It illustrates reuse, not particular matrix dimensions or values.</desc>
+<desc id="desc">Three fields represent matrix operands and output. Blue marks selected tiles, with a small local tile between the larger arrays. The visible grids have compatible shapes: A is 8 by 8, B is 8 by 10, and C is 8 by 10. The selected two-term tiles illustrate reuse; no numerical values or hardware tile shape are prescribed.</desc>
 <defs>
 <pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse">
 <path d="M-1 1L1-1M0 5L5 0M4 6L6 4" stroke="#939d86" stroke-width=".55"/>
@@ -139,6 +139,26 @@
 <rect x="629" y="190" width="20" height="20" fill="#bccbb0" stroke="#9bab91" stroke-width=".8" />
 <rect x="653" y="190" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
 <rect x="677" y="190" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
+<rect x="461" y="214" width="20" height="20" fill="#bccbb0" stroke="#9bab91" stroke-width=".8" />
+<rect x="485" y="214" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
+<rect x="509" y="214" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
+<rect x="533" y="214" width="20" height="20" fill="#bccbb0" stroke="#9bab91" stroke-width=".8" />
+<rect x="557" y="214" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
+<rect x="581" y="214" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
+<rect x="605" y="214" width="20" height="20" fill="#bccbb0" stroke="#9bab91" stroke-width=".8" />
+<rect x="629" y="214" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
+<rect x="653" y="214" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
+<rect x="677" y="214" width="20" height="20" fill="#bccbb0" stroke="#9bab91" stroke-width=".8" />
+<rect x="461" y="238" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
+<rect x="485" y="238" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
+<rect x="509" y="238" width="20" height="20" fill="#bccbb0" stroke="#9bab91" stroke-width=".8" />
+<rect x="533" y="238" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
+<rect x="557" y="238" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
+<rect x="581" y="238" width="20" height="20" fill="#bccbb0" stroke="#9bab91" stroke-width=".8" />
+<rect x="605" y="238" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
+<rect x="629" y="238" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
+<rect x="653" y="238" width="20" height="20" fill="#bccbb0" stroke="#9bab91" stroke-width=".8" />
+<rect x="677" y="238" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
 <rect x="461" y="290" width="20" height="20" fill="#bccbb0" stroke="#9bab91" stroke-width=".8" />
 <rect x="485" y="290" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
 <rect x="509" y="290" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
@@ -219,12 +239,12 @@
 <rect x="629" y="458" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
 <rect x="653" y="458" width="20" height="20" fill="#bccbb0" stroke="#9bab91" stroke-width=".8" />
 <rect x="677" y="458" width="20" height="20" fill="#e1e7d9" stroke="#9bab91" stroke-width=".8" />
-<path d="M296 248H352V350H453M556 218V282" stroke="#2559d6" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+<path d="M296 248H352V350H453M569 112H727V277H569V282" stroke="#2559d6" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
 <rect x="334" y="225" width="62" height="62" fill="#edf0e8" stroke="#61775b" stroke-width=".8" />
 <rect x="343" y="234" width="19" height="19" fill="#2559d6" stroke="#2559d6" stroke-width=".8" />
 <rect x="366" y="234" width="19" height="19" fill="#2559d6" stroke="#2559d6" stroke-width=".8" />
 <rect x="343" y="257" width="19" height="19" fill="#2559d6" stroke="#2559d6" stroke-width=".8" />
 <rect x="366" y="257" width="19" height="19" fill="#2559d6" stroke="#2559d6" stroke-width=".8" />
-<path d="M85 176h-8v207h8M449 58h-8v150h8M709 278h8v207h-8" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M85 176h-8v207h8M449 58h-8v198h8M709 278h8v207h-8" stroke="#61775b" stroke-width="0.8" fill="none" />
 <path d="M117 125h159M197 91v68M758 343v112M737 399h42" stroke="#9bab91" stroke-width="1" fill="none" />
 </svg>
