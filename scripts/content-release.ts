@@ -17,7 +17,7 @@ export function finalizeContentRelease(api: GitHubApi, repo: string, number: str
   const root = `repos/${repo}`;
   const pull = api(`${root}/pulls/${number}`) as PullRequest;
   if (pull.state !== "open" || pull.base.ref !== "main" || pull.head.repo.full_name !== repo ||
-      !pull.head.ref.startsWith("release-please--") || !pull.labels.some(label => label.name === "autorelease:pending"))
+      !pull.head.ref.startsWith("release-please--") || !pull.labels.some(label => label.name === "autorelease: pending"))
     throw new Error("Content history can only be archived on an open Release Please PR");
   const file = (path: string, ref: string) => {
     const result = api(`${root}/contents/${path}?ref=${ref}`) as FileContent;

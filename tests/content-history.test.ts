@@ -53,7 +53,7 @@ test("material links stay within the reader and content is rendered as text", ()
 function fixture(current = pending, moved = false) {
   let reads = 0;
   const writes: Record<string, unknown>[] = [];
-  const pull = { state: "open", base: { ref: "main", sha: "base" }, head: { ref: "release-please--branches--main", sha: "head", repo: { full_name: "owner/repo" } }, labels: [{ name: "autorelease:pending" }] };
+  const pull = { state: "open", base: { ref: "main", sha: "base" }, head: { ref: "release-please--branches--main", sha: "head", repo: { full_name: "owner/repo" } }, labels: [{ name: "autorelease: pending" }] };
   const api = (path: string, body?: Record<string, unknown>) => {
     if (body) { writes.push(body); return {}; }
     if (path.endsWith("/pulls/2")) {
