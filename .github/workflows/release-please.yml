@@ -28,6 +28,8 @@ jobs:
       statuses: write
     outputs:
       pr-sha: ${{ steps.candidate.outputs.sha }}
+      release-created: ${{ steps.release.outputs.release_created }}
+      release-tag: ${{ steps.release.outputs.tag_name }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -65,6 +67,17 @@ jobs:
             -f state=pending -f context=release-validation \
             -f description="Checking generated version, tests, build and footer" \
             -f target_url="$RUN_URL"
+
+  deploy:
+    needs: release
+    if: needs.release.outputs.release-created == 'true'
+    uses: ./.github/workflows/deploy.yml
+    with:
+      tag_name: ${{ needs.release.outputs.release-tag }}
+    secrets:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
   verify-release-pr:
     needs: release
