@@ -46,7 +46,7 @@ import { initializeFoundationsLabs } from "./foundations-labs";
 import { initializeAcceleratorLabs } from "./accelerator-labs";
 import { initializeCudaLabs } from "./cuda-labs";
 import { initializeDigitalLabs } from "./digital-labs";
-import { initializeDiagramPlayback, refreshDiagramPlayback } from "./diagram-playback";
+import { initializeDiagramPlayback } from "./diagram-playback";
 import { prepareChipAnatomy, initializeChipAnatomy } from "./chip-anatomy";
 import { initializeDisaggregationLabs } from "./disaggregation-labs";
 import { initializeSpeculationFrontierLabs } from "./speculation-frontier-labs";
@@ -61,6 +61,8 @@ import { initializeFrameworkExecutionLabs } from "./framework-execution-labs";
 import { initializeFrameworkTrainingLabs } from "./framework-training-labs";
 import { initializeFrameworkServingLabs } from "./framework-serving-labs";
 
+import { prepareHardwareDrawings, initializeHardwareDrawings } from "./hardware-drawings";
+
 const app = document.querySelector<HTMLDivElement>("#app");
 
 if (!app) throw new Error("Atlas root element is missing");
@@ -68,6 +70,7 @@ if (!app) throw new Error("Atlas root element is missing");
 app.innerHTML = atlasMarkup;
 prepareSystemBuildout();
 prepareChipAnatomy();
+prepareHardwareDrawings();
 prepareReader();
 prepareLessonVisuals();
 
@@ -100,6 +103,7 @@ initializeFrameworkTimingLab();
 initializeFrameworkExecutionLabs();
 initializeFrameworkTrainingLabs();
 initializeFrameworkServingLabs();
+initializeHardwareDrawings();
 initializeLessonVisuals();
 initializeSystemBuildout();
 prepareBookStudies();
@@ -110,8 +114,3 @@ initializeNotebookFigures();
 initializeDiagramPlayback();
 refreshFigureLayouts();
 
-void import("./scenes").then(({ initializeScenes }) => {
-  initializeScenes();
-  refreshDiagramPlayback();
-  refreshFigureLayouts();
-});

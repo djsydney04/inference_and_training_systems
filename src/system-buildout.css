@@ -51,3 +51,10 @@
   .sb-levels button { padding-inline:10px; font-size:12px; }
   .sb-canvas::after { content:"Scroll sideways to inspect the system"; display:block; font:11px/1.5 var(--sans); color:var(--graphite); margin-top:12px; }
 }
+
+.system-buildout { background: #fcfcf9; }
+.system-buildout figcaption strong { font: 500 22px/1.35 var(--sans); letter-spacing: -.02em; }
+.sb-node rect { fill: #f3f5ef; stroke: #a9b5a2; }
+.sb-enclosure { fill: #f0f3ec; stroke: #abb7a4; }
+.sb-wire { stroke-width: 1.5; }
+.sb-inspector h4 { font-family: var(--sans); }

@@ -1,117 +1,58 @@
-# Automatic diagram walkthroughs
+# Selective diagram motion
 
-Lesson diagrams play when their drawing is on screen. Each has Play/Pause and
-3-, 6-, or 10-second pacing (default: six seconds). The sidebar pauses every
-diagram or changes the default pace; those preferences persist across reloads.
-Individual pauses and pace overrides apply to the current session.
+Diagrams stay still by default. Animate when execution order or changing state
+helps explain the subject. A diagram does not need playback simply because it
+has selectable parts or adjustable values.
 
-Selecting a component, editing a setting, using its keyboard controls or
-manipulating a 3D scene pauses that walkthrough. Press Play to continue.
-Expanded figures retain their live state. Only the diagram in an open modal
-advances; diagrams behind it wait. Wide schematics pan horizontally to reveal
-the active operation, without moving the page vertically.
+Component maps, architecture drawings, lesson schematics, illustrations, and
+parameter comparisons have no playback controls or automatic selection changes.
+Their existing inspectors, keyboard controls, sliders, and expanded views remain
+available. Global animation preferences never start motion in these figures.
+
+Execution traces and stateful examples retain playback: token and instruction
+traces, training stages, matrix accumulation, reductions, collectives, pipeline
+schedules, optimizers, online softmax, cache allocation, speculative verification,
+request admission, KV handoff, and ordered state sliders. Portable-kernel playback
+repeats the current backend's execution; it does not change the chosen backend.
+Decorative token pulsing is removed from the prefill/decode comparison.
+
+## Playback behavior
+
+Eligible examples play when their drawing is visible. They have Play/Pause and
+3-, 6-, or 10-second pacing. Sidebar animation and default-pace preferences persist
+across reloads; individual pauses and pace overrides last for the session.
+
+Selecting a component, changing a setting, using keyboard controls, or manipulating
+a scene pauses its walkthrough. Play resumes from that state. Expanded figures
+retain their live state, and only a figure in an open modal can advance. Wide
+execution traces reveal the active operation without scrolling the page vertically.
 
 Reduced motion starts playback paused. Readers can explicitly play an example;
-CSS movement stays disabled. Enabling reduced motion during a session pauses
-all walkthroughs. Automatic updates mute the existing live regions; manual
-exploration restores their original announcement behavior.
+CSS movement remains disabled. Enabling reduced motion during a session pauses
+all walkthroughs. Automatic updates mute live regions; manual exploration restores
+their announcements. Static inspectors keep their ordinary announcements.
 
-## Coverage
-
-The September 16, 2026 browser inventory contains 154 playback surfaces:
-125 guided flows, 18 setting comparisons and 11 numerical simulations.
-
-- All 88 lesson schematics select their components and corresponding notes.
-  The whole network highlights linked operations without navigating away.
-  Attention, residual, feed-forward and output graphs use their inspectors.
-- Embeddings, compiler flows, recomputation, request lifecycles, label alignment,
-  schedules and architecture drawings highlight meaningful rows or stages.
-  Independent parallel branches are highlighted together.
-- Numerical laboratories use their real step/reset handlers: matrix tiles,
-  all-reduce, pipeline schedules, reductions, online softmax, optimizers, weight
-  updates, speculative verification and digital circuits. Completed examples
-  restart; unbounded teaching updates have bounded replay cycles.
-- Comparisons sweep one named setting: attention pattern, layout, stride,
-  registers, capacity, state sharding, timing, roofline intensity or cache length.
-- Portable kernels follow operand movement, accumulation and storage, advance
-  K slices, and continue through H100, MI300X, TPU and Trainium examples.
-- System buildout visits its components and four levels. GPU, LPU and rack
-  workbenches reuse their sequences. Chip schematics traverse every route and
-  available view.
-
-Source photographs and source-image figures stay static. Gallery thumbnails
-and the landing package preview are navigation surfaces, not lesson walkthroughs.
-Animations describe dependencies and comparisons; their seconds and moving
-connectors do not report device latency or measured throughput. Existing source
-notes and figure boundaries still apply.
+The interval is reading time, not measured device or network latency. Calculation
+values, source notes, and figure boundaries retain their original meaning.
 
 ## Implementation and checks
 
-`diagram-walkthroughs.ts` provides explicit adapters, never arbitrary button
-clicking, link navigation or dialog opening. `diagram-playback.ts` owns controls
-and visibility. One scheduler serves visible walkthroughs. Offscreen, hidden
-chapter and background time earns no pending steps; a late timer advances once
-without replaying a backlog. Existing Three.js render budgets remain intact.
+`diagram-walkthroughs.ts` contains adapters only for temporal examples. Returning
+`null` is normal for a static diagram. New figure families do not need an adapter.
+Adapters use existing state transitions; they never navigate, open dialogs, or
+cycle unrelated settings. `diagram-playback.ts` owns controls and visibility.
+One scheduler serves eligible visible examples, with no catch-up for hidden time.
 
 ```sh
 npm test
 npm run build
-npm run test:animations -- --project=desktop --project=mobile
+npm run test:animations
+npm run lint:ui
 ```
 
-Browser checks have a separate server and output directory to avoid collisions
-with concurrent layout tests. They exercise autoplay, pause/resume, focus,
-reduced motion, modal restoration, hidden chapters, mobile framing, the old
-transformer Trace button and 110 advances per diagram. Each advance must produce
-a valid caption and keep inputs within their constraints. Coverage fails when
-a new lesson diagram lacks a walkthrough.
-
-Clock tests check visibility gating, complete reading intervals, pace changes
-and late timers. Each lab's existing arithmetic tests retain responsibility for
-its mathematical correctness. Playback is not evidence of GPU execution.
-
-Verification on September 16: 96 Node tests and the TypeScript/Vite build passed.
-The complete desktop/mobile playback run passed 18 checks; two additional
-desktop/mobile regressions passed for independent pause and live-region
-restoration in nested diagrams. The latter fix also passed all 96 Node tests
-and a build in a separate clean checkout. Mobile pop-out and active-operation
-framing screenshots were inspected at 390 × 844.
-
-## Framework and execution expansion
-
-The framework, speculative decoding, disaggregation, actor/learner, sharding,
-quantization, MoE and serving-runtime additions have explicit adapters in
-`diagram-walkthroughs.ts`. Their integration filled 34 missing walkthroughs.
-
-- Ordered phase sliders advance sharded materialization and decoded-text arrivals
-  using the scenario's current bounds.
-- Scheduler, admission and KV-handoff simulations use their existing next/reset
-  handlers, so playback follows the same state transitions as manual inspection.
-- Comparisons change one named axis: reduction, graph situation, adapter scale,
-  cache identity, quantization scale, expert capacity or another declared control.
-  Other reader settings remain fixed.
-- Responsibility and dependency tours follow authored stages. The deployment
-  tour explicitly separates request routing, independent replicas and ranks
-  communicating within each replica.
-
-These adapters do not discover arbitrary controls, follow links or open modals.
-Their captions describe the teaching state; the playback interval does not claim
-to measure training, device or network time. The coverage test checks every
-adapter through 110 advances, including repeated resets and valid input bounds.
-See the [frameworks audit](FRAMEWORKS_AUDIT_2026-09-16.md) for the numerical
-and actual CPU-runtime checks, separate from playback behavior.
-
-The incoming `figure.book-study` illustrations are a separate static form. The
-coverage audit requires a captioned external study image with alt text and no
-embedded simulation controls. It allows the reader's figure tools, while
-rejecting inline SVG mechanisms, canvases and live labs under that exception.
-Every teaching diagram outside this narrowly defined image form retains its
-walkthrough requirement.
-
-Final integrated verification: 173 Node tests, TypeScript, production build and
-release-metadata checks pass. A stable four-width playback run passed 36 cases;
-the four static-study coverage cases passed on the focused rerun after the
-classification fix. All 12 production layout/numerical/footer cases also pass.
-Inventory: 190 direct players, one independently owned child-diagram family and
-29 static catalog studies. Manual reset/resume checks confirm semantic captions
-stay aligned with the simulation state.
+Playback checks cover automatic execution, manual pause, focus, reduced motion,
+modal restoration, hidden chapters, mobile framing, persistent preferences, and
+110 advances per animated example. They also check that static schematics remain
+manually selectable and parameter comparisons keep the reader's values even when
+global animations are enabled. Static artwork retains accessible captions and
+alternatives. Mathematical correctness remains covered by each lab's own tests.

@@ -57,3 +57,8 @@ svg text.walkthrough-focus { fill: #173b99; font-weight: 600; }
 @media (prefers-reduced-motion: reduce) {
   [data-diagram-playback] *, [data-diagram-playback] .playback-progress i { transition: none !important; animation: none !important; }
 }
+
+.diagram-playback { margin-block: 8px 12px; background: transparent; }
+.diagram-playback .playback-caption { min-height: 1lh; color: #697469; font-size: 11px; }
+[data-hd-part] .hd-component { transition: fill 250ms, stroke 250ms; }
+@media(prefers-reduced-motion:reduce) { [data-hd-part] .hd-component { transition: none; } }

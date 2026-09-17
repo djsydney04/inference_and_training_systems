@@ -17,7 +17,7 @@ hatched detail, and alternating paper and dark-green backgrounds. Their links
 lead directly to the relevant chapters; a final reading action opens the guide.
 
 The expanded collection contains sixteen distinct drawings. It introduces all
-28 chapters and both reference pages with artwork selected by subject, supplies
+30 chapters and both reference pages with artwork selected by subject, supplies
 29 larger illustrated studies inside the lessons, and appears in all six course
 parts and 25 diagram-library previews. Lesson studies are numbered before reader
 indexing and share its accessible figure popout.
@@ -76,8 +76,10 @@ playback so it stays uncluttered and responds to manual layer selection.
 
 ## Verification on September 16, 2026
 
-- `npm test`: 101 tests passed after the expanded illustration pass.
+- `npm test`: 179 tests passed with the integrated figure layout and curriculum.
 - `npm run lint:ui`: all 12 checks passed at 320, 390, 768, and 1440px.
+- `npm run test:animations`: all 40 checks passed in an isolated checkout.
+  This avoids live reloads from edits and rebases in the shared workspace.
 - `npm run build`: TypeScript and Vite passed. The existing bundle-size warning
   remains; this change does not restructure curriculum loading.
 - `git diff --check`: passed.
@@ -110,6 +112,17 @@ playback so it stays uncluttered and responds to manual layer selection.
   All 12 layout checks passed with image decoding enabled. On mobile, opening
   and closing an illustrated figure restored keyboard focus to its opener;
   library search and type filters continued to work.
+- The figure layout pass covers all 223 figures in the integrated reader.
+  Desktop and phone screenshots cover illustrated plates, lesson schematics,
+  attention, Transformer traces, matrix calculations, physical hardware,
+  framework labs, quantization, and the electrical-to-optical signal path.
+  Figure notes remain available, expanded figures preserve the current selection,
+  and Escape restores focus to the opener. The final phone control adjustment
+  also passed a manual trace/pause check at 320px without page overflow or script
+  errors.
+  After the final Transformer and signal-path adjustments, all eight targeted
+  walkthrough/trace checks, the narrow-screen chapter audit, and the production
+  build passed again.
 
 `npm run lint:ui` runs the checks against an isolated production build, avoiding
 live reloads from other agents. It covers chapter/reference layouts, schematic
@@ -129,6 +142,9 @@ The expanded collection is recorded in `illustration-collection.png`,
 `illustrated-library-desktop.png`, `illustrated-library-mobile.png`,
 `illustrated-guide-desktop.png`, `gradient-study-desktop.png`,
 `logic-study-mobile.png`, and `cache-study-mobile.png`.
+The figure layout pass is recorded in `figure-layout-*.png`, including
+`figure-layout-transformer-narrow-final.png`, `figure-layout-matmul-mobile.png`,
+and `figure-layout-fiber-320.png`.
 
 Only the UI files and their integration lines were included in the UI commits.
 Other pending curriculum and rendering work in the shared checkout was preserved.

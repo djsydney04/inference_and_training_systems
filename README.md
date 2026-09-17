@@ -58,15 +58,18 @@ in the next release PR.
   MLX and deployment layers. Compare actual updates, model/tokenizer contracts,
   tracing, adapters, cache identity, stop handling and completed-work timing.
 
-The systems gallery includes interactive 2D numerical diagrams and three physical
-Three.js workbenches. Matrix multiplication and all-reduce use clear, selectable
-2D values and preserve the existing calculation models. Hardware
+The systems gallery uses interactive 2D diagrams throughout: published H100 and
+MI300X chip organization, the actual NVL72 tray order, a compute-tray top view,
+and Groq functional slices. Matrix multiplication and all-reduce retain their
+exact numerical models. Hardware
 reference images have [provenance](public/figures/ATTRIBUTION.md). The new source
 reviews record dated disclosures and corrected comparisons in
 [the hardware source audit](docs/SOURCE_AUDIT_2026-09-14.md),
 [the inference/training audit](docs/INFERENCE_TRAINING_AUDIT_2026-09-16.md),
 [the execution-gap review](docs/EXECUTION_GAPS_AUDIT_2026-09-16.md), and
 [the frameworks audit](docs/FRAMEWORKS_AUDIT_2026-09-16.md).
+The [2D drawing review](docs/DIAGRAM_REVIEW_2026-09-16.md) records layout corrections
+and the boundaries between physical layouts and architectural schematics.
 
 ## Executable companions
 

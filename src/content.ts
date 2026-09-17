@@ -161,17 +161,14 @@ export const atlasMarkup = `
           </div>
 
           <figure class="margin-figure tensor-figure">
-            <figcaption><span>Figure 1.1</span><strong>One activation, four views</strong></figcaption>
-            <div class="tensor-stack" aria-hidden="true">
-              <div class="tensor-plane p3"></div><div class="tensor-plane p2"></div><div class="tensor-plane p1"></div>
-              <div class="tensor-bracket tensor-b">B</div><div class="tensor-bracket tensor-t">T</div><div class="tensor-bracket tensor-d">D</div>
-            </div>
+            <figcaption><span>Figure 1.1</span><strong>One tensor, three views</strong></figcaption>
+            <div class="tensor-stack" role="img" aria-label="Tensor with two batches, three token positions and four channels"></div>
             <ol>
               <li><button data-tensor-view="shape" class="is-active">Logical shape</button></li>
               <li><button data-tensor-view="layout">Memory layout</button></li>
               <li><button data-tensor-view="shard">Device shards</button></li>
             </ol>
-            <p data-tensor-caption>Each plane is one token position; features run across, sequences run into the page.</p>
+            <p data-tensor-caption>Two batches, each with three rows of four channels. The numbers are declared toy activation values.</p>
           </figure>
         </div>
 
@@ -223,7 +220,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
             <button class="pipeline-node wide-node" data-step="5"><span>SwiGLU</span><small>token-wise MLP</small></button>
             <button class="pipeline-node plus-node" data-step="6"><span>+</span><small>next layer</small></button>
           </div>
-          <div class="pipeline-readout" data-pipeline-readout>
+          <div class="pipeline-readout" data-pipeline-readout aria-live="polite">
             <strong>Residual stream</strong>
             <p>Shape stays <code>[B, T, D]</code> from layer to layer. Sub-layers write updates into this shared representation.</p>
           </div>
@@ -498,28 +495,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
           <section><span>LPU</span><h3>Schedule the whole dataflow</h3><p>A compiler places operations and movement on deterministic functional slices, trading dynamic hardware flexibility for predictable inference.</p></section>
         </div>
 
-        <div class="three-lab wide-figure" id="gpu">
-          <div class="three-head">
-            <figcaption><span>Interactive 5.1</span><strong>GPU package cutaway</strong><p>Drag to orbit, scroll to zoom, and select a part. The layout is explanatory, not a proprietary Blackwell floorplan.</p></figcaption>
-            <div class="three-controls">
-              <button type="button" data-gpu-view="package" class="is-active">Package</button>
-              <button type="button" data-gpu-view="die">Compute die</button>
-              <button type="button" data-gpu-view="sm">One SM</button>
-              <button type="button" data-gpu-reset aria-label="Reset GPU view">Reset view</button>
-            </div>
-          </div>
-          <div class="three-stage">
-            <div id="gpu-scene" class="scene-canvas" role="group" aria-label="Interactive 3D GPU package model"></div>
-            <div class="scene-inspector" id="gpu-inspector" aria-live="polite">
-              <span>Selected / package</span>
-              <h3>Accelerator package</h3>
-              <p>The package places compute dies beside high-bandwidth memory stacks on a silicon interposer. Packaging is part of the memory system.</p>
-              <dl><div><dt>Look for</dt><dd>HBM stacks around logic</dd></div><div><dt>Bottleneck</dt><dd>bytes delivered per operation</dd></div></dl>
-            </div>
-          </div>
-          <div class="scene-key"><span><i class="key-compute"></i> compute</span><span><i class="key-memory"></i> memory</span><span><i class="key-fabric"></i> fabric</span><span>Conceptual geometry</span></div>
-          <div class="webgl-fallback" data-webgl-fallback hidden>WebGL is unavailable. The inspector and text below contain the equivalent component map.</div>
-        </div>
+        <div class="hardware-mount wide-figure" id="gpu"><div id="gpu-scene"></div></div>
 
         <div class="anatomy-list">
           <article><span>01</span><div><h3>Grid → block → warp → thread</h3><p>A kernel launches a grid of thread blocks. Blocks are assigned to SMs. An SM issues instructions for warps—groups of 32 threads on NVIDIA GPUs. Divergent branches serialize paths within a warp.</p></div><code>software hierarchy</code></article>
@@ -552,28 +528,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
           <p class="chapter-summary">The rack is not “a server with more cards.” Compute trays, NVLink switch trays, a copper backplane, power shelves, liquid cooling, storage, management, and a scale-out network form one machine.</p>
         </div>
 
-        <div class="three-lab wide-figure" id="rack-model">
-          <div class="three-head">
-            <figcaption><span>Interactive 6.1</span><strong>GB200 NVL72 rack exploder</strong><p>Select a tray, isolate the NVLink fabric, or open a Grace–Blackwell compute tray.</p></figcaption>
-            <div class="three-controls">
-              <button type="button" data-rack-view="rack" class="is-active">Whole rack</button>
-              <button type="button" data-rack-view="compute">Compute tray</button>
-              <button type="button" data-rack-view="fabric">NVLink fabric</button>
-              <button type="button" data-rack-view="power">Power delivery</button>
-              <button type="button" data-rack-view="cooling">Cooling loop</button>
-              <button type="button" data-rack-reset aria-label="Reset rack view">Reset view</button>
-            </div>
-          </div>
-          <div class="three-stage rack-stage">
-            <div id="rack-scene" class="scene-canvas" role="group" aria-label="Interactive 3D conceptual model of a GB200 NVL72 rack"></div>
-            <div class="scene-inspector" id="rack-inspector" aria-live="polite">
-              <span>Selected / NVL72</span><h3>Rack-scale NVLink domain</h3>
-              <p>18 compute trays × 4 B200 GPUs = 72 GPUs. Nine switch trays contain 18 NVSwitch chips, giving every GPU one NVLink connection to every switch chip.</p>
-              <dl><div><dt>Scale up</dt><dd>NVLink + NVSwitch</dd></div><div><dt>Scale out</dt><dd>InfiniBand or Ethernet</dd></div></dl>
-            </div>
-          </div>
-          <div class="scene-key"><span><i class="key-compute"></i> 18 compute trays</span><span><i class="key-fabric"></i> 9 switch trays</span><span><i class="key-power"></i> power / cooling</span><span>Topology based on NVIDIA’s public guides</span></div>
-        </div>
+        <div class="hardware-mount wide-figure" id="rack-model"><div id="rack-scene"></div></div>
 
         <div class="rack-facts" aria-label="GB200 NVL72 composition">
           <div><strong>72</strong><span>B200 GPUs</span><p>Four per compute tray</p></div>
@@ -609,11 +564,11 @@ print(q.shape, q.dtype, q.device)</code></pre>
           </aside>
         </div>
 
-        <div class="fiber-primer wide-figure">
-          <div class="fiber-copy">
-            <span>Signal primer</span><h3>Copper inside the rack; optics when reach wins</h3>
+        <figure class="fiber-primer wide-figure">
+          <figcaption class="fiber-copy">
+            <span>Signal primer</span><strong>Copper inside the rack; optics when reach wins</strong>
             <p>Bits begin as voltage transitions. A SerDes converts parallel chip data into high-rate serial lanes. Copper carries electrical symbols cheaply over short runs. Optical transceivers modulate light for longer reach and better distance–bandwidth, then photodiodes recover an electrical signal.</p>
-          </div>
+          </figcaption>
           <div class="fiber-path" aria-label="Electrical to optical signal path">
             <div><i class="die-icon"></i><span>GPU</span><small>parallel data</small></div><b>→</b>
             <div><i class="serdes-icon"></i><span>SerDes</span><small>serial symbols</small></div><b>→</b>
@@ -622,7 +577,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
             <div><i class="switch-icon"></i><span>switch</span><small>recover + route</small></div>
           </div>
           <dl class="fiber-terms"><div><dt>Lane</dt><dd>One serial transmit/receive path.</dd></div><div><dt>PAM4</dt><dd>Four voltage levels encode two bits per symbol.</dd></div><div><dt>FEC</dt><dd>Redundant coding corrects a bounded number of bit errors.</dd></div><div><dt>Transceiver</dt><dd>Pluggable or co-packaged electrical–optical conversion.</dd></div></dl>
-        </div>
+        </figure>
         ${rackLesson}
       </section>
 
@@ -637,8 +592,8 @@ print(q.shape, q.dtype, q.device)</code></pre>
         <div class="prefill-decode wide-figure">
           <div class="lab-head"><figcaption><span>Interactive 7.1</span><strong>One request, two operating regimes</strong><p>Step through a prompt, then decode. Watch arithmetic parallelism collapse to one new position per sequence.</p></figcaption><button type="button" data-inference-step>Advance one phase</button></div>
           <div class="phase-track" data-phase-track>
-            <div class="phase prefill is-active"><span>Prefill</span><strong>Prompt positions in parallel</strong><div class="token-line"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><small>Large GEMMs · high arithmetic intensity · writes KV</small></div>
-            <div class="phase decode"><span>Decode</span><strong>One position, repeatedly</strong><div class="token-line"><i class="cached"></i><i class="cached"></i><i class="cached"></i><i class="cached"></i><i class="new"></i></div><small>Small GEMMs/GEMVs · reads growing KV · latency-sensitive</small></div>
+            <div class="phase prefill is-active"><span>Prefill</span><strong>Prompt positions in parallel</strong><div class="token-line"><i aria-label="Prompt position 1">1</i><i aria-label="Prompt position 2">2</i><i aria-label="Prompt position 3">3</i><i aria-label="Prompt position 4">4</i><i aria-label="Prompt position 5">5</i><i aria-label="Prompt position 6">6</i><i aria-label="Prompt position 7">7</i><i aria-label="Prompt position 8">8</i></div><small>Large GEMMs · high arithmetic intensity · writes KV</small></div>
+            <div class="phase decode"><span>Decode</span><strong>One position, repeatedly</strong><div class="token-line"><i class="cached" aria-label="Cached position 1">1</i><i class="cached" aria-label="Cached position 2">2</i><i class="cached" aria-label="Cached position 3">3</i><i class="cached" aria-label="Cached position 4">4</i><i class="cached" aria-label="Cached position 5">5</i><i class="cached" aria-label="Cached position 6">6</i><i class="cached" aria-label="Cached position 7">7</i><i class="cached" aria-label="Cached position 8">8</i><i class="new" aria-label="New position 9">9</i></div><small>Small GEMMs/GEMVs · reads growing KV · latency-sensitive</small></div>
           </div>
           <div class="phase-readout" data-phase-readout><strong>Time to first token (TTFT)</strong><p>Prefill processes the whole prompt and creates a key/value entry for each layer and position. Longer prompts raise TTFT.</p></div>
         </div>
@@ -722,17 +677,7 @@ vllm serve MODEL_ID \\
           <p class="chapter-summary">The published first-generation Tensor Streaming Processor is a single-core, functionally sliced SIMD machine with a flat, software-addressed SRAM system and deterministic instruction/data movement.</p>
         </div>
 
-        <div class="three-lab wide-figure">
-          <div class="three-head">
-            <figcaption><span>Interactive 8.1</span><strong>LPU tensor-streaming cutaway</strong><p>Drag to orbit. Select memory, matrix, vector, switch, or instruction slices; run a pulse to see operands cross the chip.</p></figcaption>
-            <div class="three-controls"><button type="button" data-lpu-pulse>Run tensor pulse</button><button type="button" data-lpu-view="flow" class="is-active">Data flow</button><button type="button" data-lpu-view="units">Functional slices</button><button type="button" data-lpu-reset>Reset view</button></div>
-          </div>
-          <div class="three-stage">
-            <div id="lpu-scene" class="scene-canvas" role="group" aria-label="Interactive conceptual 3D model of a Groq Tensor Streaming Processor"></div>
-            <div class="scene-inspector" id="lpu-inspector" aria-live="polite"><span>Selected / architecture</span><h3>Tensor Streaming Processor</h3><p>Instructions flow vertically through independent control queues while tensor operands flow horizontally through stream registers and functional slices.</p><dl><div><dt>Schedule</dt><dd>cycle-accurate, compile time</dd></div><div><dt>Memory</dt><dd>distributed on-die SRAM</dd></div></dl></div>
-          </div>
-          <div class="scene-key"><span><i class="key-memory"></i> MEM / SRAM</span><span><i class="key-compute"></i> MXM + VXM</span><span><i class="key-fabric"></i> SXM / streams</span><span>Based on Groq’s 2020 and 2022 ISCA papers</span></div>
-        </div>
+        <div class="hardware-mount wide-figure"><div id="lpu-scene"></div></div>
 
         <div class="lpu-principles">
           <article><span>Compiler</span><h3>Static placement and time</h3><p>The compiler knows which unit performs each operation, where operands live, and the cycle in which transfers occur. This removes caches, dynamic warp scheduling, and most arbitration from the critical plan.</p></article>

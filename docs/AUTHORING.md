@@ -110,21 +110,22 @@ for corrections so a material-only change can trigger the appropriate release.
 The release workflow supplies the version and date; do not invent a future
 version or move entries out of Unreleased yourself.
 
-Lesson diagrams need an automatic walkthrough as well as manual controls.
-Add an explicit adapter in `diagram-walkthroughs.ts` for a new diagram family;
-existing lesson schematics inherit playback automatically. Choose meaningful
-operation stages or a named parameter comparison, preserve calculation and
-reset semantics, and never navigate or open dialogs during playback. See
+Diagrams stay still by default; manual interaction does not require animation.
+Use playback only when a sequence or changing state helps explain the subject,
+such as token execution, accumulation, or scheduling. Component maps, static
+relationships, illustrations, and parameter comparisons need no playback.
+For a temporal example, add an explicit adapter in `diagram-walkthroughs.ts`,
+preserve calculation and reset semantics, and never navigate or open dialogs. See
 [Diagram playback](DIAGRAM_PLAYBACK.md) for visibility, accessibility and pace
 rules. Run `npm run test:animations -- --project=desktop --project=mobile` when
-changing diagrams; its coverage audit catches missing walkthroughs.
+changing motion; its audit validates animated examples and manual static figures.
 
 Catalog artwork uses the separate `figure.book-study` form: a captioned external
 image with meaningful alt text. These conceptual studies remain static. The
 coverage audit validates their image/caption and rejects embedded simulation
-controls. Reserve this form for study artwork; inline mechanism diagrams and
-live labs still require explicit walkthroughs. Playback pace is presentation
-time, not device or network time.
+controls. Inline mechanism diagrams and live labs can also stay still while
+responding to manual input. Playback pace is presentation time, not device or
+network time.
 
 Run `npm test` and `npm run build`. The label tests check chapter declarations
 against the curriculum, duplicate authored section IDs, missing section titles,

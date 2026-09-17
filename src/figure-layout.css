@@ -38,6 +38,9 @@
 .atlas-ui .figure-layout .figure-notes-copy > :is(p, span, small) { display: block; margin: 0 0 12px; padding: 0; border: 0; max-width: 72ch; min-height: 0; color: var(--graphite); font: 13px/1.8 var(--sans); }
 .atlas-ui .figure-layout > .figure-notes > div:not(.figure-notes-copy) { padding: 0 0 20px; }
 .atlas-ui .figure-layout > .figure-notes:not([open]) > :not(summary) { display: none; }
+.atlas-ui .fiber-primer.figure-layout { display: block; }
+.atlas-ui .fiber-primer.figure-layout > .fiber-path { margin: 0; padding: 34px var(--figure-gutter) 40px; }
+.atlas-ui .figure-layout .figure-notes-copy > .fiber-terms { grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 24px; padding: 12px 0; border: 0; }
 
 /* Illustrations are open plates, with a compact caption below the art. */
 .atlas-ui .book-study.figure-layout { display: block; --study-ink: var(--ink); --study-muted: var(--graphite); --study-line: var(--rule); padding: 0; margin-block: 72px; background: transparent; border: 0; }

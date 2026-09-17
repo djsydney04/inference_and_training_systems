@@ -51,33 +51,47 @@ test("material links stay within the reader and content is rendered as text", ()
 });
 
 function fixture(current = pending, moved = false) {
-  let reads = 0;
+  let headReads = 0;
+  const requests: string[] = [];
   const writes: Record<string, unknown>[] = [];
   const pull = { state: "open", base: { ref: "main", sha: "base" }, head: { ref: "release-please--branches--main", sha: "head", repo: { full_name: "owner/repo" } }, labels: [{ name: "autorelease: pending" }] };
   const api = (path: string, body?: Record<string, unknown>) => {
-    if (body) { writes.push(body); return {}; }
-    if (path.endsWith("/pulls/2")) {
-      reads++;
-      return moved && reads > 1 ? { ...pull, head: { ...pull.head, sha: "changed" } } : pull;
+    requests.push(path);
+    if (body) { writes.push(body); return { commit: { sha: "c".repeat(40) } }; }
+    if (path.endsWith("/pulls/2")) return pull;
+    if (path.includes("/git/ref/heads/")) {
+      if (path.endsWith("/main")) return { object: { sha: "base" } };
+      headReads++;
+      return { object: { sha: moved && headReads > 1 ? "changed" : "head" } };
     }
     const text = path.includes("package.json") ? '{"version":"0.3.0"}'
       : path.includes("/CHANGELOG.md") ? "## 0.3.0 (2026-09-17)\n* A release"
       : path.endsWith("ref=base") ? pending : current;
     return { sha: "blob", encoding: "base64", content: Buffer.from(text).toString("base64") };
   };
-  return { api, writes, pull };
+  return { api, writes, pull, requests };
 }
 
 test("the release hook writes only the material log using the generated release metadata", () => {
   const { api, writes } = fixture();
-  assert.equal(finalizeContentRelease(api, "owner/repo", "2"), true);
+  assert.deepEqual(finalizeContentRelease(api, "owner/repo", "2"), { changed: true, sha: "c".repeat(40) });
   assert.equal(writes.length, 1);
   assert.equal(writes[0].branch, "release-please--branches--main");
   assert.equal(writes[0].sha, "blob");
   assert.equal(Buffer.from(writes[0].content as string, "base64").toString(), archiveContentChanges(pending, "0.3.0", "2026-09-17"));
   const repeated = fixture(archiveContentChanges(pending, "0.3.0", "2026-09-17"));
-  assert.equal(finalizeContentRelease(repeated.api, "owner/repo", "2"), false);
+  assert.deepEqual(finalizeContentRelease(repeated.api, "owner/repo", "2"), { changed: false, sha: "head" });
   assert.equal(repeated.writes.length, 0);
+});
+
+test("lagging PR metadata cannot select the commit before the content archive", () => {
+  const lagging = fixture();
+  lagging.pull.head.sha = "stale-indexed-head";
+  lagging.pull.base.sha = "stale-indexed-base";
+  const result = finalizeContentRelease(lagging.api, "owner/repo", "2");
+  assert.equal(result.sha, "c".repeat(40), "validation must use the commit returned by the write");
+  assert.ok(lagging.requests.some(path => path.endsWith("ref=head")));
+  assert.ok(lagging.requests.every(path => !path.includes("stale-indexed")));
 });
 
 test("the release hook refuses stale commits and unrelated PRs", () => {

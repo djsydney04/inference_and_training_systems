@@ -1,50 +1,13 @@
+import { lessonDiagram } from "./lesson-diagram-renderer";
 import "./lesson-visuals.css";
 import type { LessonVisual } from "./lesson-visual-data";
 import { allLessonVisuals } from "./lesson-visual-catalog";
 const escape = (value: string) => value.replace(/[&<>"']/g, char => ({"&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"})[char]!);
 
-function diagram(topic: LessonVisual, detailed = true, selected = 0) {
-  const n = topic.steps.length;
-  const arrow = `${topic.id}-visual-arrow`;
-  const positions = topic.steps.map((_, i): [number, number, number, number] => {
-    if (topic.id === "math-reading-kit") return [18 + i * 280, 70, 224, 150];
-    if (topic.kind === "cycle") return [[34,32,302,76],[478,32,302,76],[478,180,302,76],[34,180,302,76]][i] as [number,number,number,number];
-    if (topic.kind === "fork") return [[18,104,218,82],[300,24,218,82],[300,188,218,82],[582,104,218,82]][i] as [number,number,number,number];
-    if (topic.kind === "memory") return [28, 18 + i * (260 / n), 764, 240 / n];
-    if (topic.kind === "timeline") return [34 + i * (530 / n), 20 + i * (240 / n), 230, 58];
-    if (topic.kind === "hierarchy") return [28 + i * 62, 16 + i * (248 / n), 700 - i * 100, 56];
-    return [18 + i * (800 / n), 70, 760 / n, topic.kind === "matrix" ? 150 : 126];
-  });
-  const wire = (points: string) => `<path class="lv-wire" d="${points}" marker-end="url(#${arrow})"/>`;
-  let wires = "";
-  if (topic.id === "math-reading-kit") wires = '<text x="270" y="150" text-anchor="middle" class="lv-operator">×</text><text x="550" y="150" text-anchor="middle" class="lv-operator">=</text>';
-  else if (topic.kind === "fork") wires = wire("M236 145H266V65H298")+wire("M266 145V229H298")+wire("M518 65H550V145H580")+wire("M518 229H550V145");
-  else if (topic.kind === "cycle") wires = wire("M336 70H476")+wire("M628 108V178") + (n === 4 ? wire("M478 218H338")+wire("M184 180V110") : wire("M478 218H184V110"));
-  else if (!["memory","compare"].includes(topic.kind)) positions.slice(0,-1).forEach(([x,y,w,h],i)=>{
-    const [nx,ny] = positions[i+1];
-    wires += topic.kind === "hierarchy" || topic.kind === "timeline" ? wire(`M${x+18} ${y+h}V${ny+28}H${nx-2}`) : wire(`M${x+w} ${y+h/2}H${nx-2}`);
-  });
-  const nodes = topic.steps.map((step,i)=>{
-    const [x,y,w,h]=positions[i];
-    const compact = ["memory","hierarchy","timeline"].includes(topic.kind);
-    let internal="";
-    if(detailed && topic.kind === "matrix") {
-      const columns=topic.id==="math-reading-kit"&&i===0?3:4;
-      const rows=topic.id==="math-reading-kit"&&i!==1?2:3;
-      internal=Array.from({length:columns*rows},(_,cell)=>`<rect class="lv-cell" x="${x+w/2-(columns*21-4)/2+(cell%columns)*21}" y="${y+57+Math.floor(cell/columns)*19}" width="17" height="15"/>`).join("");
-    }
-    if(detailed && topic.kind === "memory") internal=Array.from({length:10},(_,cell)=>`<rect class="lv-cell" x="${x+w-268+cell*24}" y="${y+h/2-9}" width="19" height="18"/>`).join("");
-    // Fine engraved edges connect schematics to the cover's line studies.
-    // These marks add no data and never replace a value, label, or connection.
-    const etching = !compact ? `<path class="lv-etch" d="M${x+7} ${y+15}V${y+7}H${x+21}M${x+w-21} ${y+7}H${x+w-7}V${y+15}M${x+7} ${y+h-15}V${y+h-7}H${x+21}M${x+w-21} ${y+h-7}H${x+w-7}V${y+h-15}"/>` : "";
-    const labelX=compact?x+16:x+w/2;
-    return `<g class="lv-node ${selected===i?"is-selected":""}" role="button" tabindex="0" data-lv-node="${i}" aria-label="Inspect ${escape(step.label)}" aria-pressed="${selected===i}"><title>${escape(step.note)}</title><rect x="${x}" y="${y}" width="${w}" height="${h}"/>${etching}<text x="${labelX}" y="${compact?y+23:y+32}" text-anchor="${compact?"start":"middle"}" class="lv-label">${escape(step.label)}</text>${detailed?`<text x="${labelX}" y="${compact?y+43:topic.kind==="matrix"?y+134:y+57}" text-anchor="${compact?"start":"middle"}" class="lv-detail">${escape(step.detail)}</text>`:""}${internal}</g>`;
-  }).join("");
-  return `<svg viewBox="0 0 820 300" class="lv-svg" aria-labelledby="${topic.id}-visual-title"><title id="${topic.id}-visual-title">${escape(topic.title)}. ${escape(topic.relationship)}.</title><defs><marker id="${arrow}" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7" fill="#2559d6"/></marker></defs><path class="lv-registration" d="M6 18V6H18M802 6H814V18M6 282V294H18M802 294H814V282"/>${topic.kind==="timeline"?positions.map(([,y])=>`<path class="lv-time-lane" d="M20 ${y+58}H800"/>`).join(""):""}${wires}${nodes}</svg>`;
-}
+const diagram = lessonDiagram;
 
 function markup(topic: LessonVisual) {
-  return `<figure class="lesson-visual" data-lv-topic="${topic.id}" id="${topic.id}-visual"><figcaption><span>Interactive schematic</span><strong>${escape(topic.title)}</strong><p>${escape(topic.relationship)}. Select a part to inspect its role.</p></figcaption><div class="lv-toolbar"><button type="button" data-lv-depth aria-pressed="true">Hide internals</button><span>${topic.kind==="timeline"?"Dependency order · widths are not durations":"Conceptual relationships · not physical scale"}</span></div><div class="lv-canvas" tabindex="0" aria-label="Interactive diagram; scroll horizontally on narrow screens">${diagram(topic)}</div><div class="lv-selection" aria-live="polite"><strong>${escape(topic.steps[0].label)}</strong><p>${escape(topic.steps[0].note)}</p></div><details class="lv-notes"><summary>Worked note and assumptions</summary><div><h4>Keep this true</h4><p>${escape(topic.invariant)}</p><h4>Work through it</h4><p>${escape(topic.example)}</p></div></details></figure>`;
+  return `<figure class="lesson-visual" data-lv-topic="${topic.id}" id="${topic.id}-visual"><figcaption><span>Interactive schematic</span><strong>${escape(topic.title)}</strong><p>${escape(topic.relationship)}. Select a part to inspect its role.</p></figcaption><div class="lv-toolbar"><button type="button" data-lv-depth aria-pressed="true">Hide labels</button><span>${topic.kind==="timeline"?"Dependency order · widths are not durations":"Conceptual relationships · not physical scale"}</span></div><div class="lv-canvas" tabindex="0" aria-label="Interactive diagram; scroll horizontally on narrow screens">${diagram(topic)}</div><div class="lv-selection" aria-live="polite"><strong>${escape(topic.steps[0].label)}</strong><p>${escape(topic.steps[0].note)}</p></div><details class="lv-notes"><summary>Worked note and assumptions</summary><div><h4>Keep this true</h4><p>${escape(topic.invariant)}</p><h4>Work through it</h4><p>${escape(topic.example)}</p></div></details></figure>`;
 }
 
 /** Assemble before reader numbering and search indexing. */
@@ -84,7 +47,7 @@ export function initializeLessonVisuals() {
       detailed=!detailed;
       const button=event.currentTarget as HTMLButtonElement;
       button.setAttribute("aria-pressed",String(detailed));
-      button.textContent=detailed?"Hide internals":"Show internals";
+      button.textContent=detailed?"Hide labels":"Show labels";
       render();
     });
   });
@@ -120,7 +83,7 @@ export function initializeFigurePopouts() {
   const hosts=[...document.querySelectorAll<HTMLElement>("figure, .textbook-lab, .nn-figure, .architecture-figure, .wide-figure")];
   hosts.filter(host=> !host.closest(".three-lab") && !host.closest(".atlas-home, .atlas-gallery, .atlas-landing") &&
     !hosts.some(parent=>parent!==host&&parent.contains(host)) &&
-    !!host.querySelector("svg, canvas, input, select, [data-lv-topic], .block-pipeline, .fiber-path, .request-flow, .token-line, .lab-controls, img")).forEach(host=>{
+    !!host.querySelector("svg, canvas, input, select, [data-lv-topic], .block-pipeline, .fiber-path, .request-flow, .token-line, .tensor-stack, .lab-controls, img")).forEach(host=>{
     const caption=host.querySelector("figcaption");
     const title=caption?.querySelector("strong")?.textContent ?? host.querySelector("h3,h4")?.textContent ?? "Lesson diagram";
     const tools=document.createElement("div");tools.className="figure-tools";

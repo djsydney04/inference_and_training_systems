@@ -25,8 +25,10 @@ a grouped syllabus, an illustrated chapter opening, its lessons, then the next
 chapter. There is no horizontal top bar.
 
 Interaction thesis: short transitions acknowledge selection and navigation.
-The landing drawing responds to manual layer selection. Guided lesson playback
-remains local to the chapters, pauses for inspection, and respects reduced motion.
+The landing drawing responds to manual layer selection. Diagrams stay still by
+default. Use motion when execution order or changing state carries the lesson;
+component maps, illustrations, and parameter comparisons remain manual. Guided
+playback pauses for inspection and respects reduced motion.
 
 ## Illustration language
 
@@ -40,7 +42,7 @@ explain the artwork without requiring color perception.
 
 `src/illustration-catalog.ts` connects each subject to its chapters, lessons,
 course parts, and library previews. `src/book-illustrations.ts` shares the assets
-between the landing spreads, 28 chapters, and two reference pages. Chapter images
+between the landing spreads, 30 chapters, and two reference pages. Chapter images
 are decorative, selected by subject,
 and omitted from the accessibility tree so they do not repeat the introduction.
 Use external, lazy-loaded SVGs with intrinsic dimensions to keep layout stable
@@ -69,8 +71,11 @@ Move existing nodes rather than recreating them so state and event handlers
 survive layout changes and expansion. Refresh after lazy workbench initialization.
 
 Choose the representation that makes the relationship easiest to read. Matrix
-values, reduction ownership, and algorithm stages use 2D. Physical package,
-rack, and functional-slice layouts may use 3D when depth explains something.
+values, reduction ownership, algorithm stages and hardware use 2D. Prefer an
+accurate front elevation, top view or architectural block diagram to a decorative
+3D model. Hardware drawings must cite their reference and identify which positions
+are physical and which are schematic. Separate full-silicon resource counts from
+enabled product counts. Do not add anonymous cells or chip blocks as decoration.
 
 The matrix and ring workbenches read the existing numerical state; they never
 reimplement the calculation in a renderer. Native buttons support keyboard

@@ -24,7 +24,7 @@ function initializeGalleryFilters() {
   const entries = [...gallery.querySelectorAll<HTMLElement>(".gallery-entry")];
   const toolbar = document.createElement("div");
   toolbar.className = "gallery-toolbar";
-  toolbar.innerHTML = `<div class="gallery-filters" role="group" aria-label="Diagram type"><button type="button" data-gallery-kind="all" aria-pressed="true">All diagrams</button><button type="button" data-gallery-kind="3d" aria-pressed="false">3D workbenches</button><button type="button" data-gallery-kind="lab" aria-pressed="false">Labs</button><button type="button" data-gallery-kind="project" aria-pressed="false">Projects</button></div><label class="gallery-search">${icon("search")}<input type="search" aria-label="Find a diagram" placeholder="Find a diagram…"></label>`;
+  toolbar.innerHTML = `<div class="gallery-filters" role="group" aria-label="Diagram type"><button type="button" data-gallery-kind="all" aria-pressed="true">All diagrams</button><button type="button" data-gallery-kind="hardware" aria-pressed="false">Hardware drawings</button><button type="button" data-gallery-kind="lab" aria-pressed="false">Labs</button><button type="button" data-gallery-kind="project" aria-pressed="false">Projects</button></div><label class="gallery-search">${icon("search")}<input type="search" aria-label="Find a diagram" placeholder="Find a diagram…"></label>`;
   gallery.querySelector("header")!.after(toolbar);
   const status = document.createElement("p");
   status.className = "gallery-status";
@@ -40,7 +40,7 @@ function initializeGalleryFilters() {
     let shown = 0;
     entries.forEach(entry => {
       const type = entry.querySelector(".gallery-preview + div > span")?.textContent ?? "";
-      const category = /3D/.test(type) ? "3d" : /runtime|project/i.test(type) ? "project" : "lab";
+      const category = /Hardware drawing/.test(type) ? "hardware" : /runtime|project/i.test(type) ? "project" : "lab";
       entry.hidden = (kind !== "all" && category !== kind) || !(entry.textContent ?? "").toLowerCase().includes(input.value.trim().toLowerCase());
       if (!entry.hidden) shown++;
     });

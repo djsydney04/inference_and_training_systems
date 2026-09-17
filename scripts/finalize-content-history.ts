@@ -1,7 +1,8 @@
 import { execFileSync } from "node:child_process";
+import { appendFileSync } from "node:fs";
 import { finalizeContentRelease } from "./content-release.ts";
 
-const changed = finalizeContentRelease((path, body) => {
+const result = finalizeContentRelease((path, body) => {
   const args = ["api", path];
   if (body) args.push("--method", "PUT", "--input", "-");
   return JSON.parse(execFileSync("gh", args, {
@@ -10,4 +11,5 @@ const changed = finalizeContentRelease((path, body) => {
     stdio: ["pipe", "pipe", "inherit"],
   }));
 }, process.env.GH_REPO ?? "", process.env.PR_NUMBER ?? "");
-console.log(changed ? "Archived the pending material changes on the release PR." : "Content history is already current.");
+if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, `sha=${result.sha}\n`);
+console.log(result.changed ? "Archived the pending material changes on the release PR." : "Content history is already current.");
