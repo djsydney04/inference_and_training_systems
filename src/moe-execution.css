@@ -1,0 +1,31 @@
+.moe-workbench .moe-diagram { overflow-x: auto; overscroll-behavior-x: contain; padding: 18px; }
+.moe-workbench .moe-diagram svg { display: block; width: 100%; min-width: 760px; height: auto; font: 14px var(--sans); }
+.moe-workbench .moe-map-heading { fill: var(--graphite); font-size: 13px; font-weight: 600; }
+.moe-workbench .moe-map-small { font-size: 12px; fill: var(--graphite); }
+.moe-workbench .moe-route-muted path { stroke: var(--rule-dark); fill: none; stroke-width: 1; opacity: .65; }
+.moe-workbench .moe-route-active path { stroke: var(--signal); fill: none; stroke-width: 2.5; }
+.moe-workbench .moe-route-active text { fill: var(--signal); font-weight: 650; paint-order: stroke; stroke: var(--paper); stroke-width: 5px; stroke-linejoin: round; }
+.moe-workbench .moe-node rect { fill: var(--paper); stroke: var(--rule-dark); }
+.moe-workbench .moe-node text { fill: var(--ink); }
+.moe-workbench .moe-node-selected rect { fill: var(--signal-pale); stroke: var(--signal); stroke-width: 2; }
+.moe-workbench .moe-node-selected text { fill: var(--ink); }
+.moe-workbench .moe-summary { margin: 0; padding: 18px 22px; border-block: 1px solid var(--rule); font: 14px/1.7 var(--sans); }
+.moe-workbench .method-table { padding: 18px 22px; }
+.moe-workbench .method-table table + table { margin-top: 24px; }
+.moe-workbench .method-toolbar label, .moe-workbench .method-toolbar select { max-width: 100%; }
+.moe-workbench .moe-expert-queues { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 20px 22px; gap: 22px; }
+.moe-workbench .moe-expert-queue { display: flex; flex-direction: column; gap: 12px; font: 13px/1.6 var(--sans); }
+.moe-workbench .moe-expert-queue > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.moe-workbench .moe-assignment { padding: 5px 10px; border: 1px solid var(--signal); background: var(--signal-pale); color: var(--ink); text-align: center; min-width: 48px; font-variant-numeric: tabular-nums; }
+.moe-workbench .moe-assignment-dropped { border-style: dashed; border-color: var(--graphite); background: var(--paper); }
+.moe-workbench .moe-chip-status { display: block; font-size: 10px; }
+.moe-workbench .moe-scroll-hint { display: none; }
+@media (max-width: 850px) {
+  .moe-workbench .moe-scroll-hint { display: block; margin: 0; padding: 12px 16px 0; font: 12px/1.6 var(--sans); color: var(--graphite); }
+}
+@media (max-width: 600px) {
+  .moe-workbench .moe-summary, .moe-workbench .method-table { padding: 16px; }
+  .moe-workbench .moe-expert-queues { grid-template-columns: 1fr; padding: 16px; gap: 18px; }
+  .moe-workbench .moe-expert-queue { gap: 6px; }
+  .moe-workbench .moe-expert-queue + .moe-expert-queue { border-top: 1px solid var(--rule); padding-top: 18px; }
+}
