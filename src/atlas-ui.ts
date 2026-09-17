@@ -2,13 +2,10 @@ import "./atlas-ui.css";
 import "./course-guide.css";
 import { initializeCourseGuide } from "./course-guide";
 
-const icon = (name: "search" | "panel" | "book" | "diagram" | "arrow") => {
+const icon = (name: "search" | "diagram") => {
   const paths = {
     search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/>',
-    panel: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/>',
-    book: '<path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Zm0 0v14"/>',
     diagram: '<rect x="8" y="8" width="8" height="8" rx="1"/><path d="M9 2v6m6-6v6M9 16v6m6-6v6M2 9h6m-6 6h6m8-6h6m-6 6h6"/>',
-    arrow: '<path d="M5 12h14m-6-6 6 6-6 6"/>',
   };
   return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]}</svg>`;
 };
@@ -57,7 +54,6 @@ export function initializeAtlasUI() {
   document.querySelector(".wordmark-mark")!.innerHTML = icon("diagram");
   const search = document.querySelector(".search-trigger");
   search?.insertAdjacentHTML("afterbegin", icon("search"));
-  document.querySelectorAll(".syllabus-overview").forEach((link, index) => link.insertAdjacentHTML("afterbegin", icon(index ? "diagram" : "book")));
   initializeCourseGuide();
   initializeGalleryFilters();
   const syncPage = () => {

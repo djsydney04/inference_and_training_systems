@@ -107,6 +107,8 @@ export function initializeCourseGuide() {
       }
       previous = id;
     }
+    const activeGroup = nav.querySelector<HTMLDetailsElement>(`[data-course-part="${chapter?.part ?? "Foundations"}"]`);
+    if (activeGroup) activeGroup.open = true;
     if (id === "top") {
       document.querySelector("[data-reader-part]")!.textContent = "Start here";
       document.querySelector("[data-progress-label]")!.textContent = "Course guide";
