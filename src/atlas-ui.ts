@@ -1,5 +1,6 @@
 import "./atlas-ui.css";
-import { machinePlate } from "./machine-plate";
+import "./course-guide.css";
+import { initializeCourseGuide } from "./course-guide";
 
 const icon = (name: "search" | "panel" | "book" | "diagram" | "arrow") => {
   const paths = {
@@ -11,86 +12,6 @@ const icon = (name: "search" | "panel" | "book" | "diagram" | "arrow") => {
   };
   return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]}</svg>`;
 };
-
-function initializeChapterBrowser() {
-  const select = document.querySelector<HTMLSelectElement>("[data-reader-chapter]");
-  if (!select) return;
-  const groups = [...select.querySelectorAll("optgroup")];
-  const picker = document.createElement("button");
-  picker.className = "chapter-browser-trigger";
-  picker.type = "button";
-  picker.setAttribute("aria-haspopup", "dialog");
-  picker.innerHTML = `${icon("book")}<span>Browse chapters</span><span aria-hidden="true">⌄</span>`;
-  select.before(picker);
-  select.hidden = true;
-  document.querySelector('label[for="reader-chapter"]')?.setAttribute("hidden", "");
-  const dialog = document.createElement("dialog");
-  dialog.className = "chapter-browser";
-  dialog.setAttribute("aria-labelledby", "chapter-browser-title");
-  dialog.innerHTML = `<header><div><h2 id="chapter-browser-title">Chapters</h2><p>Follow the book, or start with a question.</p></div><button type="button" data-close-chapters aria-label="Close chapters">✕</button></header><label class="chapter-query">${icon("search")}<input type="search" aria-label="Find a chapter" placeholder="Find a chapter…" autocomplete="off"></label><div class="chapter-browser-groups"></div><p class="chapter-empty" hidden>No chapters match. Try a broader term.</p>`;
-  const list = dialog.querySelector(".chapter-browser-groups")!;
-  groups.forEach(group => {
-    const section = document.createElement("section");
-    const title = document.createElement("h3");
-    title.textContent = group.label;
-    section.append(title);
-    [...group.querySelectorAll("option")].forEach(option => {
-      const link = document.createElement("a");
-      link.href = `#${option.value}`;
-      const number = document.createElement("span");
-      number.textContent = option.textContent?.match(/^\d+/)?.[0] ?? "";
-      link.append(number, (option.textContent ?? "").replace(/^\d+\s*/, ""));
-      section.append(link);
-    });
-    list.append(section);
-  });
-  document.body.append(dialog);
-  const query = dialog.querySelector<HTMLInputElement>("input")!;
-  const filter = () => {
-    const term = query.value.trim().toLowerCase();
-    let matches = 0;
-    list.querySelectorAll("section").forEach(section => {
-      let count = 0;
-      section.querySelectorAll("a").forEach(link => {
-        link.hidden = !`${section.querySelector("h3")?.textContent} ${link.textContent}`.toLowerCase().includes(term);
-        if (!link.hidden) count++;
-      });
-      section.hidden = count === 0;
-      matches += count;
-    });
-    dialog.querySelector<HTMLElement>(".chapter-empty")!.hidden = matches > 0;
-  };
-  picker.addEventListener("click", () => {
-    query.value = "";
-    filter();
-    list.querySelectorAll("a").forEach(link => {
-      if (link.hash === `#${select.value}`) link.setAttribute("aria-current", "page");
-      else link.removeAttribute("aria-current");
-    });
-    dialog.showModal();
-    query.focus();
-  });
-  query.addEventListener("input", filter);
-  query.addEventListener("keydown", event => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      list.querySelector<HTMLAnchorElement>("section:not([hidden]) a:not([hidden])")?.click();
-    }
-  });
-  dialog.addEventListener("click", event => {
-    const target = event.target as Element;
-    if (target.closest("a, [data-close-chapters]")) dialog.close();
-    if (target === dialog) {
-      const { left, right, top, bottom } = dialog.getBoundingClientRect();
-      if (event.clientX < left || event.clientX > right || event.clientY < top || event.clientY > bottom) dialog.close();
-    }
-  });
-  dialog.addEventListener("close", () => {
-    // Navigation assigns focus to the destination; cancellation returns to the picker.
-    if (!document.getElementById("chapter-index")?.inert && document.activeElement === document.body) picker.focus();
-  });
-  document.addEventListener("atlas:beforenavigate", () => { if (dialog.open) dialog.close(); });
-}
 
 function initializeGalleryFilters() {
   const gallery = document.querySelector<HTMLElement>(".atlas-gallery");
@@ -137,61 +58,11 @@ export function initializeAtlasUI() {
   const search = document.querySelector(".search-trigger");
   search?.insertAdjacentHTML("afterbegin", icon("search"));
   document.querySelectorAll(".syllabus-overview").forEach((link, index) => link.insertAdjacentHTML("afterbegin", icon(index ? "diagram" : "book")));
-  const focus = document.createElement("button");
-  focus.type = "button";
-  focus.className = "reader-focus-toggle";
-  focus.setAttribute("aria-label", "Hide navigation");
-  focus.setAttribute("aria-pressed", "false");
-  focus.title = "Hide navigation";
-  focus.innerHTML = icon("panel");
-  search?.before(focus);
-  focus.addEventListener("click", () => {
-    const active = document.body.classList.toggle("reader-focus");
-    focus.setAttribute("aria-pressed", String(active));
-    focus.setAttribute("aria-label", active ? "Show navigation" : "Hide navigation");
-    focus.title = active ? "Show navigation" : "Hide navigation";
-    const rail = document.querySelector<HTMLElement>(".chapter-index");
-    if (rail) rail.inert = active;
-  });
-  window.matchMedia("(max-width: 820px)").addEventListener("change", () => {
-    if (document.body.classList.contains("reader-focus")) {
-      document.body.classList.remove("reader-focus");
-      focus.setAttribute("aria-pressed", "false");
-      focus.setAttribute("aria-label", "Hide navigation");
-      const rail = document.querySelector<HTMLElement>(".chapter-index");
-      if (rail) rail.inert = matchMedia("(max-width: 820px)").matches && !rail.classList.contains("is-open");
-    }
-  });
-  const home = document.querySelector(".home-intro");
-  if (home) {
-    home.querySelector(".home-description")!.textContent = "From the first weight update to the machine underneath. Read, inspect, and build your way through the stack.";
-    home.querySelector(".home-kicker")!.textContent = "The interactive systems atlas";
-    const copy = document.createElement("div");
-    copy.className = "home-intro-copy";
-    copy.append(...home.childNodes);
-    home.append(copy);
-    home.insertAdjacentHTML("beforeend", machinePlate());
-    document.querySelector(".home-feature")?.remove();
-    const descriptions: Record<string, string> = {
-      compute: "Compute dies execute the model’s matrix and vector operations.",
-      memory: "Memory stacks supply weights, activations, and cached state.",
-      fabric: "The interconnect carries data between memory and compute.",
-    };
-    home.querySelectorAll<HTMLButtonElement>("[data-plate-layer]").forEach(button => {
-      button.addEventListener("click", () => {
-        const layer = button.dataset.plateLayer!;
-        home.querySelector(".machine-plate")!.setAttribute("data-layer", layer);
-        home.querySelectorAll<HTMLButtonElement>("[data-plate-layer]").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
-        home.querySelector(".plate-description")!.textContent = descriptions[layer];
-      });
-    });
-  }
-  initializeChapterBrowser();
+  initializeCourseGuide();
   initializeGalleryFilters();
   const syncPage = () => {
     const page = document.querySelector<HTMLElement>("#main-content > :not([hidden]):is(.chapter, .atlas-home, .atlas-gallery)");
     document.body.dataset.atlasPage = page?.id ?? "top";
-    if (document.body.classList.contains("reader-focus")) document.querySelector<HTMLElement>(".chapter-index")!.inert = true;
   };
   document.addEventListener("atlas:chapterchange", syncPage);
   syncPage();
