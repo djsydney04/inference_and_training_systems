@@ -98,7 +98,7 @@ export function initializeCourseGuide() {
     const activeGroup = nav.querySelector<HTMLDetailsElement>(`[data-course-part="${chapter?.part ?? "Foundations"}"]`);
     if (activeGroup) activeGroup.open = true;
     if (id === "top") {
-      document.title = "Course guide | Machine Learning Systems Atlas";
+      document.title = "Course guide | AI Almanac";
     }
   };
   document.addEventListener("atlas:chapterchange", sync);

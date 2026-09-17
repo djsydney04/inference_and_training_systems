@@ -115,9 +115,9 @@ export function prepareReader() {
   const parts = [...new Set(chapters.map((chapter) => chapter.part))];
   index.innerHTML = `<div class="syllabus-links"><a class="syllabus-overview" href="#top">Overview</a><a class="syllabus-overview" href="#gallery">Diagrams and labs</a></div><label class="reader-path-label" for="reader-chapter">Chapters</label><select id="reader-chapter" data-reader-chapter><option value="top">Choose a chapter</option>${parts.map(part => `<optgroup label="${escape(part)}">${chapters.filter(c => c.part === part).map(c => `<option value="${c.id}">${String(chapters.indexOf(c) + 1).padStart(2, "0")} ${escape(c.title)}</option>`).join("")}</optgroup>`).join("")}</select><section data-chapter-panel><a class="current-chapter-link" data-current-chapter-link>Chapter overview</a><nav class="chapter-lessons" aria-label="Current chapter sections"></nav></section><details class="reader-path-settings"><summary>Reading path <span data-path-name></span></summary><label class="reader-path-label" for="reader-path">Choose a path</label><select id="reader-path" data-reader-path>${learningPaths.map(path => `<option value="${path.id}">${escape(path.title)}</option>`).join("")}</select><a href="#learning-paths">View this path</a></details><div class="reader-reference-links"><a href="#glossary">Glossary</a><a href="#sources">Sources</a></div>`;
   const brand = document.querySelector<HTMLAnchorElement>(".wordmark")!;
-  brand.setAttribute("aria-label", "Machine Learning Systems Atlas, home");
+  brand.setAttribute("aria-label", "AI Almanac, home");
   brand.querySelector("span:last-child")!.innerHTML =
-    "Machine Learning Systems <small>Atlas</small>";
+    "AI Almanac <small>Models, machines, and systems</small>";
   brand.href = "#welcome";
   const sidebarHead = document.createElement("div");
   sidebarHead.className = "sidebar-head";
@@ -129,8 +129,8 @@ export function prepareReader() {
   document.querySelector(".page-shell")!.before(toggle);
   document.querySelector(".topbar")!.remove();
   document.querySelectorAll(".footer p, footer p").forEach((el) => {
-    if (el.textContent?.includes("The Inference Engineering Atlas"))
-      el.textContent = "Machine Learning Systems Atlas";
+    if (el.textContent?.includes("AI Almanac"))
+      el.textContent = "AI Almanac";
   });
 }
 
@@ -385,8 +385,8 @@ export function initializeReader() {
     if (changed) syncLessonNav(page);
     const meta = chapters.find((c) => c.id === page.id);
     document.title = page.id === "welcome"
-      ? "Machine Learning Systems Atlas"
-      : `${meta?.title ?? (page.id === "gallery" ? "Diagrams and labs" : "Course guide")} | Machine Learning Systems Atlas`;
+      ? "AI Almanac"
+      : `${meta?.title ?? (page.id === "gallery" ? "Diagrams and labs" : "Course guide")} | AI Almanac`;
     index.querySelectorAll<HTMLAnchorElement>("a").forEach((a) => {
       const active = a.hash === `#${page.id}`;
       a.classList.toggle("is-active", active);

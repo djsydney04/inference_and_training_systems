@@ -1,4 +1,4 @@
-# Machine Learning Systems Atlas
+# AI Almanac
 
 An interactive, systems-first guide to transformer architecture, training,
 inference, and the machines underneath them.

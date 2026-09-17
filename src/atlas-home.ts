@@ -118,7 +118,7 @@ export const galleryItems = [
     title: "Where did this gradient come from?",
     scope: "Local values → reduced shards → complete sum",
     copy: "Step through six collective sends, inspect every rank's buffers, and account for each original contribution exactly once.",
-    type: "Numerical 3D workbench",
+    type: "Interactive 2D workbench",
   },
   {
     kind: "occupancy",
@@ -150,7 +150,7 @@ export const galleryItems = [
     title: "Inside a matrix multiplication",
     scope: "Global loads → shared tiles → partial sums",
     copy: "Inspect actual operands, step through both barriers, and test the ragged edge of a matrix.",
-    type: "Numerical 3D workbench",
+    type: "Interactive 2D workbench",
   },
   {
     kind: "replicas",

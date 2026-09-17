@@ -1,0 +1,75 @@
+.atlas-ui .numerical-workbench .numerical-stage { height: auto; min-height: 0; max-height: none; grid-template-columns: minmax(0,1fr) 245px; }
+.numerical-canvas { min-width: 0; padding: 24px; background: #f5f6f0; font-family: var(--sans); }
+.atlas-ui .numerical-workbench > :is(.matmul-toolbar, .matmul-stepper, .matmul-phase-strip, .matmul-ledger, .matmul-tables, .ring-data-table) { padding-inline: 24px; }
+.atlas-ui .numerical-workbench .scene-inspector { overflow-wrap: anywhere; }
+.numerical-label { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin: 0 0 17px; font: 500 12px/1.5 var(--sans); }
+.numerical-label > span { color: var(--graphite); font-size: 10px; font-weight: 400; }
+.matrix-diagram { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 0 30px; align-items: start; }
+.matrix-memory, .matrix-shared { grid-column: 1; }
+.matrix-output { grid-column: 2; grid-row: 1 / 4; border-left: 1px solid var(--rule); padding-left: 25px; align-self: stretch; }
+.matrix-output > .numerical-label { display: grid; }
+.matrix-pair { display: flex; flex-wrap: wrap; gap: 20px 26px; align-items: start; }
+.flat-matrix { min-width: 0; }
+.flat-matrix > strong { display: block; font: 500 12px var(--sans); margin: 0 0 9px; }
+.flat-matrix-grid { display: grid; grid-template-columns: repeat(var(--matrix-columns), 28px); gap: 3px; }
+.flat-matrix-grid > * { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 1px solid #c7cec3; color: var(--graphite); background: #f9faf6; font: 12px var(--mono); }
+.flat-matrix-grid > button { cursor: pointer; }
+.flat-matrix-grid > button:hover { border-color: var(--ink); }
+.flat-matrix-grid > .is-operand, .flat-matrix-grid > .is-selected { background: var(--signal-dark); color: #fff; border-color: var(--signal-dark); }
+.flat-matrix-grid > .is-staged { background: #dce6fa; border-color: #a2b7e2; color: #283d63; }
+.flat-matrix-grid > .is-padding { border-style: dashed; background: #eceee6; }
+.flat-matrix-grid > .is-other-block { opacity: .6; }
+.matrix-transfer { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; grid-column: 1; margin: 15px 0; padding: 12px 0; border-block: 1px solid var(--rule); font: 11px var(--sans); color: var(--graphite); }
+.matrix-transfer > span:first-child { color: var(--signal); font-size: 20px; }
+.matrix-transfer > span:last-child { font: 10px var(--mono); margin-left: auto; }
+.matrix-output-note { font: 11px/1.6 var(--sans); color: var(--graphite); max-width: 18ch; margin: 17px 0 0; }
+.numerical-legend { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 10px 18px; border-top: 1px solid var(--rule); padding-top: 16px; margin-top: 23px; }
+.numerical-legend > span { display: flex; align-items: center; gap: 7px; font: 10px var(--sans); color: var(--graphite); }
+.numerical-legend i { width: 10px; height: 10px; border: 1px solid var(--rule-dark); }
+.legend-operand { background: var(--signal-dark); }
+.legend-staged { background: #dce6fa; }
+.numerical-legend .legend-padding { border-style: dashed; background: #eceee6; }
+.ring-direction { display: flex; justify-content: space-between; gap: 10px; font: 11px/1.6 var(--sans); color: var(--graphite); margin: 0 0 19px; }
+.ring-direction strong { font-weight: 500; color: var(--signal-dark); word-spacing: 4px; }
+.ring-map { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+.ring-rank { text-align: left; border: 1px solid var(--rule-dark); padding: 12px; background: var(--paper); cursor: pointer; min-width: 0; }
+.ring-rank.is-selected { outline: 2px solid var(--signal); outline-offset: -1px; }
+.ring-rank:hover { background: #f0f3eb; }
+.ring-rank:nth-child(3) { grid-column: 2; grid-row: 2; }
+.ring-rank:nth-child(4) { grid-column: 1; grid-row: 2; }
+.ring-rank-heading { display: flex; justify-content: space-between; gap: 8px; padding-bottom: 13px; font: 500 14px var(--sans); }
+.ring-rank-heading small { font: 10px/1.7 var(--sans); color: var(--graphite); }
+.ring-column-labels, .ring-chunk { display: grid; grid-template-columns: 28px 1fr 58px; align-items: center; gap: 5px; }
+.ring-column-labels { font: 9px var(--sans); color: var(--graphite); padding-block: 0 9px; }
+.ring-chunk { padding: 8px 4px; border-top: 1px solid var(--rule); font: 10px var(--mono); }
+.ring-chunk strong { font-size: 11px; font-weight: 400; white-space: nowrap; }
+.ring-chunk.is-complete { color: var(--signal-dark); background: #e1e9fa; }
+.ring-chunk.just-received { border-left: 2px solid var(--signal); padding-left: 2px; }
+.rank-sources { display: flex; gap: 2px; }
+.rank-sources i { display: grid; place-items: center; width: 13px; height: 16px; font: normal 9px var(--sans); border: 1px solid var(--rule); color: #677269; }
+.rank-sources i.is-present { background: #d7ddd1; border-color: #b0bba8; color: var(--ink); }
+.is-complete .rank-sources i.is-present { background: var(--signal-dark); border-color: var(--signal-dark); color: white; }
+.ring-last-send { display: flex; justify-content: space-between; margin-top: 13px; font: 10px var(--sans); color: var(--graphite); }
+.ring-last-send strong { color: var(--signal-dark); font-weight: 500; }
+.numerical-key { margin: 18px 0 0; font: 11px/1.7 var(--sans); color: var(--graphite); max-width: 65ch; }
+.ring-data-table > summary { cursor: pointer; padding: 18px 0; font: 12px var(--sans); color: var(--signal-dark); }
+@media (max-width: 1200px) {
+  .atlas-ui .numerical-workbench .numerical-stage { grid-template-columns: minmax(0,1fr); }
+  .atlas-ui .numerical-workbench .scene-inspector { border-left: 0; border-top: 1px solid var(--rule); }
+  .atlas-ui .numerical-workbench .scene-inspector dl { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 24px; }
+  .matrix-pair { gap: 25px 40px; }
+}
+@media (max-width: 600px) {
+  .numerical-canvas { padding: 18px 14px; }
+  .matrix-diagram { grid-template-columns: minmax(0,1fr); }
+  .matrix-output { grid-column: 1; grid-row: auto; margin-top: 20px; padding: 20px 0 0; border-left: 0; border-top: 1px solid var(--rule); }
+  .matrix-pair { gap: 20px; }
+  .matrix-output-note { max-width: none; }
+  .ring-map { grid-template-columns: minmax(0,1fr); gap: 14px; }
+  .ring-rank:nth-child(n) { grid-row: auto; grid-column: 1; }
+  .ring-rank-heading { font-size: 15px; }
+  .ring-chunk { grid-template-columns: 40px 1fr 78px; }
+  .ring-column-labels { grid-template-columns: 40px 1fr 78px; }
+  .rank-sources i { width: 17px; height: 18px; }
+  .ring-chunk strong { font-size: 12px; }
+}

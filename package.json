@@ -1,6 +1,6 @@
 {
-  "name": "inference-engineering-atlas",
-  "version": "0.1.0",
+  "name": "ai-almanac",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,12 +8,14 @@
     "build": "tsc --noEmit && vite build",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "preview": "vite preview --host 0.0.0.0",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "lint:ui": "playwright test --config playwright.config.ts"
   },
   "dependencies": {
     "three": "^0.179.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@types/three": "^0.179.0",
     "typescript": "^5.9.2",
     "vite": "^7.1.3"

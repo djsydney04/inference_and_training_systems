@@ -3,12 +3,12 @@ import { networkOverview, networkLessons } from "./network-content";
 import { tensorLesson, attentionLesson, postTrainingLesson, hardwareLesson, rackLesson, inferenceLesson, lpuLesson } from "./textbook-content";
 
 export const atlasMarkup = `
-  <a class="skip-link" href="#main-content">Skip to the atlas</a>
+  <a class="skip-link" href="#main-content">Skip to the almanac</a>
 
   <header class="topbar" data-topbar>
-    <a class="wordmark" href="#top" aria-label="The Inference Engineering Atlas, home">
+    <a class="wordmark" href="#top" aria-label="AI Almanac, home">
       <span class="wordmark-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-      <span>Inference Engineering Atlas</span>
+      <span>AI Almanac</span>
     </a>
     <div class="topbar-progress" aria-label="Reading progress">
       <span data-progress-label>Orientation</span>
@@ -749,7 +749,7 @@ vllm serve MODEL_ID \\
 
         <div class="current-hardware-note">
           <span>What is public now</span>
-          <p>The detailed cutaway above models the peer-reviewed 2020/2022 TSP. NVIDIA’s announced Groq 3 LPX platform lists 256 LPUs per rack, 128 GB of aggregate on-chip SRAM, 40 PB/s aggregate SRAM bandwidth, and 315 PFLOPS of FP8 compute. Its March 2026 architectural first look discloses 500 MB of compiler-managed SRAM per LPU, 320-byte vector operations, and matrix/vector/switch execution modules. These are vendor disclosures, not measurements in this atlas. The older cutaway does not establish the new chip’s exact floorplan or tile counts; the announced platform’s availability must be checked separately.</p>
+          <p>The detailed cutaway above models the peer-reviewed 2020/2022 TSP. NVIDIA’s announced Groq 3 LPX platform lists 256 LPUs per rack, 128 GB of aggregate on-chip SRAM, 40 PB/s aggregate SRAM bandwidth, and 315 PFLOPS of FP8 compute. Its March 2026 architectural first look discloses 500 MB of compiler-managed SRAM per LPU, 320-byte vector operations, and matrix/vector/switch execution modules. These are vendor disclosures, not measurements in this almanac. The older cutaway does not establish the new chip’s exact floorplan or tile counts; the announced platform’s availability must be checked separately.</p>
           <a class="lesson-source" href="https://developer.nvidia.com/blog/inside-nvidia-groq-3-lpx-the-low-latency-inference-accelerator-for-the-nvidia-vera-rubin-platform" target="_blank" rel="noreferrer">NVIDIA Groq 3 LPX architectural first look · March 16, 2026</a>
           <a href="https://groq.com/platform" target="_blank" rel="noreferrer">Current Groq platform specifications</a>
         </div>
@@ -797,7 +797,7 @@ vllm serve MODEL_ID \\
         <div class="chapter-number">10</div>
         <div class="chapter-title">
           <p class="chapter-kicker">Source ledger</p>
-          <h2>Read outward from the atlas</h2>
+          <h2>Read outward from the almanac</h2>
           <p class="chapter-summary">The guide prefers primary papers, model cards, code repositories, and official architecture documentation. “Checked” is when this edition last verified the linked claim.</p>
         </div>
 
@@ -874,7 +874,7 @@ vllm serve MODEL_ID \\
   </div>
 
   <footer>
-    <p>The Inference Engineering Atlas</p>
+    <p>AI Almanac</p>
     <p>Original explanations and diagrams. Primary sources linked at the claim.</p>
     <p>Edition 0.2 · September 2026</p>
   </footer>

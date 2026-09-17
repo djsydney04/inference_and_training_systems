@@ -1,4 +1,4 @@
-# Machine Learning Systems Atlas — direction
+# AI Almanac — direction
 
 ## Clarity pass
 
@@ -37,7 +37,7 @@ Interaction thesis: selecting a section updates the reading position; switching
 the syllabus view reveals the wider curriculum; choosing a path changes the
 chapter sequence. Motion only follows these actions and respects reduced motion.
 
-Review: retain the atlas identity, reduce duplicate contents and oversized
+Review: retain the almanac identity, reduce duplicate contents and oversized
 headings, keep prose to a comfortable measure, and let figures use the full
 reading surface. Chapter, section, figure, code and check references derive from
 the assembled curriculum so future additions cannot leave stale display numbers.
@@ -77,7 +77,7 @@ local contents beneath its title, next/previous and related lessons at its end.
 An overview introduces the full curriculum and a visual gallery indexes the labs.
 
 ```text
-Machine Learning Systems Atlas     section / chapter       Search
+AI Almanac     section / chapter       Search
 ----------------------------------------------------------------
 Overview                    | Chapter title
 Systems gallery             | Prerequisites / learning outcome

@@ -2,6 +2,10 @@ import "./atlas-ui.css";
 import "./course-guide.css";
 import "./landing.css";
 import { initializeMachinePlates } from "./machine-plate";
+import { initializeNumericalDiagrams } from "./numerical-diagrams";
+import { initializeReleaseFooter } from "./release";
+import "./ui-refinements.css";
+import "./almanac-design.css";
 import { initializeCourseGuide } from "./course-guide";
 
 const icon = (name: "search" | "diagram") => {
@@ -59,6 +63,8 @@ export function initializeAtlasUI() {
   initializeCourseGuide();
   initializeMachinePlates(document);
   initializeGalleryFilters();
+  initializeReleaseFooter();
+  initializeNumericalDiagrams();
   const syncPage = () => {
     const page = document.querySelector<HTMLElement>("#main-content > :not([hidden]):is(.chapter, .atlas-home, .atlas-gallery, .atlas-landing)");
     document.body.dataset.atlasPage = page?.id ?? "top";

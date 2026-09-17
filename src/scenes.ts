@@ -2,8 +2,6 @@ import * as THREE from "three";
 import { attachSceneNavigation } from "./scene-navigation";
 import { detailRackFaces, rackInfrastructureRoutes, attachRackSeparation } from "./rack-detail";
 import { rackSlotKinds } from "./rack-layout";
-import { createKernelScene } from "./kernel-scene";
-import { createRingScene } from "./ring-scene";
 import { RenderBudget } from "./render-budget";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import {
@@ -1543,8 +1541,6 @@ export function initializeScenes() {
   createGPUScene();
   createRackScene();
   createLPUScene();
-  createKernelScene(createSceneRig);
-  createRingScene(createSceneRig);
   document.querySelectorAll<HTMLElement>(".three-lab").forEach((host) => {
     const controls = host.querySelector(".three-controls");
     if (!controls) return;
