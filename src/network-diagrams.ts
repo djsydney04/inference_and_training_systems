@@ -10,7 +10,7 @@ const partBox = (x: number, y: number, w: number, title: string, sub: string, pa
 const line = (path: string, marker: string, extra = "") =>
   (path.match(/M[^M]+/g) ?? []).map(segment => `<path class="nn-wire ${extra}" d="${segment}" marker-end="url(#${marker})"/>`).join("");
 const start = (id: string, width: number, height: number, title: string, description: string) =>
-  `<svg viewBox="0 0 ${width} ${height}" class="nn-svg" aria-labelledby="${id}-title ${id}-desc"><title id="${id}-title">${title}</title><desc id="${id}-desc">${description}</desc><defs><marker id="${id}-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7" fill="#2559d6"/></marker></defs>`;
+  `<svg viewBox="0 0 ${width} ${height}" class="nn-svg" aria-labelledby="${id}-title ${id}-desc"><title id="${id}-title">${title}</title><desc id="${id}-desc">${description}</desc><defs><marker id="${id}-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7" fill="context-stroke"/></marker></defs>`;
 
 export function wholeNetworkDiagram(decode = false, grouped = false) {
   const s = networkShapes({ ...networkExample, kvHeads: grouped ? 1 : 2 }, decode);
@@ -35,39 +35,45 @@ export function wholeNetworkDiagram(decode = false, grouped = false) {
 
 export const attentionDiagram = () => {
   const a = "nn-attn-arrow";
-  return start("nn-attn", 760, 392, "Inside causal self-attention", "Normalized input splits into query, key and value projections. Position-rotated queries and keys produce masked scores; softmax weights mix values. Concatenated heads project back to the residual width.") +
-    line("M380 65V86H120V104M380 86V104M380 86H640V104M120 156V176H268V199M380 156V199M420 225H474M640 156V225H586M530 251V279M530 331V349H290", a) +
-    `<text x="653" y="195" class="nn-annotation">values</text>` +
-    partBox(260, 13, 240, "Normalized input", "[B, Tq, D]", "input") +
-    partBox(20, 104, 200, "Query · Q", "Wq → heads → RoPE", "query") +
-    partBox(280, 104, 200, "Key · K", "Wk → heads → RoPE → cache", "key") +
-    partBox(540, 104, 200, "Value · V", "Wv → heads → cache", "value") +
-    partBox(188, 199, 232, "Scores → causal softmax", "QKᵀ / √dh + mask", "scores") +
-    partBox(474, 199, 112, "Mix values", "P × V", "mix") +
-    partBox(418, 279, 224, "Join heads + Wo", "[B, Tq, D]", "project") +
-    `<text x="275" y="354" style="text-anchor:end" class="nn-node-title">Back to the residual addition</text></svg>`;
+  const mask = Array.from({length:16},(_,i)=>{const row=Math.floor(i/4),col=i%4;return `<rect class="nn-mask-cell ${col<=row?'is-visible':'is-masked'}" x="${88+col*22}" y="${380+row*22}" width="20" height="20"/>${col>row?`<text x="${98+col*22}" y="${395+row*22}" class="nn-mask-mark">×</text>`:''}`;}).join('');
+  return start("nn-attn", 800, 514, "Inside causal self-attention", "Queries and keys produce scores over token positions. A causal mask removes future positions before softmax. The resulting probabilities weight value vectors, then the heads are joined and projected.") +
+    `<rect class="nn-operation-region" x="32" y="104" width="736" height="111"/><text x="48" y="199" class="nn-annotation">Split into H query heads and Hkv key/value heads; apply RoPE to Q and K.</text>` +
+    line("M400 76V92H164V124M400 92V124M400 92H636V124M164 176V238H180V270M400 176V238H350V270M448 296H532M636 176V270M612 322V396M612 448V483",a) +
+    partBox(280,24,240,"Normalized input X","[B, Tq, D]","input") +
+    partBox(64,124,200,"Query Q","Linear Wq → RoPE","query") +
+    partBox(300,124,200,"Key K","Linear Wk → RoPE → cache","key") +
+    partBox(536,124,200,"Value V","Linear Wv → cache","value") +
+    partBox(88,270,360,"Scores → mask → softmax","P = softmax(QKᵀ / √dh + causal mask)","scores") +
+    partBox(532,270,160,"Weighted values","P × V","mix") +
+    partBox(480,396,264,"Join heads → Wo","[B, Tq, D]","project") +
+    `<text x="88" y="345" class="nn-annotation">Per head: [Tq, Tk] probabilities</text><text x="536" y="345" class="nn-annotation">Per head: [Tq, dh]</text>${mask}<text x="194" y="399" class="nn-annotation">Example: Tq = Tk = 4</text><text x="194" y="421" class="nn-annotation">Rows: query positions</text><text x="194" y="443" class="nn-annotation">Columns: key positions</text><text x="194" y="465" class="nn-annotation">× future key · masked before softmax</text><text x="612" y="506" class="nn-node-sub">To the residual addition</text></svg>`;
 };
 
 export const feedForwardDiagram = () => {
-  const a = "nn-ffn-arrow";
-  return start("nn-ffn", 760, 405, "Inside a SwiGLU feed-forward network", "One token's normalized vector branches into up and gate projections. SiLU transforms the gate. Elementwise multiplication combines the two expanded vectors. A down projection restores the residual width.") +
-    line("M380 66V85H195V108M380 85H565V108M195 160V214M565 160V180H352V240H300M195 266V281H380V300M380 352V389", a) +
-    `<text x="480" y="251" class="nn-annotation">Same operation for every token</text><text x="480" y="272" class="nn-annotation">No arrows between token positions</text>` +
-    partBox(260, 14, 240, "One normalized token", "D = 8 channels", "input") +
-    partBox(80, 108, 230, "Gate projection → SiLU", "8 → F = 24 channels", "gate") +
-    partBox(450, 108, 230, "Up projection", "8 → F = 24 channels", "up") +
-    partBox(80, 214, 230, "Elementwise product", "24 paired channels → 24", "multiply") +
-    partBox(260, 300, 240, "Down projection", "F = 24 → D = 8 channels", "down") +
-    `<text x="394" y="392" class="nn-annotation">Add update to this token’s residual</text></svg>`;
+  const a="nn-ffn-arrow";
+  const channels=(x:number,y:number,count:number)=>Array.from({length:count},(_,i)=>`<rect class="nn-channel" x="${x+i*9}" y="${y}" width="7" height="13"/>`).join('');
+  return start("nn-ffn",760,494,"Inside a SwiGLU feed-forward network","Two independent linear maps expand the same token to 24 channels. SiLU gates one branch; corresponding channels are multiplied. The down projection restores eight channels without mixing token positions.")+
+    line("M380 76V95H195V120M380 95H565V120M195 172V226H316V256M565 172V226H448V256M380 308V372M380 424V466",a)+
+    partBox(260,24,240,"One normalized token","D = 8 channels","input")+
+    partBox(80,120,230,"Gate projection → SiLU","Wgate [8, 24]","gate")+
+    partBox(450,120,230,"Up projection","Wup [8, 24]","up")+
+    channels(88,190,24)+channels(458,190,24)+
+    partBox(260,256,240,"Elementwise multiply","SiLU(xWgate) ⊙ (xWup)","multiply")+
+    channels(274,326,24)+
+    partBox(260,372,240,"Down projection","Wdown [24, 8]","down")+
+    channels(344,442,8)+
+    `<text x="65" y="284" class="nn-annotation">24 paired channels</text><text x="532" y="284" class="nn-annotation">Each token is processed</text><text x="532" y="306" class="nn-annotation">independently with</text><text x="532" y="328" class="nn-annotation">the same weights.</text><text x="380" y="490" text-anchor="middle" class="nn-annotation">8-channel update → residual addition</text></svg>`;
 };
 
 export const embeddingDiagram = () => {
-  const a = "nn-embed-arrow";
-  return start("nn-embed", 760, 228, "Embedding is a learned table lookup", "Illustrative token IDs 7, 2, 9 and 4 select four rows of a vocabulary by width weight table. The result has four token positions and eight channels.") +
-    `<text x="90" y="31" text-anchor="middle" class="nn-node-title">Token IDs</text><text x="364" y="31" text-anchor="middle" class="nn-node-title">Learned table E [32, 8]</text><text x="640" y="31" text-anchor="middle" class="nn-node-title">Activations X [1, 4, 8]</text>` +
-    [7, 2, 9, 4].map((id, row) => `<rect class="nn-tile" x="54" y="${53 + row * 39}" width="72" height="28"/><text x="90" y="${73 + row * 39}" text-anchor="middle" class="nn-node-title">${id}</text>` + line(`M126 ${67 + row * 39}H${245 + row * 8}`, a) +
-      Array.from({ length: 8 }, (_, col) => `<rect class="nn-cell" x="${268 + col * 25}" y="${53 + row * 39}" width="21" height="28" opacity="${.22 + ((id + col) % 5) * .15}"/><rect class="nn-cell" x="${555 + col * 22}" y="${53 + row * 39}" width="18" height="28" opacity="${.22 + ((id + col) % 5) * .15}"/>`).join("") + line(`M469 ${67 + row * 39}H546`, a)).join("") +
-    `<text x="380" y="220" text-anchor="middle" class="nn-annotation">Selected rows only · colors represent illustrative channel values, not trained embeddings</text></svg>`;
+  const a="nn-embed-arrow";
+  const ids=[7,2,9,4];
+  const values=[[.2,-.1,.8,0,.3,-.4,.1,.6],[-.3,.5,.1,.9,0,.2,-.2,.4],[.7,.1,-.5,.2,.6,0,.3,-.1],[0,.4,.2,-.3,.8,.1,.5,-.2]];
+  const row=(x:number,y:number,data:number[])=>data.map((value,c)=>`<rect class="nn-lookup-cell" x="${x+c*34}" y="${y}" width="32" height="30"/><text class="nn-lookup-value" x="${x+c*34+16}" y="${y+20}" text-anchor="middle">${value.toFixed(1)}</text>`).join('');
+  return start("nn-embed",900,256,"Embedding is an exact row lookup","Toy embedding values are copied without arithmetic. IDs 7, 2, 9 and 4 select those rows of E in the requested order; the same numerical vectors appear in the output.")+
+    `<text x="66" y="30" class="nn-node-title">IDs</text><text x="330" y="30" class="nn-node-title">E [32, 8] · selected rows</text><text x="723" y="30" class="nn-node-title">X [1, 4, 8] · token order</text>`+
+    ids.map((id,r)=>`<rect class="nn-tile" x="38" y="${53+r*39}" width="56" height="30"/><text x="66" y="${74+r*39}" class="nn-node-title">${id}</text>`+line(`M94 ${68+r*39}H171M470 ${68+r*39}H573`,a)+`<text x="190" y="${74+r*39}" class="nn-row-id" text-anchor="end">${id}</text>`+row(198,53+r*39,values[r])+row(582,53+r*39,values[r])).join('')+
+    `<text x="450" y="242" text-anchor="middle" class="nn-annotation">Declared toy weights · each output vector exactly copies its selected row · other vocabulary rows omitted</text></svg>`;
 };
 
 export const residualDiagram = () => {

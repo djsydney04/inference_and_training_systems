@@ -25,7 +25,7 @@ const start=(title:string)=>`<svg class="sb-svg" viewBox="0 0 1000 560" aria-lab
 
 function cabinet(x:number,y:number,w:number,label:string) {
   const h=212;
-  return `<g class="sb-cabinet" role="button" tabindex="0" data-system-part="rack" aria-label="Inspect ${label}"><path d="M${x+w} ${y}l12 -10v${h}l-12 10Z" fill="#aeb6ad"/><path d="M${x} ${y}l12 -10h${w}l-12 10Z" fill="#d7dbd1"/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#e9ece3" stroke="#778276"/>${Array.from({length:18},(_,i)=>`<rect x="${x+7}" y="${y+12+i*10}" width="${w-14}" height="7" fill="${i%6===2?"#2559d6":"#465449"}"/>`).join("")}<text x="${x+w/2}" y="${y+h+24}" class="sb-label">${label}</text><text x="${x+w/2}" y="${y+h+43}" class="sb-sub">72 GPUs</text></g>`;
+  return `<g class="sb-cabinet" role="button" tabindex="0" data-system-part="rack" aria-label="Inspect ${label}"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#38453b" stroke="#27382a"/><rect x="${x+6}" y="${y+8}" width="${w-12}" height="8" fill="#83968a"/>${rackSlotKinds.map((kind,i)=>`<rect x="${x+7}" y="${y+20+i*5.2}" width="${w-14}" height="4" fill="${kind==='compute'?'#e0e7d9':kind==='switch'?'#91ac8b':'#aeb8a8'}"/>`).join('')}<text x="${x+w/2}" y="${y+h+24}" class="sb-label">${label}</text><text x="${x+w/2}" y="${y+h+43}" class="sb-sub">72 GPUs</text></g>`;
 }
 
 function systemDiagram(count:number,plane:string) {
@@ -61,7 +61,7 @@ function rackDiagram() {
   svg+=node("switches",468,250,474,78,"9 switch trays","2 NVSwitch chips per tray · 18 switching endpoints");
   svg+=node("power",468,384,224,78,"8 power shelves","reference rack composition","sb-power");
   svg+=node("cooling",718,384,224,78,"Cooling manifolds","supply + return","sb-cooling");
-  return svg+`<text x="500" y="546" class="sb-sub">Functional grouping and spacing are schematic; use service documentation for physical slot positions.</text></svg>`;
+  return svg+`<text x="500" y="546" class="sb-sub">Tray group order follows the front view; spacing is simplified. Management switches and rear components omitted.</text></svg>`;
 }
 
 function trayDiagram() {

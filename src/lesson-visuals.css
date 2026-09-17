@@ -55,3 +55,22 @@
   .figure-tools { padding-inline: 14px; }
 }
 @media (prefers-reduced-motion: reduce) { .lv-node > rect { transition: none; } }
+
+/* Consistent technical plates: thin rules, explicit values and quiet inactive links. */
+.lesson-visual { background: #fcfcf9; }
+.lesson-visual figcaption > strong { font: 500 22px/1.35 var(--sans); letter-spacing: -.02em; }
+.lv-canvas { padding: 18px 12px 0; }
+.lv-svg { min-width: 730px; }
+.lv-node > .lv-node-body { fill: #f5f6f1; stroke: #c5cdc3; stroke-width: 1; }
+.lv-node.is-selected > .lv-node-body { fill: #edf2fc; stroke: #2559d6; stroke-width: 1.5; }
+.lv-node:hover > .lv-node-body { fill: #edf0e9; stroke: #72856c; }
+.lv-label { font: 500 16px var(--sans); fill: #252d28; }
+.lv-detail { font: 13px var(--sans); fill: #56645b; }
+.lv-index { font: 11px var(--mono, monospace); fill: #869284; }
+.lv-wire { stroke: #87958c; stroke-width: 1.4; }
+.lv-footnote { font: 11px var(--sans); fill: #6a756d; }
+.lv-node .lv-value-cell { fill: #f8faf6; stroke: #d1d8ce; stroke-width: .8; }
+.lv-node .lv-value-cell.is-dot-product { fill: #dce7f9; stroke: #97afd5; }
+.lv-value { font: 14px var(--mono, monospace); fill: #203249; }
+.lv-selection { margin-top: 8px; }
+.lv-selection strong { font: 500 17px/1.5 var(--sans); }

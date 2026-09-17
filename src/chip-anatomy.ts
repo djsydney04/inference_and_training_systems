@@ -6,11 +6,8 @@ const escape = (value: string) => value.replace(/[&<>"']/g, c => ({ "&": "&amp;"
 const width = 196, height = 90;
 
 function internals(part: ChipPart) {
-  const x = part.x + 15, y = part.y + 65;
-  if (part.kind === "memory") return Array.from({ length: 12 }, (_, i) => `<rect x="${x + i * 14}" y="${y}" width="9" height="11"/>`).join("");
-  if (part.kind === "compute") return Array.from({ length: 18 }, (_, i) => `<rect x="${x + (i % 9) * 19}" y="${y - 3 + Math.floor(i / 9) * 9}" width="13" height="5"/>`).join("");
-  if (part.kind === "control") return `<path d="M${x} ${y + 5}h22v-9h27v16h27v-10h30v8h24v-13h30"/>`;
-  return `<path d="M${x} ${y}h50l28 10h87M${x} ${y + 10}h50l28-10h87"/>`;
+  const name = {memory:"Storage",compute:"Arithmetic",control:"Control",link:"Transfer path"}[part.kind];
+  return `<path d="M${part.x+14} ${part.y+59}H${part.x+182}"/><text class="chip-kind-label" x="${part.x+14}" y="${part.y+78}">${name}</text>`;
 }
 
 function diagram(view: ChipView) {
@@ -33,7 +30,7 @@ function diagram(view: ChipView) {
     return `<path class="chip-wire${e.control ? " is-control" : ""}" data-chip-edge="${e.from}:${e.to}" d="${points.map((p, i) => `${i ? "L" : "M"}${p[0]} ${p[1]}`).join(" ")}" marker-end="url(#${arrow})"/>`;
   }).join("");
   const nodes = view.parts.map(p => `<g class="chip-node chip-${p.kind}" data-chip-part="${p.id}" role="button" tabindex="0" aria-pressed="false" aria-label="Inspect ${escape(p.label)}"><title>${escape(p.label)}: ${escape(p.detail)}</title><rect class="chip-node-body" x="${p.x}" y="${p.y}" width="${width}" height="${height}"/><text class="chip-node-label" x="${p.x + 14}" y="${p.y + 26}">${escape(p.label)}</text><text class="chip-node-detail" x="${p.x + 14}" y="${p.y + 46}">${escape(p.detail)}</text><g class="chip-internals" aria-hidden="true">${internals(p)}</g>${p.open ? `<text class="chip-open-mark" x="${p.x + width - 18}" y="${p.y + 76}" aria-hidden="true">↗</text>` : ""}</g>`).join("");
-  return `<svg viewBox="0 0 988 ${bottom}" class="chip-svg" aria-labelledby="${view.id}-title ${view.id}-description"><title id="${view.id}-title">${escape(view.title)}</title><desc id="${view.id}-description">Select a named component or use the component menu. Arrows show directed relationships; dashed arrows show control. Cell patterns identify storage, arithmetic, control and links rather than physical counts.</desc><defs><marker id="${arrow}" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7" fill="context-stroke"/></marker></defs>${edges}${nodes}</svg>`;
+  return `<svg viewBox="0 0 988 ${bottom}" class="chip-svg" aria-labelledby="${view.id}-title ${view.id}-description"><title id="${view.id}-title">${escape(view.title)}</title><desc id="${view.id}-description">Select a named component or use the component menu. Arrows show directed relationships; dashed arrows show control. Component footers identify storage, arithmetic, control and transfer paths. Sizes do not encode resource counts.</desc><defs><marker id="${arrow}" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7" fill="context-stroke"/></marker></defs>${edges}${nodes}</svg>`;
 }
 
 function viewMarkup(view: ChipView, first: boolean) {
