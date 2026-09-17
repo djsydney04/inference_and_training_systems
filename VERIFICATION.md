@@ -1,5 +1,45 @@
 # Verification record — textbook expansion
 
+## September 16, 2026 — popular frameworks and earlier learning gaps
+
+Added fourteen framework lessons and four bridges in post-training, inference,
+CUDA and profiling. Thirteen original figures connect framework roles,
+derivatives, tracing, labels, distributed normalization, adapters, model/API/cache
+contracts, deployment, replay and asynchronous timing. Canonical labels and
+learning paths integrate them with the existing beginner-to-systems sequence.
+
+**168 Node tests and 14 new standard-library Python tests pass.** Actual native
+CPU PyTorch 2.8.0 and JAX 0.6.2 runs agree with a scalar reference on five cases,
+every gradient and updated parameter, with maximum absolute error 2.22e-16.
+Three graph calls also pass: two Dynamo captures (eager backend, not Inductor)
+and two JAX/XLA CPU specializations. A Transformers 4.57.1/PEFT 0.17.0 CPU run
+checks labels, all gradients, three updates, model/tokenizer restoration,
+adapter restoration and FP32 merge/reload. No Hub model or dataset is downloaded
+by these companion runs.
+
+The new TensorFlow/Keras comparison remains unexecuted after its temporary
+installation exceeded available disk. CUDA replay and accelerator timing are
+syntax-checked examples awaiting a GPU. These evidence boundaries are visible
+in the lessons and companion READMEs. Earlier TensorFlow companion verification
+below applies to its separate programs and environment.
+
+TypeScript and production builds pass. The integrated reader has **31 chapters,
+six learning paths, 184 sections, 191 figures, 89 code listings, 133 checks,
+280 source entries and 54 optional deep dives**. All 34 pages at 1440, 1280,
+820, 390 and 320 pixels pass: **170 page/width checks** with no document overflow,
+duplicate IDs, missing internal targets, numbering errors or mismatched titles.
+The production UI suite also passes all 12 checks across four widths. Controls,
+keyboard scrolling, expanded-figure state/focus and desktop/mobile screenshots
+were checked separately. A reported mobile skip-link overlay was not reproducible:
+the link remains above the viewport when a diagram slider has focus.
+
+The [frameworks audit](docs/FRAMEWORKS_AUDIT_2026-09-16.md) records all lesson
+anchors, primary sources, pinned environments, calculations and remaining
+target-hardware experiments. Work is isolated on `codex/atlas-learning-clarity`
+and repeatedly rebased on concurrent GitHub changes. The latest integration
+includes main through `0b85b1e`, including AI Almanac illustrations and nested
+diagram playback. The shared checkout was not edited, stashed or reset.
+
 ## September 16, 2026 — automatic diagram walkthroughs
 
 154 diagram surfaces now have automatic playback, including all 88 lesson
