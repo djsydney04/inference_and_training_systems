@@ -10,12 +10,6 @@
 .notebook-scroll .notebook-small { font-size: 16px; }
 .notebook-ink { fill: none; stroke: var(--ink); stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; }
 .notebook-blue { stroke: var(--signal); stroke-width: 2; }
-.notebook-selected .notebook-ink { stroke: var(--signal); stroke-width: 2.4; }
-.notebook-selected text { fill: var(--signal); font-weight: 600; }
-.notebook-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 8px 24px 12px; }
-.notebook-controls button { border: 1px solid var(--rule); padding: 8px 12px; background: transparent; color: var(--ink); font: 13px/1.5 var(--sans); cursor: pointer; }
-.notebook-controls button:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
-.notebook-controls p { flex-basis: 100%; margin: 0; max-width: 68ch; font: 15px/1.7 var(--serif); }
 .notebook-figure > .figure-boundary { padding: 8px 24px 20px; }
 @media (max-width: 680px) {
   .notebook-scroll::after { content: "Scroll to follow the full drawing."; display: block; position: sticky; left: 0; width: fit-content; padding-top: 14px; font: 12px/1.6 var(--sans); color: var(--graphite); }
