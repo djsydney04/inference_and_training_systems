@@ -8,7 +8,7 @@ type View = { id: string; title: string; boundary: string; source: string; sourc
 const hopper = "https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/";
 const gb200 = "https://docs.nvidia.com/dgx/dgxgb200-user-guide/hardware.html";
 const amd = "https://instinct.docs.amd.com/projects/amdgpu-docs/en/latest/gpu-partitioning/mi300x/overview.html";
-const tsp = "https://doi.org/10.1109/ISCA45697.2020.00023";
+const tsp = "https://arxiv.org/abs/2206.11062";
 const esc = (s: string) => s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]!);
 const text = (x: number, y: number, value: string, cls = "hd-label", anchor = "start") => `<text x="${x}" y="${y}" class="${cls}" text-anchor="${anchor}">${esc(value)}</text>`;
 const rect = (x: number, y: number, w: number, h: number, cls = "hd-outline") => `<rect x="${x}" y="${y}" width="${w}" height="${h}" class="${cls}"/>`;
@@ -110,13 +110,13 @@ function trayTop() {
 }
 function groq() {
   let d=tag(32,28,"Groq Tensor Streaming Processor · published 2020 architecture")+tag(32,54,"Functional organization · instruction flow is vertical; operand streams are horizontal");
-  const names=["Memory","Vector","Shuffle","Matrix","Shuffle","Vector","Memory"];
-  const ids=["memory","vector","shuffle","matrix","shuffle","vector","memory"];
+  const names=["Matrix","Shuffle","Memory","Vector","Memory","Shuffle","Matrix"];
+  const ids=["matrix","shuffle","memory","vector","memory","shuffle","matrix"];
   d+=block("instructions",36,79,808,48,"Compiler-scheduled instruction streams","","control");
   for(let i=0;i<7;i++){
     const x=36+i*117;
     d+=line(`M${x+53} 127V159`,"hd-instruction");
-    d+=block(ids[i],x,160,106,288,names[i],"",i===0||i===6?"memory":"compute");
+    d+=block(ids[i],x,160,106,288,names[i],"",ids[i]==="memory"?"memory":"compute");
   }
   for(let lane=0;lane<4;lane++) d+=line(`M49 ${223+lane*54}H830`,"hd-stream");
   d+=group("streams","Horizontal operand streams",text(440,477,"Data streams pass between functional slices","hd-emphasis","middle"));
@@ -155,7 +155,7 @@ const views: View[] = [
     {id:"dpu",title:"Two BlueField-3 DPUs",note:"Two DPUs provide infrastructure and network processing. They are distinct from both the Grace application CPUs and the ConnectX adapters."},
     {id:"storage",title:"Storage and management",note:"The tray has four E1.S data NVMe drives plus a separate M.2 boot drive. The front service zone also exposes management interfaces; this box summarizes the region."},
     {id:"cooling",title:"Liquid-cooling connections",note:"Rack manifolds supply and return coolant for the CPU and GPU cold plates. The blue lines locate the rear liquid connection zone; they do not claim the internal plumbing route."}],draw:trayTop},
-  {id:"groq-slices",title:"Groq: slices and streams",source:tsp,sourceName:"Abts et al. · ISCA 2020 Tensor Streaming Processor",boundary:"This view explains the published first-generation TSP. It is a functional slice diagram, not an exact die floorplan, not a current Groq product specification, and not a CUDA-style collection of SMs.",parts:[
+  {id:"groq-slices",title:"Groq: slices and streams",source:tsp,sourceName:"Groq authors · Answer Fast: Accelerating BERT on the TSP · Figure 1",boundary:"This view explains the first-generation TSP organization in the authors’ 2022 paper: matrix units at the outside, shuffle units inside them, SRAM beside the central vector unit. It is a functional slice diagram, not an exact die floorplan or a current Groq product specification.",parts:[
     {id:"instructions",title:"Compiler-scheduled control",note:"The compiler schedules work across functional slices. Instruction distribution and operand streaming are separate paths."},
     {id:"memory",title:"On-chip SRAM slices",note:"Memory slices read and write explicitly scheduled on-chip state. These are not a demand-filled GPU cache hierarchy."},
     {id:"vector",title:"Vector arithmetic",note:"Vector units perform elementwise and other non-matrix work required between matrix operations."},
