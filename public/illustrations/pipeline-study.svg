@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 560" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">A pipeline across devices</title>
+<desc id="desc">Rows of scheduled work are staggered across six devices. Hatched slots indicate idle positions, and blue connects dependent work between stages. Durations and the schedule are illustrative.</desc>
+<defs>
+<pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse">
+<path d="M-1 1L1-1M0 5L5 0M4 6L6 4" stroke="#939d86" stroke-width=".55"/>
+</pattern>
+<pattern id="fine" width="4" height="4" patternUnits="userSpaceOnUse">
+<path d="M0 0H4" stroke="#8fa181" stroke-width=".55"/>
+</pattern>
+<marker id="arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto">
+<path d="M0 0L6 3L0 6" fill="#2559d6"/>
+</marker>
+</defs>
+<g stroke="#bcc3b4" stroke-width=".8">
+<path d="M28 54V28H54M786 28H812V54M28 506V532H54M786 532H812V506M410 28H430M420 18V38M410 532H430M420 522V542"/>
+</g>
+<rect x="65" y="92" width="44" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<path d="M121 140H774" stroke="#9bab91" stroke-width="0.6" fill="none" />
+<rect x="134" y="92" width="42" height="42" fill="#dce3d4" stroke="#61775b" stroke-width=".8" />
+<rect x="182" y="92" width="42" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<rect x="230" y="92" width="42" height="42" fill="#2559d6" stroke="#61775b" stroke-width=".8" />
+<rect x="278" y="92" width="42" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<rect x="326" y="92" width="42" height="42" fill="#dce3d4" stroke="#61775b" stroke-width=".8" />
+<rect x="374" y="92" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="422" y="92" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="470" y="92" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="518" y="92" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="566" y="92" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="614" y="92" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="662" y="92" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="710" y="92" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<path d="M155 136V148H203V155" stroke="#2559d6" stroke-width="1.2" fill="none" marker-end="url(#arrow)"/>
+<rect x="65" y="157" width="44" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<path d="M121 205H774" stroke="#9bab91" stroke-width="0.6" fill="none" />
+<rect x="134" y="157" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="182" y="157" width="42" height="42" fill="#dce3d4" stroke="#61775b" stroke-width=".8" />
+<rect x="230" y="157" width="42" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<rect x="278" y="157" width="42" height="42" fill="#2559d6" stroke="#61775b" stroke-width=".8" />
+<rect x="326" y="157" width="42" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<rect x="374" y="157" width="42" height="42" fill="#dce3d4" stroke="#61775b" stroke-width=".8" />
+<rect x="422" y="157" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="470" y="157" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="518" y="157" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="566" y="157" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="614" y="157" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="662" y="157" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="710" y="157" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<path d="M203 201V213H251V220" stroke="#2559d6" stroke-width="1.2" fill="none" marker-end="url(#arrow)"/>
+<rect x="65" y="222" width="44" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<path d="M121 270H774" stroke="#9bab91" stroke-width="0.6" fill="none" />
+<rect x="134" y="222" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="182" y="222" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="230" y="222" width="42" height="42" fill="#dce3d4" stroke="#61775b" stroke-width=".8" />
+<rect x="278" y="222" width="42" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<rect x="326" y="222" width="42" height="42" fill="#2559d6" stroke="#61775b" stroke-width=".8" />
+<rect x="374" y="222" width="42" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<rect x="422" y="222" width="42" height="42" fill="#dce3d4" stroke="#61775b" stroke-width=".8" />
+<rect x="470" y="222" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="518" y="222" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="566" y="222" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="614" y="222" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="662" y="222" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="710" y="222" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<path d="M251 266V278H299V285" stroke="#2559d6" stroke-width="1.2" fill="none" marker-end="url(#arrow)"/>
+<rect x="65" y="287" width="44" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<path d="M121 335H774" stroke="#9bab91" stroke-width="0.6" fill="none" />
+<rect x="134" y="287" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="182" y="287" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="230" y="287" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="278" y="287" width="42" height="42" fill="#dce3d4" stroke="#61775b" stroke-width=".8" />
+<rect x="326" y="287" width="42" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<rect x="374" y="287" width="42" height="42" fill="#2559d6" stroke="#61775b" stroke-width=".8" />
+<rect x="422" y="287" width="42" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<rect x="470" y="287" width="42" height="42" fill="#dce3d4" stroke="#61775b" stroke-width=".8" />
+<rect x="518" y="287" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="566" y="287" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="614" y="287" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="662" y="287" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="710" y="287" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<path d="M299 331V343H347V350" stroke="#2559d6" stroke-width="1.2" fill="none" marker-end="url(#arrow)"/>
+<rect x="65" y="352" width="44" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<path d="M121 400H774" stroke="#9bab91" stroke-width="0.6" fill="none" />
+<rect x="134" y="352" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="182" y="352" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="230" y="352" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="278" y="352" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="326" y="352" width="42" height="42" fill="#dce3d4" stroke="#61775b" stroke-width=".8" />
+<rect x="374" y="352" width="42" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<rect x="422" y="352" width="42" height="42" fill="#2559d6" stroke="#61775b" stroke-width=".8" />
+<rect x="470" y="352" width="42" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<rect x="518" y="352" width="42" height="42" fill="#dce3d4" stroke="#61775b" stroke-width=".8" />
+<rect x="566" y="352" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="614" y="352" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="662" y="352" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="710" y="352" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<path d="M347 396V408H395V415" stroke="#2559d6" stroke-width="1.2" fill="none" marker-end="url(#arrow)"/>
+<rect x="65" y="417" width="44" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<path d="M121 465H774" stroke="#9bab91" stroke-width="0.6" fill="none" />
+<rect x="134" y="417" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="182" y="417" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="230" y="417" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="278" y="417" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="326" y="417" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="374" y="417" width="42" height="42" fill="#dce3d4" stroke="#61775b" stroke-width=".8" />
+<rect x="422" y="417" width="42" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<rect x="470" y="417" width="42" height="42" fill="#2559d6" stroke="#61775b" stroke-width=".8" />
+<rect x="518" y="417" width="42" height="42" fill="url(#fine)" stroke="#61775b" stroke-width=".8" />
+<rect x="566" y="417" width="42" height="42" fill="#dce3d4" stroke="#61775b" stroke-width=".8" />
+<rect x="614" y="417" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="662" y="417" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<rect x="710" y="417" width="42" height="42" fill="url(#hatch)" stroke="#c9d1c1" stroke-width=".8" />
+<path d="M134 490H754" stroke="#61775b" stroke-width="1" fill="none" marker-end="url(#arrow)"/>
+<path d="M134 484v7" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<path d="M182 484v7" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<path d="M230 484v7" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<path d="M278 484v7" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<path d="M326 484v7" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<path d="M374 484v7" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<path d="M422 484v7" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<path d="M470 484v7" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<path d="M518 484v7" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<path d="M566 484v7" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<path d="M614 484v7" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<path d="M662 484v7" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<path d="M710 484v7" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<path d="M758 484v7" stroke="#9bab91" stroke-width="0.8" fill="none" />
+</svg>

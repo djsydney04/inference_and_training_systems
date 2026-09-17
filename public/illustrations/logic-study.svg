@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 560" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Logic between clock edges</title>
+<desc id="desc">Fine wires connect combinational gates between two registers. A clock waveform sits underneath. Blue highlights a data path; this illustration does not specify a complete circuit or timing budget.</desc>
+<defs>
+<pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse">
+<path d="M-1 1L1-1M0 5L5 0M4 6L6 4" stroke="#939d86" stroke-width=".55"/>
+</pattern>
+<pattern id="fine" width="4" height="4" patternUnits="userSpaceOnUse">
+<path d="M0 0H4" stroke="#8fa181" stroke-width=".55"/>
+</pattern>
+<marker id="arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto">
+<path d="M0 0L6 3L0 6" fill="#2559d6"/>
+</marker>
+</defs>
+<g stroke="#bcc3b4" stroke-width=".8">
+<path d="M28 54V28H54M786 28H812V54M28 506V532H54M786 532H812V506M410 28H430M420 18V38M410 532H430M420 522V542"/>
+</g>
+<rect x="93" y="152" width="70" height="116" fill="#edf0e6" stroke="#61775b" stroke-width=".8" />
+<path d="M93 237l10 7-10 7M110 168h35m-35 9h35m-35 9h22" stroke="#61775b" stroke-width="0.8" fill="none" />
+<rect x="670" y="152" width="70" height="116" fill="#edf0e6" stroke="#61775b" stroke-width=".8" />
+<path d="M670 237l10 7-10 7M687 168h35m-35 9h35m-35 9h22" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M265 118h25a30 30 0 0 1 0 60h-25Z" stroke="#61775b" fill="#dce4d4"/>
+<path d="M265 272h25a30 30 0 0 1 0 60h-25Z" stroke="#61775b" fill="#dce4d4"/>
+<path d="M480 195h25a30 30 0 0 1 0 60h-25Z" stroke="#61775b" fill="#dce4d4"/>
+<path d="M163 176H211V133H265M163 224H229V287H265M163 248H193V317H265M320 148H387V210H480M320 302H408V240H480M535 225H670" stroke="#2559d6" stroke-width="1.5" fill="none" />
+<path d="M66 104H218V163H265M66 352H375V258H457V240H480" stroke="#61775b" stroke-width="1" fill="none" />
+<rect x="363" y="86" width="10" height="18" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="379" y="86" width="10" height="18" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="395" y="86" width="10" height="18" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="411" y="86" width="10" height="18" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="427" y="86" width="10" height="18" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<path d="M128 268V392H705V268M128 392V421" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M82 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M134 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M186 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M238 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M290 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M342 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M394 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M446 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M498 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M550 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M602 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M654 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M706 464h13v-24h26v24h13" stroke="#61775b" stroke-width="0.8" fill="none" />
+<path d="M65 421H772" stroke="#9bab91" stroke-width="0.7" fill="none" stroke-dasharray="3 5"/>
+<circle cx="128" cy="392" r="3" fill="#61775b"/>
+<circle cx="408" cy="302" r="2" fill="#61775b"/>
+</svg>

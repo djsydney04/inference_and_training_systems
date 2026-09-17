@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 560" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">A collective over logical ranks</title>
+<desc id="desc">Eight logical ranks pass chunks around a directed ring. Blue marks one chunk within each rank and selected transfers. Physical links and exact reduction steps belong to the numerical workbench.</desc>
+<defs>
+<pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse">
+<path d="M-1 1L1-1M0 5L5 0M4 6L6 4" stroke="#939d86" stroke-width=".55"/>
+</pattern>
+<pattern id="fine" width="4" height="4" patternUnits="userSpaceOnUse">
+<path d="M0 0H4" stroke="#8fa181" stroke-width=".55"/>
+</pattern>
+<marker id="arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto">
+<path d="M0 0L6 3L0 6" fill="#2559d6"/>
+</marker>
+</defs>
+<g stroke="#bcc3b4" stroke-width=".8">
+<path d="M28 54V28H54M786 28H812V54M28 506V532H54M786 532H812V506M410 28H430M420 18V38M410 532H430M420 522V542"/>
+</g>
+<path d="M471.81948952138714 108.09585622000225L552.0282735871152 137.796496041673" stroke="#2559d6" stroke-width="1.8" fill="none" marker-end="url(#arrow)"/>
+<rect x="376" y="64" width="88" height="64" fill="#edf0e6" stroke="#61775b" stroke-width=".8" />
+<rect x="385" y="75" width="14" height="42" fill="#2559d6" stroke="#2559d6" stroke-width=".8" />
+<rect x="404" y="75" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="423" y="75" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="442" y="75" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<path d="M631.1252156914444 187.0030111887566L652.722547417058 242.88934107291865" stroke="#2559d6" stroke-width="1.8" fill="none" marker-end="url(#arrow)"/>
+<rect x="559.8477631085024" y="117.89235226167526" width="88" height="64" fill="#edf0e6" stroke="#61775b" stroke-width=".8" />
+<rect x="568.8477631085024" y="128.89235226167526" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="587.8477631085024" y="128.89235226167526" width="14" height="42" fill="#2559d6" stroke="#2559d6" stroke-width=".8" />
+<rect x="606.8477631085024" y="128.89235226167526" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="625.8477631085024" y="128.89235226167526" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<path d="M652.722547417058 317.1106589270814L631.1252156914444 372.9969888112434" stroke="#61775b" stroke-width="0.9" fill="none" marker-end="url(#arrow)"/>
+<rect x="636" y="248" width="88" height="64" fill="#edf0e6" stroke="#61775b" stroke-width=".8" />
+<rect x="645" y="259" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="664" y="259" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="683" y="259" width="14" height="42" fill="#2559d6" stroke="#2559d6" stroke-width=".8" />
+<rect x="702" y="259" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<path d="M552.0282735871152 422.203503958327L471.81948952138714 451.90414377999775" stroke="#61775b" stroke-width="0.9" fill="none" marker-end="url(#arrow)"/>
+<rect x="559.8477631085024" y="378.1076477383248" width="88" height="64" fill="#edf0e6" stroke="#61775b" stroke-width=".8" />
+<rect x="568.8477631085024" y="389.1076477383248" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="587.8477631085024" y="389.1076477383248" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="606.8477631085024" y="389.1076477383248" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="625.8477631085024" y="389.1076477383248" width="14" height="42" fill="#2559d6" stroke="#2559d6" stroke-width=".8" />
+<path d="M368.18051047861286 451.90414377999775L287.97172641288483 422.203503958327" stroke="#61775b" stroke-width="0.9" fill="none" marker-end="url(#arrow)"/>
+<rect x="376" y="432" width="88" height="64" fill="#edf0e6" stroke="#61775b" stroke-width=".8" />
+<rect x="385" y="443" width="14" height="42" fill="#2559d6" stroke="#2559d6" stroke-width=".8" />
+<rect x="404" y="443" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="423" y="443" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="442" y="443" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<path d="M208.8747843085556 372.99698881124345L187.27745258294206 317.1106589270813" stroke="#61775b" stroke-width="0.9" fill="none" marker-end="url(#arrow)"/>
+<rect x="192.15223689149767" y="378.1076477383248" width="88" height="64" fill="#edf0e6" stroke="#61775b" stroke-width=".8" />
+<rect x="201.15223689149767" y="389.1076477383248" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="220.15223689149767" y="389.1076477383248" width="14" height="42" fill="#2559d6" stroke="#2559d6" stroke-width=".8" />
+<rect x="239.15223689149767" y="389.1076477383248" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="258.15223689149764" y="389.1076477383248" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<path d="M187.27745258294206 242.88934107291865L208.87478430855555 187.0030111887566" stroke="#61775b" stroke-width="0.9" fill="none" marker-end="url(#arrow)"/>
+<rect x="116" y="248" width="88" height="64" fill="#edf0e6" stroke="#61775b" stroke-width=".8" />
+<rect x="125" y="259" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="144" y="259" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="163" y="259" width="14" height="42" fill="#2559d6" stroke="#2559d6" stroke-width=".8" />
+<rect x="182" y="259" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<path d="M287.9717264128848 137.796496041673L368.18051047861286 108.09585622000225" stroke="#61775b" stroke-width="0.9" fill="none" marker-end="url(#arrow)"/>
+<rect x="192.1522368914976" y="117.89235226167526" width="88" height="64" fill="#edf0e6" stroke="#61775b" stroke-width=".8" />
+<rect x="201.1522368914976" y="128.89235226167526" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="220.1522368914976" y="128.89235226167526" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="239.1522368914976" y="128.89235226167526" width="14" height="42" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="258.15223689149764" y="128.89235226167526" width="14" height="42" fill="#2559d6" stroke="#2559d6" stroke-width=".8" />
+<ellipse cx="420" cy="280" rx="170" ry="110" stroke="#9bab91" stroke-width=".6" stroke-dasharray="3 6"/>
+<path d="M354 280H486M420 214V346" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<rect x="406" y="266" width="28" height="28" fill="url(#hatch)" stroke="#61775b" stroke-width=".8" />
+</svg>

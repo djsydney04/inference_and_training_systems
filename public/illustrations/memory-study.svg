@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 560" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Layers of memory</title>
+<desc id="desc">Narrow local storage connects to progressively wider layers of cache and memory. Hatching suggests banks; blue follows an access. Widths are illustrative and do not encode capacity, bandwidth, or latency.</desc>
+<defs>
+<pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse">
+<path d="M-1 1L1-1M0 5L5 0M4 6L6 4" stroke="#939d86" stroke-width=".55"/>
+</pattern>
+<pattern id="fine" width="4" height="4" patternUnits="userSpaceOnUse">
+<path d="M0 0H4" stroke="#8fa181" stroke-width=".55"/>
+</pattern>
+<marker id="arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto">
+<path d="M0 0L6 3L0 6" fill="#2559d6"/>
+</marker>
+</defs>
+<g stroke="#bcc3b4" stroke-width=".8">
+<path d="M28 54V28H54M786 28H812V54M28 506V532H54M786 532H812V506M410 28H430M420 18V38M410 532H430M420 522V542"/>
+</g>
+<rect x="335" y="82" width="170" height="69" fill="#edf0e6" stroke="#61775b" stroke-width=".8" />
+<rect x="347" y="94" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="367" y="94" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="387" y="94" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="407" y="94" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="427" y="94" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="447" y="94" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="467" y="94" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<path d="M360 151V165H300V184" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M375 151V165H330V184" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M390 151V165H360V184" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M405 151V165H390V184" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M420 151V165H420V184" stroke="#2559d6" stroke-width="1.5" fill="none" />
+<path d="M435 151V165H450V184" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M450 151V165H480V184" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M465 151V165H510V184" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M480 151V165H540V184" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M318 82h-8v69h8M522 82h8v69h-8" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<rect x="275" y="184" width="290" height="69" fill="#edf0e6" stroke="#61775b" stroke-width=".8" />
+<rect x="287" y="196" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="307" y="196" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="327" y="196" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="347" y="196" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="367" y="196" width="14" height="44" fill="#2559d6" stroke="#9bab91" stroke-width=".8" />
+<rect x="387" y="196" width="14" height="44" fill="#2559d6" stroke="#9bab91" stroke-width=".8" />
+<rect x="407" y="196" width="14" height="44" fill="#2559d6" stroke="#9bab91" stroke-width=".8" />
+<rect x="427" y="196" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="447" y="196" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="467" y="196" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="487" y="196" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="507" y="196" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="527" y="196" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<path d="M300 253V267H235V286" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M330 253V267H281.25V286" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M360 253V267H327.5V286" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M390 253V267H373.75V286" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M420 253V267H420V286" stroke="#2559d6" stroke-width="1.5" fill="none" />
+<path d="M450 253V267H466.25V286" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M480 253V267H512.5V286" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M510 253V267H558.75V286" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M540 253V267H605V286" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M258 184h-8v69h8M582 184h8v69h-8" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<rect x="210" y="286" width="420" height="69" fill="#edf0e6" stroke="#61775b" stroke-width=".8" />
+<rect x="222" y="298" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="242" y="298" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="262" y="298" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="282" y="298" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="302" y="298" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="322" y="298" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="342" y="298" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="362" y="298" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="382" y="298" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="402" y="298" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="422" y="298" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="442" y="298" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="462" y="298" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="482" y="298" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="502" y="298" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="522" y="298" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="542" y="298" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="562" y="298" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="582" y="298" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="602" y="298" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<path d="M235 355V369H145V388" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M281.25 355V369H213.75V388" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M327.5 355V369H282.5V388" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M373.75 355V369H351.25V388" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M420 355V369H420V388" stroke="#2559d6" stroke-width="1.5" fill="none" />
+<path d="M466.25 355V369H488.75V388" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M512.5 355V369H557.5V388" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M558.75 355V369H626.25V388" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M605 355V369H695V388" stroke="#9bab91" stroke-width="0.7" fill="none" />
+<path d="M193 286h-8v69h8M647 286h8v69h-8" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<rect x="120" y="388" width="600" height="69" fill="#edf0e6" stroke="#61775b" stroke-width=".8" />
+<rect x="132" y="400" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="152" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="172" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="192" y="400" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="212" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="232" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="252" y="400" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="272" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="292" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="312" y="400" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="332" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="352" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="372" y="400" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="392" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="412" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="432" y="400" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="452" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="472" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="492" y="400" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="512" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="532" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="552" y="400" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="572" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="592" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="612" y="400" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="632" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="652" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<rect x="672" y="400" width="14" height="44" fill="url(#fine)" stroke="#9bab91" stroke-width=".8" />
+<rect x="692" y="400" width="14" height="44" fill="#dce3d4" stroke="#9bab91" stroke-width=".8" />
+<path d="M103 388h-8v69h8M737 388h8v69h-8" stroke="#9bab91" stroke-width="0.8" fill="none" />
+<path d="M89 81V456M83 81h12M83 456h12M738 456H768" stroke="#61775b" stroke-width="0.8" fill="none" />
+</svg>
