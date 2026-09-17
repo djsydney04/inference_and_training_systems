@@ -26,9 +26,9 @@ quantization and calibration, three on MoE routing/ownership/derivatives, and fo
 on serving iteration/admission/arrivals/measurement. Each addition has numerical
 diagrams, worked checks, primary sources and an executable CPU companion. The
 reader retains the concurrent course-guide and Programming-group changes from
-GitHub `main` through `0456713`.
+GitHub `main` through `a124515`.
 
-**135 Node tests and 23 new standard-library Python checks pass.** The new Node
+**138 Node tests and 23 new standard-library Python checks pass.** The new Node
 tests comprise 8 serving, 9 sharding, 7 quantization and 7 MoE checks. CPU evidence
 includes complete AdamW updates and checkpoint redistribution, real INT4 packing,
 independent dense MoE outputs/finite differences, and trace accounting. A separate
@@ -36,10 +36,13 @@ cross-review checked 2,520 MoE finite-difference coordinates (maximum discrepanc
 2.56e-11), 576 capacity configurations and 350 small conservative-admission cases.
 
 TypeScript and production build pass. The existing bundle advisory remains:
-main JavaScript is approximately 1,075 kB minified / 359 kB gzip. Production DOM:
-29 chapters, 158 sections, 170 figures, 71 code listings, 109 checks, 219 source
-entries and 34 deep dives. The totals include the incoming system-buildout lesson.
-All 31 pages pass at 1440, 1280, 820, 390 and 320 pixels: **155 checks, no document
+main JavaScript is approximately 1,104 kB minified / 369 kB gzip. Production DOM:
+30 chapters, 163 sections, 175 figures, 77 code listings, 114 checks, 225 source
+entries and 34 deep dives. The totals include the incoming system-buildout lesson
+and cross-platform kernel chapter. The latter's C++ CPU reference passes five
+cases with AddressSanitizer and UndefinedBehaviorSanitizer; CUDA/HIP device
+compilation and execution remain unverified here.
+All 32 pages pass at 1440, 1280, 820, 390 and 320 pixels: **160 checks, no document
 overflow**, duplicate IDs, missing internal targets, numbering errors or title
 mismatches. New controls, keyboard operation and figure popouts were checked
 separately. Scoped research dates survive generated section labels.

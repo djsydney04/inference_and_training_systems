@@ -63,6 +63,7 @@ reviews record dated disclosures and corrected comparisons in
 | [C](examples/c-basics/README.md) | Ownership, padded/transpose views and reference matmul | C17 compiler; ASan/UBSan |
 | [CUDA](examples/cuda/LEARNING_PATH.md) | Reductions, softmax/RMSNorm derivatives and Triton | NVIDIA CUDA host required for device execution |
 | [CUDA to PyTorch](examples/cuda/TORCH_RMSNORM.md) | Custom autograd operation and complete AdamW update comparisons | Analytical CPU path verified; compiled CUDA path requires GPU |
+| [CUDA/HIP baseline](examples/portable-kernels/README.md) | Shared row-major matmul, launch coverage and independent FP64 reference | CPU sanitizer path verified; device paths require CUDA/ROCm hardware |
 | [RTL](examples/rtl/README.md) | Adder, elastic MAC, dot-product FSM, systolic array; synthesized-netlist simulation | Icarus; Yosys or YoWASP for synthesis |
 | [Inference](examples/inference/README.md) | Exact speculative acceptance, residual sampling and KV-handoff ownership | Standard Python |
 | [Actor/learner runtime](examples/training-runtime/README.md) | Event-driven rollout schedule, bounded policy lag and clipped ratios | Standard Python; declared synthetic durations |
@@ -102,7 +103,7 @@ npm test
 npm run build
 ```
 
-The integrated suite currently has 135 Node tests. The new sharding, quantization,
+The integrated suite currently has 138 Node tests. The new sharding, quantization,
 MoE and serving-trace companions add 23 standard-library Python checks, alongside
 the earlier inference and actor/learner examples. Their READMEs contain the
 commands. Browser checks cover the reader and its numerical controls at desktop

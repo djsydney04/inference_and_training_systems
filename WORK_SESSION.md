@@ -10,13 +10,13 @@ delivery-trace denominator. New glossary/gallery entries preserve the learning
 path; a source audit records each reference and the local evidence boundary.
 
 Committed slices independently on the isolated `codex/atlas-learning-clarity`
-worktree, pulling concurrent GitHub work through `0456713`. Kept the new course
+worktree, pulling concurrent GitHub work through `a124515`. Kept the new course
 navigation and Programming group. Found and repaired an incoming transient
 inspector heading that could create a stale search target.
 
-Validation: 135 Node tests, 23 new Python checks, build, independent numerical
-cross-review, actual controls and 155 production page/width checks. Inventory:
-158 sections, 170 figures, 71 code listings, 109 checks and 219 sources. No GPU
+Validation: 138 Node tests, 23 new Python checks, build, independent numerical
+cross-review, actual controls and 160 production page/width checks. Inventory:
+163 sections, 175 figures, 77 code listings, 114 checks and 225 sources. No GPU
 execution or production benchmark is inferred from these calculations.
 
 ## September 16 inference and training pass

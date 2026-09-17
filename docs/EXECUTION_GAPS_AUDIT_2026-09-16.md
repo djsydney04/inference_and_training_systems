@@ -121,13 +121,19 @@ Adjacent `.lesson-source` links also enter the reader's source ledger.
 
 ## Verification and limits
 
-The integrated branch passes **135 Node tests**, TypeScript and the production
-build after syncing GitHub `main` through `0456713`. The existing bundle-size
-advisory remains: approximately 1,075 kB minified / 359 kB gzip for main JavaScript.
-The production reader has 29 chapters, 158 sections, 170 figures, 71 code listings,
-109 checks, 219 source entries and 34 deep dives, including the incoming system
-lesson. All 31 pages at 1440, 1280, 820, 390 and 320 pixels pass without document
+The integrated branch passes **138 Node tests**, TypeScript and the production
+build after syncing GitHub `main` through `a124515`. The existing bundle-size
+advisory remains: approximately 1,104 kB minified / 369 kB gzip for main JavaScript.
+The production reader has 30 chapters, 163 sections, 175 figures, 77 code listings,
+114 checks, 225 source entries and 34 deep dives, including the incoming system
+lesson. All 32 pages at 1440, 1280, 820, 390 and 320 pixels pass without document
 overflow. Numbering, title, duplicate-ID and internal-target audits have no errors.
+
+The final sync includes the other agent's landing page and cross-platform kernel
+chapter. Its C++ CPU path passes five matrix cases under AddressSanitizer and
+UndefinedBehaviorSanitizer. This checks host arithmetic and launch emulation;
+its CUDA/HIP device branches are not executed on this machine. The final page
+inventory and numbering were audited again after this merge.
 
 The new Node coverage comprises 8 serving, 9 sharding, 7 quantization and 7 MoE
 tests. The four new standard-library Python companions pass **23 checks**:
