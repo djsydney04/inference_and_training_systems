@@ -1,0 +1,53 @@
+.system-buildout { border-block: 1px solid var(--rule); margin: 32px 0; background: #faf9f5; }
+.system-buildout figcaption { display: block; padding: 24px 24px 12px; }
+.system-buildout figcaption > span, .system-buildout figcaption strong { display: block; margin-bottom: 10px; }
+.system-buildout figcaption strong { font: 500 22px/1.45 var(--serif); }
+.system-buildout figcaption p { justify-self: start; font: 13px/1.65 var(--sans); max-width: 70ch; }
+.sb-levels { display: flex; flex-wrap: wrap; gap: 0; margin: 14px 24px; border-bottom: 1px solid var(--rule); }
+.sb-levels button { padding: 12px 16px; border: 0; border-bottom: 2px solid transparent; background: transparent; font: 500 13px var(--sans); color: var(--graphite); cursor: pointer; }
+.sb-levels button[aria-pressed=true] { border-bottom-color: var(--signal); color: var(--signal-dark); }
+.sb-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 10px 24px; font: 12px var(--sans); }
+.sb-controls label { display: flex; align-items: center; gap: 10px; }
+.sb-controls select { background: transparent; color: var(--ink); min-height: 38px; padding: 8px; border: 1px solid var(--rule-dark); font: inherit; }
+.sb-controls output { color: var(--signal-dark); font-variant-numeric: tabular-nums; }
+.sb-canvas { padding: 12px 18px; overflow-x: auto; }
+.sb-svg { display: block; width: 100%; min-width: 820px; }
+.sb-label { text-anchor: middle; font: 500 15px var(--sans); fill: #273529; }
+.sb-sub { text-anchor: middle; font: 11px var(--sans); fill: #59625b; }
+.sb-overline { font: 500 14px var(--sans); fill: #59625b; }
+.sb-node, .sb-cabinet, .sb-rack-slot { cursor: pointer; }
+.sb-node rect { fill: #f8f8f3; stroke: #919e8d; }
+.sb-node.is-selected rect { stroke: #2559d6; stroke-width: 2; fill: #e7edfc; }
+.sb-cabinet.is-selected > rect, .sb-rack-slot.is-selected > rect { stroke: #2559d6; stroke-width: 3; }
+.sb-node:hover rect { fill: #e8ece2; }
+.sb-node:focus-visible, .sb-cabinet:focus-visible, .sb-rack-slot:focus-visible { outline: 2px solid var(--signal); outline-offset: 4px; }
+.sb-enclosure { fill: #eef0e7; stroke: #98a38f; }
+.sb-superchip { fill: #e2e7db; stroke: #bac4b0; stroke-dasharray: 4 5; }
+.sb-wire { fill: none; stroke: #2559d6; stroke-width: 2; }
+.sb-context { stroke: #bac3cd; stroke-width: 1; }
+.sb-storage { stroke: #548176; stroke-dasharray: 5 4; }
+.sb-management { stroke: #899186; stroke-dasharray: 2 5; }
+.sb-facility { stroke: #a77943; }
+.sb-wire.sb-cooling { stroke: #2559d6; }
+.sb-return { stroke: #548176; stroke-dasharray: 7 4; }
+.sb-power rect { fill: #f1e9db; stroke: #ae8b60; }
+.sb-cooling rect { fill: #e9eef7; stroke: #8b9ebd; }
+.sb-inspector { display: grid; grid-template-columns: 1.6fr 1fr; gap: 28px; margin: 20px 24px 24px; border-top: 1px solid var(--rule); padding-top: 24px; }
+.sb-inspector span { font: 11px/1.6 var(--sans); color: var(--graphite); }
+.sb-inspector h4 { margin: 8px 0 12px; font: 500 22px var(--serif); }
+.sb-inspector p { font: 16px/1.7 var(--serif); margin: 0; max-width: 65ch; }
+.sb-inspector aside { border-left: 2px solid var(--signal); padding-left: 18px; }
+.sb-inspector aside p { font: 13px/1.7 var(--sans); }
+.sb-inspector button { margin-top: 18px; background: var(--signal); color: white; border: 0; padding: 11px 16px; font: 500 12px var(--sans); cursor: pointer; }
+.sb-boundary, .sb-source { font: 11px/1.7 var(--sans); padding: 14px 24px; border-top: 1px solid var(--rule); margin: 0; color: #59625b; }
+.rack-layer-controls { display:flex; flex-wrap:wrap; align-items:center; gap:14px 24px; padding:16px 22px; border-block:1px solid var(--rule); font:12px var(--sans); }
+.rack-layer-controls label { display:flex; align-items:center; gap:12px; }
+.rack-layer-controls input { width:145px; accent-color:var(--signal); }
+.rack-layer-controls span { font:11px/1.6 var(--sans); color:var(--graphite); }
+@media(max-width:700px){
+  .sb-inspector { grid-template-columns:1fr; margin-inline:16px; }
+  .system-buildout figcaption { padding-inline:16px; }
+  .sb-levels { margin-inline:12px; }
+  .sb-levels button { padding-inline:10px; font-size:12px; }
+  .sb-canvas::after { content:"Scroll sideways to inspect the system"; display:block; font:11px/1.5 var(--sans); color:var(--graphite); margin-top:12px; }
+}

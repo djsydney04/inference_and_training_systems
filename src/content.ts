@@ -559,6 +559,8 @@ print(q.shape, q.dtype, q.device)</code></pre>
               <button type="button" data-rack-view="rack" class="is-active">Whole rack</button>
               <button type="button" data-rack-view="compute">Compute tray</button>
               <button type="button" data-rack-view="fabric">NVLink fabric</button>
+              <button type="button" data-rack-view="power">Power delivery</button>
+              <button type="button" data-rack-view="cooling">Cooling loop</button>
               <button type="button" data-rack-reset aria-label="Reset rack view">Reset view</button>
             </div>
           </div>

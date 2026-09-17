@@ -1,5 +1,7 @@
 import * as THREE from "three";
 import { attachSceneNavigation } from "./scene-navigation";
+import { detailRackFaces, rackInfrastructureRoutes, attachRackSeparation } from "./rack-detail";
+import { rackSlotKinds } from "./rack-layout";
 import { createKernelScene } from "./kernel-scene";
 import { createRingScene } from "./ring-scene";
 import { RenderBudget } from "./render-budget";
@@ -682,11 +684,11 @@ function createRackScene() {
     let switchIndex = 0;
     const computePositions: number[] = [];
     const switchPositions: number[] = [];
-    const slotCount = 31;
+    const slotCount = rackSlotKinds.length;
     for (let slot = 0; slot < slotCount; slot += 1) {
-      const y = -3.78 + slot * 0.41;
-      const isSwitch = [2, 5, 8, 12, 15, 18, 22, 25, 28].includes(slot);
-      const isPower = slot === 0 || slot === 30 || slot === 29 || slot === 1;
+      const y = -3.78 + slot * 0.36;
+      const isSwitch = rackSlotKinds[slot] === "switch";
+      const isPower = rackSlotKinds[slot] === "power";
       if (isPower) {
         const shelf = makeBox(
           6.9,
@@ -697,11 +699,11 @@ function createRackScene() {
           `power-${slot}`,
           {
             eyebrow: "Selected / rack infrastructure",
-            title: "Power and cooling infrastructure",
-            body: "Power shelves feed a high-current bus bar. Liquid manifolds route coolant to cold plates on the Grace CPUs, Blackwell GPUs, and NVSwitch ASICs; controls and leak detection remain separate concerns.",
+            title: "Power shelf",
+            body: "Power shelves convert incoming power and feed a high-current bus bar. Local regulators provide the component voltages. Electrical delivery and the liquid cooling loop are separate physical paths.",
             facts: [
               ["Purpose", "dense power delivery"],
-              ["Thermal path", "cold plate → facility water loop"],
+              ["Reference rack", "8 power shelves"],
             ],
           },
         );
@@ -806,11 +808,17 @@ function createRackScene() {
     );
     const manifoldB = manifoldA.clone() as Selectable;
     manifoldB.position.x = -2.7;
-    manifoldB.userData = { ...manifoldA.userData };
+    manifoldB.name = "cooling-return";
+    manifoldB.material = manifoldA.material.clone();
+    manifoldB.material.color.setHex(0x548176);
+    manifoldB.userData = { ...manifoldA.userData, info: {
+      ...manifoldA.userData.info, title: "Liquid cooling return manifold",
+    } };
     rackGroup.add(manifoldA, manifoldB);
     selectable.push(manifoldA, manifoldB);
 
     const fabricRoutes = new THREE.Group();
+    fabricRoutes.name = "fabric-routes";
     fabricRoutes.visible = false;
     rackGroup.add(fabricRoutes);
     // Show one GPU's 18 links, grouped as two ASIC endpoints per switch tray.
@@ -954,7 +962,7 @@ function createRackScene() {
         {
           eyebrow: "Selected / scale-out network",
           title: "ConnectX network adapter",
-          body: "Network adapters carry compute-fabric traffic beyond the NVLink rack over InfiniBand or Ethernet and also connect the storage/in-band planes according to system design.",
+          body: "ConnectX adapters carry compute-fabric traffic beyond the NVLink rack. The DGX GB200 reference uses separate BlueField interfaces for storage and in-band management.",
           facts: [
             ["Boundary", "rack scale-out"],
             ["Software", "RDMA, NCCL, GPUDirect"],
@@ -982,7 +990,15 @@ function createRackScene() {
       selectable,
       inspector,
     );
+    const faces = detailRackFaces(rackGroup);
+    const infrastructure = rackInfrastructureRoutes(rackGroup);
+    let currentRackView = "rack";
+    const separation = attachRackSeparation(container.closest<HTMLElement>(".three-lab")!, rackGroup, () => {
+      if (currentRackView !== "compute") rig.frameObject(rackGroup, [11, 5, 23], false);
+    });
     const setView = (view: string) => {
+      currentRackView = view;
+      separation.setEnabled(view !== "compute");
       document
         .querySelectorAll<HTMLButtonElement>("[data-rack-view]")
         .forEach((button) => {
@@ -998,6 +1014,9 @@ function createRackScene() {
       rackGroup.visible = view !== "compute";
       computeDetail.visible = view === "compute";
       fabricRoutes.visible = view === "fabric";
+      infrastructure.power.visible = view === "power";
+      infrastructure.cooling.visible = view === "cooling";
+      faces.forEach(face => { face.visible = view === "rack"; });
       refreshSelection();
       rackGroup.children.forEach((child) => {
         if (
@@ -1005,16 +1024,23 @@ function createRackScene() {
           !(child.material instanceof THREE.MeshStandardMaterial)
         )
           return;
-        child.material.transparent = view === "fabric";
-        child.material.opacity =
-          view === "fabric" && !child.name.startsWith("switch") ? 0.12 : 1;
+        const isolated = ["fabric", "power", "cooling"].includes(view);
+        const relevant = view === "fabric" ? child.name.startsWith("switch") :
+          view === "power" ? child.name.startsWith("power") || child.name === "busbar" :
+          child.name.startsWith("cooling");
+        child.material.transparent = isolated;
+        child.material.opacity = isolated && !relevant ? 0.1 : 1;
+        child.material.depthWrite = !isolated || relevant;
       });
       if (view === "rack") rig.frameObject(rackGroup, [11, 5, 23]);
       if (view === "fabric") rig.frameObject(rackGroup, [13, 1, 18]);
       if (view === "compute") rig.frameObject(computeDetail, [11, 7, 13]);
+      if (view === "power" || view === "cooling") rig.frameObject(rackGroup, [-12, 5, 20]);
       refreshSelection.selectByTitle(
         view === "compute"
           ? "Grace CPU"
+          : view === "power" ? "Power shelf"
+          : view === "cooling" ? "Liquid cooling manifold"
           : view === "fabric"
             ? "NVLink switch tray"
             : "Grace–Blackwell compute tray",
@@ -1063,8 +1089,10 @@ function createRackScene() {
       .querySelector<HTMLButtonElement>("[data-rack-reset]")
       ?.addEventListener("click", () => {
         rackSequence.reset();
+        separation.reset();
         setView("rack");
       });
+    setView("rack");
     rig.animate();
   } catch {
     container.textContent =
