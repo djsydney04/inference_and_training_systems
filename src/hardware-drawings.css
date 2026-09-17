@@ -45,3 +45,5 @@
 @media(max-width:700px) { .hardware-drawing figcaption { padding-inline: 16px; }.hd-tabs { padding-inline:16px; gap: 0 16px; }.hd-inspector { margin-inline:16px; }.hd-boundary { padding-inline:16px; }.hd-source { margin-inline:16px; }.hd-canvas { padding-inline:8px; } }
 
 .hardware-drawing figcaption > p { justify-self: start; text-align: left; max-width: 70ch; margin-bottom: 12px; }
+
+@media(max-width:700px) { .hd-canvas::after { content: "Scroll sideways to inspect the full drawing"; display: block; margin: 12px 8px; font: 11px/1.5 var(--sans); color: var(--graphite); } }

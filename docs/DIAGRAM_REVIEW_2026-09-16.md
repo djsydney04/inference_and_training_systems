@@ -68,7 +68,7 @@ mechanical service drawing, measured hardware trace or facility sizing document.
 ### Completed checks
 
 - Production build and release metadata checks passed.
-- 174 Node tests passed after integrating the concurrent framework and serving labs.
+- 180 Node tests passed after integrating the concurrent framework and serving labs.
 - 24 production-browser checks passed across 320, 390, 768 and 1440 px.
 - 20 animation checks passed on desktop and mobile, including 110 adapter
   advances per authored diagram, reduced motion and off-screen behavior.
