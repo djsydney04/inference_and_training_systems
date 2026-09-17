@@ -22,6 +22,11 @@ import { servingRuntimeLessons } from "./serving-runtime-content";
 import { shardedTrainingLessons } from "./sharded-training-content";
 import { quantizationLessons } from "./quantization-content";
 import { moeExecutionLessons } from "./moe-execution-content";
+import { frameworkChapter } from "./framework-content";
+import { frameworkTimingLesson } from "./framework-timing-content";
+import { frameworkReplayLesson } from "./framework-replay-content";
+import { trainingFrameworkBridgeLesson } from "./framework-training-content";
+import { servingFrameworkBridgeLesson } from "./framework-serving-content";
 import { learningPathForId, readingSequence } from "./learning-path";
 import { labelChapterContents, sectionTitle } from "./reader-structure";
 import {
@@ -49,7 +54,7 @@ export function prepareReader() {
   main.insertAdjacentHTML("afterbegin", landingMarkup + homeMarkup + galleryMarkup);
   main.insertAdjacentHTML(
     "beforeend",
-    foundationsChapter + capstoneChapter + acceleratorChapter + frontierChapter +
+    foundationsChapter + frameworkChapter + capstoneChapter + acceleratorChapter + frontierChapter +
       programmingChapter + cudaChapter + portableKernelChapter + digitalChapter + fpgaChapter + dataChapter +
       optimizationChapter +
       decodingChapter +
@@ -97,6 +102,10 @@ export function prepareReader() {
   byId("parallel-training")!.insertAdjacentHTML("beforeend", shardedTrainingLessons);
   byId("inference")!.insertAdjacentHTML("beforeend", quantizationLessons);
   byId("frontier-moe")!.insertAdjacentHTML("afterend", moeExecutionLessons);
+  byId("performance")!.insertAdjacentHTML("beforeend", frameworkTimingLesson);
+  byId("cuda-kernels")!.insertAdjacentHTML("beforeend", frameworkReplayLesson);
+  byId("post-training-loss")!.insertAdjacentHTML("afterend", trainingFrameworkBridgeLesson);
+  byId("inference")!.insertAdjacentHTML("beforeend", servingFrameworkBridgeLesson);
   chapters.forEach((chapter, index) => {
     const el = byId(chapter.id)!;
     main.append(el);

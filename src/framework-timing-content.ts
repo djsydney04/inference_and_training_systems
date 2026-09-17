@@ -35,6 +35,7 @@ elapsed = time.perf_counter() - start
 export const frameworkTimingLesson = `
 <section class="lesson" id="framework-benchmark-boundary" data-lesson="Time completed work">
 <header><span>Connect Python to the device timeline</span><h3>A returned tensor can still be waiting for its computation</h3></header>
+<p class="figure-boundary">Source check: September 16, 2026. Timings below are explicitly assumed; API patterns are separate from the measured CPU framework checks.</p>
 <p>The CPU can enqueue device work and continue before that work finishes. A host timer wrapped around the call may therefore measure dispatch rather than a completed result. Before comparing <a href="#frameworks">frameworks</a>, define what must be finished when your timer stops.</p>
 <p>In this example, a host launch takes 0.5 ms and the requested device operation takes 4 ms. One warm call on an idle device returns to the host at 0.5 ms and produces its result at 4.5 ms. Eight queued calls finish at 32.5 ms: 4.0625 ms per call amortized, while the first result still takes 4.5 ms. All durations are assumed for teaching.</p>
 <figure class="textbook-lab fw-timing" id="framework-timing-lab">

@@ -12,6 +12,16 @@ export const galleryItems = [
     copy: "Dive into every stage of a decoder, follow tensor shapes, and inspect attention and feed-forward arithmetic.",
   },
   {
+    kind: "network", id: "framework-roles", title: "Where does each framework fit?",
+    scope: "Model → training or serving → execution", type: "Framework responsibility map",
+    copy: "Trace six concrete software stacks and identify the first correctness check at each boundary.",
+  },
+  {
+    kind: "trace", id: "framework-benchmark-boundary", title: "When is the result actually ready?",
+    scope: "Host dispatch → queued device work → completion", type: "Framework timing lab",
+    copy: "Separate cold start, warm latency and amortized time in a dependency timeline.",
+  },
+  {
     kind: "cache", id: "pd-transfer-budget", title: "Where does the handoff delay go?",
     scope: "Prompt KV → transfer → first output gap", type: "Disaggregated serving lab",
     copy: "Vary cache reuse, head count and link rate; reconcile wire bytes, TTFT and the second token's arrival.",

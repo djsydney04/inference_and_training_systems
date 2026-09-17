@@ -9,6 +9,13 @@ type GlossaryEntry = {
 };
 
 const entries = ([
+  { term: "Autodiff", aliases: "automatic differentiation", category: "training", definition: "Applying derivative rules through a recorded or transformed computation to obtain derivatives of its outputs with respect to chosen inputs.", why: "The derivative follows the executed or staged program. Detached values, masks and loss reduction determine which gradients exist." },
+  { term: "Execution provider", category: "performance", definition: "An ONNX Runtime interface through which a backend claims and executes supported graph operations.", why: "Installing a runtime does not establish that every operation runs on the intended accelerator; inspect provider support and placement." },
+  { term: "Framework", category: "training", definition: "Reusable software for expressing, executing or coordinating computations and their state.", why: "Tensor execution, model libraries, training loops and serving engines own different responsibilities even when all are called frameworks." },
+  { term: "Graph break", category: "performance", definition: "A point where a graph-capture system cannot continue capturing a region under its current rules.", why: "Depending on the framework and mode, execution may resume outside that graph or fail. This is distinct from intentionally stopping a gradient." },
+  { term: "JIT compilation", aliases: "just in time tracing specialization", category: "performance", definition: "Compiling a program or captured region during execution, often specialized to shapes, types, static arguments or other guards.", why: "First-use compilation and later cache reuse must be separated when measuring performance." },
+  { term: "Serving replica", category: "inference", definition: "One serving instance capable of handling its assigned requests, potentially composed of multiple cooperating device ranks.", why: "Adding independent replicas differs from increasing the ranks that shard one replica's model." },
+  { term: "Stop string", category: "inference", definition: "A text pattern that a declared generation policy uses to terminate output after matching it in decoded text.", why: "The pattern can cross token or transport boundaries. Buffering, delimiter inclusion and terminal behavior must be defined separately from an EOS token." },
   { term: "Admission control", category: "inference", definition: "Deciding whether an offered request may begin, must wait or must be rejected under the service's resource and latency constraints.", why: "A request that fits its prompt cache may still need more state to finish. The policy must account for growth, preemption and overload." },
   { term: "Calibration", category: "inference", definition: "Using representative inputs to choose or evaluate a quantization configuration, including scales and activation-dependent error.", why: "Low error on one calibration distribution can fail after a domain, prompt or context-length shift." },
   { term: "Closed-loop load", aliases: "closed loop client", category: "inference", definition: "A request generator starts new work in response to completion of earlier work, usually with a fixed number of active clients.", why: "Slower responses reduce offered load; report this behavior when comparing it with externally scheduled arrivals." },
@@ -194,7 +201,25 @@ const escapeHTML = (value: string) => value
   .replaceAll('"', "&quot;")
   .replaceAll("'", "&#039;");
 
+const workedContexts: Record<string, { id: string; title: string }> = {
+  "Autodiff": { id: "framework-autodiff-state", title: "Autodiff and state" },
+  "Execution provider": { id: "framework-deployment-layers", title: "Runtimes and deployment" },
+  "Framework": { id: "framework-roles", title: "Find the right layer" },
+  "Graph break": { id: "framework-tracing-boundaries", title: "Tracing boundaries" },
+  "JIT compilation": { id: "framework-tracing-boundaries", title: "Tracing boundaries" },
+  "Serving replica": { id: "framework-deployment-layers", title: "Runtimes and deployment" },
+  "Stop string": { id: "framework-token-boundary", title: "Token and text boundaries" },
+  "Admission control": { id: "kv-admission", title: "Admit work that can finish" },
+  "Calibration": { id: "calibration-and-output-error", title: "Calibration and output error" },
+  "Goodput": { id: "streaming-metrics", title: "Measure complete responses" },
+  "KV cache": { id: "framework-cache-identity", title: "Cache identity" },
+  "Materialization": { id: "fsdp-live-memory", title: "Live training memory" },
+  "Router": { id: "moe-route-pack-combine", title: "Route, pack and combine" },
+  "Zero point": { id: "quantization-codebook", title: "Quantization codes" },
+};
+
 function entryMarkup(entry: GlossaryEntry) {
+  const context = workedContexts[entry.term];
   const search = `${entry.term} ${entry.aliases ?? ""} ${entry.definition} ${entry.why}`.toLowerCase();
   return `
     <article class="glossary-entry" data-glossary-category="${entry.category}" data-glossary-search="${escapeHTML(search)}">
@@ -204,7 +229,7 @@ function entryMarkup(entry: GlossaryEntry) {
         ${entry.aliases ? `<small>${escapeHTML(entry.aliases)}</small>` : ""}
       </div>
       <p>${escapeHTML(entry.definition)}</p>
-      <p class="glossary-why"><strong>Why it matters</strong>${escapeHTML(entry.why)}</p>
+      <p class="glossary-why"><strong>Why it matters</strong>${escapeHTML(entry.why)}${context ? `<a class="glossary-context" href="#${context.id}">${escapeHTML(context.title)} →</a>` : ""}</p>
     </article>`;
 }
 

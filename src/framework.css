@@ -1,4 +1,5 @@
 .fw-control { display: grid; gap: 8px; max-width: 480px; margin: 22px 0; font: 13px/1.5 var(--sans); }
+.glossary-context { display: block; margin-top: 12px; color: var(--signal-dark); text-underline-offset: 3px; }
 .fw-control select { width: 100%; min-width: 0; min-height: 44px; padding: 10px; color: var(--ink); background: var(--paper); border: 1px solid var(--rule-dark); font: inherit; }
 .fw-layers { list-style: none; margin: 0; padding: 0; }
 .fw-layers li { position: relative; display: grid; grid-template-columns: 150px minmax(0,1fr); gap: 6px 22px; padding: 22px 0; border-top: 1px solid var(--rule); }
@@ -20,7 +21,15 @@
 .fw-time-host { top: 3px; background: #59625b; }
 .fw-time-device { bottom: 3px; background: var(--signal); }
 .fw-time-note { font: 12px/1.6 var(--sans); color: var(--graphite); }
+.fw-replicas { margin: 26px 0; font: 14px/1.6 var(--sans); }
+.fw-router { text-align: center; padding-bottom: 24px; }
+.fw-router span,.fw-replica-row span { display: block; color: var(--graphite); font-size: 12px; }
+.fw-replica-row { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+.fw-replica-row > div { position: relative; text-align: center; border-top: 2px solid var(--signal); padding-top: 16px; }
+.fw-replica-row > div::before { content: "↓"; color: var(--signal); display: block; position: absolute; top: -23px; left: calc(50% - 5px); background: var(--paper); }
+.fw-replica-row p { margin: 12px 0; padding: 14px 6px; background: #e5e9df; }
 @media(max-width:600px) {
+  .fw-replica-row { grid-template-columns: minmax(0,1fr); }
   .fw-timing-controls { grid-template-columns: minmax(0,1fr); }
   .fw-layers li { grid-template-columns: minmax(0,1fr); gap: 6px; }
   .fw-role { grid-row: auto; }

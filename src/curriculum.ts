@@ -239,6 +239,15 @@ export const chapters: Chapter[] = [
     requires: ["attention", "post-training", "inference", "accelerator-atlas"],
   },
   {
+    id: "frameworks",
+    title: "Popular frameworks",
+    intro: "Find where the major tools fit. Compare tensor execution, training libraries and serving engines, then trace the contracts that must survive a change of framework.",
+    evidenceChecked: "September 16, 2026",
+    part: "Practice",
+    outcome: "Match numerical updates across frameworks, choose tools by responsibility, and verify labels, model artifacts, cache identity and timing.",
+    requires: ["programming", "optimization", "inference"],
+  },
+  {
     id: "end-to-end",
     title: "Train and serve a small model",
     intro: "Put the pieces together in a runnable byte-level decoder. Train it, verify its checkpoint and cache, then profile and serve its output.",
@@ -301,7 +310,7 @@ export const learningPaths = [
   {
     id: "training", title: "Training",
     description: "Data, derivatives, optimizer state, distributed execution and a reproducible model experiment.",
-    route: prerequisiteRoute(["post-training", "end-to-end", "projects"]),
+    route: prerequisiteRoute(["post-training", "frameworks", "end-to-end", "projects"]),
   },
   {
     id: "hardware", title: "Hardware and systems",
@@ -316,7 +325,7 @@ export const learningPaths = [
   {
     id: "inference", title: "Inference and serving",
     description: "Cache correctness, decoding, request scheduling, profiling and capacity under load.",
-    route: prerequisiteRoute(["serving-lab", "accelerator-atlas", "end-to-end", "frontier", "projects"]),
+    route: prerequisiteRoute(["serving-lab", "accelerator-atlas", "frameworks", "end-to-end", "frontier", "projects"]),
   },
   {
     id: "circuits", title: "Circuits and accelerators",

@@ -1,0 +1,16 @@
+.framework-workbench .framework-readout { padding: 18px 24px; border-block: 1px solid var(--rule, #d6dddb); font-family: var(--sans); }
+.framework-workbench .framework-readout p { font-size: .9rem; line-height: 1.55; }
+.framework-workbench .framework-readout p:last-child { margin-bottom: 0; }
+.framework-workbench .architecture-scroll > svg { display: block; width: 100%; min-width: 800px; }
+.framework-workbench svg text { font-family: var(--sans); font-size: 12px; fill: currentColor; }
+.framework-workbench svg .framework-white { fill: white; }
+.framework-workbench .method-toolbar label { min-width: 0; }
+.framework-workbench .method-toolbar select { max-width: 100%; }
+.framework-workbench .method-toolbar input { accent-color: #27649a; max-width: 100%; }
+.framework-workbench .method-table { margin: 0; }
+.framework-responsibility-flow { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 0; margin: 0; padding: 24px; list-style: none; font-family: var(--sans); }
+.framework-responsibility-flow li { padding: 0 18px; border-left: 2px solid #27649a; }
+.framework-responsibility-flow strong, .framework-responsibility-flow span { display: block; }
+.framework-responsibility-flow span { margin-top: 12px; font-size: .86rem; line-height: 1.6; }
+@media (max-width: 740px) { .framework-responsibility-flow { grid-template-columns: 1fr 1fr; gap: 22px 0; } }
+@media (max-width: 450px) { .framework-responsibility-flow { grid-template-columns: 1fr; } .framework-workbench .framework-readout { padding: 16px; } }
