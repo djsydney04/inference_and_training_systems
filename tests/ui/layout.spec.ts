@@ -89,28 +89,15 @@ test("2D numerical workbenches preserve calculations and keyboard selection", as
   await expect(ring.locator(".ring-chunk.is-complete")).toHaveCount(0);
 });
 
-test("edition footer leads to the matching release notes", async ({ page }) => {
+test("landing omits release sections and the footer links to GitHub history", async ({ page }) => {
   await page.goto("/");
   const footer = page.locator(".almanac-footer");
   await expect(footer).toBeVisible();
   const edition = await footer.locator(".footer-edition").textContent();
   const version = edition!.match(/v(\d+\.\d+\.\d+)/)![1];
-  await footer.getByRole("link", { name: "Release notes" }).click();
-  await expect(page.locator("#release-notes")).toHaveAttribute("open", "");
-  await expect(page.locator("#release-notes summary")).toContainText(version);
-  await expect(page.locator("#release-notes time")).toHaveAttribute("datetime", await footer.locator("time").getAttribute("datetime") ?? "");
-  await footer.getByRole("link", { name: "Content changes", exact: true }).click();
-  const history = page.locator("#content-changes");
-  await expect(history).toHaveAttribute("open", "");
-  await expect(history.getByRole("heading", { name: "What changed in the material" })).toBeVisible();
-  const missing = await history.locator("a").evaluateAll(links => links
-    .map(link => link.getAttribute("href")!)
-    .filter(href => !document.getElementById(href.slice(1))));
-  expect(missing, "Every content entry links to existing material").toEqual([]);
-  await history.getByRole("link", { name: "GPU and SM anatomy", exact: true }).click();
-  await expect(page.locator("#gpu-chip-anatomy")).toBeVisible();
-  await page.goto("/#content-changes");
-  await expect(history).toHaveAttribute("open", "");
+  await expect(page.locator("#content-changes, #release-notes")).toHaveCount(0);
+  await expect(footer.getByRole("link", { name: "Release notes" })).toHaveAttribute("href", `https://github.com/djsydney04/inference_and_training_systems/releases/tag/v${version}`);
+  await expect(footer.getByRole("link", { name: "Content changes", exact: true })).toHaveAttribute("href", "https://github.com/djsydney04/inference_and_training_systems/blob/main/CONTENT_CHANGELOG.md");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
   await footer.getByRole("link", { name: "AI Almanac", exact: true }).click();
   await page.getByRole("link", { name: "Open the almanac", exact: true }).click();
