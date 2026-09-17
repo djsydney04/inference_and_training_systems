@@ -30,23 +30,22 @@ export function wholeNetworkDiagram(decode = false, grouped = false) {
     linkBox(188, 565, 224, "Final RMSNorm", shapeLabel(s.residual), "network-residual") +
     linkBox(188, 635, 224, "Vocabulary projection", `${networkExample.width} channels → ${networkExample.vocabulary} logits`, "network-output") +
     linkBox(188, 706, 224, "Next-token distribution", "Softmax · select · append · repeat", "network-output") +
-    `<text x="300" y="782" text-anchor="middle" class="nn-annotation">Arrows carry activations. Click a block to open its explanation.</text></svg>`;
+    `</svg>`;
 }
 
 export const attentionDiagram = () => {
   const a = "nn-attn-arrow";
-  const mask = Array.from({length:16},(_,i)=>{const row=Math.floor(i/4),col=i%4;return `<rect class="nn-mask-cell ${col<=row?'is-visible':'is-masked'}" x="${88+col*22}" y="${380+row*22}" width="20" height="20"/>${col>row?`<text x="${98+col*22}" y="${395+row*22}" class="nn-mask-mark">×</text>`:''}`;}).join('');
-  return start("nn-attn", 800, 514, "Inside causal self-attention", "Queries and keys produce scores over token positions. A causal mask removes future positions before softmax. The resulting probabilities weight value vectors, then the heads are joined and projected.") +
-    `<rect class="nn-operation-region" x="32" y="104" width="736" height="111"/><text x="48" y="235" class="nn-annotation">Q</text><text x="368" y="235" class="nn-annotation">K</text><text x="652" y="235" class="nn-annotation">V</text>` +
-    line("M400 76V92H164V124M400 92V124M400 92H636V124M164 176V238H180V270M400 176V238H350V270M448 296H532M636 176V270M612 322V396M612 448V483",a) +
-    partBox(280,24,240,"Normalized input X","[B, Tq, D]","input") +
-    partBox(64,124,200,"Query Q","Linear Wq → RoPE","query") +
-    partBox(300,124,200,"Key K","Linear Wk → RoPE → cache","key") +
-    partBox(536,124,200,"Value V","Linear Wv → cache","value") +
-    partBox(88,270,360,"Scores → mask → softmax","P = softmax(QKᵀ / √dh + causal mask)","scores") +
-    partBox(532,270,160,"Weighted values","P × V","mix") +
-    partBox(480,396,264,"Join heads → Wo","[B, Tq, D]","project") +
-    `<text x="88" y="345" class="nn-annotation">Per head: [Tq, Tk] probabilities</text><text x="536" y="345" class="nn-annotation">Per head: [Tq, dh]</text>${mask}<text x="194" y="399" class="nn-annotation">Example: Tq = Tk = 4</text><text x="194" y="421" class="nn-annotation">Rows: query positions</text><text x="194" y="443" class="nn-annotation">Columns: key positions</text><text x="194" y="465" class="nn-annotation">× future key · masked before softmax</text><text x="612" y="506" class="nn-node-sub">To the residual addition</text></svg>`;
+  const mask = Array.from({length:16},(_,i)=>{const row=Math.floor(i/4),col=i%4;return `<rect class="nn-mask-cell ${col<=row?'is-visible':'is-masked'}" x="${138+col*18}" y="${398+row*18}" width="16" height="16"/>${col>row?`<text x="${146+col*18}" y="${411+row*18}" class="nn-mask-mark">×</text>`:''}`;}).join('');
+  return start("nn-attn", 900, 502, "Inside causal self-attention", "Queries and keys produce scores over token positions. Mask future keys before softmax. Probabilities weight the value vectors; the heads are joined and projected. In the four-token mask, rows are queries and columns are keys; crosses exclude future keys.") +
+    line("M450 76V104H160V142M450 104V142M450 104H740V142M160 194V240H224V288M450 194V240H394V288M490 314H618M740 194V288M740 340V410M740 462V486",a) +
+    partBox(330,24,240,"Normalized input X","[B, Tq, D]","input") +
+    partBox(40,142,240,"Query Q","XWq → RoPE","query") +
+    partBox(330,142,240,"Key K","XWk → RoPE → cache","key") +
+    partBox(620,142,240,"Value V","XWv → cache","value") +
+    partBox(130,288,360,"Scores → probabilities","P = softmax(QKᵀ / √dh + mask)","scores") +
+    partBox(620,288,240,"Weighted values","P × V","mix") +
+    partBox(620,410,240,"Join heads → Wo","[B, Tq, D]","project") +
+    `${mask}<text x="234" y="424" class="nn-annotation">Causal mask · 4 tokens</text><text x="234" y="448" class="nn-annotation">× excludes a future key</text></svg>`;
 };
 
 export const feedForwardDiagram = () => {
@@ -62,7 +61,7 @@ export const feedForwardDiagram = () => {
     channels(274,326,24)+
     partBox(260,372,240,"Down projection","Wdown [24, 8]","down")+
     channels(344,442,8)+
-    `<text x="65" y="284" class="nn-annotation">24 paired channels</text><text x="532" y="284" class="nn-annotation">Each token is processed</text><text x="532" y="306" class="nn-annotation">independently with</text><text x="532" y="328" class="nn-annotation">the same weights.</text><text x="380" y="490" text-anchor="middle" class="nn-annotation">8-channel update → residual addition</text></svg>`;
+    `<text x="380" y="490" text-anchor="middle" class="nn-annotation">8 channels → residual addition</text></svg>`;
 };
 
 export const embeddingDiagram = () => {

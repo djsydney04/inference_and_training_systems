@@ -7,7 +7,7 @@ const escape = (value: string) => value.replace(/[&<>"']/g, char => ({"&":"&amp;
 const diagram = lessonDiagram;
 
 function markup(topic: LessonVisual) {
-  return `<figure class="lesson-visual" data-lv-topic="${topic.id}" id="${topic.id}-visual"><figcaption><span>Interactive schematic</span><strong>${escape(topic.title)}</strong><p>${escape(topic.relationship)}. Select a part to inspect its role.</p></figcaption><div class="lv-toolbar"><button type="button" data-lv-depth aria-pressed="true">Hide labels</button><span>${topic.kind==="timeline"?"Dependency order · widths are not durations":"Conceptual relationships · not physical scale"}</span></div><div class="lv-canvas" tabindex="0" aria-label="Interactive diagram; scroll horizontally on narrow screens">${diagram(topic)}</div><div class="lv-selection" aria-live="polite"><strong>${escape(topic.steps[0].label)}</strong><p>${escape(topic.steps[0].note)}</p></div><details class="lv-notes"><summary>Worked note and assumptions</summary><div><h4>Keep this true</h4><p>${escape(topic.invariant)}</p><h4>Work through it</h4><p>${escape(topic.example)}</p></div></details></figure>`;
+  return `<figure class="lesson-visual" data-lv-topic="${topic.id}" id="${topic.id}-visual"><figcaption><span>Interactive schematic</span><strong>${escape(topic.title)}</strong><p>${escape(topic.relationship)}. Select a part to inspect its role.</p></figcaption><div class="lv-toolbar"><button type="button" data-lv-depth aria-pressed="false">Show annotations</button><span>${topic.kind==="timeline"?"Dependency order · widths are not durations":"Conceptual relationships · not physical scale"}</span></div><div class="lv-canvas" tabindex="0" aria-label="Interactive diagram; scroll horizontally on narrow screens">${diagram(topic)}</div><div class="lv-selection" aria-live="polite"><strong>${escape(topic.steps[0].label)}</strong><p>${escape(topic.steps[0].note)}</p></div><details class="lv-notes"><summary>Worked note and assumptions</summary><div><h4>Keep this true</h4><p>${escape(topic.invariant)}</p><h4>Work through it</h4><p>${escape(topic.example)}</p></div></details></figure>`;
 }
 
 /** Assemble before reader numbering and search indexing. */
@@ -24,7 +24,7 @@ export function prepareLessonVisuals() {
 export function initializeLessonVisuals() {
   document.querySelectorAll<HTMLElement>("[data-lv-topic]").forEach(figure=>{
     const topic=allLessonVisuals.find(item=>item.id===figure.dataset.lvTopic)!;
-    let selected=0, detailed=true;
+    let selected=0, detailed=false;
     const canvas=figure.querySelector<HTMLElement>(".lv-canvas")!;
     const render=()=>{
       canvas.innerHTML=diagram(topic,detailed,selected);
@@ -47,7 +47,7 @@ export function initializeLessonVisuals() {
       detailed=!detailed;
       const button=event.currentTarget as HTMLButtonElement;
       button.setAttribute("aria-pressed",String(detailed));
-      button.textContent=detailed?"Hide labels":"Show labels";
+      button.textContent=detailed?"Hide annotations":"Show annotations";
       render();
     });
   });
