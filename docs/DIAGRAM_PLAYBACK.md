@@ -56,3 +56,10 @@ modal restoration, hidden chapters, mobile framing, persistent preferences, and
 manually selectable and parameter comparisons keep the reader's values even when
 global animations are enabled. Static artwork retains accessible captions and
 alternatives. Mathematical correctness remains covered by each lab's own tests.
+
+The selective-motion pass passed 181 unit tests, the production build, and all
+40 playback checks at four widths. The production UI audit passed its other 20
+checks; the four hardware cases now verify stable manual inspection instead of
+automatic tours and passed their updated run. Desktop and phone screenshots
+confirmed that static diagrams have no playback strip and execution traces keep
+the active operation visible.
