@@ -63,12 +63,20 @@ values, replace meaningful labels, or compete with an active calculation.
 ## Diagrams
 
 `src/figure-layout.ts` and `src/figure-layout.css` apply the shared figure layout
-after numbering and control initialization. Use one compact heading, one control
-strip, and generous space around the drawing. Move introductory prose, scope
-boundaries, and walkthrough commentary into the Figure notes disclosure. Keep
-selected-part explanations, exact values, and calculation controls visible.
-Move existing nodes rather than recreating them so state and event handlers
-survive layout changes and expansion. Refresh after lazy workbench initialization.
+after numbering and control initialization. Use an open plate with a single
+heading and compact controls, aligned to the edges of the surrounding text.
+Leave generous space around the drawing and between its nodes; avoid large
+tinted panels and repeated headings. Schematics show short labels by default;
+annotations are optional, while exact numerical values remain visible.
+
+Keep one selected-part label below the drawing. Fold its explanation until the
+reader opens Details or deliberately selects a component. Keep drill-down
+buttons visible. Put introductory prose, scope boundaries and references in
+Figure notes. Chip explorers group component search, zoom, routes and reference
+material below the drawing. Numerical labs retain their calculation controls
+and results. Move existing nodes rather than recreating them so state and event
+handlers survive layout changes and expansion. Refresh after lazy workbench
+initialization without adding duplicate headings or disclosures.
 
 Choose the representation that makes the relationship easiest to read. Matrix
 values, reduction ownership, algorithm stages and hardware use 2D. Prefer an

@@ -1,7 +1,7 @@
 /* Open technical plates: a quiet heading, a drawing, then optional detail. */
 .atlas-ui .figure-layout {
   --figure-gutter: clamp(20px, 3vw, 40px);
-  margin-block: 72px; padding: 0; min-width: 0;
+  display: block; margin-block: 72px; padding: 0; min-width: 0;
   border: 0; border-block: 1px solid var(--rule); border-radius: 0;
   box-shadow: none; background: transparent;
 }
@@ -9,7 +9,7 @@
 .atlas-ui .figure-layout > .lab-head { display: block; padding: 0; border: 0; background: transparent; }
 .atlas-ui .figure-layout .figure-heading { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 20px 32px; padding: 24px 0; margin: 0; border: 0; background: transparent; }
 .atlas-ui .figure-layout .figure-caption:not(.figure-heading) { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 0; padding: 0; border: 0; background: transparent; }
-.atlas-ui .figure-layout .figure-caption .figure-reference { margin: 0; color: var(--graphite); font: 400 11px/1.5 var(--sans); }
+.atlas-ui .figure-layout .figure-caption .figure-reference { margin: 0; padding: 0; border: 0; color: var(--graphite); font: 400 11px/1.5 var(--sans); }
 .atlas-ui .figure-layout .figure-caption strong { display: block; margin: 0; max-width: 48ch; color: var(--ink); font: 500 19px/1.4 var(--sans); letter-spacing: -.02em; }
 .figure-toolbar { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 10px 16px; min-width: 0; max-width: 440px; padding: 0; }
 .figure-toolbar > :empty { display: none; }
@@ -127,3 +127,26 @@
 .atlas-ui .figure-layout .chip-node[aria-pressed=true] .chip-node-body { fill: #edf2fc; }
 
 .figure-title { display: grid; gap: 8px; min-width: 0; }
+
+/* A figure that doubles as a lesson already has a number and title in its caption. */
+.atlas-ui .figure-layout > .section-reference { display: none; }
+.atlas-ui .figure-layout .digital-diagram { margin: 0; padding: 40px var(--figure-gutter); }
+.atlas-ui .figure-layout .digital-diagram > svg { max-width: 920px; margin-inline: auto; }
+.atlas-ui .figure-layout .roofline-lab { display: grid; grid-template-columns: minmax(0,1fr) 230px; grid-template-rows: auto 1fr; align-items: start; gap: 24px 48px; min-height: 0; padding: 40px 0 48px; }
+.atlas-ui .figure-layout .roofline-chart { grid-column: 1; grid-row: 1 / 3; height: 330px; min-height: 0; margin: 0; background: none; border: 0; }
+.roofline-chart > svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.roof-grid { fill: none; stroke: var(--rule); stroke-width: 1; }
+.roof-ceiling { fill: none; stroke: var(--ink); stroke-width: 2; }
+.roof-bandwidth { fill: none; stroke: var(--signal); stroke-width: 2; }
+.roof-point { transform: translate(-50%,-50%); }
+.atlas-ui .figure-layout .roofline-lab > label { align-self: start; margin-top: 40px; gap: 16px; }
+.atlas-ui .figure-layout .roofline-lab > p { grid-column: 2; margin: 0; font: 13px/1.8 var(--sans); }
+.roofline-chart .axis-y { left: 0; font-size: 10px; }
+.roofline-chart .axis-x { bottom: 0; right: 10%; font-size: 10px; }
+@media (max-width:700px) {
+  .atlas-ui .figure-layout .roofline-lab { grid-template-columns: minmax(0,1fr); gap: 24px; padding-block: 24px 32px; }
+  .atlas-ui .figure-layout .roofline-chart { grid-column: 1; grid-row: 2; height: 280px; }
+  .atlas-ui .figure-layout .roofline-lab > label { grid-row: 1; margin-top: 0; }
+  .atlas-ui .figure-layout .roofline-lab > p { grid-column: 1; }
+  .atlas-ui .figure-layout .digital-diagram { padding: 32px 0; }
+}

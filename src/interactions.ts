@@ -354,7 +354,7 @@ function initRoofline() {
     const normalized = Math.log2(value) / 7;
     point.style.left = `${8 + normalized * 82}%`;
     const onSlope = normalized < 0.58;
-    point.style.top = onSlope ? `${82 - normalized * 98}%` : "24%";
+    point.style.top = onSlope ? `${82 - normalized / 0.58 * 58}%` : "24%";
     if (output) output.value = String(value);
     if (copy) copy.textContent = onSlope
       ? "At this intensity, moving operands is likely to set the ceiling. Fuse operations or reuse tiles before chasing peak FLOPs."
