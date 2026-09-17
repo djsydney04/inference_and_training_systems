@@ -37,20 +37,22 @@ test("hardware drawings preserve real inventory, nested inspection and keyboard 
   expect(outside).toBe(false);
 });
 
-test('hardware walkthrough automatically crosses component and view boundaries',async({page})=>{
+test('hardware inspection stays on the chosen component and view',async({page})=>{
   await page.emulateMedia({reducedMotion:'no-preference'});
   await page.clock.install();
   await page.goto('/#gpu');
   const gpu=page.locator('#gpu');
   await gpu.locator('.hd-canvas').scrollIntoViewIfNeeded();
-  await expect(gpu).toHaveAttribute('data-diagram-playback','flow');
+  await expect(gpu.locator('[data-playback-toggle]')).toHaveCount(0);
   const initial=await gpu.locator('.hd-inspector h4').textContent();
-  await page.clock.runFor(6500);
-  await expect(gpu.locator('.hd-inspector h4')).not.toHaveText(initial!);
-  await page.clock.runFor(19000);
-  await expect(gpu.locator('.hd-tabs [aria-pressed=true]')).toContainText('one H100 SM');
+  await page.clock.runFor(26000);
+  await expect(gpu.locator('.hd-inspector h4')).toHaveText(initial!);
+  await gpu.getByRole('button',{name:'Look inside'}).click();
   await gpu.locator('[data-hd-part="tensor"]').first().click();
-  await expect(gpu).toHaveAttribute('data-playback-state','paused');
+  const selected=await gpu.locator('.hd-inspector h4').textContent();
+  await page.clock.runFor(19000);
+  await expect(gpu.locator('.hd-inspector h4')).toHaveText(selected!);
+  await expect(gpu.locator('.hd-tabs [aria-pressed=true]')).toContainText('one H100 SM');
 });
 
 test('tensor views preserve values, byte offsets and channel ownership',async({page})=>{
