@@ -39,5 +39,5 @@
   .pk-backends { grid-template-columns: repeat(2,minmax(0,1fr)); padding-inline: 12px; }
   .pk-work { grid-template-columns: minmax(0,1fr); padding: 16px; }
   .pk-controls, .portable-kernel-lab figcaption { padding: 16px; }
-  .pk-scroll::after { content: "Scroll sideways to follow the full execution path"; display: block; font: 11px/1.6 var(--sans); color: var(--graphite); margin-block: 8px; }
+  .pk-scroll::after { content: "Scroll →"; display: block; font: 11px/1.6 var(--sans); color: var(--graphite); margin-block: 8px; }
 }

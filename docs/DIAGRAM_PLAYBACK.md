@@ -7,7 +7,7 @@ has selectable parts or adjustable values.
 Component maps, architecture drawings, lesson schematics, illustrations, and
 parameter comparisons have no playback controls or automatic selection changes.
 Their existing inspectors, keyboard controls, sliders, and expanded views remain
-available. Global animation preferences never start motion in these figures.
+available.
 
 Execution traces and stateful examples retain playback: token and instruction
 traces, training stages, matrix accumulation, reductions, collectives, pipeline
@@ -20,8 +20,9 @@ Decorative token pulsing is removed from the prefill/decode comparison.
 
 Eligible examples play when their drawing is visible, with a single Play/Pause
 control and a fixed interval. There are no speed selectors or countdown bars.
-The sidebar animation preference persists across reloads; individual pauses last
-for the session.
+There is no global animation control or persisted global pause preference. Each
+example owns its Play/Pause control; individual pauses last for the session.
+The retired `atlas-diagrams-paused` preference is ignored.
 
 Selecting a component, changing a setting, using keyboard controls, or manipulating
 a scene pauses its walkthrough. Play resumes from that state. Expanded figures
@@ -52,10 +53,9 @@ npm run lint:ui
 ```
 
 Playback checks cover automatic execution, manual pause, focus, reduced motion,
-modal restoration, hidden chapters, mobile framing, persistent preferences, and
+modal restoration, hidden chapters, mobile framing, retired global preferences, and
 110 advances per animated example. They also check that static schematics remain
-manually selectable and parameter comparisons keep the reader's values even when
-global animations are enabled. Static artwork retains accessible captions and
+manually selectable and parameter comparisons keep the reader's values. Static artwork retains accessible captions and
 alternatives. Mathematical correctness remains covered by each lab's own tests.
 
 The selective-motion pass passed 181 unit tests, the production build, and all

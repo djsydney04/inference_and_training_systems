@@ -22,7 +22,7 @@ export function subjectDiagram(topic: LessonVisual, detailed: boolean, selected:
   const arrow=(path:string)=>`<path class="lv-wire" d="${path}" marker-end="url(#${marker})"/>`;
   const node=(index:number,x:number,y:number,w:number,h:number,art:string,nested=false)=>{
     const step=topic.steps[index];
-    return `<g class="lv-node lv-subject-node ${nested?'lv-nested-node':''} ${selected===index?'is-selected':''}" data-lv-node="${index}" role="button" tabindex="0" aria-pressed="${selected===index}" aria-label="Inspect ${escape(step.label)}"><title>${escape(step.note)}</title>${rect(x,y,w,h,'lv-node-body')}${wrapped(step.label,x+16,y+26,w-32,'lv-label')}${art}${detailed?wrapped(step.detail,x+16,y+h-42,w-32):''}</g>`;
+    return `<g class="lv-node lv-subject-node ${nested?'lv-nested-node':''} ${selected===index?'is-selected':''}" data-lv-node="${index}" role="button" tabindex="0" aria-pressed="${selected===index}" aria-label="Inspect ${escape(step.label)}"><title>${escape(step.note)}</title>${rect(x,y,w,h,'lv-node-body')}${wrapped(step.label,x+16,y+26,w-32,'lv-label')}${art}${detailed&&!art.includes(`>${escape(step.detail)}<`)?wrapped(step.detail,x+16,y+h-42,w-32):''}</g>`;
   };
   const panel=(index:number,art:(x:number,y:number)=>string)=>{
     const x=24+index*282,y=24;
@@ -63,10 +63,10 @@ export function subjectDiagram(topic: LessonVisual, detailed: boolean, selected:
       body+=node(i,x,y,w,h,i===0?txt(x+28,y+70,'a × b + c','lv-art-equation'):'',true);
     }
   } else if(id==='cuda-first-launch') {
-    family='launch-grid';height=374+extra*3;
-    body=node(0,24,24,804,322+extra*3,txt(48,86,'N = 1000 · 4 blocks × 256 threads')+Array.from({length:4},(_,i)=>rect(50+i*190,110,174,42,i===3?'lv-art-cell lv-art-active':'lv-art-cell')+txt(64+i*190,137,`block ${i}`)).join(''),true);
-    body+=node(1,240,170,548,160+extra*2,rect(270,225,478,30)+txt(286,246,'logical indices 768 … 1023')+rect(703,225,45,30,'lv-art-mask'),true);
-    body+=node(2,498,249,244,71+extra,txt(516,303,'i = 999 → valid'),true);
+    family='launch-grid';height=414+extra*3;
+    body=node(0,24,24,804,372+extra*3,txt(48,86,'N = 1000 · 4 blocks × 256 threads')+Array.from({length:4},(_,i)=>rect(50+i*190,110,174,42,i===3?'lv-art-cell lv-art-active':'lv-art-cell')+txt(64+i*190,137,`block ${i}`)).join(''),true);
+    body+=node(1,240,170,548,210+extra*2,rect(270,225,478,30)+txt(286,246,'logical indices 768 … 1023')+rect(703,225,45,30,'lv-art-mask'),true);
+    body+=node(2,498,278,244,85+extra,txt(516,332,'i = 999 → valid'),true);
   } else if(id==='parallel-axes') {
     family='partitioned-matrices';
     body=panel(0,(x,y)=>cells(x+29,y+89,4,3,25,()=>true)+cells(x+138,y+89,4,3,25,()=>true)+txt(x+42,y+220,'replica 0')+txt(x+140,y+220,'replica 1'))+
@@ -96,7 +96,7 @@ export function subjectDiagram(topic: LessonVisual, detailed: boolean, selected:
       a+=cells(x+30,y+174,2,3,25,(r)=>i===0||(i===2&&r===0),(r,c)=>i===0?r*3+c:i===2&&r===0?c*2:'·')+cells(x+130,y+174,2,3,25,(r)=>i===1||(i===2&&r===0),(r,c)=>i===1?r*3+c:i===2&&r===0?c*2+1:'·');
       a+=txt(x+28,y+254,'node 0')+txt(x+132,y+254,'node 1');
       a+=arrow(`M${x+67} ${y+125}V${y+172}`);
-      if(i!==0) a+=arrow(`M${x+67} ${y+147}H${x+166}V${y+172}`);
+      if(i!==0) a+=arrow(`M${x+67} ${y+125}V${y+147}H${x+166}V${y+172}`);
       if(i===1) a=a.replace(arrow(`M${x+67} ${y+125}V${y+172}`),'');
       return a;
     })).join('');

@@ -47,9 +47,9 @@
 .atlas-ui .lesson-visual .figure-tools { background: transparent; border-bottom: 0; padding-bottom: 0; }
 .atlas-ui .lesson-visual .figure-tools > button { font-size: 11px; min-height: 32px; border-color: #aab7a0; }
 .atlas-ui .lesson-visual .lv-canvas { margin-top: 14px; padding-block: 14px; }
-.atlas-ui .lv-node > rect { fill: #f5f6ef; stroke: #8e9d84; }
-.atlas-ui .lv-node.is-selected > rect { fill: #edf1fb; stroke: var(--signal); }
-.atlas-ui .lv-node:hover > rect { fill: #e4eadc; }
+.atlas-ui .lv-node > .lv-node-body { fill: #f5f6ef; stroke: #8e9d84; }
+.atlas-ui .lv-node.is-selected > .lv-node-body { fill: #edf1fb; stroke: var(--signal); }
+.atlas-ui .lv-node:hover > .lv-node-body { fill: #e4eadc; }
 .atlas-ui .lv-node .lv-cell { fill: #c2ceb7; stroke: #8fa47f; }
 .atlas-ui .lv-node.is-selected .lv-cell { fill: #b9c9ef; stroke: #7295d9; }
 .lv-etch { fill: none; stroke: #a0af93; stroke-width: .7; pointer-events: none; }

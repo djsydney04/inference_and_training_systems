@@ -46,4 +46,4 @@
 
 .hardware-drawing figcaption > p { justify-self: start; text-align: left; max-width: 70ch; margin-bottom: 12px; }
 
-@media(max-width:700px) { .hd-canvas::after { content: "Scroll sideways to inspect the full drawing"; display: block; margin: 12px 8px; font: 11px/1.5 var(--sans); color: var(--graphite); } }
+@media(max-width:700px) { .hd-canvas::after { content: "Scroll →"; display: block; margin: 12px 8px; font: 11px/1.5 var(--sans); color: var(--graphite); } }

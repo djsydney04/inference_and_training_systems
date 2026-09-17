@@ -37,5 +37,5 @@
   .fw-timing-controls { grid-template-columns: minmax(0,1fr); }
   .fw-layers li { grid-template-columns: minmax(0,1fr); gap: 6px; }
   .fw-role { grid-row: auto; }
-  .fw-scroll::before { content: "Scroll horizontally to read the table →"; display: block; position: sticky; left: 0; font: 11px/1.6 var(--sans); color: var(--graphite); }
+  .fw-scroll::before { content: "Scroll →"; display: block; position: sticky; left: 0; font: 11px/1.6 var(--sans); color: var(--graphite); }
 }

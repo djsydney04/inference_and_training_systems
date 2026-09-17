@@ -18,5 +18,5 @@
 .cpu-lab-surface:focus-visible { outline: 2px solid var(--signal); outline-offset: -2px; }
 @media(max-width:700px) {
   .cpu-lab-surface { padding: 30px 0; }
-  .cpu-lab-surface::after { content: 'Scroll sideways to follow the full trace'; display: block; position: sticky; left: 0; width: fit-content; margin-top: 18px; font: 11px/1.5 var(--sans); color: var(--graphite); }
+  .cpu-lab-surface::after { content: "Scroll →"; display: block; position: sticky; left: 0; width: fit-content; margin-top: 18px; font: 11px/1.5 var(--sans); color: var(--graphite); }
 }

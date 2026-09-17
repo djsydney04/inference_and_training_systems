@@ -9,9 +9,9 @@
 .lv-canvas { overflow-x: auto; padding: 12px 18px 0; scrollbar-width: thin; }
 .lv-svg { display: block; width: 100%; min-width: 660px; height: auto; }
 .lv-node { cursor: pointer; }
-.lv-node > rect { fill: #f8f8f3; stroke: #a4aba0; transition: fill 140ms ease; }
-.lv-node.is-selected > rect { stroke: #2559d6; stroke-width: 1.8; fill: #e9eefb; }
-.lv-node:hover > rect { fill: #e6eaf0; }
+.lv-node > .lv-node-body { fill: #f8f8f3; stroke: #a4aba0; transition: fill 140ms ease; }
+.lv-node.is-selected > .lv-node-body { stroke: #2559d6; stroke-width: 1.8; fill: #e9eefb; }
+.lv-node:hover > .lv-node-body { fill: #e6eaf0; }
 .lv-label { font: 500 15px var(--sans); fill: #242925; }
 .lv-detail { font: 11px var(--sans); fill: #59625b; }
 .lv-operator { font: 500 25px var(--sans); fill: #2559d6; }
@@ -43,7 +43,7 @@
 .figure-popout-open { overflow: hidden; }
 @media (max-width: 700px) {
   .lv-canvas { padding-inline: 12px; }
-  .lv-canvas::after { content: "Scroll sideways to inspect the whole diagram"; display: block; margin: 8px 0 14px; font: 11px/1.5 var(--sans); color: var(--graphite); }
+  .lv-canvas::after { content: "Scroll →"; display: block; margin: 8px 0 14px; font: 11px/1.5 var(--sans); color: var(--graphite); }
   .lesson-visual figcaption, .lv-toolbar { padding-inline: 16px; }
   .lv-selection { margin-inline: 16px; }
   .lv-notes > div { display: block; padding-inline: 16px; }
@@ -54,7 +54,7 @@
   .figure-popout .nn-overview { grid-template-columns: minmax(0, 1fr); }
   .figure-tools { padding-inline: 14px; }
 }
-@media (prefers-reduced-motion: reduce) { .lv-node > rect { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .lv-node > .lv-node-body { transition: none; } }
 
 /* Consistent technical plates: thin rules, explicit values and quiet inactive links. */
 .lesson-visual { background: #fcfcf9; }
@@ -103,7 +103,4 @@
 .atlas-ui .figure-layout .lv-notes > .lv-selection strong { font: 500 14px/1.5 var(--sans); }
 .atlas-ui .figure-layout .lv-notes > .lv-selection p { font: 14px/1.75 var(--sans); margin: 8px 0 0; }
 .lv-subject, .lv-compare { --lv-node-fill: transparent; --lv-node-selected: transparent; }
-.lv-node.lv-subject-node > .lv-art-cell { fill: #f9faf7; stroke: #b8c2b8; stroke-width: 1; }
-.lv-node.lv-subject-node > .lv-art-active { fill: #dce7f9; stroke: #7897cc; }
-.lv-node.lv-subject-node > .lv-art-mask { fill: #eceee9; stroke: #abb4aa; stroke-dasharray: 3 3; }
 .lv-subject-node.is-selected > .lv-label { fill: var(--signal-dark); }

@@ -32,7 +32,7 @@
   .cuda-storage { grid-template-columns: repeat(5, 1fr); }
   #cuda-reduction-lab svg { width: 760px; min-width: 760px; }
   #cuda-reduction-lab [data-reduce-diagram]::before {
-    content: "Scroll sideways to inspect all eight lanes.";
+    content: "Scroll →";
     display: block;
     margin: .3rem 0 .7rem;
     color: #59625b;

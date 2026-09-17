@@ -81,7 +81,7 @@
   .nn-shape-notes { margin-inline: 8px; }
   .nn-dimensions { display: block; }
   .nn-diagram-scroll { padding-inline: 14px; }
-  .nn-diagram-scroll::after { content: "Scroll sideways to follow the full diagram"; display: block; margin: 12px 0 0; font: 11px/1.5 var(--sans); color: var(--graphite); }
+  .nn-diagram-scroll::after { content: "Scroll →"; display: block; margin: 12px 0 0; font: 11px/1.5 var(--sans); color: var(--graphite); }
   .nn-inspector { margin-inline: 14px; min-height: 0; }
   .nn-attention-values { padding-inline: 14px; }
   .nn-weight-row { grid-template-columns: 65px minmax(30px, 1fr) 46px; gap: 8px; }

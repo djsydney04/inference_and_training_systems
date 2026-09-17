@@ -69,10 +69,10 @@ Leave generous space around the drawing and between its nodes; avoid large
 tinted panels and repeated headings. Schematics show short labels by default;
 annotations are optional, while exact numerical values remain visible.
 
-Keep one selected-part label below the drawing. Fold its explanation until the
-reader opens Details or deliberately selects a component. Keep drill-down
-buttons visible. Put introductory prose, scope boundaries and references in
-Figure notes. Chip explorers group component search, zoom, routes and reference
+Lesson schematics use one Notes disclosure. Selecting a part opens its explanation
+there; the default figure shows its short caption, Labels and Expand controls,
+and the drawing. Hardware explorers retain their component details and visible
+drill-down buttons. Put scope boundaries and references in Notes. Chip explorers group component search, zoom, routes and reference
 material below the drawing. Numerical labs retain their calculation controls
 and results. Move existing nodes rather than recreating them so state and event
 handlers survive layout changes and expansion. Refresh after lazy workbench
@@ -82,6 +82,13 @@ Expanded figures use one numbered heading in the dialog. Keep the original
 caption accessible and restore it when closing; embedded figures retain their
 own headings. Introductory figure notes use a normal reading column, separate
 from the label-and-answer grid used by worked examples.
+
+Use matrix grids for tensor axes, address strips for pointer arithmetic, nested
+outlines for containment, probability bars for distributions, and circular paths
+for feedback. Comparisons have independent columns or a two-by-two layout. Keep
+flow arrows for actual ordered dependencies; never treat every topic as a pipeline.
+`lesson-subject-diagrams.ts` supplies authored examples and their explicit scope;
+`lesson-visual-titles.ts` owns the short schematic captions.
 
 Choose the representation that makes the relationship easiest to read. Matrix
 values, reduction ownership, algorithm stages and hardware use 2D. Prefer an

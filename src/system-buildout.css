@@ -49,7 +49,7 @@
   .system-buildout figcaption { padding-inline:16px; }
   .sb-levels { margin-inline:12px; }
   .sb-levels button { padding-inline:10px; font-size:12px; }
-  .sb-canvas::after { content:"Scroll sideways to inspect the system"; display:block; font:11px/1.5 var(--sans); color:var(--graphite); margin-top:12px; }
+  .sb-canvas::after { content: "Scroll →"; display:block; font:11px/1.5 var(--sans); color:var(--graphite); margin-top:12px; }
 }
 
 .system-buildout { background: #fcfcf9; }
