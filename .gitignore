@@ -17,3 +17,5 @@ checkpoints/
 .venv/
 
 output/diagram-review/
+.vercel
+.env*.local
