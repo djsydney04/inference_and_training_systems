@@ -11,6 +11,7 @@ import {
   surfaceLabel,
   routedLine,
   sequencePanel,
+  componentDetail,
 } from "./scene-detail";
 import { fitCameraToBounds } from "./camera-fit";
 
@@ -70,6 +71,8 @@ function updateInspector(element: HTMLElement | null, info: PartInfo) {
     <p>${info.body}</p>
     <dl>${info.facts.map(([term, detail]) => `<div><dt>${term}</dt><dd>${detail}</dd></div>`).join("")}</dl>
   `;
+  const companion: Record<string, string> = { "gpu-inspector": "gpu-chip-anatomy", "lpu-inspector": "lpu-chip-anatomy", "rack-inspector": "network-switch-anatomy" };
+  if (companion[element.id]) element.insertAdjacentHTML("beforeend", `<a class="scene-anatomy-link" href="#${companion[element.id]}">Open the component schematic</a>`);
 }
 
 function createSceneRig(
@@ -427,6 +430,20 @@ function createGPUScene() {
     );
     packageGroup.add(l2);
     selectable.push(l2);
+
+    // Memory control and host transfer resources are separate from SM arithmetic.
+    for (const side of [-1, 1]) {
+      for (const z of [-1.7, 0, 1.7]) {
+        const controller = makeBox(0.48, 0.25, 1.2, 0x879b88, [side * 3.15, 0.12, z], "memory-controller", componentDetail("gpu-package", "controller"));
+        packageGroup.add(controller);
+        selectable.push(controller);
+      }
+    }
+    const copyEngine = makeBox(1.55, 0.3, 0.65, 0x607c93, [-2.05, 0.05, 3.22], "copy-engine", componentDetail("gpu-package", "copy"));
+    const hostInterface = makeBox(1.55, 0.3, 0.65, 0x607c93, [2.05, 0.05, 3.22], "host-interface", componentDetail("gpu-package", "host"));
+    packageGroup.add(copyEngine, hostInterface);
+    selectable.push(copyEngine, hostInterface);
+    packageGroup.add(surfaceLabel("Copy", 1.2, [-2.05, 0.23, 3.22], "#ffffff"), surfaceLabel("Host I/O", 1.2, [2.05, 0.23, 3.22], "#ffffff"));
 
     for (let row = 0; row < 6; row += 1) {
       for (let column = 0; column < 8; column += 1) {
@@ -1113,7 +1130,16 @@ function createLPUScene() {
     const selectable: Selectable[] = [];
     const inspector = document.getElementById("lpu-inspector");
 
-    chip.add(makeBox(12.6, 0.35, 8.2, 0x737b75, [0, -0.55, 0]));
+    chip.add(makeBox(12.6, 0.35, 9.8, 0x737b75, [0, -0.55, 0]));
+    for (const x of [-4.8, 4.8]) {
+      const link = makeBox(2.1, 0.28, 0.65, colors.signal, [x, -0.03, -4.18], "chip-link", componentDetail("lpu-slices", "links"));
+      chip.add(link, surfaceLabel("Chip link", 1.8, [x, 0.13, -4.18], "#ffffff"));
+      selectable.push(link);
+      chip.add(routedLine([[x, 0.1, -3.83], [x, 0.1, -3.6], [Math.sign(x) * 5.25, 0.1, -3.6], [Math.sign(x) * 5.25, 0.1, -3.4]], colors.signal, 0.9));
+    }
+    const dispatch = makeBox(3.8, 0.22, 0.65, colors.ink, [0, -0.03, -4.18], "instruction-dispatch", componentDetail("lpu-slices", "dispatch"));
+    chip.add(dispatch, surfaceLabel("Instruction dispatch", 3.4, [0, 0.1, -4.18], "#ffffff"));
+    selectable.push(dispatch);
     const tileTypes: {
       key: string;
       title: string;

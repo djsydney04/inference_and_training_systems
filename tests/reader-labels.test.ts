@@ -9,6 +9,7 @@ import {
   sectionCaptionLabel,
 } from "../src/reader-labels.ts";
 import { chapters } from "../src/curriculum.ts";
+import { chipExplorers } from "../src/chip-anatomy-data.ts";
 
 test("numbers use explicit one-based ordinals and reject impossible positions", () => {
   assert.equal(itemNumber(29, 110), "29.110");
@@ -127,6 +128,8 @@ test("authored section declarations and helper calls have unique, nonempty links
     for (const match of source.matchAll(/\b(?:lesson|project)\("([^"]*)",\s*"([^"]*)"/g))
       add(match[1], match[2], name);
   }
+  for (const explorer of chipExplorers)
+    add(explorer.id, explorer.title, "chip-anatomy-data.ts");
   assert.ok(items.length > 100, "Expected the complete authored lesson inventory");
   assert.equal(buildChapterOutline(1, items).length, items.length);
 });

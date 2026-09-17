@@ -247,7 +247,7 @@ export function initializeReader() {
     });
     // Index optional worked detail by its own heading, then reveal it on arrival.
     el.querySelectorAll<HTMLElement>("h4, .deep-dive > summary").forEach((heading) => {
-      if (heading.closest(".scene-inspector")) return;
+      if (heading.closest(".scene-inspector, .chip-inspector")) return;
       const headingCopy = heading.cloneNode(true) as HTMLElement;
       headingCopy.querySelectorAll(".code-reference,.check-reference,.section-reference").forEach(label => label.remove());
       const title = headingCopy.textContent?.trim() ?? "";

@@ -1,5 +1,14 @@
 # Verification record — textbook expansion
 
+## September 16, 2026 — chip and switch anatomy
+
+Added five detailed component views alongside the GPU, LPU and rack cutaways:
+43 selectable parts, nine routes, nine new 3D component types, and a switch
+contention experiment. All 92 Node tests and the production build pass.
+Browser checks cover every component and route, keyboard controls, popouts,
+hidden-view deep links and 1280/390/320-pixel layouts. See
+[the diagram record](docs/CHIP_DIAGRAMS.md) for scope, sources and evidence limits.
+
 ## September 16, 2026 — programming across accelerators
 
 CUDA and profiling moved into Programming, with a separate kernel-programming

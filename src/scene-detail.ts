@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { chipExplorers } from "./chip-anatomy-data";
 
 export type DetailInfo = {
   eyebrow: string;
@@ -7,6 +8,10 @@ export type DetailInfo = {
   facts: [string, string][];
 };
 type Part = THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>;
+export function componentDetail(viewId: string, partId: string): DetailInfo {
+  const part = chipExplorers.flatMap(explorer => explorer.views).find(view => view.id === viewId)!.parts.find(part => part.id === partId)!;
+  return { eyebrow: part.detail, title: part.label, body: part.body, facts: [["What limits it", part.watch], ["Work through it", part.example]] };
+}
 const palette = {
   base: 0xd1d5ca,
   register: 0x879b88,
@@ -90,12 +95,12 @@ export function buildSM() {
   const labels = new THREE.Group();
   const routes = new THREE.Group();
   group.add(labels, routes);
-  group.add(box(13.4, 0.28, 11.5, palette.base, 0, -0.45, 0));
+  group.add(box(13.4, 0.28, 12.8, palette.base, 0, -0.45, 0));
   labels.add(
     surfaceLabel(
       "Streaming multiprocessor / execution teaching model",
       10.8,
-      [0, -0.29, -5.3],
+      [0, -0.29, -5.9],
     ),
   );
   const info: Record<string, DetailInfo> = {
@@ -169,6 +174,20 @@ export function buildSM() {
     if (part.userData.info) selectable.push(part);
     return part;
   };
+  const supportLabels = new Set<THREE.Object3D>();
+  [
+    ["tma", "TMA", -4.65],
+    ["lsu", "Load / store", -1.55],
+    ["barrier", "Async barriers", 1.55],
+    ["sfu", "Special math", 4.65],
+  ].forEach(([id, title, x]) => {
+    const info = componentDetail("gpu-sm", String(id));
+    add(box(2.7, 0.3, 0.75, id === "tma" ? palette.signal : palette.compute, Number(x), 0.04, -4.75, info));
+    const label = surfaceLabel(String(title), 2.35, [Number(x), 0.21, -4.75], "#ffffff");
+    labels.add(label);
+    supportLabels.add(label);
+  });
+  routes.add(routedLine([[-4.65, 0.1, -4.3], [-6.2, 0.1, -4.3], [-6.2, 0.1, 4.4], [-5.9, 0.1, 4.4]], palette.signal, 0.65));
   for (let partition = 0; partition < 4; partition++) {
     const cx = partition % 2 === 0 ? -3.25 : 3.25,
       cz = partition < 2 ? -2.5 : 1.5;
@@ -350,7 +369,7 @@ export function buildSM() {
       layers.forEach((layer, i) => {
         layer.position.y = amount * (0.5 + i * 0.16);
       });
-      labels.children.forEach((label, i) => {
+      labels.children.filter(label => !supportLabels.has(label)).forEach((label, i) => {
         if (i < 1 || i > 16) return;
         if (label.userData.baseY === undefined)
           label.userData.baseY = label.position.y;
