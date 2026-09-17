@@ -63,7 +63,7 @@ export function initializeFigurePopouts() {
   let moved:HTMLElement|null=null, placeholder:Comment|null=null, opener:HTMLButtonElement|null=null;
   let navigating=false;
   const restore=()=>{
-    if(moved && placeholder){placeholder.replaceWith(moved);moved.classList.remove("is-popped-out");}
+    if(moved && placeholder){placeholder.replaceWith(moved);moved.classList.remove("is-popped-out");moved.querySelector(".figure-popout-caption")?.classList.remove("figure-popout-caption");}
     const focus=opener;
     moved=null;placeholder=null;opener=null;
     document.body.classList.remove("figure-popout-open");
@@ -102,6 +102,7 @@ export function initializeFigurePopouts() {
       dialog.querySelector("[data-popout-title]")!.textContent=title;
       dialog.querySelector("[data-popout-reference]")!.textContent=host.querySelector(".figure-reference")?.textContent ?? "";
       dialog.querySelector("[data-popout-body]")!.append(host);
+      caption?.classList.add("figure-popout-caption");
       host.classList.add("is-popped-out");document.body.classList.add("figure-popout-open");
       dialog.showModal();dialog.scrollTop=0;window.dispatchEvent(new Event("resize"));
       (dialog.querySelector("[data-popout-close]") as HTMLButtonElement).focus();

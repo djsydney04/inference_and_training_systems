@@ -93,14 +93,14 @@
 .figure-popout-heading > span { color: var(--graphite); font: 11px/1.5 var(--sans); }
 .figure-popout-heading > span:empty { display: none; }
 .figure-popout-heading > strong { font: 500 17px/1.4 var(--sans); letter-spacing: -.02em; }
-.figure-popout .figure-layout.is-popped-out .figure-caption { display: block; margin: 0; padding: 0; border: 0; }
-.figure-popout .figure-caption > :is(.figure-title,.figure-reference,strong) {
+.figure-popout .figure-layout .figure-popout-caption { display: block; margin: 0; padding: 0; border: 0; }
+.figure-popout .figure-popout-caption > :is(.figure-title,.figure-reference,strong) {
   position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
   overflow: hidden; clip-path: inset(50%); white-space: nowrap;
 }
-.figure-popout .figure-layout.is-popped-out .figure-tools { display: none; }
-.figure-popout .figure-layout.is-popped-out .figure-toolbar { justify-content: flex-start; max-width: none; }
-.figure-popout .figure-layout.is-popped-out .figure-caption:has(.figure-toolbar > :not(.figure-tools) button, .figure-toolbar > button) { padding-bottom: 24px; }
+.figure-popout .figure-layout .figure-popout-caption .figure-tools { display: none; }
+.figure-popout .figure-layout .figure-popout-caption .figure-toolbar { justify-content: flex-start; max-width: none; }
+.figure-popout .figure-layout .figure-popout-caption:has(.figure-toolbar > :not(.figure-tools) button, .figure-toolbar > button) { padding-bottom: 24px; }
 
 @media (max-width: 1000px) {
   .atlas-ui .figure-layout .figure-heading { grid-template-columns: minmax(0,1fr); gap: 16px; }
