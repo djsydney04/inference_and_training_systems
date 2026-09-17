@@ -54,6 +54,28 @@ function pause(player: Player) {
   player.paused = true; player.override = false; player.clock.reset(); update(player);
 }
 
+/** Only animate a connector whose endpoint reaches the highlighted operation. */
+function traceIncoming(root: HTMLElement) {
+  root.querySelectorAll(".walkthrough-current-wire").forEach(path => path.classList.remove("walkthrough-current-wire"));
+  root.querySelectorAll<SVGSVGElement>("svg").forEach(svg => {
+    const boxes = [...svg.querySelectorAll<SVGGraphicsElement>(".nn-node[aria-pressed=true], .nn-node.walkthrough-focus, .lv-node[aria-pressed=true], [data-system-part][aria-pressed=true]")].map(node => node.getBBox());
+    if (!boxes.length) return;
+    svg.querySelectorAll<SVGPathElement>(".nn-wire, .lv-wire, .sb-wire").forEach(path => {
+      const end = path.getPointAtLength(path.getTotalLength());
+      if (boxes.some(box => end.x >= box.x - 14 && end.x <= box.x + box.width + 14 && end.y >= box.y - 14 && end.y <= box.y + box.height + 14)) path.classList.add("walkthrough-current-wire");
+    });
+  });
+}
+
+function revealSelected(root: HTMLElement) {
+  const selected = root.querySelector<SVGGraphicsElement>(".nn-node[aria-pressed=true], .nn-node.walkthrough-focus, .lv-node[aria-pressed=true], .sb-node[aria-pressed=true], .architecture-scroll rect.walkthrough-focus");
+  const scroller = selected?.closest<HTMLElement>(".nn-diagram-scroll, .lv-canvas, .sb-canvas, .architecture-scroll");
+  if (!selected || !scroller || scroller.scrollWidth <= scroller.clientWidth) return;
+  const part = selected.getBoundingClientRect(), area = scroller.getBoundingClientRect();
+  if (part.left >= area.left + 8 && part.right <= area.right - 8) return;
+  scroller.scrollTo({ left: scroller.scrollLeft + part.left - area.left - (area.width - part.width) / 2, behavior: reducedMotion.matches ? "instant" : "smooth" });
+}
+
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     const player = players.get(entry.target as HTMLElement);
@@ -92,6 +114,9 @@ export function refreshDiagramPlayback() {
       if (playing(player)) pause(player);
       else { player.paused = false; player.override = true; player.clock.reset(); update(player); }
     });
+    root.addEventListener("atlas:playdiagram", () => {
+      player.paused = false; player.override = true; player.clock.reset(); update(player);
+    });
     const manual = (event: Event) => {
       if (!event.isTrusted) return;
       const target = event.target as Element;
@@ -113,7 +138,7 @@ export function refreshDiagramPlayback() {
 function available(player: Player, modal: HTMLDialogElement | undefined) {
   if (!playing(player) || !player.intersecting || document.hidden || (modal && !modal.contains(player.root))) return false;
   if (player.root.closest("[hidden], [inert], details:not([open])")) return false;
-  const visual = player.root.querySelector<HTMLElement>("[data-chip-panel]:not([hidden]) .chip-canvas, .three-stage, .lv-canvas, .nn-scroll, .sb-canvas, .architecture-scroll, canvas") ?? player.root;
+  const visual = player.root.querySelector<HTMLElement>("[data-chip-panel]:not([hidden]) .chip-canvas, .three-stage, .lv-canvas, .nn-diagram-scroll, .nn-whole, .sb-canvas, .architecture-scroll, canvas") ?? player.root;
   const box = visual.getBoundingClientRect();
   return box.width > 0 && box.height > 0 && box.bottom > 40 && box.top < window.innerHeight - 40;
 }
@@ -168,6 +193,8 @@ export function initializeDiagramPlayback() {
         // All adapters keep focus on the reader's control; no navigation is allowed.
         const focused = document.activeElement;
         player.caption.textContent = player.walkthrough.advance();
+        traceIncoming(player.root);
+        revealSelected(player.root);
         if (focused instanceof HTMLElement && focused.isConnected && document.activeElement !== focused) focused.focus({ preventScroll: true });
         player.root.dataset.playbackFrames = String(Number(player.root.dataset.playbackFrames ?? 0) + 1);
       }

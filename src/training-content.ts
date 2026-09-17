@@ -35,7 +35,7 @@ export const trainingExpansionMarkup = `
           <label>Sequences / rank <span><input type="number" min="1" max="1024" step="1" value="2" data-train-microbatch /> each microstep</span></label>
           <label>Sequence length <span><input type="number" min="128" max="1048576" step="128" value="4096" data-train-sequence /> tokens</span></label>
           <label>Accumulation <span><input type="number" min="1" max="1024" step="1" value="8" data-train-accum /> microsteps</span></label>
-          <label>Training target <span><input type="number" min="0.001" max="100" step="0.1" value="1" data-train-target /> trillion tokens</span></label>
+          <label>Training target <span><input type="number" min="0.001" max="100" step="0.001" value="1" data-train-target /> trillion tokens</span></label>
         </form>
         <div class="calc-results" aria-live="polite">
           <div class="model-state-bar" aria-label="Per-rank model-state memory composition">

@@ -36,6 +36,12 @@ svg rect.walkthrough-focus, svg .walkthrough-focus > rect, svg .walkthrough-focu
 svg text.walkthrough-focus { fill: #173b99; font-weight: 600; }
 [data-diagram-playback] :is(.nn-node, .lv-node, .chip-part) > rect { transition: fill 350ms, stroke 350ms; }
 [data-diagram-playback] .walkthrough-focus { transition: background-color 350ms, stroke 350ms, fill 350ms; }
+[data-playback-state="playing"] .walkthrough-current-wire,
+[data-playback-state="playing"] [data-chip-edge].is-active {
+  stroke-dasharray: 7 4;
+  animation: walkthrough-flow 1.2s linear infinite;
+}
+@keyframes walkthrough-flow { to { stroke-dashoffset: -22; } }
 :not(svg) > .walkthrough-focus { background-color: #e8eefb; }
 .three-lab > .diagram-playback { margin: 0; border-inline: 0; }
 @media (max-width: 580px) {

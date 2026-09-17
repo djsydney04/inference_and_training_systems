@@ -133,7 +133,6 @@ function initTransformerTrace() {
     ["SwiGLU feed-forward", "Expand each token independently, gate the hidden channels, then project back to width D."],
     ["Next layer", "Add the MLP update. The tensor keeps shape [B, T, D] and advances to the next block or final normalization."]
   ];
-  let running = false;
 
   const showStep = (step: number) => {
     nodes.forEach((node, index) => {
@@ -146,17 +145,9 @@ function initTransformerTrace() {
   };
 
   nodes.forEach((node, index) => node.addEventListener("click", () => showStep(index)));
-  button?.addEventListener("click", async () => {
-    if (running) return;
-    running = true;
-    button.disabled = true;
-    for (let step = 0; step < nodes.length; step += 1) {
-      showStep(step);
-      await new Promise((resolve) => window.setTimeout(resolve, 620));
-    }
-    button.disabled = false;
-    button.textContent = "Trace again";
-    running = false;
+  button?.addEventListener("click", () => {
+    showStep(0);
+    button.dispatchEvent(new CustomEvent("atlas:playdiagram", { bubbles: true }));
   });
 }
 
