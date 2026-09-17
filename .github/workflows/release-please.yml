@@ -29,11 +29,24 @@ jobs:
     outputs:
       pr-sha: ${{ steps.candidate.outputs.sha }}
     steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
       - uses: googleapis/release-please-action@8b8fd2cc23b2e18957157a9d923d75aa0c6f6ad5 # v4
         id: release
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+      - name: Version the material changes
+        if: steps.release.outputs.pr != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ fromJSON(steps.release.outputs.pr || '{}').number }}
+        run: node --experimental-strip-types scripts/finalize-content-history.ts
       # GITHUB_TOKEN-created PRs do not trigger pull_request workflows.
       # Capture and verify the exact generated commit within this workflow.
       - name: Identify the generated release commit

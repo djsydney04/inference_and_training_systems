@@ -100,6 +100,16 @@ interactive figure. Record actual execution and its limitations in
 
 ## Before finishing an addition
 
+Record changes to the material under `## Unreleased` in
+[CONTENT_CHANGELOG.md](../CONTENT_CHANGELOG.md). Use Added, Expanded, Corrected
+or References, explain what a reader can now learn, and link directly to the
+affected lesson. Include substantive diagram and executable-example changes.
+Keep layout, navigation, tooling and release automation in the technical
+changelog. Use `feat(content):` for additions and expansions or `fix(content):`
+for corrections so a material-only change can trigger the appropriate release.
+The release workflow supplies the version and date; do not invent a future
+version or move entries out of Unreleased yourself.
+
 Lesson diagrams need an automatic walkthrough as well as manual controls.
 Add an explicit adapter in `diagram-walkthroughs.ts` for a new diagram family;
 existing lesson schematics inherit playback automatically. Choose meaningful
