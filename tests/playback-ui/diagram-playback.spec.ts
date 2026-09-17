@@ -116,15 +116,20 @@ test("every authored diagram has a walkthrough and repeated cycles remain valid"
       if (root.closest(".atlas-gallery, .atlas-landing") || root.querySelector("[data-figure-open]")) continue;
       const adapter = diagramWalkthrough(root);
       const name = root.closest("[data-lesson]")?.id || root.id || root.className;
-      if (root.matches("figure.book-study")) {
-        // Only catalog image studies are static; a mislabeled live lab must fail.
+      if (root.matches("figure.book-study, figure.notebook-figure")) {
+        // Authored artwork is static; a mislabeled live lab must still fail.
+        const study = root.matches(".book-study");
         const image = root.querySelector<HTMLImageElement>(":scope > .book-study-art > img.study-image");
+        const drawing = root.querySelector<SVGElement>(":scope > .notebook-scroll > svg[role=img]");
+        const accessibleArtwork = study
+          ? image?.getAttribute("src")?.trim() && image.getAttribute("alt")?.trim()
+          : drawing?.getAttribute("aria-label")?.trim();
         const title = root.querySelector("figcaption strong")?.textContent?.trim();
         const controls = [...root.querySelectorAll("button,input,select,textarea,[role=button],[contenteditable=true]")];
-        const embeddedLab = root.querySelector("svg,canvas,[data-diagram-playback],.three-lab,.textbook-lab");
-        if (adapter || !image?.getAttribute("src")?.trim() || !image.getAttribute("alt")?.trim()
+        const embeddedLab = root.querySelector(`${study ? "svg," : ""}canvas,[data-diagram-playback],.three-lab,.textbook-lab`);
+        if (adapter || !accessibleArtwork
           || !title || embeddedLab || controls.some(control => !control.closest(".figure-tools"))) {
-          errors.push(`${name}: static study must contain captioned external artwork without simulation controls`);
+          errors.push(`${name}: static figure must contain accessible captioned artwork without simulation controls`);
         }
         continue;
       }

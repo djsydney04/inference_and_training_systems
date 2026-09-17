@@ -24,6 +24,7 @@ import "./framework-serving.css";
 import "./learning-reader.css";
 import { initializeAtlasUI } from "./atlas-ui";
 import { prepareBookStudies } from "./book-illustrations";
+import { refreshFigureLayouts } from "./figure-layout";
 import { atlasMarkup } from "./content";
 import { initializeNetworkLabs } from "./network-labs";
 import { prepareLessonVisuals, initializeLessonVisuals, initializeFigurePopouts } from "./lesson-visuals";
@@ -105,8 +106,10 @@ initializeReader();
 initializeAtlasUI();
 initializeFigurePopouts();
 initializeDiagramPlayback();
+refreshFigureLayouts();
 
 void import("./scenes").then(({ initializeScenes }) => {
   initializeScenes();
   refreshDiagramPlayback();
+  refreshFigureLayouts();
 });

@@ -1,0 +1,51 @@
+# Content changes
+
+New lessons, deeper explanations, worked examples, corrections and references.
+Earlier entries catalogue material present in the tagged edition; they do not
+claim the original publication date of every lesson. Interface and release
+automation changes are recorded separately in CHANGELOG.md.
+
+## Unreleased
+
+### Added
+
+- Framework execution: compare the [same numerical update](https://inference-and-training-systems.vercel.app/#framework-same-update) across framework APIs, trace [autodiff and training state](https://inference-and-training-systems.vercel.app/#framework-autodiff-state), and distinguish [graph boundaries](https://inference-and-training-systems.vercel.app/#framework-tracing-boundaries) from [completed-work timing](https://inference-and-training-systems.vercel.app/#framework-benchmark-boundary).
+- Training framework contracts: identify [who shifts labels](https://inference-and-training-systems.vercel.app/#framework-label-ownership), preserve a [global distributed objective](https://inference-and-training-systems.vercel.app/#framework-distributed-objective), and distinguish [adapter exports from resume state](https://inference-and-training-systems.vercel.app/#framework-adapter-artifacts).
+- Serving framework contracts: connect [messages, tokens and stopping](https://inference-and-training-systems.vercel.app/#framework-token-boundary) to [request compatibility](https://inference-and-training-systems.vercel.app/#framework-api-contract) and [cache identity](https://inference-and-training-systems.vercel.app/#framework-cache-identity).
+- Prefill/decode separation: follow a [valid KV-cache handoff](https://inference-and-training-systems.vercel.app/#pd-handoff), account for [transfer bytes and exposed delay](https://inference-and-training-systems.vercel.app/#pd-transfer-budget), and [balance worker pools and fabric](https://inference-and-training-systems.vercel.app/#pd-capacity).
+- Sharded training: inspect [live parameter memory through a step](https://inference-and-training-systems.vercel.app/#fsdp-live-memory), work a [sharded optimizer update](https://inference-and-training-systems.vercel.app/#sharded-optimizer-update), and [restore a checkpoint on another mesh](https://inference-and-training-systems.vercel.app/#sharded-checkpoint-reshard).
+- Quantization: work through [grouped weight quantization](https://inference-and-training-systems.vercel.app/#grouped-weight-quantization), including scale metadata and packed INT4 examples, then compare [calibration and output error](https://inference-and-training-systems.vercel.app/#calibration-and-output-error).
+- Mixture-of-experts execution: trace [routing, packing and combination](https://inference-and-training-systems.vercel.app/#moe-route-pack-combine), examine [skew and capacity](https://inference-and-training-systems.vercel.app/#moe-ownership-capacity), and follow [router and expert gradients](https://inference-and-training-systems.vercel.app/#moe-router-gradients).
+- Serving runtime: build a [scheduling iteration](https://inference-and-training-systems.vercel.app/#scheduler-iteration), budget [KV admission](https://inference-and-training-systems.vercel.app/#kv-admission), and measure [complete streamed answers](https://inference-and-training-systems.vercel.app/#streaming-metrics) under realistic arrivals.
+- Asynchronous rollout training: connect [generation records to training data](https://inference-and-training-systems.vercel.app/#rollout-runtime-records), explore [actor/learner overlap](https://inference-and-training-systems.vercel.app/#rollout-pipeline), and account for [policy lag and probability ratios](https://inference-and-training-systems.vercel.app/#rollout-policy-freshness).
+
+### Expanded
+
+- Speculative decoding: compare [modern drafting methods and their costs](https://inference-and-training-systems.vercel.app/#speculation-economics) while retaining the [exact sampling contract](https://inference-and-training-systems.vercel.app/#speculative-exactness) and cache rollback requirements.
+- Tensor storage and training: illustrated explanations connect [tensor strides](https://inference-and-training-systems.vercel.app/#tensor-strides), [optimizer state](https://inference-and-training-systems.vercel.app/#optimizer-state) and [pipeline schedules](https://inference-and-training-systems.vercel.app/#pipeline-schedules) to the values and dependencies they represent.
+- Hardware and kernels: new visual explanations of [memory banking](https://inference-and-training-systems.vercel.app/#fpga-memory-banking), [CPU execution](https://inference-and-training-systems.vercel.app/#cpu-execution) and [GEMM tiling](https://inference-and-training-systems.vercel.app/#cuda-gemm-hierarchy) make storage ports, ready instructions and operand reuse explicit.
+- Serving and distributed execution: illustrations explain [KV page ownership](https://inference-and-training-systems.vercel.app/#paged-kv), [collective contracts](https://inference-and-training-systems.vercel.app/#collective-contracts) and [request queues](https://inference-and-training-systems.vercel.app/#load-test), with captions that distinguish the logical model from measured behavior.
+
+## 0.3.0 (2026-09-17)
+
+### Added
+
+- Conceptual studies introduce [model computation](https://inference-and-training-systems.vercel.app/#first-principles), [compute and memory](https://inference-and-training-systems.vercel.app/#machine), and [connected training systems](https://inference-and-training-systems.vercel.app/#training). The captions identify the drawings as conceptual explanations rather than physical floorplans.
+
+## 0.2.0 (2026-09-16)
+
+### Added
+
+- A circuits-to-accelerators path covers [digital logic](https://inference-and-training-systems.vercel.app/#digital-abstraction), [ready/valid pipelines](https://inference-and-training-systems.vercel.app/#ready-valid-pipeline), [systolic-array cycles](https://inference-and-training-systems.vercel.app/#systolic-array-cycles) and an [FPGA/ASIC capstone](https://inference-and-training-systems.vercel.app/#fpga-asic-capstone).
+- A [portable matrix-multiplication contract](https://inference-and-training-systems.vercel.app/#portable-matmul-contract) connects examples for [H100/CUDA](https://inference-and-training-systems.vercel.app/#h100-kernel-example), [MI300X/HIP](https://inference-and-training-systems.vercel.app/#mi300x-kernel-example), [TPU/Pallas](https://inference-and-training-systems.vercel.app/#tpu-kernel-example) and [Trainium/NKI](https://inference-and-training-systems.vercel.app/#trainium-kernel-example).
+- The executable decoder path connects a [forward pass](https://inference-and-training-systems.vercel.app/#capstone-forward), [training and restart](https://inference-and-training-systems.vercel.app/#capstone-training), [KV-cache equivalence](https://inference-and-training-systems.vercel.app/#capstone-cache), [profiling](https://inference-and-training-systems.vercel.app/#capstone-profile) and an [HTTP service](https://inference-and-training-systems.vercel.app/#capstone-http), with explicit CPU and GPU verification boundaries.
+
+### Expanded
+
+- [GPU and SM anatomy](https://inference-and-training-systems.vercel.app/#gpu-chip-anatomy) explains memory controllers, copy engines, TMA, registers, TMEM, schedulers, barriers and execution units through selectable components and guided data paths.
+- [LPU anatomy](https://inference-and-training-systems.vercel.app/#lpu-chip-anatomy) explains the published Groq TSP's memory and compute slices, instruction dispatch and chip links, while distinguishing that model from newer undisclosed silicon.
+- [Networking and switch anatomy](https://inference-and-training-systems.vercel.app/#network-switch-anatomy) connects NVLink/NVSwitch and NIC/leaf/spine paths to packet parsing, buffering, arbitration, egress and a bandwidth-contention experiment.
+
+### References
+
+- Added TinyTPU's illustrated architecture walkthrough alongside the [systolic-array lesson](https://inference-and-training-systems.vercel.app/#systolic-array-cycles), connecting processing elements, multiply-accumulate operations, buffering and dataflow to the teaching model.

@@ -16,6 +16,36 @@ including its date. There is no separate date or version to maintain in TypeScri
 dates. It also runs automatically before every production build. Optionally pass
 a tag to check it: `npm run check:release -- v0.2.0`.
 
+## Material history
+
+[CONTENT_CHANGELOG.md](../CONTENT_CHANGELOG.md) records new lessons, explanations,
+worked examples, corrections and references. It also drives the site's
+**Content changes** panel, linked from the publication footer. Links use the
+public site's stable lesson fragments so they work on GitHub; the reader turns
+them into local navigation links.
+
+Write reader-facing entries under `## Unreleased`, grouped by `### Added`,
+`### Expanded`, `### Corrected` or `### References`. Each entry is a Markdown
+bullet with at least one lesson link. Continuation lines use two spaces. Avoid
+raw HTML and other Markdown constructs. Example:
+
+```markdown
+### Expanded
+
+- Explain register pressure with a worked example in [GPU anatomy](https://inference-and-training-systems.vercel.app/#gpu-chip-anatomy).
+```
+
+When Release Please prepares a PR, the workflow snapshots those entries from
+its main baseline under the generated version and date, then clears Unreleased.
+It validates the final commit, including that snapshot. Repeated runs regenerate
+the snapshot from main, so author pending notes on main, not on the bot branch.
+On the site, pending entries appear as “Since vX.Y.Z” until their release merges.
+Software-only releases produce no empty content edition. A material edition may
+therefore be older than the current application version.
+
+The first entries backfill tagged editions; they do not assert an exact original
+publication date for older lessons. Future entries are archived at release time.
+
 ## Choosing the next version
 
 Use conventional commit messages, including for squash-merge titles:
