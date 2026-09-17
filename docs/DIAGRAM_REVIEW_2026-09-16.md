@@ -68,11 +68,11 @@ mechanical service drawing, measured hardware trace or facility sizing document.
 ### Completed checks
 
 - Production build and release metadata checks passed.
-- 102 Node tests passed.
+- 174 Node tests passed after integrating the concurrent framework and serving labs.
 - 24 production-browser checks passed across 320, 390, 768 and 1440 px.
 - 20 animation checks passed on desktop and mobile, including 110 adapter
   advances per authored diagram, reduced motion and off-screen behavior.
-- Runtime inventory remains 154 walkthroughs: 125 flows, 18 comparisons and
-  11 numerical simulations. Decorative illustrations are counted separately.
+- Integrated runtime inventory is 190 walkthroughs: 133 flows, 41 comparisons and
+  16 numerical simulations. Decorative illustrations are counted separately.
 - Reviewed captures for all 88 lesson schematics, the additional live figure
   families, every new hardware view, and representative phone/popout views.

@@ -74,3 +74,6 @@
 .lv-value { font: 14px var(--mono, monospace); fill: #203249; }
 .lv-selection { margin-top: 8px; }
 .lv-selection strong { font: 500 17px/1.5 var(--sans); }
+/* Selected matrices keep their per-value dot-product highlights distinct. */
+.atlas-ui .lesson-visual .lv-node > .lv-value-cell { fill: #f8faf6; stroke: #d1d8ce; stroke-width: .8; }
+.atlas-ui .lesson-visual .lv-node > .lv-value-cell.is-dot-product { fill: #dce7f9; stroke: #97afd5; }

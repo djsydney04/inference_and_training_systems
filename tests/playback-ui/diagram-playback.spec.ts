@@ -114,8 +114,6 @@ test("every authored diagram has a walkthrough and repeated cycles remain valid"
     const errors: string[] = [];
     for (const root of document.querySelectorAll<HTMLElement>(diagramHostSelector)) {
       if (root.closest(".atlas-gallery, .atlas-landing") || root.querySelector("[data-figure-open]")) continue;
-      // Engraved chapter studies are static reference art, separate from live diagrams.
-      if (root.matches(".book-study") && root.querySelector("img.study-image")) continue;
       const adapter = diagramWalkthrough(root);
       const name = root.closest("[data-lesson]")?.id || root.id || root.className;
       if (root.matches("figure.book-study, figure.notebook-figure")) {
