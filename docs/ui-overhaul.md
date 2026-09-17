@@ -16,7 +16,11 @@ and systems. Original vector studies break up the page with fine linework,
 hatched detail, and alternating paper and dark-green backgrounds. Their links
 lead directly to the relevant chapters; a final reading action opens the guide.
 
-The same drawings introduce all 28 chapters, with the artwork selected by subject.
+The expanded collection contains sixteen distinct drawings. It introduces all
+28 chapters and both reference pages with artwork selected by subject, supplies
+29 larger illustrated studies inside the lessons, and appears in all six course
+parts and 25 diagram-library previews. Lesson studies are numbered before reader
+indexing and share its accessible figure popout.
 The shared schematic styles use matching pale-green surfaces, engraved corners,
 and more generous captions. `src/book-illustrations.ts` and
 `src/illustrated-book.css` connect this artwork to the book. The original SVGs and
@@ -63,7 +67,7 @@ playback so it stays uncluttered and responds to manual layer selection.
 
 ## Verification on September 16, 2026
 
-- `npm test`: 96 tests passed during the UI lint pass.
+- `npm test`: 101 tests passed after the expanded illustration pass.
 - `npm run lint:ui`: all 12 checks passed at 320, 390, 768, and 1440px.
 - `npm run build`: TypeScript and Vite passed. The existing bundle-size warning
   remains; this change does not restructure curriculum loading.
@@ -92,10 +96,19 @@ playback so it stays uncluttered and responds to manual layer selection.
   restyled schematic retained keyboard selection and open/close behavior.
 - Screenshot review caught and fixed caption contrast on the dark spread,
   disconnected network lines, and the cover caption's inherited right alignment.
+- The expanded pass verified 29 numbered lesson studies, 30 illustrated chapter
+  and reference openings, six course-part drawings, and 25 library previews.
+  All 12 layout checks passed with image decoding enabled. On mobile, opening
+  and closing an illustrated figure restored keyboard focus to its opener;
+  library search and type filters continued to work.
 
 `npm run lint:ui` runs the checks against an isolated production build, avoiding
 live reloads from other agents. It covers chapter/reference layouts, schematic
 labels, keyboard and numerical behavior, and release metadata at four widths.
+It also decodes every illustration on each page, including those below the fold,
+to catch missing or invalid SVG assets. For simultaneous agent sessions, set
+`ALMANAC_UI_PORT` to a free port; build and result directories get the same port
+suffix, keeping independent runs separate.
 
 Screenshots are in the ignored `output/playwright/` folder. Current references:
 `illustrated-landing-full.png`, `illustrated-model-mobile.png`,
@@ -103,6 +116,10 @@ Screenshots are in the ignored `output/playwright/` folder. Current references:
 `illustrated-chapter-mobile.png`, and `illustrated-schematic-desktop.png`.
 The numerical workbench review is recorded in `almanac-matmul-2d.png` and
 `almanac-ring-2d.png`.
+The expanded collection is recorded in `illustration-collection.png`,
+`illustrated-library-desktop.png`, `illustrated-library-mobile.png`,
+`illustrated-guide-desktop.png`, `gradient-study-desktop.png`,
+`logic-study-mobile.png`, and `cache-study-mobile.png`.
 
 Only the UI files and their integration lines were included in the UI commits.
 Other pending curriculum and rendering work in the shared checkout was preserved.

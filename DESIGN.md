@@ -30,18 +30,28 @@ remains local to the chapters, pauses for inspection, and respects reduced motio
 
 ## Illustration language
 
-The original SVG studies in `public/illustrations/` use fine ink lines, repeated
-cells, hatching, and a restrained blue path. They show token vectors and causal
-attention, an accelerator package from above, and communication between machines.
+The sixteen original SVG studies in `public/illustrations/` use fine ink lines,
+repeated cells, hatching, and a restrained blue path. Subjects include token
+vectors, gradients, data preparation, circuits, memory, compilation, scheduling,
+caches, sampling, and connected machines.
 They are conceptual illustrations, not numerical results or vendor floorplans.
 HTML captions provide readable context on narrow screens; descriptive alternatives
 explain the artwork without requiring color perception.
 
-`src/book-illustrations.ts` shares these assets between the landing spreads and
-the 28 chapter openings. The chapter images are decorative, selected by subject,
+`src/illustration-catalog.ts` connects each subject to its chapters, lessons,
+course parts, and library previews. `src/book-illustrations.ts` shares the assets
+between the landing spreads, 28 chapters, and two reference pages. Chapter images
+are decorative, selected by subject,
 and omitted from the accessibility tree so they do not repeat the introduction.
 Use external, lazy-loaded SVGs with intrinsic dimensions to keep layout stable
 and share the browser cache. `src/illustrated-book.css` owns this visual layer.
+
+Twenty-nine larger illustrated studies sit beside the relevant explanation.
+They are assembled before reader numbering, so they have ordinary figure labels
+and use the existing accessible popout. Keep their captions in HTML, their
+illustrative scope explicit, and live lab controls separate. Dark plates are
+reserved for circuit, processor, and compiler illustrations. The six course parts
+and all library previews also use the shared collection.
 
 The same pale green paper, fine engraved corners, square borders, and quiet
 captions appear in the interactive lesson schematics. Blue retains its existing

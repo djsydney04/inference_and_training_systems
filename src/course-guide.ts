@@ -1,5 +1,7 @@
 import { chapters } from "./curriculum";
 import { machinePlate } from "./machine-plate";
+import { studyImage } from "./book-illustrations";
+import { partStudies } from "./illustration-catalog";
 
 const escape = (text: string) => text.replace(/[&<>"']/g, character => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -21,7 +23,7 @@ function buildCourseGuide() {
   // Preserve the existing path controls and their reader event listeners.
   const pathSection = home.querySelector<HTMLElement>(".path-section");
   const first = chapters[0];
-  home.innerHTML = `<header class="guide-intro"><p class="guide-eyebrow">Course guide</p><h1 id="home-title">Machine learning systems</h1><p>Understand how a language model works, how it learns, and how the hardware runs it.</p></header>
+  home.innerHTML = `<header class="guide-intro illustrated-guide-intro"><div class="guide-intro-copy"><p class="guide-eyebrow">Course guide</p><h1 id="home-title">Machine learning systems</h1><p>Understand how a language model works, how it learns, and how the hardware runs it.</p></div><div class="guide-cover-art" aria-hidden="true">${studyImage("systems", true)}</div></header>
     <section class="guide-start" aria-labelledby="guide-start-title">
       <div class="guide-start-copy"><span class="guide-label">New to the subject?</span><h2 id="guide-start-title">Start with the foundations.</h2><p>Begin with the big picture. Then work through one prediction and one weight update before moving into training or hardware.</p><a class="primary-action" href="#${first.id}">Begin chapter ${number(first.id)} <span aria-hidden="true">→</span></a><p class="guide-prerequisites">No machine learning background required. Basic algebra helps; programming is introduced along the way.</p></div>
       <ol class="guide-first-lessons" aria-label="Your first three chapters">${chapters.slice(0,3).map((chapter, index) => `<li><a href="#${chapter.id}"><span class="guide-chapter-number">${number(chapter.id)}</span><div><strong>${escape(chapter.title)}</strong><p>${[
@@ -32,7 +34,7 @@ function buildCourseGuide() {
     </section>
     <section class="guide-course" aria-labelledby="guide-course-title"><header><h2 id="guide-course-title">The course, in order</h2><p>Each chapter builds on the ones before it. Open any chapter to see its prerequisites.</p></header><div class="guide-course-parts">${parts.map((part, index) => {
       const members = chapters.filter(chapter => chapter.part === part);
-      return `<section class="guide-part" aria-labelledby="guide-part-${index}"><div class="guide-part-intro"><span>Part ${index + 1}</span><h3 id="guide-part-${index}">${escape(part)}</h3><p>${escape(partDescriptions[part] ?? "Apply the ideas in worked examples and projects.")}</p></div><ol>${members.map(chapter => `<li><a href="#${chapter.id}"><span>${number(chapter.id)}</span><strong>${escape(chapter.title)}</strong><span aria-hidden="true">↗</span></a></li>`).join("")}</ol></section>`;
+      return `<section class="guide-part" aria-labelledby="guide-part-${index}"><div class="guide-part-intro"><span>Part ${index + 1}</span><h3 id="guide-part-${index}">${escape(part)}</h3><p>${escape(partDescriptions[part] ?? "Apply the ideas in worked examples and projects.")}</p><div class="guide-part-art" aria-hidden="true">${studyImage(partStudies[part] ?? "model", true)}</div></div><ol>${members.map(chapter => `<li><a href="#${chapter.id}"><span>${number(chapter.id)}</span><strong>${escape(chapter.title)}</strong><span aria-hidden="true">↗</span></a></li>`).join("")}</ol></section>`;
     }).join("")}</div></section>
     <section class="guide-visual" aria-labelledby="guide-visual-title"><div><span class="guide-label">Learn by inspecting</span><h2 id="guide-visual-title">Open a diagram.<br>Follow the work.</h2><p>Every diagram belongs to a lesson. Select a component, step through an operation, then read the explanation around it.</p><nav aria-label="Suggested diagrams"><a href="#first-weight-update">Watch a weight update <span aria-hidden="true">↗</span></a><a href="#gpu">Inspect a GPU <span aria-hidden="true">↗</span></a><a href="#gallery">All diagrams and labs <span aria-hidden="true">↗</span></a></nav></div>${machinePlate()}</section>
     <section class="guide-how" aria-labelledby="guide-how-title"><h2 id="guide-how-title">How to use a chapter</h2><ol><li><strong>Read the explanation</strong><p>Start with the question and its worked example.</p></li><li><strong>Try the diagram</strong><p>Change an input or select a component to see what happens.</p></li><li><strong>Check your understanding</strong><p>Predict the result, open the answer, then continue to the next chapter.</p></li></ol></section>`;

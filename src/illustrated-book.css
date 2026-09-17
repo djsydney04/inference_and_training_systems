@@ -60,11 +60,44 @@
 .atlas-ui .lv-notes { border-color: #bbc5b1; }
 .atlas-ui .lv-notes > summary { color: #43563a; }
 
+/* Illustrated studies appear beside the explanation, throughout the book. */
+.book-study { --study-ink: #273422; --study-muted: #52614b; --study-line: #b6c2aa; grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0,1.5fr) minmax(0,.85fr); align-items: center; gap: 22px 32px; min-width: 0; margin: 40px 0; padding: 20px 26px 30px; background: #e8eddf; color: var(--study-ink); border-block: 1px solid var(--study-line); }
+.book-study-art { min-width: 0; }
+.book-study-art .study-image { max-height: 370px; object-fit: contain; }
+.book-study > figcaption { display: block; min-width: 0; padding: 10px 0; border: 0; }
+.book-study > figcaption > .figure-reference { display: block; margin-bottom: 24px; color: var(--study-muted); }
+.book-study .figure-reference small { color: inherit; }
+.book-study > figcaption > strong { display: block; max-width: 23ch; font: 500 25px/1.2 var(--sans); letter-spacing: -.035em; }
+.book-study > figcaption > p { margin: 18px 0 0; justify-self: start; color: var(--study-muted); font: 16px/1.8 var(--serif); }
+.book-study > figcaption > small { display: block; margin-top: 25px; color: var(--study-muted); font: 10px/1.5 var(--sans); }
+.book-study > .figure-tools { grid-column: 1 / -1; padding: 0; border: 0; }
+.atlas-ui .book-study > .figure-tools > button { color: var(--study-ink); border-color: var(--study-line); min-height: 32px; font-size: 11px; }
+.book-study[data-study="logic"], .book-study[data-study="execution"], .book-study[data-study="compiler"] { --study-ink: #eef1e8; --study-muted: #c0cbb8; --study-line: #58664e; background: #222d1e; }
+.book-study:is([data-study="logic"], [data-study="execution"], [data-study="compiler"]) .study-image { filter: brightness(1.35); }
+.figure-popout .book-study-art .study-image { max-height: 600px; }
+
+/* The guide and library are browsable collections of the same drawings. */
+.illustrated-guide-intro { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(0,1fr); align-items: center; gap: 36px; }
+.guide-intro-copy > p:last-child { margin: 20px 0 0; max-width: 45ch; color: var(--graphite); font: 16px/1.8 var(--sans); }
+.guide-cover-art { min-width: 0; }
+.guide-cover-art .study-image { max-height: 255px; object-fit: contain; }
+.guide-part-art { max-width: 295px; margin-top: 24px; }
+.guide-part-art .study-image { mix-blend-mode: multiply; }
+.atlas-ui .guide-part { padding-block: 32px; align-items: start; }
+.atlas-ui .guide-part ol { padding-top: 8px; align-self: center; }
+.atlas-ui .gallery-preview { background: #e7ecdf; }
+.atlas-ui .gallery-preview .study-image { width: 100%; height: 260px; object-fit: contain; padding: 10px 18px; transition: transform 260ms ease; }
+.atlas-ui .gallery-entry:hover .study-image { transform: scale(1.035); }
+.atlas-ui .gallery-entry > b { top: auto; bottom: 26px; }
+
 @media (min-width: 1600px) {
   .landing-study { padding-block: 115px; }
   .landing-study .study-image { max-height: 560px; }
 }
 @media (max-width: 1100px) {
+  .book-study { grid-template-columns: minmax(0,1.25fr) minmax(0,1fr); gap: 18px 24px; padding-inline: 20px; }
+  .book-study > figcaption > strong { font-size: 22px; }
+  .atlas-ui .gallery-preview .study-image { height: 205px; padding: 8px; }
   .landing-preface { gap: 40px; }
   .landing-study { column-gap: 35px; grid-template-columns: minmax(0,1.15fr) minmax(0,1fr); }
   .landing-study-silicon { grid-template-columns: minmax(0,1fr) minmax(0,1.15fr); }
@@ -75,6 +108,20 @@
   .landing-artwork figcaption > span:last-child { text-align: left; }
 }
 @media (max-width: 700px) {
+  .book-study { grid-template-columns: minmax(0,1fr); gap: 12px; padding: 16px 18px 24px; margin-block: 32px; }
+  .book-study-art .study-image { max-height: 285px; }
+  .book-study > figcaption { padding: 8px 0 0; }
+  .book-study > figcaption > .figure-reference { margin-bottom: 18px; }
+  .book-study > figcaption > strong { max-width: none; font-size: 25px; }
+  .book-study > figcaption > p { max-width: 42ch; }
+  .book-study > figcaption > small { margin-top: 20px; }
+  .illustrated-guide-intro { grid-template-columns: minmax(0,1fr); gap: 24px; }
+  .guide-cover-art { max-width: 360px; margin: auto; }
+  .guide-cover-art .study-image { height: 175px; }
+  .guide-part-intro { display: grid; grid-template-columns: minmax(0,1fr) minmax(95px,.65fr); gap: 0 16px; align-items: start; }
+  .guide-part-intro > :not(.guide-part-art) { grid-column: 1; }
+  .guide-part-intro .guide-part-art { grid-column: 2; grid-row: 1 / 4; align-self: center; margin: 0; }
+  .atlas-ui .gallery-preview .study-image { height: 220px; }
   .landing-preface { grid-template-columns: minmax(0,1fr); gap: 24px; padding: 65px 24px 30px; }
   .landing-preface h2 { font-size: 34px; }
   .landing-preface > p { font-size: 17px; }
@@ -97,10 +144,14 @@
   .atlas-ui .lv-selection { margin-inline: 18px; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .atlas-ui .gallery-preview .study-image { transition: none; }
+  .atlas-ui .gallery-entry:hover .study-image { transform: none; }
   .landing-artwork .study-image, .landing-study-copy > a > span { transition: none; }
   .landing-artwork:hover .study-image, .landing-study-copy > a:hover > span { transform: none; }
 }
 @media print {
+  .book-study { break-inside: avoid; background: white !important; --study-ink: #222; --study-muted: #444; --study-line: #aaa; }
+  .book-study .study-image { filter: none !important; }
   .chapter-illustration { max-width: 240px; }
   .landing-study-silicon { background: white; color: black; --study-muted: #444; --study-rule: #aaa; }
 }

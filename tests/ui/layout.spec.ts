@@ -15,8 +15,14 @@ test("chapter layouts and schematic labels fit their reading surfaces", async ({
   const findings: string[] = [];
   for (const id of ["welcome", "top", "gallery", ...routes, "glossary", "sources"]) {
     await navigate(page, id);
-    const issues = await page.locator(`#${id}`).evaluate(root => {
+    const issues = await page.locator(`#${id}`).evaluate(async root => {
       const problems: string[] = [];
+      // Include images below the fold, which normally load lazily as a reader scrolls.
+      await Promise.all([...root.querySelectorAll<HTMLImageElement>("img.study-image")].map(async image => {
+        image.loading = "eager";
+        try { await image.decode(); }
+        catch { problems.push(`illustration failed to load: ${image.getAttribute("src")}`); }
+      }));
       if (document.documentElement.scrollWidth > innerWidth + 1) problems.push("page overflows viewport");
       for (const element of root.querySelectorAll<HTMLElement>("*")) {
         const rect = element.getBoundingClientRect();

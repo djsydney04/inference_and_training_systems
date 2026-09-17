@@ -6,6 +6,8 @@ dist/
 output/playwright/
 output/ui-lint/
 output/ui-preview/
+output/ui-lint-*/
+output/ui-preview-*/
 output/playback-tests/
 playwright-report/
 *.log

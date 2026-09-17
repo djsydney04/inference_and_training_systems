@@ -1,67 +1,9 @@
 import { chapters, learningPaths } from "./curriculum";
 
-const glyph = (kind: string) => {
-  const common = 'viewBox="0 0 360 180" fill="none" aria-hidden="true"';
-  if (kind === "network")
-    return `<svg ${common}><path d="M74 34v26m0 28v24m0 28v22m0-113h-39v77h24M88 74h86m-86 52h86m48-52h55m-55 52h55" stroke="#2559d6" stroke-width="2"/><rect x="47" y="8" width="54" height="26" fill="#c7d2c3"/><rect x="47" y="60" width="54" height="28" fill="#2559d6"/><rect x="47" y="112" width="54" height="28" fill="#2559d6"/><rect x="47" y="162" width="54" height="10" fill="#c7d2c3"/>${[62,114].map(y => [174,210,246,282].map((x,i) => `<rect x="${x}" y="${y}" width="24" height="24" fill="${i === 2 ? '#2559d6' : '#c7d2c3'}"/>`).join('')).join('')}</svg>`;
-  if (kind === "circuit")
-    return `<svg ${common}><path d="M20 70h55m55 0h45m55 0h45m55 0h20M92 105v38h200v-38" stroke="#2559d6" stroke-width="2"/><path d="M30 152h30v-18h25v18h25v-18h25v18h25" stroke="#59625b"/><rect x="75" y="40" width="55" height="64" stroke="#59625b"/><path d="m75 84 10 8-10 8" stroke="#59625b"/><rect x="175" y="40" width="55" height="64" fill="#2559d6"/><path d="M188 60h30m-15-15v30m-15 13h30" stroke="#fff"/><rect x="275" y="40" width="55" height="64" stroke="#59625b"/><path d="m275 84 10 8-10 8" stroke="#59625b"/><path d="M20 17h105m10 0h60m10 0h130" stroke="#c2c7bd"/></svg>`;
-  if (kind === "gradient")
-    return `<svg ${common}><path d="M38 20v132h126M208 20v132h120" stroke="#59625b"/>${[32,78,42].map((h,i)=>`<rect x="${52+i*35}" y="${151-h}" width="23" height="${h}" fill="#87978a"/>`).join("")}${[19,112,21].map((h,i)=>`<rect x="${221+i*35}" y="${151-h}" width="23" height="${h}" fill="${i===1 ? '#2559d6' : '#87978a'}"/>`).join("")}<path d="M173 88h23m-6-5 6 5-6 5" stroke="#2559d6" stroke-width="2"/></svg>`;
-  if (kind === "occupancy")
-    return `<svg ${common}>${Array.from({ length: 64 }, (_, i) => `<rect x="${44 + (i % 16) * 17}" y="${42 + Math.floor(i / 16) * 25}" width="13" height="19" fill="${i < 32 ? "#2559d6" : "#d3d9ce"}"/>`).join("")}<path d="M44 151h272" stroke="#889a89"/><path d="M180 32v112" stroke="#293c31" stroke-dasharray="3 3"/></svg>`;
-  if (kind === "ring")
-    return `<svg ${common}>${[
-      [48, 25],
-      [232, 25],
-      [232, 115],
-      [48, 115],
-    ]
-      .map(
-        ([x, y]) =>
-          `<rect x="${x}" y="${y}" width="80" height="42" fill="#d3d9ce"/>${[0, 1, 2, 3].map((c) => `<rect x="${x + 6 + c * 18}" y="${y + 9}" width="13" height="24" fill="${c === 1 ? "#2559d6" : "#8a9b88"}"/>`).join("")}`,
-      )
-      .join(
-        "",
-      )}<path d="M135 46h86m-7-5 7 5-7 5M272 73v35m-5-7 5 7 5-7M225 136h-86m7-5-7 5 7 5M88 108V73m-5 7 5-7 5 7" stroke="#2559d6" stroke-width="2"/></svg>`;
-  if (kind === "probability")
-    return `<svg ${common}>${[0.4, 0.1, 0.3, 0.2].map((p, i) => `<rect x="${40 + i * 24}" y="${150 - p * 250}" width="17" height="${p * 250}" fill="#8a9b88"/>`).join("")}${[0.1, 0.4, 0.2, 0.3].map((p, i) => `<rect x="${224 + i * 24}" y="${150 - p * 250}" width="17" height="${p * 250}" fill="#2559d6"/>`).join("")}<path d="M152 93h50m-8-6 8 6-8 6M36 151h108m75 0h105" stroke="#293c31"/></svg>`;
-  if (kind === "matmul")
-    return `<svg ${common}>${[
-      [36, 25],
-      [157, 25],
-      [157, 110],
-    ]
-      .map(([x, y], matrix) =>
-        Array.from(
-          { length: 12 },
-          (_, i) =>
-            `<rect x="${x + (i % 4) * 23}" y="${y + Math.floor(i / 4) * 19}" width="19" height="15" fill="${matrix === 2 ? "#4e6051" : i % 4 < 2 && i < 8 ? "#2559d6" : "#c7d2c3"}"/>`,
-        ).join(""),
-      )
-      .join(
-        "",
-      )}<path d="M83 96v47h62m-5-4 5 4-5 4M202 87v15m-4-5 4 5 4-5" stroke="#2559d6"/><path d="M277 112h45m-45 21h45m-45 21h28" stroke="#8b9b87"/></svg>`;
-  if (kind === "replicas")
-    return `<svg ${common}><rect x="43" y="24" width="102" height="42" fill="#b6c7b2"/><rect x="215" y="24" width="102" height="42" fill="#b6c7b2"/><path d="M63 43h20m12 0h28M235 43h20m12 0h28" stroke="#40563e" stroke-width="4"/><path d="M94 66v31h86m86-31v31h-86v25m-5-5 5 5 5-5" stroke="#2559d6" stroke-width="2"/><rect x="125" y="129" width="110" height="30" fill="#2559d6"/></svg>`;
-  if (kind === "training")
-    return `<svg ${common}>${[0, 1, 2, 3].map((row) => `<rect x="35" y="${25 + row * 35}" width="50" height="23" fill="#515f53"/><rect x="89" y="${25 + row * 35}" width="50" height="23" fill="#a7b7a6"/><rect x="143" y="${25 + row * 35}" width="${row === 0 ? 175 : 42}" height="23" fill="#2559d6"/>`).join("")}<path d="M208 75v71m-4-5 4 5 4-5" stroke="#2559d6"/><path d="M227 87h96M227 119h96M227 151h96" stroke="#adb8aa"/></svg>`;
-  if (kind === "mask")
-    return `<svg ${common}>${[0, 1].map((row) => Array.from({ length: 8 }, (_, i) => `<rect x="${34 + i * 37}" y="${30 + row * 79}" width="29" height="29" fill="${i < (row === 0 ? 3 : 5) ? "#d3d9ce" : "#2559d6"}"/>`).join("")).join("")}<path d="M164 68v25m-5-5 5 5 5-5M275 68v25m-5-5 5 5 5-5" stroke="#2559d6"/><path d="M34 152h177m14 0h105" stroke="#59625b"/></svg>`;
-  if (kind === "cpu")
-    return `<svg ${common}><rect x="24" y="69" width="61" height="40" fill="#9caf9e"/><rect x="117" y="28" width="60" height="124" fill="#d2d9ce"/>${[0, 1, 2].map((i) => `<rect x="218" y="${26 + i * 49}" width="53" height="32" fill="${i === 1 ? "#2559d6" : "#4e6051"}"/><path d="M177 ${44 + i * 48}h41M271 ${44 + i * 48}h42" stroke="#2559d6"/>`).join("")}<rect x="313" y="26" width="22" height="130" fill="#a8b7a4"/><path d="M85 89h32M140 48h15m-15 21h15m-15 21h15m-15 21h15m-15 21h15" stroke="#2559d6"/></svg>`;
-  if (kind === "gpu")
-    return `<svg ${common}><path d="M40 100 164 30 322 90 196 158Z" fill="#b5bdb4" stroke="#59625b"/><path d="M125 82 177 54 240 79 187 108Z" fill="#303a34"/>${Array.from({ length: 12 }, (_, i) => `<path d="M${139 + (i % 4) * 13 - Math.floor(i / 4) * 8} ${79 + Math.floor(i / 4) * 7 + (i % 4) * 5}l9-5 9 4-9 5Z" fill="#aebbb4"/>`).join("")}<path d="m66 101 34-20 30 12-34 20Zm159 13 34-20 30 12-34 20ZM92 64l34-20 30 12-34 20Zm153 5 34-20 30 12-34 20Z" fill="#2559d6"/><path d="M192 112v35M103 76l19 8M220 110l16 7" stroke="#2559d6" stroke-width="2"/></svg>`;
-  if (kind === "rack")
-    return `<svg ${common}>${[79, 159, 239].map((x) => `<path d="M${x} 22h59v142h-59Z" fill="#e0e1d9" stroke="#59625b"/>${Array.from({ length: 10 }, (_, i) => `<rect x="${x + 5}" y="${28 + i * 13}" width="49" height="8" fill="${i === 4 || i === 5 ? "#2559d6" : "#505b52"}"/>`).join("")}`).join("")}<path d="M108 13h160M108 13v9m80-9v9m80-9v9" stroke="#2559d6"/></svg>`;
-  if (kind === "lpu")
-    return `<svg ${common}>${Array.from({ length: 7 }, (_, i) => `<rect x="${38 + i * 42}" y="32" width="31" height="116" fill="${i === 3 ? "#8d9c8f" : i === 2 || i === 4 ? "#2559d6" : "#b1bbb1"}"/>`).join("")}${[57, 82, 107, 132].map((y) => `<path d="M20 ${y}h320m-8-4 8 4-8 4" stroke="#303a34"/>`).join("")}</svg>`;
-  if (kind === "cache")
-    return `<svg ${common}><rect x="32" y="33" width="94" height="31" stroke="#59625b"/><rect x="32" y="114" width="94" height="31" stroke="#59625b"/>${[0, 1, 2, 3].map((i) => `<rect x="${198 + (i % 2) * 61}" y="${28 + Math.floor(i / 2) * 73}" width="43" height="45" fill="${i === 0 ? "#2559d6" : "#c5cec4"}"/>`).join("")}<path d="M126 49h31v-1h41M126 129h31V51h41M126 129h50v-4h83" stroke="#2559d6" stroke-width="2"/></svg>`;
-  if (kind === "trace")
-    return `<svg ${common}>${[0, 1, 2].map((i) => `<path d="M35 ${48 + i * 43}h294" stroke="#c1c6bc"/>`).join("")}<path d="M65 35h60v24H65Zm74 43h75v24h-75Zm60 43h109v24H199Z" fill="#2559d6"/><path d="M136 34v115M224 34v115" stroke="#59625b" stroke-dasharray="3 4"/></svg>`;
-  return `<svg ${common}>${Array.from({ length: 36 }, (_, i) => `<rect x="${97 + (i % 6) * 27}" y="${16 + Math.floor(i / 6) * 27}" width="22" height="22" fill="${i % 6 <= Math.floor(i / 6) ? "#2559d6" : "#dce1d8"}" opacity="${i % 6 === Math.floor(i / 6) ? 1 : 0.6}"/>`).join("")}</svg>`;
-};
+import { studyImage } from "./book-illustrations";
+import { galleryStudies } from "./illustration-catalog";
+
+const glyph = (kind: string) => studyImage(galleryStudies[kind] ?? "model", true);
 
 export const galleryItems = [
   {

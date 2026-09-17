@@ -128,7 +128,7 @@ export function initializeFigurePopouts() {
     tools.append(button);
     const note=caption?.querySelector("p")?.textContent;
     const boundary=host.querySelector(".nn-boundary, .figure-boundary, .omission")?.textContent;
-    if((note||boundary)&&!host.matches(".lesson-visual")){
+    if((note||boundary)&&!host.matches(".lesson-visual, .book-study")){
       const notes=document.createElement("details");notes.className="figure-reading-notes";
       notes.innerHTML=`<summary>Reading notes</summary>${note?`<p>${escape(note)}</p>`:""}${boundary?`<p>${escape(boundary)}</p>`:""}`;
       tools.append(notes);
