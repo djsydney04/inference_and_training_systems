@@ -8,7 +8,7 @@ derivatives, tracing, labels, distributed normalization, adapters, model/API/cac
 contracts, deployment, replay and asynchronous timing. Canonical labels and
 learning paths integrate them with the existing beginner-to-systems sequence.
 
-**168 Node tests and 14 new standard-library Python tests pass.** Actual native
+**173 Node tests and 14 new standard-library Python tests pass.** Actual native
 CPU PyTorch 2.8.0 and JAX 0.6.2 runs agree with a scalar reference on five cases,
 every gradient and updated parameter, with maximum absolute error 2.22e-16.
 Three graph calls also pass: two Dynamo captures (eager backend, not Inductor)
@@ -37,8 +37,9 @@ The [frameworks audit](docs/FRAMEWORKS_AUDIT_2026-09-16.md) records all lesson
 anchors, primary sources, pinned environments, calculations and remaining
 target-hardware experiments. Work is isolated on `codex/atlas-learning-clarity`
 and repeatedly rebased on concurrent GitHub changes. The latest integration
-includes main through `0b85b1e`, including AI Almanac illustrations and nested
-diagram playback. The shared checkout was not edited, stashed or reset.
+includes main through `3de391b`, including AI Almanac illustrations, nested
+diagram playback and release metadata checks. The shared checkout was not
+edited, stashed or reset.
 
 ## September 16, 2026 — automatic diagram walkthroughs
 

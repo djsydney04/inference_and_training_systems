@@ -17,8 +17,9 @@ learning-rate example and checked fixed-buffer and timing explanations.
 
 Committed separate slices and repeatedly fetched/rebased the isolated worktree
 onto GitHub main, including the AI Almanac design and diagram playback through
-5464cc9. The shared checkout and the other agent's local edits were untouched.
-168 Node tests, 14 new Python checks and the production build pass; 170 production
+3de391b, including illustrations and release metadata. The shared checkout and
+the other agent's local edits were untouched. 173 Node tests, 14 new Python
+checks and the production build pass; 170 production
 page/width checks find no overflow, broken anchors, label or title errors. See
 the [frameworks audit](docs/FRAMEWORKS_AUDIT_2026-09-16.md) and current verification
 record for runtime pins, final UI checks and remaining evidence boundaries.

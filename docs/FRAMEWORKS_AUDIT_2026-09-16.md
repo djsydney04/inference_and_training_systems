@@ -161,12 +161,12 @@ combined distributed stack.
 
 ## Integrated verification and collaboration
 
-- **168 Node tests pass**, including 24 new framework tests: six execution,
+- **173 Node tests pass**, including 24 new framework tests: six execution,
   seven training, six serving and five timing checks.
 - **14 new standard-library Python tests pass**: three execution, six training
   and five serving. All framework Python files pass syntax compilation.
 - TypeScript and the production build pass. The existing bundle advisory remains:
-  main JavaScript is approximately 1,331 kB minified / 444 kB gzip. This expansion
+  main JavaScript is approximately 1,339 kB minified / 447 kB gzip. This expansion
   does not establish a startup-performance improvement.
 - Production inventory: **31 chapters, six learning paths, 184 sections,
   191 figures, 89 code listings, 133 worked checks, 280 source entries and
@@ -179,11 +179,19 @@ combined distributed stack.
   were exercised. New figures received keyboard, popout and narrow-layout checks;
   desktop/mobile screenshots were visually inspected. Independent cross-review
   found no unresolved numerical or explanatory errors in these additions.
+- The incoming automatic-walkthrough requirement exposed 34 uncovered diagrams
+  across this and the earlier inference/training expansions. Explicit adapters
+  now advance a named comparison axis, ordered phase slider, existing simulation
+  step/reset control or authored responsibility flow. No arbitrary control
+  discovery, page navigation or modal opening occurs during playback. The
+  coverage check advances every adapter 110 times and validates its captions and
+  input bounds; it passes after this integration.
 
 Work stayed in `/tmp/atlas-learning-clarity`, on `codex/atlas-learning-clarity`.
 Implementation slices were committed separately and rebased onto concurrent
-GitHub `main` through `5464cc9`, preserving the incoming AI Almanac design,
-navigation, 2D workbenches and diagram playback. The shared checkout was never
+GitHub `main` through `3de391b`, preserving the incoming AI Almanac design,
+navigation, 2D workbenches, diagram playback, illustrations and release metadata.
+The shared checkout was never
 edited, stashed or reset. See the latest [verification record](../VERIFICATION.md)
 for final integrated UI-suite results and synchronization evidence.
 

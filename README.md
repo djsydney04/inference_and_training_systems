@@ -113,7 +113,7 @@ npm test
 npm run build
 ```
 
-The integrated suite currently has **168 Node tests**. Companion READMEs contain
+The integrated suite currently has **173 Node tests**. Companion READMEs contain
 their Python, C, RTL and target-hardware commands. The latest framework additions
 include 14 standard-library Python tests, actual PyTorch/JAX CPU parity and a
 Transformers/PEFT save/reload/merge check. Earlier TensorFlow companion results
