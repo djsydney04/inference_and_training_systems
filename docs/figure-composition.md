@@ -59,3 +59,19 @@ Verified on the integrated CPU-chapter revision:
   no page overflow or narrow introductory text columns were found.
 - Reviewed desktop and phone captures, plus an expanded illustration and a
   calculator containing its own schematic; embedded headings stay visible.
+
+## Optimizer diagram
+
+The optimizer lab now pairs its parameter trajectory with a loss-history plot.
+Shaded contours are exact level sets of the existing quadratic objective, with
+equal scales on the parameter axes. Start, current position and minimum are
+distinguished; neither plot invents future updates. Current values stay visible,
+while moment buffers and the full update table sit in disclosures. The plots
+redraw at their available width, including in the expanded view.
+
+Validation: 185 unit tests, all 40 playback checks and all four chapter-layout
+checks passed. The final axis-label adjustment also passed the production build
+and a browser sweep of all 18 optimizer/rate/decay combinations, at updates 0–20,
+at 320, 390, 768 and 1440 pixels (1,512 rendered states). No clipped labels or
+markers, invalid readouts or page overflow were found. Expanded views and
+keyboard focus restoration were checked separately.
