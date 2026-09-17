@@ -27,13 +27,21 @@ export const chapters: Chapter[] = [
     requires: ["orientation"],
   },
   {
+    id: "mathematical-foundations",
+    title: "Mathematics for model building",
+    intro: "Read sums and shapes, calculate sequence probabilities, and derive gradients through shared computations. Worked examples connect the notation to a trainable model.",
+    part: "Foundations",
+    outcome: "Derive a sequence likelihood and a matrix gradient, and explain what averaging and finite precision change.",
+    requires: ["first-principles"],
+  },
+  {
     id: "tensors",
     title: "Tensors and gradients",
     intro: "Tensors hold the numbers a model uses. Follow their shapes through a calculation and learn how gradients tell us which weights to change.",
     part: "Foundations",
     outcome:
       "Track shapes, derive a gradient, and implement a next-token loss.",
-    requires: ["first-principles"],
+    requires: ["mathematical-foundations"],
   },
   {
     id: "transformer",

@@ -1,0 +1,18 @@
+.notebook-figure { margin: 36px 0; border-block: 1px solid var(--rule); background: var(--paper); }
+.notebook-figure > figcaption { padding: 22px 24px 8px; }
+.notebook-figure > figcaption > span { display: block; margin-bottom: 8px; font: 12px/1.5 var(--sans); color: var(--graphite); }
+.notebook-figure > figcaption > strong { display: block; font: 500 20px/1.4 var(--sans); }
+.notebook-figure > figcaption > p { max-width: 68ch; font: 15px/1.7 var(--serif); }
+.notebook-scroll { overflow-x: auto; padding: 12px 20px; }
+.notebook-scroll:focus-visible { outline: 2px solid var(--signal); outline-offset: -3px; }
+.notebook-scroll svg { display: block; width: 100%; min-width: 600px; height: auto; overflow: visible; }
+.notebook-scroll text { fill: var(--ink); font: 19px var(--sans); }
+.notebook-scroll .notebook-small { font-size: 16px; }
+.notebook-ink { fill: none; stroke: var(--ink); stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; }
+.notebook-blue { stroke: var(--signal); stroke-width: 2; }
+.notebook-figure > .figure-boundary { padding: 8px 24px 20px; }
+@media (max-width: 680px) {
+  .notebook-scroll::after { content: "Scroll to follow the full drawing."; display: block; position: sticky; left: 0; width: fit-content; padding-top: 14px; font: 12px/1.6 var(--sans); color: var(--graphite); }
+  .notebook-figure > figcaption { padding-inline: 16px; }
+  .notebook-scroll { padding-inline: 16px; }
+}

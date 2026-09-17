@@ -8,6 +8,7 @@ import { resourceChapter, collectiveChapter } from "./hardware-method-content";
 import { parallelChapter } from "./parallel-content";
 import { currentLessonIndex } from "./reading-position";
 import { foundationsChapter } from "./foundations-content";
+import { mathematicsChapter } from "./mathematics-content";
 import { capstoneChapter } from "./capstone-content";
 import { acceleratorChapter } from "./accelerator-content";
 import { frontierChapter } from "./frontier-content";
@@ -54,7 +55,7 @@ export function prepareReader() {
   main.insertAdjacentHTML("afterbegin", landingMarkup + homeMarkup + galleryMarkup);
   main.insertAdjacentHTML(
     "beforeend",
-    foundationsChapter + frameworkChapter + capstoneChapter + acceleratorChapter + frontierChapter +
+    foundationsChapter + mathematicsChapter + frameworkChapter + capstoneChapter + acceleratorChapter + frontierChapter +
       programmingChapter + cudaChapter + portableKernelChapter + digitalChapter + fpgaChapter + dataChapter +
       optimizationChapter +
       decodingChapter +

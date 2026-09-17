@@ -6,6 +6,7 @@ import "./workbench.css";
 import "./kernel.css";
 import "./methods.css";
 import "./manual.css";
+import "./notebook.css";
 import "./accelerator.css";
 import "./cuda.css";
 import "./digital.css";
@@ -108,4 +109,4 @@ initializeDiagramPlayback();
 void import("./scenes").then(({ initializeScenes }) => {
   initializeScenes();
   refreshDiagramPlayback();
-});
+  });
