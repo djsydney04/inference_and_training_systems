@@ -91,10 +91,10 @@ export const chapters: Chapter[] = [
   {
     id: "parallel-training",
     title: "Splitting work across GPUs",
-    intro: "There are several ways to divide a model and its data. Work through what each device owns, computes and sends to the others.",
+    intro: "There are several ways to divide a model and its data. Follow what each device owns, how temporary tensors change peak memory, and how shards become a complete update.",
     part: "Training",
     outcome:
-      "Verify a sharded layer, trace pipeline activation lifetimes and reconcile rank ownership.",
+      "Verify sharded layers and optimizer updates, trace materialization and pipeline lifetimes, and reconstruct checkpoint ownership.",
     requires: ["training"],
   },
   {
@@ -205,10 +205,10 @@ export const chapters: Chapter[] = [
   {
     id: "inference",
     title: "Running an LLM",
-    intro: "Generation processes a prompt and then produces tokens one at a time. Follow the cached state and the scheduler that shares a device between requests.",
+    intro: "Generation processes a prompt and then produces tokens. Follow the cached state, then work through how lower-precision weights and activations change storage and numerical error.",
     part: "Inference",
     outcome:
-      "Account for prefill, decode, KV state and dynamic request scheduling.",
+      "Account for prefill and decode state; calculate quantized codes, grouping overhead and activation-dependent output error.",
     requires: ["attention", "machine"],
   },
   {
@@ -223,10 +223,10 @@ export const chapters: Chapter[] = [
   {
     id: "serving-lab",
     title: "Serving under load",
-    intro: "A service manages queues, caches and many requests. Separate prefill from decode, account for the state handoff, and measure useful capacity under load.",
+    intro: "A service manages queues, caches and many requests. Build an iteration, admit work that can finish, then follow prefill/decode separation and measure complete answers under load.",
     part: "Inference",
     outcome:
-      "Design a load test, budget KV handoffs, balance phase pools and distinguish capacity bounds from measured goodput.",
+      "Trace scheduling and cache pressure, design arrival and measurement contracts, budget handoffs and distinguish capacity from goodput.",
     requires: ["decoding", "performance"],
   },
   {
@@ -235,7 +235,7 @@ export const chapters: Chapter[] = [
     title: "Frontier research",
     intro: "New architectures change what is computed, stored or moved. Derive the main mechanisms and read reported results with their dates, assumptions and limitations.",
     part: "Inference",
-    outcome: "Derive the mechanisms behind MLA, MoE, hybrids, low precision and disaggregated serving, with versioned evidence.",
+    outcome: "Derive MLA, hybrids and low-precision mechanisms; execute MoE routing, ownership, capacity and gradients with versioned evidence.",
     requires: ["attention", "post-training", "inference", "accelerator-atlas"],
   },
   {

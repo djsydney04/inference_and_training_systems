@@ -11,6 +11,8 @@ export interface SchedulerConfig {
   reserve: "maximum" | "growing"; priority: "decode-first" | "prefill-first";
 }
 type Status = "waiting" | "prefill" | "decode" | "complete" | "cancelled" | "rejected";
+// `cached` counts processed positions; after release it remains a historical
+// counter. `allocated` is the live reservation and becomes zero on completion.
 export interface RequestState extends ServingRequest { cached: number; generated: number; allocated: number; status: Status }
 export interface SchedulerStep {
   iteration: number; operations: { id: string; kind: "prefill" | "decode"; tokens: number; emits: number }[];

@@ -18,6 +18,42 @@ See [playback behavior and validation](docs/DIAGRAM_PLAYBACK.md).
 Playback uses teaching pace and existing calculation handlers. Animated
 connectors do not represent measured device time; source-image references
 remain static. No new accelerator execution claim follows from these checks.
+
+## September 16, 2026 — execution, numerical error and serving progress
+
+Added fifteen lessons: four on sharded state/lifetimes/updates/recovery, four on
+quantization and calibration, three on MoE routing/ownership/derivatives, and four
+on serving iteration/admission/arrivals/measurement. Each addition has numerical
+diagrams, worked checks, primary sources and an executable CPU companion. The
+reader retains the concurrent course-guide and Programming-group changes from
+GitHub `main` through `0456713`.
+
+**135 Node tests and 23 new standard-library Python checks pass.** The new Node
+tests comprise 8 serving, 9 sharding, 7 quantization and 7 MoE checks. CPU evidence
+includes complete AdamW updates and checkpoint redistribution, real INT4 packing,
+independent dense MoE outputs/finite differences, and trace accounting. A separate
+cross-review checked 2,520 MoE finite-difference coordinates (maximum discrepancy
+2.56e-11), 576 capacity configurations and 350 small conservative-admission cases.
+
+TypeScript and production build pass. The existing bundle advisory remains:
+main JavaScript is approximately 1,075 kB minified / 359 kB gzip. Production DOM:
+29 chapters, 158 sections, 170 figures, 71 code listings, 109 checks, 219 source
+entries and 34 deep dives. The totals include the incoming system-buildout lesson.
+All 31 pages pass at 1440, 1280, 820, 390 and 320 pixels: **155 checks, no document
+overflow**, duplicate IDs, missing internal targets, numbering errors or title
+mismatches. New controls, keyboard operation and figure popouts were checked
+separately. Scoped research dates survive generated section labels.
+
+The system-buildout inspector now uses an unindexed component label for changing
+selections, so the search index cannot retain a heading removed on the next click.
+The scheduler table distinguishes historical processed positions from live block
+reservations. Older TPOT prose explicitly names its terminal-time convention and
+links to token-receipt measurements.
+
+See [the execution-gap audit](docs/EXECUTION_GAPS_AUDIT_2026-09-16.md) for sources,
+counterexamples and limits. CPU references do not establish real collective
+transport, GPU kernels, model quality, production capacity or distributed recovery.
+
 ## September 16, 2026 — speculative inference and asynchronous training
 
 Added eleven lessons within decoding, serving and post-training: modern draft

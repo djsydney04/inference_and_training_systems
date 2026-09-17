@@ -9,6 +9,7 @@ const dcp = "https://docs.pytorch.org/docs/2.14/distributed.checkpoint.html";
 export const shardedTrainingLessons = `
 <section class="lesson" id="sharded-state-ownership" data-lesson="Who owns training state?">
 <header><span>State sharding</span><h3>Keep one owner for each update, then reconstruct the weights computation needs</h3></header>
+<p class="figure-boundary">Sources checked for the following four lessons: September 16, 2026. Framework details cite PyTorch 2.14 or a dated tutorial. The figures model declared tensor payloads and schedules; the companion runs logical ranks on a CPU.</p>
 <p>A <strong>rank</strong> is one participating process. In data parallel training, ranks process different examples of the same mathematical model. A <strong>shard</strong> is the subset of a tensor assigned to one owner. Storage ownership does not tell you the shape used by a matrix multiplication: a rank can temporarily assemble complete layer weights while permanently owning only a slice.</p>
 <div class="method-table"><table><caption>ZeRO's conceptual stages: retained model state and required exchange</caption><thead><tr><th scope="col">Stage</th><th scope="col">Working weights</th><th scope="col">Reduced gradients</th><th scope="col">Optimizer state</th><th scope="col">Movement</th></tr></thead><tbody>
 <tr><th scope="row">0 · ordinary replication</th><td>Full</td><td>Full</td><td>Full</td><td>Combine gradients; each replica applies the same update.</td></tr>

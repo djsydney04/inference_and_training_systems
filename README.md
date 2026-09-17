@@ -26,8 +26,8 @@ landing page, reader, and diagram conventions.
   tensors, attention, C types/pointers, storage ownership and strided layouts.
 - **Training:** data contracts, packing, optimization, mixed precision,
   recomputation, distributed state, tensor/pipeline/context/expert parallelism,
-  post-training objectives, asynchronous actor/learner execution, policy lag
-  and evaluation.
+  gathered-state lifetimes, sharded optimizer updates and checkpoint redistribution,
+  post-training objectives, asynchronous actor/learner execution, policy lag and evaluation.
 - **Circuits:** gates, two's complement, fixed point, clocked state, setup/hold,
   clock-domain crossings, ready/valid, Verilog simulation, FPGA resources,
   synthesis, pipelined MACs, systolic arrays and ASIC physical implementation.
@@ -39,7 +39,8 @@ landing page, reader, and diagram conventions.
 - **Serving and frontier:** KV allocation, batching, speculative sampling,
   EAGLE/MTP/block drafters, tree attention, MLA, MoE, hybrid state,
   FlashAttention, FP8/FP4, prefill/decode disaggregation, cache handoff,
-  fleet bottlenecks, test-time computation, latency tails and goodput.
+  expert dispatch/combine and gradients, quantization/calibration error,
+  scheduling and admission, fleet bottlenecks, test-time computation, latency tails and goodput.
 - **End-to-end practice:** train a byte decoder, verify checkpoint restart and
   cached equivalence, evaluate held-out text, export an actual CPU trace and
   serve the checkpoint over HTTP; then follow a pinned vLLM GPU exercise.
@@ -49,8 +50,9 @@ Three.js workbenches. Matrix multiplication and all-reduce use clear, selectable
 2D values and preserve the existing calculation models. Hardware
 reference images have [provenance](public/figures/ATTRIBUTION.md). The new source
 reviews record dated disclosures and corrected comparisons in
-[the hardware source audit](docs/SOURCE_AUDIT_2026-09-14.md) and
-[the September 16 inference/training audit](docs/INFERENCE_TRAINING_AUDIT_2026-09-16.md).
+[the hardware source audit](docs/SOURCE_AUDIT_2026-09-14.md),
+[the inference/training audit](docs/INFERENCE_TRAINING_AUDIT_2026-09-16.md), and
+[the execution-gap review](docs/EXECUTION_GAPS_AUDIT_2026-09-16.md).
 
 ## Executable companions
 
@@ -64,6 +66,10 @@ reviews record dated disclosures and corrected comparisons in
 | [RTL](examples/rtl/README.md) | Adder, elastic MAC, dot-product FSM, systolic array; synthesized-netlist simulation | Icarus; Yosys or YoWASP for synthesis |
 | [Inference](examples/inference/README.md) | Exact speculative acceptance, residual sampling and KV-handoff ownership | Standard Python |
 | [Actor/learner runtime](examples/training-runtime/README.md) | Event-driven rollout schedule, bounded policy lag and clipped ratios | Standard Python; declared synthetic durations |
+| [Sharded training](examples/sharded-training/README.md) | Uneven data contributions, complete AdamW updates and checkpoint redistribution | Standard Python; logical CPU ranks |
+| [Quantization](examples/quantization/README.md) | Affine codes, groups, calibration error, K/V error and actual INT4 packing | Standard Python; floating arithmetic |
+| [Mixture of experts](examples/moe/README.md) | Routing, grouped execution, weighted combination, capacity and derivatives | Standard Python; linear experts |
+| [Serving traces](examples/serving-runtime/README.md) | Token receipts, terminal results, goodput and offered-population accounting | Standard Python; declared trace |
 
 The written path is broad; verification boundaries remain specific. CPU tests,
 RTL simulation and generic synthesis do not establish GPU kernel performance,
@@ -96,10 +102,11 @@ npm test
 npm run build
 ```
 
-The integrated suite currently has 103 Node tests. The inference and actor/learner
-companions add eight and six standard-library Python checks respectively; their
-READMEs contain the commands. Browser checks cover all 31 reader pages at five
-widths, with separate interaction checks for the numerical labs.
+The integrated suite currently has 135 Node tests. The new sharding, quantization,
+MoE and serving-trace companions add 23 standard-library Python checks, alongside
+the earlier inference and actor/learner examples. Their READMEs contain the
+commands. Browser checks cover the reader and its numerical controls at desktop
+and phone widths; the verification record states the exact checked revision.
 
 See the [TensorFlow companion](examples/tensorflow/README.md) for a runnable tiny
 decoder, checkpoint-resume example, post-training losses, adapter, token-weighted
@@ -126,6 +133,8 @@ and what has not been measured.
 - `src/systems-content.ts`: data, profiling, serving, and engineering-project lessons.
 - `src/speculation-frontier-*`, `src/disaggregation-*`, and `src/rollout-training-*`:
   modern inference and actor/learner lessons, controls and tested numerical models.
+- `src/sharded-training-*`, `src/quantization-*`, `src/moe-execution-*`, and
+  `src/serving-runtime-*`: execution, numerical error, ownership and measurement labs.
 - `src/scenes.ts` and `src/scene-detail.ts`: Three.js workbenches and guided stages.
 - `src/kernel-content.ts`, `src/kernel-lab.ts`, and `src/kernel-scene.ts`: the
   replica-runtime lesson and value-driven matrix workbench.

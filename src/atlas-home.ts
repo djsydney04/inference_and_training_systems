@@ -126,6 +126,30 @@ export const galleryItems = [
     type: "Training calculator",
   },
   {
+    kind: "training", id: "fsdp-live-memory", title: "What makes a sharded run peak in memory?",
+    scope: "Persistent shards → gathered weights → temporary gradients",
+    copy: "Follow live allocations through forward, backward and reduce-scatter; compare prefetch and resharding.",
+    type: "Training memory lab",
+  },
+  {
+    kind: "matmul", id: "calibration-and-output-error", title: "Which weight error changes the output?",
+    scope: "Integer codes → reconstruction → activation-weighted error",
+    copy: "Change group size and input distribution, then compare weight error with actual layer-output error.",
+    type: "Quantization lab",
+  },
+  {
+    kind: "network", id: "moe-route-pack-combine", title: "Where does each expert contribution return?",
+    scope: "Route → pack by expert → weighted inverse gather",
+    copy: "Trace token assignments, grouped computation and the exact output values after recombination.",
+    type: "MoE execution lab",
+  },
+  {
+    kind: "trace", id: "scheduler-iteration", title: "What fits in the next serving iteration?",
+    scope: "Arrivals → token budget → cache growth → completion",
+    copy: "Step through mixed prefill and decode work, then expose a cache-allocation policy that cannot make progress.",
+    type: "Serving scheduler lab",
+  },
+  {
     kind: "mask",
     id: "post-training-loss",
     title: "Which tokens change the policy?",

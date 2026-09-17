@@ -1,5 +1,24 @@
 # Textbook development record
 
+## September 16 execution-gap continuation
+
+Added fifteen lessons in four coordinated slices: sharded training lifetimes and
+updates, quantization/error, MoE execution/gradients, and serving progress/metrics.
+The examples include real INT4 byte packing, logical-rank AdamW and resharded
+restart, explicit expert permutations, a cache-allocation deadlock, and a complete
+delivery-trace denominator. New glossary/gallery entries preserve the learning
+path; a source audit records each reference and the local evidence boundary.
+
+Committed slices independently on the isolated `codex/atlas-learning-clarity`
+worktree, pulling concurrent GitHub work through `0456713`. Kept the new course
+navigation and Programming group. Found and repaired an incoming transient
+inspector heading that could create a stale search target.
+
+Validation: 135 Node tests, 23 new Python checks, build, independent numerical
+cross-review, actual controls and 155 production page/width checks. Inventory:
+158 sections, 170 figures, 71 code listings, 109 checks and 219 sources. No GPU
+execution or production benchmark is inferred from these calculations.
+
 ## September 16 inference and training pass
 
 Added eleven connected lessons covering modern speculative proposals and draft

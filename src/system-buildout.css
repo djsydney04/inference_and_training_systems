@@ -34,7 +34,7 @@
 .sb-cooling rect { fill: #e9eef7; stroke: #8b9ebd; }
 .sb-inspector { display: grid; grid-template-columns: 1.6fr 1fr; gap: 28px; margin: 20px 24px 24px; border-top: 1px solid var(--rule); padding-top: 24px; }
 .sb-inspector span { font: 11px/1.6 var(--sans); color: var(--graphite); }
-.sb-inspector h4 { margin: 8px 0 12px; font: 500 22px var(--serif); }
+.sb-inspector .sb-component-title { display: block; margin: 8px 0 12px; font: 500 22px var(--serif); }
 .sb-inspector p { font: 16px/1.7 var(--serif); margin: 0; max-width: 65ch; }
 .sb-inspector aside { border-left: 2px solid var(--signal); padding-left: 18px; }
 .sb-inspector aside p { font: 13px/1.7 var(--sans); }

@@ -1,5 +1,29 @@
 # Build roadmap
 
+## September 16, 2026 — worked execution contracts
+
+Fifteen more lessons now connect named techniques to the values and state needed
+to implement them. The path covers sharded materialization and AdamW recovery;
+quantized codes, real packing and activation-dependent error; MoE route packing,
+capacity and derivatives; and serving admission, arrival models and complete
+stream measurements. The [execution-gap audit](docs/EXECUTION_GAPS_AUDIT_2026-09-16.md)
+records the calculations, sources and independent checks.
+
+The next target-environment experiments follow directly from those contracts:
+
+- Capture actual FSDP allocation/collective timelines and compare them with the
+  declared live-set model; exercise distributed checkpoint failure and restart.
+- Quantize a real checkpoint with representative calibration and held-out tasks;
+  measure supported kernel execution, quality, memory and latency together.
+- Run routed expert work across devices, compare dispatch skew and grouped kernel
+  efficiency, and verify the exact router/capacity contract under real traffic.
+- Record a real streaming workload with intended arrivals, dispatch, output-token
+  receipts and terminal results; include retries, preemption and failed attempts.
+
+These experiments require the relevant runtime and hardware. Their absence does
+not change the passing mathematical and CPU-reference checks, and those checks
+do not establish the experiments' results.
+
 ## September 16, 2026 — inference meets the training runtime
 
 Modern speculative drafters now connect to their training, tree masks, KV

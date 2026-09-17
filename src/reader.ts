@@ -18,6 +18,10 @@ import { kernelTrainingLesson } from "./kernel-training-content";
 import { disaggregationLessons } from "./disaggregation-content";
 import { speculationFrontierLessons } from "./speculation-frontier-content";
 import { rolloutTrainingLessons } from "./rollout-training-content";
+import { servingRuntimeLessons } from "./serving-runtime-content";
+import { shardedTrainingLessons } from "./sharded-training-content";
+import { quantizationLessons } from "./quantization-content";
+import { moeExecutionLessons } from "./moe-execution-content";
 import { learningPathForId, readingSequence } from "./learning-path";
 import { labelChapterContents, sectionTitle } from "./reader-structure";
 import {
@@ -87,8 +91,12 @@ export function prepareReader() {
   byId("performance")!.insertAdjacentHTML("beforeend", tiledMatmulLesson);
   byId("cuda-kernels")!.insertAdjacentHTML("beforeend", kernelTrainingLesson);
   byId("decoding")!.insertAdjacentHTML("beforeend", speculationFrontierLessons);
+  byId("serving-lab")!.insertAdjacentHTML("beforeend", servingRuntimeLessons);
   byId("serving-lab")!.insertAdjacentHTML("beforeend", disaggregationLessons);
   byId("post-training")!.insertAdjacentHTML("beforeend", rolloutTrainingLessons);
+  byId("parallel-training")!.insertAdjacentHTML("beforeend", shardedTrainingLessons);
+  byId("inference")!.insertAdjacentHTML("beforeend", quantizationLessons);
+  byId("frontier-moe")!.insertAdjacentHTML("afterend", moeExecutionLessons);
   chapters.forEach((chapter, index) => {
     const el = byId(chapter.id)!;
     main.append(el);
