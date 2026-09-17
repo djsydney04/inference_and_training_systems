@@ -36,16 +36,47 @@ b+=grid(475,402,11,2,25,(r,c)=>r===0&&c<8);
 b+=path('M86 440v24h288M480 480v-9h270',ink)+ticks(86,466,25,12);
 save('tensor','A tensor and its storage','Stacked tensor planes connect to a linear row of stored values. A selected row and its storage positions are blue. This is a conceptual layout, not an address calculation.',b);
 
-// Contour engraving with an illustrative optimization trajectory.
-b=path('M85 460H762M95 470V76',ink)+ticks(115,460,52,12)+ticks(87,95,30,12,true);
-for(let i=0;i<15;i++){
- const s=1-i*.052;
- b+=`<g transform="translate(427 270) scale(${s})">${path('M-288-16C-310-167-118-213 52-171C205-220 330-104 282 39C260 160 92 216-62 154C-195 184-327 112-288-16Z',i%3===0?ink:line,i%3===0?1:.7)}</g>`;
-}
-b+=path('M203 143L635 367L317 320L507 195L425 293L462 254L444 268',blue,2,'marker-end="url(#arrow)"');
-b+=[[203,143],[635,367],[317,320],[507,195],[425,293],[462,254]].map(([x,y],i)=>dot(x,y,i===0?5:3)).join('');
-b+=dot(444,268,5)+path('M192 128v-30h94M655 368h90v49',ink);
-save('gradient','A path through a loss landscape','Contour lines surround a low-loss region. Blue points trace an illustrative optimizer trajectory. The contour spacing and step lengths are not measured results.',b);
+// A training update, drawn as tensors and dependencies rather than a trajectory.
+const trainingLabel=(x,y,label,size=26,color=ink)=>`<text x="${x}" y="${y}" text-anchor="middle" fill="${color}" font-family="Arial, sans-serif" font-size="${size}">${label}</text>`;
+const forward=d=>path(d,ink,1.5,'marker-end="url(#forward-arrow)"');
+const backward=d=>path(d,blue,1.7,'marker-end="url(#arrow)"');
+const layerX=[250,358,466], layerCenters=layerX.map(x=>x+34);
+b=trainingLabel(107,113,'Batch')+trainingLabel(392,86,'Model')+trainingLabel(726,113,'Loss');
+b+=path('M238 133v-15h310v15',ink);
+// Packed tokens feed a succession of parameterized layers.
+b+=repeat(4,r=>repeat(4,c=>rect(68+c*20,164+r*20,16,15,r===1&&c<3?'#a9b99c':(r+c)%3===0?'url(#fine)':pale)));
+b+=forward('M151 200H236');
+layerX.forEach((x,i)=>{
+ b+=rect(x-7,153,82,94,'#f0f3eb',ink)+grid(x,164,6,6,12);
+ b+=trainingLabel(x+34,270,`W${['₁','₂','₃'][i]}`,20);
+ if(i<2)b+=forward(`M${x+77} 200H${x+94}`);
+});
+// A prediction vector and a target both feed the scalar loss.
+b+=forward('M543 200H571')+repeat(5,r=>rect(579,158+r*18,18,13,r%2?'url(#fine)':pale));
+b+=forward('M605 200H683')+rect(694,168,64,64,'#e4eadc',ink)+trainingLabel(726,210,'L',28);
+b+=trainingLabel(788,272,'Target',18)+rect(777,212,22,26,'url(#fine)',ink)+forward('M777 225H770V216H759');
+// Reverse dependencies produce one gradient tensor for each parameter tensor.
+b+=backward('M726 240V300H500V320');
+b+=backward('M500 300H392V320')+backward('M392 300H284V320');
+b+=trainingLabel(105,370,'Gradients',26,blue);
+layerX.forEach((x,i)=>{
+ b+=grid(x,330,6,6,12,(r,c)=>i===1?c===2:r===2&&c===4);
+ b+=path(`M${x+34} 407V422H392`,line,1);
+ // Forward intermediates are retained or recomputed for the local derivative.
+ b+=path(`M${x+9} 252V318`,line,.8,'stroke-dasharray="3 5"');
+});
+// The optimizer consumes gradients; the updated parameters return to the model.
+b+=backward('M392 424V449');
+b+=grid(301,445,6,6,6)+grid(450,445,6,6,6,(r,c)=>r===2||c===4);
+b+=path('M347 462H436',ink,1.3,'marker-end="url(#forward-arrow)"');
+b+=trainingLabel(318,443,'θ',18)+trainingLabel(467,443,'θ′',18)+trainingLabel(392,509,'Weight update');
+b+=path('M494 462H625V139H284',blue,1.5);
+// Pale bridges distinguish crossing paths from joins.
+b+=path('M625 187V213M625 290V310','#f4f5f0',5)+path('M625 187V213M625 290V310',blue,1.5);
+layerCenters.forEach(x=>{b+=backward(`M${x} 139V151`);});
+b+=trainingLabel(714,452,'Next batch',22,blue)+path('M639 462h114',line,.8);
+save('gradient','From a training batch to updated weights','A batch flows through three parameterized model layers and a prediction vector into a loss, which also receives a target. Blue reverse paths lead to gradient tensors. Saved or recomputed forward values support their calculation. The optimizer uses the gradients to update parameters; the updated parameters return to the layers for the next batch. Tensor cells and layer counts are illustrative, not numerical results.',b,
+ '<marker id="forward-arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L6 3L0 6" fill="'+ink+'"/></marker>');
 
 // Documents become token sequences, then packed batches.
 b='';
