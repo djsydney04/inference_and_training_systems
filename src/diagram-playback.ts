@@ -53,8 +53,8 @@ function pause(player: Player) {
 }
 
 function revealSelected(root: HTMLElement) {
-  const selected = root.querySelector<HTMLElement>(".block-pipeline .is-active, .cpu-flow .is-active, .sequence-buttons .is-active");
-  const scroller = selected?.closest<HTMLElement>(".block-pipeline, .cpu-flow, .sequence-buttons");
+  const selected = root.querySelector<HTMLElement>(".block-pipeline .is-active, .cpu-flow .is-active, .sequence-buttons .is-active, .cpu-lab-surface [data-cpu-active]");
+  const scroller = selected?.closest<HTMLElement>(".block-pipeline, .cpu-flow, .sequence-buttons, .cpu-lab-surface");
   if (!selected || !scroller || scroller.scrollWidth <= scroller.clientWidth) return;
   // Stop a previous pan before deciding that the new selection is already
   // visible; otherwise that older animation can move it out of view afterward.

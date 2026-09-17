@@ -85,7 +85,7 @@ export function diagramWalkthrough(root: HTMLElement): DiagramWalkthrough | null
     ["softmax", "step", "reset"], ["first", "step", "reset"], ["elastic", "next", "reset"],
   ];
   for (const [prefix, next, reset] of stepRecipes) {
-    if (root.querySelector(`[data-${prefix}-${next}]`)) return steps(root, `[data-${prefix}-${next}]`, `[data-${prefix}-${reset}]`, prefix === "first" ? 8 : prefix === "elastic" ? 12 : Infinity);
+    if (root.querySelector(`[data-${prefix}-${next}]`)) return steps(root, `[data-${prefix}-${next}]`, `[data-${prefix}-${reset}]`, prefix === "first" ? 8 : prefix === "elastic" ? 12 : Infinity, prefix.startsWith("cpu-") ? "[data-cpu-result] strong" : undefined);
   }
   if (root.querySelector("[data-reduce-next]")) return { kind: "simulation", advance() {
     const next = root.querySelector<HTMLButtonElement>("[data-reduce-next]")!;

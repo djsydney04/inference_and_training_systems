@@ -1,5 +1,53 @@
 # Verification record — textbook expansion
 
+## September 16, 2026 — Inside a CPU
+
+The dedicated CPU chapter has 14 lessons: the existing core overview and 13 new
+lessons on instruction sets, dependency scheduling, prediction, cache organization,
+translation, memory ordering, SIMD, coherence, threads, NUMA, profiling, native C
+experiments and model serving. The old `#cpu-execution` link is preserved. Thirteen
+new inspectable schematics and three exact simulations use the common figure
+layout, folded notes and live popouts. Intel, AMD, Arm, RISC-V, Linux and LLVM
+primary references sit beside the relevant explanations.
+
+The browser teaching models are deliberately small machines, not cycle models of
+commercial processors. Checks cover true dependencies, fully pipelined issue
+resources, ordered retirement, exact LRU replacement and predictor saturation.
+The native C experiment uses separate translation units, bounded exact integer
+values stored as doubles, and explicit timing boundaries.
+
+Verification:
+
+- All **185 Node tests**, TypeScript, release metadata and the production build
+  pass. The existing Vite large-bundle advisory remains.
+- All **24 production browser checks** pass at desktop, tablet, mobile and 320px
+  narrow widths. The complete chapter scan includes the new CPU chapter and
+  confirms that schematic labels fit their nodes.
+- All **20 desktop/mobile playback checks** pass, including 110 advances through
+  each registered teaching adapter. Static relationship diagrams remain manual;
+  temporal CPU simulations autoplay and honor reduced motion and pause controls.
+- Direct browser interaction verifies ready versus ordered issue finishes at
+  boundaries 9 and 15; the cache traces produce 1/12/2/15 misses for neighboring,
+  direct-mapped conflict, two-way conflict and fully associative capacity cases;
+  branch traces produce 3/16/3 misses for loop, alternating and phased outcomes.
+  Popout reset state and focus survive Escape. Keyboard node selection and
+  horizontal scrolling work. All three CPU traces keep the active step in view
+  during mobile playback and pause after manual reset.
+- `make check`, all four benchmark modes at N=1024 with five repetitions, and
+  `make assembly` run on arm64 macOS with Apple Clang 16.0.0. ASan/UBSan correctness
+  checks pass. Vectorization remarks are inspected; source-level reductions are
+  not assumed to map to a fixed machine schedule. Timing is smoke-test evidence,
+  not a comparative hardware performance claim.
+- A live document audit finds no duplicate IDs, missing internal targets or
+  document overflow. The reader contains 32 teaching chapters plus two reference
+  chapters, 215 numbered sections and 240 numbered figures. CPU figures were
+  visually reviewed in desktop and mobile screenshots.
+
+Linux `perf` and multi-node NUMA experiments are documented but not run on this
+Mac. No measurements of Intel, AMD or Arm server products are claimed. The C
+companion's README gives compiler, placement and counter caveats for reproducing
+those experiments on suitable hosts.
+
 ## September 16, 2026 — popular frameworks and earlier learning gaps
 
 Added fourteen framework lessons and four bridges in post-training, inference,

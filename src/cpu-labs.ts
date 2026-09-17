@@ -4,7 +4,7 @@ import type { IssueMode, CachePattern, BranchPattern } from './cpu-models';
 
 const table = (headers: string[], rows: (string | number)[][], caption: string) => `<table><caption>${caption}</caption><thead><tr>${headers.map(h=>`<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${row.map((v,i)=>`<${i?'td':'th scope="row"'}>${v}</${i?'td':'th'}>`).join('')}</tr>`).join('')}</tbody></table>`;
 const svg = (id: string, height: number, title: string, body: string) => `<svg viewBox="0 0 880 ${height}" role="img" aria-labelledby="${id}-title"><title id="${id}-title">${title}</title>${body}</svg>`;
-const text = (x:number,y:number,value:string|number,cls='') => `<text x="${x}" y="${y}" class="${cls}">${value}</text>`;
+const text = (x:number,y:number,value:string|number,cls='',active=false) => `<text${active?' data-cpu-active':''} x="${x}" y="${y}" class="${cls}">${value}</text>`;
 const rect = (x:number,y:number,w:number,h:number,cls='') => `<rect x="${x}" y="${y}" width="${w}" height="${h}" class="${cls}"/>`;
 
 function wireLab(id: string, kind: string, draw: (root: HTMLElement, step: number) => number) {
@@ -24,7 +24,7 @@ export function initializeCpuLabs() {
     const schedule=issueSchedule(mode), frame=schedule.frames[Math.min(step,schedule.frames.length-1)];
     const cell=35, x0=210, width=16;
     let drawing=text(24,24,'Program order')+text(x0,24,'Cycle boundary');
-    for(let cycle=0;cycle<width;cycle++)drawing+=text(x0+cycle*cell+10,53,cycle,'cpu-mono');
+    for(let cycle=0;cycle<width;cycle++)drawing+=text(x0+cycle*cell+10,53,cycle,'cpu-mono',cycle===frame.cycle);
     cpuOperations.forEach((op,i)=>{
       const y=76+i*52;
       drawing+=text(24,y+20,`${i+1}. ${op.name}`)+text(24,y+39,op.deps.length?`needs ${op.deps.map(d=>d+1).join(', ')}`:'independent','cpu-small');
@@ -48,7 +48,7 @@ export function initializeCpuLabs() {
     const ways=Number(root.querySelector<HTMLSelectElement>('[data-cpu-cache-ways]')!.value), addresses=cacheAddresses(pattern);
     const f=cacheTrace(addresses,ways,Math.min(step,addresses.length)), last=f.accesses.at(-1);
     let drawing=text(24,30,'Address trace · bytes');
-    addresses.forEach((a,i)=>{const x=24+i*51;drawing+=rect(x,48,46,36,i===step-1?'cpu-running':i<step?'cpu-complete':'cpu-empty')+text(x+7,72,a,i===step-1?'cpu-white cpu-mono':'cpu-mono');});
+    addresses.forEach((a,i)=>{const x=24+i*51;drawing+=rect(x,48,46,36,i===step-1?'cpu-running':i<step?'cpu-complete':'cpu-empty')+text(x+7,72,a,i===step-1?'cpu-white cpu-mono':'cpu-mono',i===step-1);});
     drawing+=text(24,134,last?`Byte ${last.address} → line ${last.line} · set ${last.set} · tag ${last.tag} · offset ${last.offset}`:'Four cache lines total · 64 bytes per line');
     f.sets.forEach((set,i)=>{
       const y=176+i*62;drawing+=text(24,y+25,`Set ${i}`);
@@ -59,7 +59,7 @@ export function initializeCpuLabs() {
     });
     drawing+=text(24,176+f.sets.length*62+24,'Within a set: least recent on the left, most recent on the right.','cpu-small');
     root.querySelector('[data-cpu-drawing]')!.innerHTML=svg('cpu-cache-chart',228+f.sets.length*62,'Cache address decomposition and set contents',drawing);
-    root.querySelector('[data-cpu-result]')!.innerHTML=`<strong>${f.hits} hits · ${f.misses} misses</strong><span>${last?`${last.hit?'Hit':'Miss'} at byte ${last.address}${last.evicted!==null?` · evict line ${last.evicted}`:''} · ${f.bytesFetched} bytes fetched`:'Read the first address to fill the cold cache.'}</span>`;
+    root.querySelector('[data-cpu-result]')!.innerHTML=`<strong>${f.hits} ${f.hits===1?'hit':'hits'} · ${f.misses} ${f.misses===1?'miss':'misses'}</strong><span>${last?`${last.hit?'Hit':'Miss'} at byte ${last.address}${last.evicted!==null?` · evict line ${last.evicted}`:''} · ${f.bytesFetched} bytes fetched`:'Read the first address to fill the cold cache.'}</span>`;
     root.querySelector('[data-cpu-ledger]')!.innerHTML=table(['Access','Byte','Line','Set','Tag','Result','Evicted'],f.accesses.map((a,i)=>[i+1,a.address,a.line,a.set,a.tag,a.hit?'hit':'miss',a.evicted??'—']),'Exact access history at the modeled cache boundary');
     return addresses.length;
   });
@@ -73,7 +73,7 @@ export function initializeCpuLabs() {
     drawing+=text(24,221,'Resolved outcomes');
     trace.forEach((entry,i)=>{
       const x=24+i*51, visible=i<step;
-      drawing+=rect(x,244,46,48,visible?(entry.correct?'cpu-complete':'cpu-miss'):'cpu-empty')+text(x+16,267,visible?(entry.taken?'T':'N'):'·','cpu-mono')+(visible?text(x+12,285,entry.correct?'✓':'×','cpu-small'):'');
+      drawing+=rect(x,244,46,48,visible?(entry.correct?'cpu-complete':'cpu-miss'):'cpu-empty')+text(x+16,267,visible?(entry.taken?'T':'N'):'·','cpu-mono',i===step-1)+(visible?text(x+12,285,entry.correct?'✓':'×','cpu-small'):'');
     });
     drawing+=text(24,332,'T: taken · N: not taken · ✓ correct · × incorrect','cpu-small');
     root.querySelector('[data-cpu-drawing]')!.innerHTML=svg('cpu-branch-chart',358,'Two-bit saturating branch predictor and resolved outcomes',drawing);

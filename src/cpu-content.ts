@@ -4,7 +4,7 @@ import cpuKernels from "../examples/cpu/kernels.c?raw";
 
 const intel = 'https://www.intel.com/content/www/us/en/developer/articles/technical/intel64-and-ia32-architectures-optimization.html';
 const arm = 'https://learn.arm.com/learning-paths/servers-and-cloud-computing/profiling-for-neoverse/additional-resources/';
-const amd = 'https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/tuning-guides/58026-epyc-9004-tg-fsi.pdf';
+const amd = 'https://docs.amd.com/v/u/en-US/58011-epyc-9004-tg-bios-and-workload';
 const vector = 'https://llvm.org/docs/Vectorizers.html';
 const numa = 'https://docs.kernel.org/admin-guide/mm/numa_memory_policy.html';
 const lesson = (id: string, label: string, title: string, body: string) => `<section class="lesson" id="${id}" data-lesson="${label}"><header><span>CPU architecture</span><h3>${title}</h3></header>${body}</section>`;
@@ -116,7 +116,7 @@ ${lesson("cpu-cores-threads", "Cores and threads", "A hardware thread is not ano
 <p>Draw the topology before choosing a worker count: sockets, NUMA nodes, cache-sharing groups, physical cores and SMT siblings. These groups need not have matching boundaries. AMD EPYC systems, for example, expose placement considerations across their core complexes and memory configuration. Intel server topology and Arm server implementations have their own organization. Some CPUs have heterogeneous core types; a logical-CPU count hides those differences.</p>
 <p>A serving process may have a request pool, a tokenizer pool, a numerical-library pool and a runtime worker pool. Eight requests each asking a library for eight threads can expose 64 runnable tasks on a much smaller machine. That oversubscription can increase queueing and tail latency even if a utilization graph stays busy. Choose one level to own parallelism for the hot region, then test other arrangements.</p>
 ${check('A kernel takes 20 ms on one core; 10% of its work is serial. What is the ideal eight-core limit before overhead?', 'Amdahl’s expression gives 1/(0.1 + 0.9/8) ≈ 4.71×, or 4.25 ms. Adding synchronization, imbalance and shared-bandwidth limits only reduces that ideal gain. Eight SMT contexts do not establish that eight independent cores are available.')}
-${ref(amd, 'AMD EPYC 9004 tuning guide · topology, placement and workload tuning')}
+${ref(amd, 'AMD EPYC 9004 BIOS and workload tuning guide · topology and placement')}
 `)}
 ${lesson("cpu-numa", "NUMA placement", "Place the thread and its memory together", `
 <p>In a NUMA system, the cost and bandwidth of accessing memory can depend on which CPU and memory node are involved. A pointer does not encode “local” in the source program. The same virtual allocation may be backed by physical pages near one worker and farther from another. Cross-node traffic also shares interconnect resources with other work.</p>
