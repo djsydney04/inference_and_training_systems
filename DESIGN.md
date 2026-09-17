@@ -17,14 +17,36 @@ Type: IBM Plex Sans for identity, headings, navigation, and diagram labels;
 Source Serif 4 for extended explanations. Monospace is reserved for code and
 numerical values. The brand leads the landing page, with generous empty space.
 
-Content plan: AI Almanac → concise introduction and one entry action → interactive
-package drawing → three stages of learning → edition and release notes. The
-reader presents a grouped syllabus, one chapter, its local outline, then the
-next chapter. There is no horizontal top bar.
+Content plan: AI Almanac and the interactive package drawing → short introduction
+→ three illustrated spreads for models, machines, and systems → reading action
+→ edition and release notes. Alternate light paper, dark green, and pale green
+to separate these subjects without enclosing them in cards. The reader presents
+a grouped syllabus, an illustrated chapter opening, its lessons, then the next
+chapter. There is no horizontal top bar.
 
 Interaction thesis: short transitions acknowledge selection and navigation.
 The landing drawing responds to manual layer selection. Guided lesson playback
 remains local to the chapters, pauses for inspection, and respects reduced motion.
+
+## Illustration language
+
+The original SVG studies in `public/illustrations/` use fine ink lines, repeated
+cells, hatching, and a restrained blue path. They show token vectors and causal
+attention, an accelerator package from above, and communication between machines.
+They are conceptual illustrations, not numerical results or vendor floorplans.
+HTML captions provide readable context on narrow screens; descriptive alternatives
+explain the artwork without requiring color perception.
+
+`src/book-illustrations.ts` shares these assets between the landing spreads and
+the 28 chapter openings. The chapter images are decorative, selected by subject,
+and omitted from the accessibility tree so they do not repeat the introduction.
+Use external, lazy-loaded SVGs with intrinsic dimensions to keep layout stable
+and share the browser cache. `src/illustrated-book.css` owns this visual layer.
+
+The same pale green paper, fine engraved corners, square borders, and quiet
+captions appear in the interactive lesson schematics. Blue retains its existing
+meaning for selected data and connections. Decoration must not encode invented
+values, replace meaningful labels, or compete with an active calculation.
 
 ## Diagrams
 

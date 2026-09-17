@@ -6,6 +6,8 @@ import { initializeNumericalDiagrams } from "./numerical-diagrams";
 import { initializeReleaseFooter } from "./release";
 import "./ui-refinements.css";
 import "./almanac-design.css";
+import "./illustrated-book.css";
+import { initializeBookIllustrations } from "./book-illustrations";
 import { initializeCourseGuide } from "./course-guide";
 
 const icon = (name: "search" | "diagram") => {
@@ -65,6 +67,7 @@ export function initializeAtlasUI() {
   initializeGalleryFilters();
   initializeReleaseFooter();
   initializeNumericalDiagrams();
+  initializeBookIllustrations();
   const syncPage = () => {
     const page = document.querySelector<HTMLElement>("#main-content > :not([hidden]):is(.chapter, .atlas-home, .atlas-gallery, .atlas-landing)");
     document.body.dataset.atlasPage = page?.id ?? "top";

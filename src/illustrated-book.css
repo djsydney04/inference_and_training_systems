@@ -1,0 +1,106 @@
+/* Original line studies connect the cover to the book's pages. */
+.study-image { display: block; width: 100%; height: auto; }
+.landing-preface { display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; align-items: end; padding: 110px clamp(28px,6.5vw,108px) 75px; background: var(--paper); }
+.landing-preface h2 { margin: 0; font: 400 clamp(32px,3.5vw,52px)/1.13 var(--sans); letter-spacing: -.045em; }
+.landing-preface > p { max-width: 39ch; margin: 0 0 2px; color: var(--graphite); font: 17px/1.85 var(--serif); }
+.landing-study { --study-muted: #56604f; --study-rule: #b9c2b1; display: grid; grid-template-columns: minmax(0,1.4fr) minmax(0,.8fr); align-items: center; column-gap: clamp(40px,6vw,100px); padding: 65px clamp(28px,6.5vw,108px) 95px; background: var(--paper); color: var(--ink); }
+.landing-artwork { min-width: 0; margin: 0; }
+.landing-artwork .study-image { transition: transform 550ms cubic-bezier(.2,.7,.2,1); }
+.landing-artwork:hover .study-image { transform: translateY(-5px); }
+.landing-artwork figcaption { display: flex; justify-content: space-between; gap: 12px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--study-rule); color: var(--study-muted); font: 11px/1.6 var(--sans); }
+.landing-artwork figcaption > span:last-child { text-align: right; }
+.atlas-ui .landing-artwork figcaption > span { color: var(--study-muted); }
+.landing-study-copy { min-width: 0; padding-block: 25px; }
+.study-subject { margin: 0 0 30px; color: var(--study-muted); font: 12px/1.5 var(--sans); }
+.landing-study h2 { margin: 0 0 26px; font: 400 clamp(32px,3.4vw,50px)/1.08 var(--sans); letter-spacing: -.045em; }
+.landing-study-copy > p:not(.study-subject) { max-width: 35ch; color: var(--study-muted); font: 17px/1.8 var(--serif); }
+.landing-study-copy > a { display: inline-flex; align-items: center; justify-content: space-between; gap: 35px; min-height: 44px; margin-top: 18px; padding-block: 8px; border-bottom: 1px solid var(--study-rule); color: inherit; text-decoration: none; font: 500 13px/1.5 var(--sans); }
+.landing-study-copy > a > span { transition: transform 180ms ease; }
+.landing-study-copy > a:hover > span { transform: translate(3px,-3px); }
+.study-topics { display: flex; flex-wrap: wrap; gap: 8px 12px; margin-top: 45px; color: var(--study-muted); font: 10px/1.6 var(--sans); }
+.study-topics > span { opacity: .5; }
+.landing-study-silicon { --study-muted: #b5c0b2; --study-rule: #495547; grid-template-columns: minmax(0,.8fr) minmax(0,1.4fr); padding-block: 100px; background: #20281f; color: #edf0e7; }
+.landing-study-silicon .landing-study-copy { padding-right: 15px; }
+.landing-study-systems { padding-block: 100px; background: #e7ebe0; }
+.landing-begin { display: flex; justify-content: space-between; align-items: center; gap: 50px; padding: 110px clamp(28px,6.5vw,108px); background: var(--paper); }
+.landing-begin p { margin: 0 0 27px; color: var(--graphite); font: 12px/1.5 var(--sans); }
+.landing-begin h2 { margin: 0; font: 400 clamp(30px,3.5vw,48px)/1.13 var(--sans); letter-spacing: -.04em; }
+.landing-begin > div:last-child { flex-shrink: 0; }
+.atlas-ui .landing-begin .landing-enter { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.atlas-ui .landing-begin .landing-enter:hover { background: #303e2c; }
+.landing-browse { display: block; width: fit-content; margin-top: 22px; padding-block: 5px; color: var(--graphite); font-size: 12px; }
+
+/* A chapter opens as an illustrated spread; lessons retain a clear reading column. */
+.atlas-ui .chapter-title.illustrated-opening { display: grid; grid-template-columns: minmax(0,1.35fr) minmax(0,1fr); align-items: center; gap: clamp(24px,4vw,56px); max-width: none; min-height: 300px; margin-bottom: 36px; }
+.chapter-opening-copy { min-width: 0; }
+.chapter-illustration { min-width: 0; }
+.chapter-illustration .study-image { mix-blend-mode: multiply; }
+.atlas-ui .illustrated-opening .chapter-summary { max-width: 48ch; font-size: 16px; line-height: 1.8; }
+.atlas-ui .illustrated-opening .chapter-kicker { margin-bottom: 24px; }
+.atlas-ui .chapter .lesson > header { margin-bottom: 30px; padding-top: 28px; }
+
+/* Figure plates use the same ink, etched detail, and generous caption space. */
+.atlas-ui .lesson-visual { margin-block: 38px; background: #edf0e6; border-color: #bbc5b1; }
+.atlas-ui .lesson-visual figcaption { padding: 26px 28px 0; }
+.atlas-ui .lesson-visual figcaption > strong { font-size: 22px; line-height: 1.3; }
+.atlas-ui .lesson-visual figcaption > p { max-width: 66ch; margin-top: 12px; color: #53614c; }
+.atlas-ui .lesson-visual .figure-tools { background: transparent; border-bottom: 0; padding-bottom: 0; }
+.atlas-ui .lesson-visual .figure-tools > button { font-size: 11px; min-height: 32px; border-color: #aab7a0; }
+.atlas-ui .lesson-visual .lv-canvas { margin-top: 14px; padding-block: 14px; }
+.atlas-ui .lv-node > rect { fill: #f5f6ef; stroke: #8e9d84; }
+.atlas-ui .lv-node.is-selected > rect { fill: #edf1fb; stroke: var(--signal); }
+.atlas-ui .lv-node:hover > rect { fill: #e4eadc; }
+.atlas-ui .lv-node .lv-cell { fill: #c2ceb7; stroke: #8fa47f; }
+.atlas-ui .lv-node.is-selected .lv-cell { fill: #b9c9ef; stroke: #7295d9; }
+.lv-etch { fill: none; stroke: #a0af93; stroke-width: .7; pointer-events: none; }
+.lv-node.is-selected .lv-etch { stroke: #7899d9; }
+.lv-registration { stroke: #a6b299; stroke-width: .7; fill: none; pointer-events: none; }
+.atlas-ui .lv-selection { margin: 10px 28px 28px; padding-left: 18px; }
+.atlas-ui .lv-selection p { font-size: 17px; line-height: 1.8; }
+.atlas-ui .lv-notes { border-color: #bbc5b1; }
+.atlas-ui .lv-notes > summary { color: #43563a; }
+
+@media (min-width: 1600px) {
+  .landing-study { padding-block: 115px; }
+  .landing-study .study-image { max-height: 560px; }
+}
+@media (max-width: 1100px) {
+  .landing-preface { gap: 40px; }
+  .landing-study { column-gap: 35px; grid-template-columns: minmax(0,1.15fr) minmax(0,1fr); }
+  .landing-study-silicon { grid-template-columns: minmax(0,1fr) minmax(0,1.15fr); }
+  .landing-study h2 { font-size: 35px; }
+  .landing-study-copy > p:not(.study-subject) { font-size: 16px; }
+  .atlas-ui .chapter-title.illustrated-opening { grid-template-columns: minmax(0,1.6fr) minmax(0,1fr); gap: 20px; }
+  .landing-artwork figcaption { flex-direction: column; gap: 4px; }
+  .landing-artwork figcaption > span:last-child { text-align: left; }
+}
+@media (max-width: 700px) {
+  .landing-preface { grid-template-columns: minmax(0,1fr); gap: 24px; padding: 65px 24px 30px; }
+  .landing-preface h2 { font-size: 34px; }
+  .landing-preface > p { font-size: 17px; }
+  .landing-study, .landing-study-silicon { grid-template-columns: minmax(0,1fr); padding: 35px 24px 55px; gap: 22px; }
+  .landing-artwork { grid-row: 1; }
+  .landing-study-copy { padding: 12px 0 0; }
+  .landing-study-silicon .landing-study-copy { padding-right: 0; }
+  .landing-study h2 { font-size: 38px; }
+  .study-subject { margin-bottom: 20px; }
+  .landing-study-copy > p:not(.study-subject) { max-width: 40ch; font-size: 17px; }
+  .landing-artwork figcaption { font-size: 10px; margin-top: 8px; padding-top: 12px; }
+  .study-topics { margin-top: 28px; }
+  .landing-begin { align-items: start; flex-direction: column; gap: 32px; padding: 64px 24px; }
+  .landing-begin h2 { font-size: 33px; }
+  .atlas-ui .chapter-title.illustrated-opening { grid-template-columns: minmax(0,1fr); gap: 22px; min-height: 0; margin-bottom: 24px; }
+  .chapter-illustration { max-width: 360px; width: 100%; margin: 0 auto; }
+  .chapter-illustration .study-image { height: 175px; object-fit: contain; }
+  .atlas-ui .lesson-visual figcaption { padding-inline: 18px; }
+  .atlas-ui .lesson-visual figcaption > strong { font-size: 20px; }
+  .atlas-ui .lv-selection { margin-inline: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .landing-artwork .study-image, .landing-study-copy > a > span { transition: none; }
+  .landing-artwork:hover .study-image, .landing-study-copy > a:hover > span { transform: none; }
+}
+@media print {
+  .chapter-illustration { max-width: 240px; }
+  .landing-study-silicon { background: white; color: black; --study-muted: #444; --study-rule: #aaa; }
+}
