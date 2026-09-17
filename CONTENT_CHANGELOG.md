@@ -7,6 +7,10 @@ automation changes are recorded separately in CHANGELOG.md.
 
 ## Unreleased
 
+No content changes queued.
+
+## 0.4.0 (2026-09-17)
+
 ### Added
 
 - [Learning from examples](https://inference-and-training-systems.vercel.app/#learning-from-examples): calculate a complete two-example update, distinguish steps from epochs, and explain initialization, learned representations and validation before constructing a Transformer.
