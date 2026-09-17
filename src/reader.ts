@@ -9,6 +9,7 @@ import { parallelChapter } from "./parallel-content";
 import { currentLessonIndex } from "./reading-position";
 import { foundationsChapter } from "./foundations-content";
 import { mathematicsChapter } from "./mathematics-content";
+import { cpuChapter } from "./cpu-content";
 import { runtimeFoundationsChapter } from "./runtime-foundations-content";
 import { positionLesson, normalizationLesson, transformerBudgetLesson } from "./transformer-foundations-content";
 import { evaluationFoundationsLessons } from "./evaluation-foundations-content";
@@ -58,7 +59,7 @@ export function prepareReader() {
   main.insertAdjacentHTML("afterbegin", landingMarkup + homeMarkup + galleryMarkup);
   main.insertAdjacentHTML(
     "beforeend",
-    foundationsChapter + mathematicsChapter + runtimeFoundationsChapter + frameworkChapter + capstoneChapter + acceleratorChapter + frontierChapter +
+    foundationsChapter + mathematicsChapter + runtimeFoundationsChapter + cpuChapter + frameworkChapter + capstoneChapter + acceleratorChapter + frontierChapter +
       programmingChapter + cudaChapter + portableKernelChapter + digitalChapter + fpgaChapter + dataChapter +
       optimizationChapter +
       decodingChapter +
@@ -70,6 +71,7 @@ export function prepareReader() {
       servingChapter +
       projectsChapter,
   );
+  document.querySelector("[data-cpu-overview]")!.replaceWith(byId("cpu-execution")!);
   const postBody = document.querySelector("[data-post-training-body]")!;
   document.querySelector("#training .chapter-summary")!.textContent =
     "Follow the optimizer update across workers: account for memory, collective communication, numerical state, and a restart that preserves the experiment.";

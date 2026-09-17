@@ -1,0 +1,22 @@
+.cpu-workbench { min-width: 0; }
+.cpu-workbench .cpu-lab-readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 24px; padding: 20px 0; border-block: 1px solid var(--rule); font: 13px/1.65 var(--sans); }
+.cpu-lab-readout strong { font-weight: 500; }.cpu-lab-readout span { color: var(--graphite); }
+.cpu-lab-surface { overflow-x: auto; padding: 40px 20px; scrollbar-width: thin; }
+.cpu-lab-surface svg { display: block; width: 100%; max-width: 920px; min-width: 760px; height: auto; margin-inline: auto; }
+.cpu-lab-surface text { font: 13px var(--sans); fill: var(--ink); }
+.cpu-lab-surface .cpu-small { font-size: 11px; fill: var(--graphite); }
+.cpu-lab-surface .cpu-mono { font-family: var(--mono); font-size: 12px; }
+.cpu-lab-surface .cpu-white { fill: white; }
+.cpu-lab-surface rect { stroke: var(--rule); fill: transparent; }
+.cpu-lab-surface .cpu-running { fill: var(--signal); stroke: var(--signal); }
+.cpu-lab-surface .cpu-complete { fill: #e3ebdb; stroke: #b3c2a7; }
+.cpu-lab-surface .cpu-retired { fill: #485d46; stroke: #485d46; }
+.cpu-lab-surface .cpu-miss { fill: #f5e7d8; stroke: #d1b48e; }
+.cpu-lab-ledger { border-top: 1px solid var(--rule); }
+.cpu-lab-ledger > summary { padding: 17px 0; cursor: pointer; color: var(--graphite); font: 12px/1.6 var(--sans); }
+.cpu-lab-ledger .method-table { padding: 0 0 24px; }
+.cpu-lab-surface:focus-visible { outline: 2px solid var(--signal); outline-offset: -2px; }
+@media(max-width:700px) {
+  .cpu-lab-surface { padding: 30px 0; }
+  .cpu-lab-surface::after { content: 'Scroll sideways to follow the full trace'; display: block; position: sticky; left: 0; width: fit-content; margin-top: 18px; font: 11px/1.5 var(--sans); color: var(--graphite); }
+}

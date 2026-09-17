@@ -131,13 +131,21 @@ export const chapters: Chapter[] = [
     requires: ["digital-logic"],
   },
   {
+    id: "cpu",
+    title: "Inside a CPU",
+    intro: "Follow instructions through a core, then explore caches, branches, SIMD, synchronization and NUMA. Use exact teaching models and a C experiment to connect architecture to performance.",
+    part: "Hardware",
+    outcome: "Explain instruction and memory dependencies, trace cache and predictor state, and measure a CPU workload with a clear correctness contract.",
+    requires: ["programming", "digital-logic"],
+  },
+  {
     id: "machine",
-    title: "CPUs and GPUs",
-    intro: "A processor must fetch data, schedule work and execute instructions. Follow a value through a CPU core and a GPU to see why they behave differently.",
+    title: "GPU architecture",
+    intro: "A GPU runs many threads to keep its execution units busy. Follow operands through registers, shared memory and caches, then compare that design with a CPU.",
     part: "Hardware",
     outcome:
       "Trace an operand through memory, registers, scheduling and execution.",
-    requires: ["tensors"],
+    requires: ["tensors", "cpu"],
   },
   {
     id: "runtime-foundations",

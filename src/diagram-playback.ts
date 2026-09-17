@@ -114,7 +114,7 @@ function available(player: Player, modal: HTMLDialogElement | undefined) {
   if (player.root.closest("[hidden], [inert], details:not([open])")) return false;
   // Moving the live node into a popout or changing its height can leave an
   // IntersectionObserver snapshot stale. The visible drawing is authoritative.
-  const visual = player.root.querySelector<HTMLElement>("[data-chip-panel]:not([hidden]) .chip-canvas, .three-stage, .lv-canvas, .nn-diagram-scroll, .nn-whole, .sb-canvas, .architecture-scroll, .hd-canvas, canvas") ?? player.root;
+  const visual = player.root.querySelector<HTMLElement>("[data-chip-panel]:not([hidden]) .chip-canvas, .three-stage, .lv-canvas, .nn-diagram-scroll, .nn-whole, .sb-canvas, .architecture-scroll, .hd-canvas, .cpu-lab-surface, canvas") ?? player.root;
   const box = visual.getBoundingClientRect();
   return box.width > 0 && box.height > 0 && box.bottom > 40 && box.top < window.innerHeight - 40;
 }

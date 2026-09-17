@@ -79,6 +79,7 @@ export function diagramWalkthrough(root: HTMLElement): DiagramWalkthrough | null
   if (root.querySelector("[data-sr-next]")) return steps(root, "[data-sr-next]", "[data-sr-reset]", Infinity, "[data-sr-state] .sr-readout strong");
   if (root.querySelector("[data-pd-handoff-next]")) return steps(root, "[data-pd-handoff-next]", "[data-pd-handoff-reset]", Infinity, "[data-pd-handoff-state] .pd-state-title");
   const stepRecipes = [
+    ["cpu-issue", "next", "reset"], ["cpu-cache", "next", "reset"], ["cpu-branch", "next", "reset"],
     ["matmul", "next", "reset"], ["ring", "next", "reset"], ["pipe", "next", "reset"],
     ["optimizer", "next", "reset"], ["spec", "next", "reset"], ["systolic", "next", "reset"],
     ["softmax", "step", "reset"], ["first", "step", "reset"], ["elastic", "next", "reset"],

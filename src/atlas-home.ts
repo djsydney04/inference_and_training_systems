@@ -6,6 +6,9 @@ import { galleryStudies } from "./illustration-catalog";
 const glyph = (kind: string) => studyImage(galleryStudies[kind] ?? "model", true);
 
 export const galleryItems = [
+  { kind: "cpu", id: "cpu-issue-lab", title: "Which instruction can run now?", scope: "Dependencies → issue → completion → retirement", type: "CPU scheduling lab", copy: "Compare ordered and ready issue without changing operation latencies or in-order retirement." },
+  { kind: "cache", id: "cpu-cache-lab", title: "Why did this address miss?", scope: "Address → set → tag → replacement", type: "CPU cache lab", copy: "Keep capacity fixed and inspect cold misses, conflicts and exact LRU replacement." },
+  { kind: "cpu", id: "cpu-branch-lab", title: "Can this predictor learn the pattern?", scope: "Predict → resolve → update", type: "Branch prediction lab", copy: "Follow every state of a two-bit counter through loop exits, alternating outcomes and a change of phase." },
   {
     kind: "network", id: "network-map", title: "Open the whole neural network",
     scope: "Embeddings → attention → feed-forward → prediction", type: "Clickable architecture",

@@ -24,7 +24,7 @@ export const chapterStudies: Record<string, Study> = {
   "runtime-foundations": "execution",
   orientation: "systems", "first-principles": "model", tensors: "tensor", transformer: "model", attention: "model", programming: "memory",
   data: "data", optimization: "gradient", training: "collective", "parallel-training": "pipeline", "post-training": "decoding",
-  "digital-logic": "logic", "fpga-asic": "logic", machine: "execution", "gpu-resources": "memory", rack: "systems", collectives: "collective", lpu: "compiler", "accelerator-atlas": "silicon",
+  "digital-logic": "logic", "fpga-asic": "logic", cpu: "execution", machine: "execution", "gpu-resources": "memory", rack: "systems", collectives: "collective", lpu: "compiler", "accelerator-atlas": "silicon",
   "cuda-kernels": "tiling", "portable-kernels": "compiler", performance: "pipeline", inference: "cache", decoding: "decoding", "serving-lab": "serving", frontier: "model", "end-to-end": "data", projects: "serving",
   glossary: "tensor", sources: "data",
 };
