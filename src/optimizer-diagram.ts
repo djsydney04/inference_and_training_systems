@@ -8,7 +8,7 @@ const text = (x: number, y: number, value: string, anchor = "middle", className 
 /** Plot the actual optimizer states against the same objective used by the lab. */
 export function optimizerLandscape(history: OptimizerState[], width: number) {
   const height = 320;
-  const left = 36, right = width - 28, top = 28, bottom = height - 40;
+  const left = 36, right = width - 28, top = 28, bottom = height - 52;
   const cx = (left + right) / 2, cy = (top + bottom) / 2;
   const extentX = Math.max(4.5, ...history.map(s => Math.abs(s.weight[0]) * 1.25));
   const extentY = Math.max(1.7, ...history.map(s => Math.abs(s.weight[1]) * 1.25));
@@ -46,7 +46,7 @@ export function optimizerLandscape(history: OptimizerState[], width: number) {
 }
 
 export function optimizerLossChart(history: OptimizerState[], width: number) {
-  const height = 320, left = 38, right = width - 22, top = 28, bottom = height - 40;
+  const height = 320, left = 38, right = width - 22, top = 28, bottom = height - 52;
   const losses = history.map(s => quadraticLoss(s.weight));
   const ceiling = Math.max(10, Math.ceil(Math.max(...losses) / 2) * 2);
   const px = (step: number) => left + step / 20 * (right - left);
@@ -59,7 +59,7 @@ export function optimizerLossChart(history: OptimizerState[], width: number) {
   return `<svg viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="optimizer-loss-title optimizer-loss-description">
     <title id="optimizer-loss-title">Loss after each applied update</title>
     <desc id="optimizer-loss-description">Loss starts at ${losses[0].toFixed(5)} and is ${losses.at(-1)!.toFixed(5)} after ${current.step} updates. Only applied updates are drawn. Exact values are in the update history.</desc>
-    <g class="optimizer-loss-grid">${grid}</g>${ticks}${text(left, top - 12, "Loss", "start")}${text(right, height - 2, "Update", "end")}
+    <g class="optimizer-loss-grid">${grid}</g>${ticks}${text(left, top - 12, "Loss", "start")}${text(right, height - 6, "Update", "end")}
     <path d="M${left} ${py(losses[0])}H${right}" class="optimizer-baseline"/>
     ${text(right, py(losses[0]) - 10, "Initial loss · 8", "end")}
     ${area}<polyline points="${points.join(" ")}" class="optimizer-path"/>
