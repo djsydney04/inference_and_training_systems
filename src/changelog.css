@@ -30,3 +30,18 @@
 @media (prefers-reduced-motion: no-preference) {
   .changelog-release[open] > .changelog-changes { animation: disclosure-arrive 180ms ease-out; }
 }
+
+.atlas-ui .content-history { padding-bottom: 24px; }
+.atlas-ui .content-history > header { margin-bottom: 16px; }
+.atlas-ui .changelog .changelog-intro { margin: 0 0 32px; max-width: 64ch; font: 15px/1.7 var(--sans); color: var(--graphite); }
+.changelog-edition-context { margin-left: auto; font: 12px/1.6 var(--sans); color: var(--graphite); }
+.atlas-ui .changelog .changelog-history-note { margin: 24px 0 0; color: var(--graphite); font: 12px/1.7 var(--sans); }
+.atlas-ui .changelog-technical { padding-top: 0; }
+.atlas-ui .changelog-technical > summary { display: flex; align-items: baseline; gap: 20px; padding-block: 20px; font: 500 15px/1.6 var(--sans); list-style: none; }
+.changelog-technical > summary::-webkit-details-marker { display: none; }
+.changelog-technical > summary::before { content: "+"; }
+.changelog-technical[open] > summary::before { content: "−"; }
+.atlas-ui .changelog-technical > summary > span { margin-left: auto; float: none; }
+.atlas-ui .changelog-technical > summary:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+.atlas-ui .changelog-technical > .changelog-source { margin-block: 0 24px; }
+@media (max-width: 600px) { .changelog-edition-context { font-size: 11px; } }

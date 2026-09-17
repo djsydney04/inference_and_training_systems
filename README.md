@@ -25,7 +25,7 @@ release PR workflow. The [design direction](DESIGN.md) describes the
 landing page, reader, and diagram conventions.
 
 The separate [content history](CONTENT_CHANGELOG.md) tracks changes to the
-material and links to the affected lessons. Readers can open **Content changes**
+material and links to the affected lessons. Readers can open **Changelog**
 from the site's footer; pending notes receive their version and date automatically
 in the next release PR.
 

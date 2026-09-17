@@ -89,39 +89,41 @@ test("2D numerical workbenches preserve calculations and keyboard selection", as
   await expect(ring.locator(".ring-chunk.is-complete")).toHaveCount(0);
 });
 
-test("edition footer leads to the GitHub changelog and older releases", async ({ page }) => {
+test("edition footer leads to educational changes and optional site releases", async ({ page }) => {
   await page.goto("/");
   const footer = page.locator(".almanac-footer");
   await expect(footer).toBeVisible();
   const edition = await footer.locator(".footer-edition").textContent();
   const version = edition!.match(/v(\d+\.\d+\.\d+)/)![1];
-  await footer.getByRole("link", { name: "Changelog" }).click();
+  await footer.getByRole("link", { name: "Changelog", exact: true }).click();
+  const content = page.locator("#content-changes");
+  await expect(content.getByRole("heading", { name: "Changelog", exact: true })).toBeVisible();
+  await expect(content.locator(".content-edition").first()).toHaveAttribute("open", "");
+  await expect(page.locator("#release-notes")).not.toHaveAttribute("open", "");
+  await expect(content.getByRole("link", { name: "View on GitHub" })).toHaveAttribute("href", /\/CONTENT_CHANGELOG\.md$/);
+  const missingLessons = await content.locator("li a").evaluateAll(links => links.map(link => link.getAttribute("href")!).filter(href => !href.startsWith("#") || !document.getElementById(href.slice(1))));
+  expect(missingLessons).toEqual([]);
+  const lesson = content.locator("li a").first();
+  const lessonTarget = await lesson.getAttribute("href");
+  await lesson.click();
+  await expect(page.locator(lessonTarget!)).toBeVisible();
+  await page.goto("/#content-changes");
+  await expect(content.getByRole("heading", { name: "Changelog", exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+  await footer.getByRole("link", { name: "Site releases", exact: true }).click();
   const changelog = page.locator("#release-notes");
-  await expect(changelog.getByRole("heading", { name: "Changelog", exact: true })).toBeVisible();
+  await expect(changelog).toHaveAttribute("open", "");
   const latest = changelog.locator(".changelog-release").first();
   await expect(latest).toHaveAttribute("open", "");
   await expect(latest.locator("summary")).toContainText(version);
   await expect(latest.locator("time")).toHaveAttribute("datetime", await footer.locator("time").getAttribute("datetime") ?? "");
-  await expect(changelog.getByRole("link", { name: "View on GitHub" })).toHaveAttribute("href", /github\.com\/djsydney04\/inference_and_training_systems\/blob\/main\/CHANGELOG\.md$/);
+  await expect(changelog.getByRole("link", { name: "GitHub release history" })).toHaveAttribute("href", /github\.com\/djsydney04\/inference_and_training_systems\/blob\/main\/CHANGELOG\.md$/);
   const older = changelog.locator(".changelog-release").nth(1);
   await expect(older).not.toHaveAttribute("open", "");
   await older.locator("summary").focus();
   await page.keyboard.press("Enter");
   await expect(older).toHaveAttribute("open", "");
   await expect(older.locator("li").first()).toBeVisible();
-  await footer.getByRole("link", { name: "Content changes", exact: true }).click();
-  const history = page.locator("#content-changes");
-  await expect(history).toHaveAttribute("open", "");
-  await expect(history.getByRole("heading", { name: "What changed in the material" })).toBeVisible();
-  const missing = await history.locator("a").evaluateAll(links => links
-    .map(link => link.getAttribute("href")!)
-    .filter(href => !document.getElementById(href.slice(1))));
-  expect(missing, "Every content entry links to existing material").toEqual([]);
-  await history.getByRole("link", { name: "GPU and SM anatomy", exact: true }).click();
-  await expect(page.locator("#gpu-chip-anatomy")).toBeVisible();
-  await page.goto("/#content-changes");
-  await expect(history).toHaveAttribute("open", "");
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
   await footer.getByRole("link", { name: "AI Almanac", exact: true }).click();
   await page.getByRole("link", { name: "Open the almanac", exact: true }).click();
   await expect(page.locator("#top")).toBeVisible();

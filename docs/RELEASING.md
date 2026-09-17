@@ -9,11 +9,12 @@ The site shows the new version when the merged source is built and deployed.
 
 The bot updates `package.json`, both root versions in `package-lock.json`,
 `.release-please-manifest.json`, and `CHANGELOG.md` in the same PR. The footer
-reads the package version and latest changelog entry, including its date. The changelog at the bottom of the landing page renders the complete
-`CHANGELOG.md` history with its categories and GitHub commit links. The latest
-release is expanded; older releases can be opened individually. Every page links
-to it from the footer. Both are bundled at build time, so a release appears on
-the site when its source is deployed; no browser API request or token is needed.
+reads the package version and latest changelog entry, including its date. The
+**Site releases** disclosure below the educational changelog renders the complete
+`CHANGELOG.md` history with its categories and GitHub commit links. Opening it
+shows the latest release; older releases can be opened individually. Every page
+links to both histories from the footer. They are bundled at build time, so a
+release appears when its source is deployed; no browser API request or token is needed.
 There is no separate date or version to maintain in TypeScript.
 
 `npm run check:release` rejects mismatches, missing release notes and invalid
@@ -24,7 +25,9 @@ a tag to check it: `npm run check:release -- v0.2.0`.
 
 [CONTENT_CHANGELOG.md](../CONTENT_CHANGELOG.md) records new lessons, explanations,
 worked examples, corrections and references. It also drives the site's
-**Content changes** panel, linked from the publication footer. Links use the
+primary **Changelog** at the bottom of the landing page, linked from the
+publication footer. The newest material is expanded, with older editions in
+individual disclosures and technical site releases collapsed beneath them. Links use the
 public site's stable lesson fragments so they work on GitHub; the reader turns
 them into local navigation links.
 
@@ -43,7 +46,8 @@ When Release Please prepares a PR, the workflow snapshots those entries from
 its main baseline under the generated version and date, then clears Unreleased.
 It validates the final commit, including that snapshot. Repeated runs regenerate
 the snapshot from main, so author pending notes on main, not on the bot branch.
-On the site, pending entries appear as “Since vX.Y.Z” until their release merges.
+On the site, pending entries appear under “Recent additions” with “Since vX.Y.Z”
+until their release merges.
 Software-only releases produce no empty content edition. A material edition may
 therefore be older than the current application version.
 
