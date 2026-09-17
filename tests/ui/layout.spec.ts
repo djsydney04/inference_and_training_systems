@@ -13,7 +13,7 @@ test("chapter layouts and schematic labels fit their reading surfaces", async ({
   await expect(page.locator("#landing-title")).toHaveText("AI Almanac");
   const routes = await page.locator(".course-chapter-link").evaluateAll(links => links.map(link => link.getAttribute("href")!.slice(1)));
   const findings: string[] = [];
-  for (const id of ["welcome", "top", "gallery", ...routes, "glossary", "sources"]) {
+  for (const id of ["welcome", "content-changes", "top", "gallery", ...routes, "glossary", "sources"]) {
     await navigate(page, id);
     const issues = await page.locator(`#${id}`).evaluate(async root => {
       const problems: string[] = [];
@@ -93,25 +93,36 @@ test("edition footer leads to educational changes and optional site releases", a
   await page.goto("/");
   const footer = page.locator(".almanac-footer");
   await expect(footer).toBeVisible();
+  await expect(page.locator("#content-changes")).toBeHidden();
+  await expect(page.locator("#welcome .changelog")).toHaveCount(0);
   const edition = await footer.locator(".footer-edition").textContent();
   const version = edition!.match(/v(\d+\.\d+\.\d+)/)![1];
-  await footer.getByRole("link", { name: "Changelog", exact: true }).click();
+  await footer.getByRole("link", { name: "Content changes", exact: true }).click();
   const content = page.locator("#content-changes");
-  await expect(content.getByRole("heading", { name: "Changelog", exact: true })).toBeVisible();
+  await expect(page.locator("#welcome")).toBeHidden();
+  await expect(page).toHaveTitle("Content changes | AI Almanac");
+  await expect(page.locator("#changelog-title")).toBeFocused();
+  await expect(content.getByRole("heading", { name: "Content changes", exact: true })).toBeVisible();
   await expect(content.locator(".content-edition").first()).toHaveAttribute("open", "");
   await expect(page.locator("#release-notes")).not.toHaveAttribute("open", "");
   await expect(content.getByRole("link", { name: "View on GitHub" })).toHaveAttribute("href", /\/CONTENT_CHANGELOG\.md$/);
-  const missingLessons = await content.locator("li a").evaluateAll(links => links.map(link => link.getAttribute("href")!).filter(href => !href.startsWith("#") || !document.getElementById(href.slice(1))));
+  const missingLessons = await content.locator(".content-history li a").evaluateAll(links => links.map(link => link.getAttribute("href")!).filter(href => !href.startsWith("#") || !document.getElementById(href.slice(1))));
   expect(missingLessons).toEqual([]);
-  const lesson = content.locator("li a").first();
+  const lesson = content.locator(".content-history li a").first();
   const lessonTarget = await lesson.getAttribute("href");
   await lesson.click();
   await expect(page.locator(lessonTarget!)).toBeVisible();
+  await expect(content).toBeHidden();
+  await page.goBack();
+  await expect(content).toBeVisible();
+  await page.goForward();
+  await expect(page.locator(lessonTarget!)).toBeVisible();
   await page.goto("/#content-changes");
-  await expect(content.getByRole("heading", { name: "Changelog", exact: true })).toBeVisible();
+  await expect(content.getByRole("heading", { name: "Content changes", exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
   await footer.getByRole("link", { name: "Site releases", exact: true }).click();
   const changelog = page.locator("#release-notes");
+  await expect(page.locator("#welcome")).toBeHidden();
   await expect(changelog).toHaveAttribute("open", "");
   const latest = changelog.locator(".changelog-release").first();
   await expect(latest).toHaveAttribute("open", "");

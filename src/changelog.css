@@ -1,7 +1,7 @@
 /* Published history shares the reader's open layout and quiet disclosure surfaces. */
 .atlas-ui .changelog { padding-block: 32px 64px; scroll-margin-top: 24px; }
 .atlas-ui .changelog > header { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 16px 24px; margin-bottom: 30px; }
-.atlas-ui .changelog h2 { margin: 0; font: 500 30px/1.2 var(--sans); letter-spacing: -.035em; }
+.atlas-ui .changelog h1 { margin: 0; font: 500 30px/1.2 var(--sans); letter-spacing: -.035em; }
 .atlas-ui .changelog > header > a { font: 12px/1.6 var(--sans); text-underline-offset: 4px; }
 .atlas-ui .changelog > .changelog-history { max-width: none; padding: 0; display: grid; gap: 12px; }
 .changelog-release { min-width: 0; scroll-margin-top: 24px; }
@@ -45,3 +45,20 @@
 .atlas-ui .changelog-technical > summary:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
 .atlas-ui .changelog-technical > .changelog-source { margin-block: 0 24px; }
 @media (max-width: 600px) { .changelog-edition-context { font-size: 11px; } }
+
+/* A separate publication page, reached from the shared footer. */
+body[data-atlas-page="content-changes"] .chapter-index,
+body[data-atlas-page="content-changes"] .index-toggle { display: none; }
+body.atlas-reader[data-atlas-page="content-changes"] .page-shell { display: block; max-width: none; }
+.atlas-ui .atlas-publication { max-width: 1000px; margin: 0 auto; padding: 40px clamp(24px, 5vw, 64px) 48px; }
+.publication-navigation { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 48px; font: 13px/1.6 var(--sans); }
+.publication-navigation a { text-underline-offset: 4px; }
+.publication-navigation a:first-child { font-size: 19px; font-weight: 500; text-decoration: none; }
+.atlas-ui .atlas-publication > .changelog { padding-inline: 0; margin: 0; border: 0; }
+.atlas-ui .atlas-publication .changelog-technical { margin-top: 32px; border-top: 1px solid var(--rule); }
+body.atlas-ui[data-atlas-page="content-changes"] #app > .almanac-footer { max-width: 1000px; padding: 28px clamp(24px, 5vw, 64px); }
+@media (max-width: 600px) {
+  .atlas-ui .atlas-publication { padding-top: 28px; }
+  .publication-navigation { margin-bottom: 32px; }
+  body.atlas-ui[data-atlas-page="content-changes"] #app > .almanac-footer { grid-template-columns: 1fr; }
+}

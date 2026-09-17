@@ -1,5 +1,5 @@
 import { machinePlate } from "./machine-plate";
-import { release, releaseNotesMarkup, contentHistoryMarkup } from "./release";
+import { release } from "./release";
 import { studyImage } from "./book-illustrations";
 
 export const landingMarkup = `
@@ -62,6 +62,4 @@ export const landingMarkup = `
     <div><p>Read. Inspect. Experiment.</p><h2 id="landing-begin-title">Start with a question.<br>Follow it all the way down.</h2></div>
     <div><a class="landing-enter" href="#top">Start reading <span aria-hidden="true">→</span></a><a class="landing-browse" href="#gallery">Or browse the diagrams</a></div>
   </section>
-  ${contentHistoryMarkup}
-  ${releaseNotesMarkup}
 </section>`;

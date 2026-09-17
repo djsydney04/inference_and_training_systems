@@ -69,7 +69,7 @@ export function initializeAtlasUI() {
   initializeNumericalDiagrams();
   initializeBookIllustrations();
   const syncPage = () => {
-    const page = document.querySelector<HTMLElement>("#main-content > :not([hidden]):is(.chapter, .atlas-home, .atlas-gallery, .atlas-landing)");
+    const page = document.querySelector<HTMLElement>("#main-content > :not([hidden]):is(.chapter, .atlas-home, .atlas-gallery, .atlas-landing, .atlas-publication)");
     document.body.dataset.atlasPage = page?.id ?? "top";
   };
   document.addEventListener("atlas:chapterchange", syncPage);

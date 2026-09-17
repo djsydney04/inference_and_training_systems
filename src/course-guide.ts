@@ -78,7 +78,7 @@ export function initializeCourseGuide() {
   if (chapterPanel) panelHome.append(chapterPanel);
   let previous = "";
   const sync = () => {
-    const page = document.querySelector<HTMLElement>("#main-content > :not([hidden]):is(.chapter, .atlas-home, .atlas-gallery, .atlas-landing)");
+    const page = document.querySelector<HTMLElement>("#main-content > :not([hidden]):is(.chapter, .atlas-home, .atlas-gallery, .atlas-landing, .atlas-publication)");
     const id = page?.id ?? "top";
     const chapter = chapters.find(item => item.id === id);
     nav.querySelectorAll<HTMLAnchorElement>(".course-chapter-link").forEach(link => {

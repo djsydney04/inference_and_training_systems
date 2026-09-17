@@ -1,6 +1,7 @@
 import { chapters, learningPaths } from "./curriculum";
 import { galleryMarkup, homeMarkup } from "./atlas-home";
 import { landingMarkup } from "./landing";
+import { publicationMarkup } from "./release";
 import { tiledMatmulLesson, distributedRuntimeLesson } from "./kernel-content";
 import { optimizationChapter } from "./method-content";
 import { decodingChapter } from "./decoding-content";
@@ -56,7 +57,7 @@ export function prepareReader() {
   document.body.classList.add("atlas-reader");
   document.querySelector(".hero")?.remove();
   const main = byId("main-content")!;
-  main.insertAdjacentHTML("afterbegin", landingMarkup + homeMarkup + galleryMarkup);
+  main.insertAdjacentHTML("afterbegin", landingMarkup + publicationMarkup + homeMarkup + galleryMarkup);
   main.insertAdjacentHTML(
     "beforeend",
     foundationsChapter + mathematicsChapter + runtimeFoundationsChapter + cpuChapter + frameworkChapter + capstoneChapter + acceleratorChapter + frontierChapter +
@@ -187,6 +188,7 @@ export function initializeReader() {
   const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const topPages = [
     byId("welcome")!,
+    byId("content-changes")!,
     byId("top")!,
     byId("gallery")!,
     ...chapters.map((c) => byId(c.id)!),
@@ -392,7 +394,7 @@ export function initializeReader() {
     const destination = byId(id) ?? byId("welcome")!;
     const page =
       destination.closest<HTMLElement>(
-        ".chapter, .atlas-home, .atlas-gallery, .atlas-landing",
+        ".chapter, .atlas-home, .atlas-gallery, .atlas-landing, .atlas-publication",
       ) ?? byId("welcome")!;
     document.body.dataset.atlasPage = page.id;
     const changed = activePage !== page;
@@ -427,7 +429,7 @@ export function initializeReader() {
     const meta = chapters.find((c) => c.id === page.id);
     document.title = page.id === "welcome"
       ? "AI Almanac"
-      : `${meta?.title ?? (page.id === "gallery" ? "Diagrams and labs" : "Course guide")} | AI Almanac`;
+      : `${meta?.title ?? page.dataset.pageTitle ?? (page.id === "gallery" ? "Diagrams and labs" : "Course guide")} | AI Almanac`;
     index.querySelectorAll<HTMLAnchorElement>("a").forEach((a) => {
       const active = a.hash === `#${page.id}`;
       a.classList.toggle("is-active", active);
