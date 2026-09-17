@@ -40,7 +40,7 @@ function steps(root: HTMLElement, next: string, reset: string, limit = Infinity,
       return "Start again · initial state";
     }
     click(button); count++;
-    return `Step ${count} · ${label(readout ? root.querySelector(readout)! : button)}`;
+    return readout ? label(root.querySelector(readout)!) : `Step ${count} · ${label(button)}`;
   } };
 }
 
