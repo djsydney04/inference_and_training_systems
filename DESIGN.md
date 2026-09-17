@@ -25,8 +25,10 @@ a grouped syllabus, an illustrated chapter opening, its lessons, then the next
 chapter. There is no horizontal top bar.
 
 Interaction thesis: short transitions acknowledge selection and navigation.
-The landing drawing responds to manual layer selection. Guided lesson playback
-remains local to the chapters, pauses for inspection, and respects reduced motion.
+The landing drawing responds to manual layer selection. Diagrams stay still by
+default. Use motion when execution order or changing state carries the lesson;
+component maps, illustrations, and parameter comparisons remain manual. Guided
+playback pauses for inspection and respects reduced motion.
 
 ## Illustration language
 

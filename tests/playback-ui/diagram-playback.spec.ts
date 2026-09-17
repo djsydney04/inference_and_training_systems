@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-async function start(page: Page, hash = "network-attention") {
+async function start(page: Page, hash = "decoder-block") {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.clock.install();
   await page.goto(`/#${hash}`);
@@ -8,25 +8,25 @@ async function start(page: Page, hash = "network-attention") {
   await page.clock.pauseAt(Date.now() + 1000);
 }
 
-test("attention advances automatically, pauses for inspection and preserves keyboard focus", async ({ page }) => {
+test("execution traces advance, pause for inspection and preserve keyboard focus", async ({ page }) => {
   await start(page);
-  const figure = page.locator('[data-nn-inspector="attention"]');
-  await figure.locator(".nn-diagram-scroll").scrollIntoViewIfNeeded();
+  const figure = page.locator("#decoder-block");
+  await figure.locator(".block-pipeline").scrollIntoViewIfNeeded();
   await page.clock.runFor(7000);
   const before = Number(await figure.getAttribute("data-playback-frames"));
   expect(before).toBeGreaterThan(0);
   await page.clock.runFor(6500);
   expect(Number(await figure.getAttribute("data-playback-frames"))).toBeGreaterThan(before);
-  await expect(figure.locator("[data-nn-description]")).toHaveAttribute("aria-live", "off");
-  await figure.locator('[data-nn-part="key"]').click();
+  await expect(figure.locator("[data-pipeline-readout]")).toHaveAttribute("aria-live", "off");
+  await figure.locator('[data-step="2"]').click();
   await expect(figure).toHaveAttribute("data-playback-state", "paused");
-  await expect(figure.locator("[data-nn-description]")).toHaveAttribute("aria-live", "polite");
+  await expect(figure.locator("[data-pipeline-readout]")).toHaveAttribute("aria-live", "polite");
   const paused = await figure.getAttribute("data-playback-frames");
   await page.clock.runFor(16000);
   expect(await figure.getAttribute("data-playback-frames")).toBe(paused);
   const play = figure.locator("[data-playback-toggle]");
   await play.click();
-  await figure.locator(".nn-diagram-scroll").scrollIntoViewIfNeeded();
+  await figure.locator(".block-pipeline").scrollIntoViewIfNeeded();
   await page.clock.runFor(6500);
   expect(Number(await figure.getAttribute("data-playback-frames"))).toBeGreaterThan(Number(paused));
   await expect(play).toBeFocused();
@@ -34,43 +34,67 @@ test("attention advances automatically, pauses for inspection and preserves keyb
 
 test("hidden chapters stop, expanded diagrams continue and Escape restores the live figure", async ({ page }) => {
   await start(page);
-  const figure = page.locator('[data-nn-inspector="attention"]');
-  await figure.locator(".nn-diagram-scroll").scrollIntoViewIfNeeded();
+  const figure = page.locator("#decoder-block");
+  await figure.locator(".block-pipeline").scrollIntoViewIfNeeded();
   await page.clock.runFor(1000);
   await figure.getByRole("button", { name: "Open figure", exact: true }).click();
   await expect(page.locator("dialog.figure-popout")).toBeVisible();
-  await page.locator("dialog.figure-popout .nn-diagram-scroll").scrollIntoViewIfNeeded();
+  await page.locator("dialog.figure-popout .block-pipeline").scrollIntoViewIfNeeded();
   const before = Number(await figure.getAttribute("data-playback-frames"));
   await page.clock.runFor(7000);
   expect(Number(await figure.getAttribute("data-playback-frames"))).toBeGreaterThan(before);
   await page.keyboard.press("Escape");
   await expect(page.locator("dialog.figure-popout")).not.toBeVisible();
-  await expect(page.locator('#network-attention [data-nn-inspector="attention"]')).toHaveCount(1);
+  await expect(page.locator("#decoder-block")).toHaveCount(1);
   await page.evaluate(() => document.dispatchEvent(new CustomEvent("atlas:navigate", { detail: "rack" })));
   const hidden = await figure.getAttribute("data-playback-frames");
   await page.clock.runFor(20000);
   expect(await figure.getAttribute("data-playback-frames")).toBe(hidden);
 });
 
-test("opening a diagram immediately keeps autoplay enabled", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.goto("/#network-feedforward");
-  const figure = page.locator('[data-nn-inspector="feedforward"]');
+test("component maps and comparisons stay still and remain manually explorable", async ({ page }) => {
+  await start(page, "network-attention");
+  const figure = page.locator('[data-nn-inspector="attention"]');
+  await expect(figure.locator("[data-playback-toggle]")).toHaveCount(0);
+  const key = figure.locator('[data-nn-part="key"]');
+  await key.focus();
+  await page.keyboard.press("Enter");
+  await expect(key).toHaveAttribute("aria-pressed", "true");
+  await expect(figure.locator("[data-nn-description]")).toHaveAttribute("aria-live", "polite");
+  await page.clock.runFor(20000);
+  await expect(key).toHaveAttribute("aria-pressed", "true");
+  await expect(key).toBeFocused();
   await figure.getByRole("button", { name: "Open figure", exact: true }).click();
-  await expect(figure).not.toHaveAttribute("data-playback-state", "paused");
+  await expect(figure.locator("[data-playback-toggle]")).toHaveCount(0);
+  await page.keyboard.press("Escape");
+  await expect(figure.getByRole("button", { name: "Open figure", exact: true })).toBeFocused();
+
+  await page.evaluate(() => document.dispatchEvent(new CustomEvent("atlas:navigate", { detail: "quantization-scale-lab" })));
+  const scale = page.locator("[data-quant-scale]");
+  await scale.focus();
+  await scale.press("ArrowRight");
+  const value = await scale.inputValue();
+  // Global animation preferences never enlist a static figure.
+  await page.evaluate(() => {
+    const toggle = document.querySelector<HTMLButtonElement>("[data-playback-all]")!;
+    toggle.click(); toggle.click();
+  });
+  await page.clock.runFor(20000);
+  await expect(scale).toHaveValue(value);
+  await expect(page.locator("#quantization-scale-lab [data-playback-toggle]")).toHaveCount(0);
 });
 
 test("reduced motion starts paused and an explicit play opts in", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.clock.install();
-  await page.goto("/#network-feedforward");
-  const figure = page.locator('[data-nn-inspector="feedforward"]');
+  await page.goto("/#decoder-block");
+  const figure = page.locator("#decoder-block");
   await expect(figure).toHaveAttribute("data-playback-state", "paused");
   await page.clock.pauseAt(Date.now() + 1000);
   await page.clock.runFor(14000);
   expect(await figure.getAttribute("data-playback-frames")).toBeNull();
   await figure.locator("[data-playback-toggle]").click();
-  await figure.locator(".nn-diagram-scroll").scrollIntoViewIfNeeded();
+  await figure.locator(".block-pipeline").scrollIntoViewIfNeeded();
   await page.clock.runFor(7000);
   expect(Number(await figure.getAttribute("data-playback-frames"))).toBeGreaterThan(0);
   await page.emulateMedia({ reducedMotion: "no-preference" });
@@ -87,25 +111,24 @@ test("global pause and reading pace persist across reloads", async ({ page }) =>
     pace.dispatchEvent(new Event("change", { bubbles: true }));
   });
   await page.reload();
-  const figure = page.locator('[data-nn-inspector="attention"]');
+  const figure = page.locator("#decoder-block");
   await expect(figure).toHaveAttribute("data-playback-state", "paused");
   await expect(figure.locator("[data-playback-pace]")).toHaveValue("10000");
   expect(await page.locator('[data-playback-state="playing"]').count()).toBe(0);
 });
 
-test("a nested schematic restores announcements and stops motion independently", async ({ page }) => {
+test("nested schematics preserve manual selection and announcements without playback", async ({ page }) => {
   await start(page, "training-state");
   const diagram = page.locator('#training-state .lesson-visual');
-  await diagram.locator('.lv-canvas').scrollIntoViewIfNeeded();
-  await page.clock.runFor(1000);
-  await diagram.locator('[data-lv-node="1"]').click();
-  await expect(diagram).toHaveAttribute("data-playback-state", "paused");
+  const node = diagram.locator('[data-lv-node="1"]');
+  await node.click();
+  await expect(diagram.locator("[data-playback-toggle]")).toHaveCount(0);
   await expect(diagram.locator('.lv-selection')).toHaveAttribute("aria-live", "polite");
-  const motion = await diagram.evaluate(root => getComputedStyle(root).getPropertyValue("--walkthrough-motion").trim());
-  expect(motion).toBe("paused");
+  await page.clock.runFor(20000);
+  await expect(node).toHaveAttribute("aria-pressed", "true");
 });
 
-test("every authored diagram has a walkthrough and repeated cycles remain valid", async ({ page }) => {
+test("motion is optional and execution walkthroughs remain valid across repeated cycles", async ({ page }) => {
   await start(page, "orientation");
   const failures = await page.evaluate(async () => {
     document.querySelector<HTMLButtonElement>("[data-playback-all]")!.click();
@@ -134,7 +157,7 @@ test("every authored diagram has a walkthrough and repeated cycles remain valid"
         continue;
       }
       if (!adapter) {
-        if (!root.querySelector("[data-diagram-playback]")) errors.push(`${name}: no walkthrough`);
+        if (root.matches("[data-diagram-playback]")) errors.push(`${name}: static figure received playback`);
         continue;
       }
       try {
@@ -150,11 +173,16 @@ test("every authored diagram has a walkthrough and repeated cycles remain valid"
     return errors;
   });
   expect(failures).toEqual([]);
+  for (const selector of ["#decoder-block", "#matmul-workbench", "#quantization-scale-lab"]) {
+    const figure = page.locator(selector);
+    await expect(figure).toHaveCount(1);
+    await expect(figure.locator("[data-playback-toggle]")).toHaveCount(selector.includes("quantization") ? 0 : 1);
+  }
 });
 
 test("diagram controls and captions fit a narrow viewport", async ({ page }) => {
-  await start(page, "network-feedforward");
-  const figure = page.locator('[data-nn-inspector="feedforward"]');
+  await start(page, "decoder-block");
+  const figure = page.locator("#decoder-block");
   await figure.locator(".diagram-playback").scrollIntoViewIfNeeded();
   await figure.locator("[data-playback-pace]").selectOption("3000");
   await page.clock.runFor(10000);
@@ -165,13 +193,13 @@ test("diagram controls and captions fit a narrow viewport", async ({ page }) => 
 
 test("wide diagrams reveal the active operation without scrolling the page", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await start(page, "network-feedforward");
-  const figure = page.locator('[data-nn-inspector="feedforward"]');
-  const scroller = figure.locator(".nn-diagram-scroll");
+  await start(page, "decoder-block");
+  const figure = page.locator("#decoder-block");
+  const scroller = figure.locator(".block-pipeline");
   await scroller.scrollIntoViewIfNeeded();
   await page.clock.runFor(14000);
   await expect.poll(() => scroller.evaluate(root => {
-    const selected = root.querySelector('[aria-pressed="true"]')!.getBoundingClientRect();
+    const selected = root.querySelector('.is-active')!.getBoundingClientRect();
     const bounds = root.getBoundingClientRect();
     return selected.left >= bounds.left - 1 && selected.right <= bounds.right + 1;
   })).toBe(true);

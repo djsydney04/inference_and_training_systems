@@ -220,7 +220,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
             <button class="pipeline-node wide-node" data-step="5"><span>SwiGLU</span><small>token-wise MLP</small></button>
             <button class="pipeline-node plus-node" data-step="6"><span>+</span><small>next layer</small></button>
           </div>
-          <div class="pipeline-readout" data-pipeline-readout>
+          <div class="pipeline-readout" data-pipeline-readout aria-live="polite">
             <strong>Residual stream</strong>
             <p>Shape stays <code>[B, T, D]</code> from layer to layer. Sub-layers write updates into this shared representation.</p>
           </div>

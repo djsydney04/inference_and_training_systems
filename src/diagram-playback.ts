@@ -55,19 +55,6 @@ function pause(player: Player) {
   player.paused = true; player.override = false; player.clock.reset(); update(player);
 }
 
-/** Only animate a connector whose endpoint reaches the highlighted operation. */
-function traceIncoming(root: HTMLElement) {
-  root.querySelectorAll(".walkthrough-current-wire").forEach(path => path.classList.remove("walkthrough-current-wire"));
-  root.querySelectorAll<SVGSVGElement>("svg").forEach(svg => {
-    const boxes = [...svg.querySelectorAll<SVGGraphicsElement>(".nn-node[aria-pressed=true], .nn-node.walkthrough-focus, .lv-node[aria-pressed=true], [data-system-part][aria-pressed=true]")].map(node => node.getBBox());
-    if (!boxes.length) return;
-    svg.querySelectorAll<SVGPathElement>(".nn-wire, .lv-wire, .sb-wire").forEach(path => {
-      const end = path.getPointAtLength(path.getTotalLength());
-      if (boxes.some(box => end.x >= box.x - 14 && end.x <= box.x + box.width + 14 && end.y >= box.y - 14 && end.y <= box.y + box.height + 14)) path.classList.add("walkthrough-current-wire");
-    });
-  });
-}
-
 function revealSelected(root: HTMLElement) {
   const selected = root.querySelector<SVGGraphicsElement>(".nn-node[aria-pressed=true], .nn-node.walkthrough-focus, .lv-node[aria-pressed=true], .sb-node[aria-pressed=true], .architecture-scroll rect.walkthrough-focus, [data-hd-part][aria-pressed=true]");
   const scroller = selected?.closest<HTMLElement>(".nn-diagram-scroll, .lv-canvas, .sb-canvas, .architecture-scroll, .hd-canvas");
@@ -89,8 +76,8 @@ export function refreshDiagramPlayback() {
     root.dataset.diagramPlayback = walkthrough.kind;
     const bar = document.createElement("div");
     bar.className = "diagram-playback";
-    const kind = { flow: "Guided flow", simulation: "Live example", comparison: "Compare settings" }[walkthrough.kind];
-    bar.innerHTML = `<div class="playback-controls"><button type="button" data-playback-toggle aria-pressed="true">Pause</button><span class="playback-status">Auto</span><span class="playback-kind">${kind}</span><label>Pace<select data-playback-pace aria-label="Diagram reading pace"><option value="3000">3 sec</option><option value="6000">6 sec</option><option value="10000">10 sec</option></select></label></div><p class="playback-caption">${walkthrough.kind === "comparison" ? "Watch one setting change; the others stay fixed." : "Follow the highlighted stages automatically."}</p><div class="playback-progress" aria-hidden="true"><i></i></div>`;
+    const kind = { flow: "Execution trace", simulation: "Live example" }[walkthrough.kind];
+    bar.innerHTML = `<div class="playback-controls"><button type="button" data-playback-toggle aria-pressed="true">Pause</button><span class="playback-status">Auto</span><span class="playback-kind">${kind}</span><label>Pace<select data-playback-pace aria-label="Diagram reading pace"><option value="3000">3 sec</option><option value="6000">6 sec</option><option value="10000">10 sec</option></select></label></div><p class="playback-caption">Follow the execution steps automatically.</p><div class="playback-progress" aria-hidden="true"><i></i></div>`;
     // Keep the original caption first and all playback controls inside expanded figures.
     const caption = root.querySelector(":scope > figcaption, :scope > .three-heading, :scope > .lab-heading");
     if (caption && caption !== root.lastElementChild) caption.after(bar); else root.prepend(bar);
@@ -143,13 +130,13 @@ export function initializeDiagramPlayback() {
   initialized = true;
   const settings = document.createElement("div");
   settings.className = "diagram-playback-settings";
-  settings.innerHTML = '<button type="button" data-playback-all></button><label>Reading pace<select data-playback-default-pace aria-label="Default diagram reading pace"><option value="3000">3 seconds</option><option value="6000">6 seconds</option><option value="10000">10 seconds</option></select></label><p>Diagrams play while in view. Select a part to pause. The pace is for reading, not device timing.</p>';
+  settings.innerHTML = '<button type="button" data-playback-all></button><label>Reading pace<select data-playback-default-pace aria-label="Default diagram reading pace"><option value="3000">3 seconds</option><option value="6000">6 seconds</option><option value="10000">10 seconds</option></select></label><p>Animations follow execution steps. Other figures stay still. Pace controls reading time, not device timing.</p>';
   document.querySelector(".reader-reference-links")?.before(settings);
   globalButton = settings.querySelector("button")!;
   const defaultPace = settings.querySelector<HTMLSelectElement>("select")!;
   defaultPace.value = String(pace);
   const globalLabel = () => {
-    globalButton.textContent = pausedAll ? "Play all diagrams" : "Pause all diagrams";
+    globalButton.textContent = pausedAll ? "Play animations" : "Pause animations";
     globalButton.setAttribute("aria-pressed", String(!pausedAll));
   };
   globalButton.addEventListener("click", () => {
@@ -188,7 +175,6 @@ export function initializeDiagramPlayback() {
         // All adapters keep focus on the reader's control; no navigation is allowed.
         const focused = document.activeElement;
         player.caption.textContent = player.walkthrough.advance();
-        traceIncoming(player.root);
         revealSelected(player.root);
         if (focused instanceof HTMLElement && focused.isConnected && document.activeElement !== focused) focused.focus({ preventScroll: true });
         player.root.dataset.playbackFrames = String(Number(player.root.dataset.playbackFrames ?? 0) + 1);
