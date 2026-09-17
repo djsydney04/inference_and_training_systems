@@ -43,3 +43,20 @@ code and intentionally wide diagrams scrollable at their readable size.
 
 Work is isolated on `codex/layout-rhythm`. Content and numerical behavior remain
 owned by their existing modules.
+
+## Implementation and review
+
+- Added `src/layout.css` as the final shared layout layer, keeping content-module
+  changes limited to moving timing labels below their duration bars.
+- Reflowed captions and toolbars; removed glossary minimum-column overflow;
+  wrapped reference links; retained readable, scrollable code and diagrams.
+- Replaced repeated lesson and figure borders with spacing and continuous
+  surfaces. Added restrained chapter entrance and disclosure animation under
+  `prefers-reduced-motion: no-preference`.
+- Rebased onto the shared illustrated-book work and retained its original
+  landing and chapter illustrations.
+- Production build and 96 unit tests passed. Browser inspection covered desktop
+  and mobile chapter openings, diagram surfaces, the course guide, and the
+  illustrated landing sections. A DOM overflow audit passed 198 combinations:
+  33 pages at 320, 390, 768, 900, 1024, and 1440px. Duration-bar labels deliberately
+  sit below their bars; code and wide diagram viewports retain local scrolling.
