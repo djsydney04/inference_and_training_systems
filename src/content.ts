@@ -498,28 +498,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
           <section><span>LPU</span><h3>Schedule the whole dataflow</h3><p>A compiler places operations and movement on deterministic functional slices, trading dynamic hardware flexibility for predictable inference.</p></section>
         </div>
 
-        <div class="three-lab wide-figure" id="gpu">
-          <div class="three-head">
-            <figcaption><span>Interactive 5.1</span><strong>GPU package cutaway</strong><p>Drag to orbit, scroll to zoom, and select a part. The layout is explanatory, not a proprietary Blackwell floorplan.</p></figcaption>
-            <div class="three-controls">
-              <button type="button" data-gpu-view="package" class="is-active">Package</button>
-              <button type="button" data-gpu-view="die">Compute die</button>
-              <button type="button" data-gpu-view="sm">One SM</button>
-              <button type="button" data-gpu-reset aria-label="Reset GPU view">Reset view</button>
-            </div>
-          </div>
-          <div class="three-stage">
-            <div id="gpu-scene" class="scene-canvas" role="group" aria-label="Interactive 3D GPU package model"></div>
-            <div class="scene-inspector" id="gpu-inspector" aria-live="polite">
-              <span>Selected / package</span>
-              <h3>Accelerator package</h3>
-              <p>The package places compute dies beside high-bandwidth memory stacks on a silicon interposer. Packaging is part of the memory system.</p>
-              <dl><div><dt>Look for</dt><dd>HBM stacks around logic</dd></div><div><dt>Bottleneck</dt><dd>bytes delivered per operation</dd></div></dl>
-            </div>
-          </div>
-          <div class="scene-key"><span><i class="key-compute"></i> compute</span><span><i class="key-memory"></i> memory</span><span><i class="key-fabric"></i> fabric</span><span>Conceptual geometry</span></div>
-          <div class="webgl-fallback" data-webgl-fallback hidden>WebGL is unavailable. The inspector and text below contain the equivalent component map.</div>
-        </div>
+        <div class="hardware-mount wide-figure" id="gpu"><div id="gpu-scene"></div></div>
 
         <div class="anatomy-list">
           <article><span>01</span><div><h3>Grid → block → warp → thread</h3><p>A kernel launches a grid of thread blocks. Blocks are assigned to SMs. An SM issues instructions for warps—groups of 32 threads on NVIDIA GPUs. Divergent branches serialize paths within a warp.</p></div><code>software hierarchy</code></article>
@@ -552,28 +531,7 @@ print(q.shape, q.dtype, q.device)</code></pre>
           <p class="chapter-summary">The rack is not “a server with more cards.” Compute trays, NVLink switch trays, a copper backplane, power shelves, liquid cooling, storage, management, and a scale-out network form one machine.</p>
         </div>
 
-        <div class="three-lab wide-figure" id="rack-model">
-          <div class="three-head">
-            <figcaption><span>Interactive 6.1</span><strong>GB200 NVL72 rack exploder</strong><p>Select a tray, isolate the NVLink fabric, or open a Grace–Blackwell compute tray.</p></figcaption>
-            <div class="three-controls">
-              <button type="button" data-rack-view="rack" class="is-active">Whole rack</button>
-              <button type="button" data-rack-view="compute">Compute tray</button>
-              <button type="button" data-rack-view="fabric">NVLink fabric</button>
-              <button type="button" data-rack-view="power">Power delivery</button>
-              <button type="button" data-rack-view="cooling">Cooling loop</button>
-              <button type="button" data-rack-reset aria-label="Reset rack view">Reset view</button>
-            </div>
-          </div>
-          <div class="three-stage rack-stage">
-            <div id="rack-scene" class="scene-canvas" role="group" aria-label="Interactive 3D conceptual model of a GB200 NVL72 rack"></div>
-            <div class="scene-inspector" id="rack-inspector" aria-live="polite">
-              <span>Selected / NVL72</span><h3>Rack-scale NVLink domain</h3>
-              <p>18 compute trays × 4 B200 GPUs = 72 GPUs. Nine switch trays contain 18 NVSwitch chips, giving every GPU one NVLink connection to every switch chip.</p>
-              <dl><div><dt>Scale up</dt><dd>NVLink + NVSwitch</dd></div><div><dt>Scale out</dt><dd>InfiniBand or Ethernet</dd></div></dl>
-            </div>
-          </div>
-          <div class="scene-key"><span><i class="key-compute"></i> 18 compute trays</span><span><i class="key-fabric"></i> 9 switch trays</span><span><i class="key-power"></i> power / cooling</span><span>Topology based on NVIDIA’s public guides</span></div>
-        </div>
+        <div class="hardware-mount wide-figure" id="rack-model"><div id="rack-scene"></div></div>
 
         <div class="rack-facts" aria-label="GB200 NVL72 composition">
           <div><strong>72</strong><span>B200 GPUs</span><p>Four per compute tray</p></div>
@@ -722,17 +680,7 @@ vllm serve MODEL_ID \\
           <p class="chapter-summary">The published first-generation Tensor Streaming Processor is a single-core, functionally sliced SIMD machine with a flat, software-addressed SRAM system and deterministic instruction/data movement.</p>
         </div>
 
-        <div class="three-lab wide-figure">
-          <div class="three-head">
-            <figcaption><span>Interactive 8.1</span><strong>LPU tensor-streaming cutaway</strong><p>Drag to orbit. Select memory, matrix, vector, switch, or instruction slices; run a pulse to see operands cross the chip.</p></figcaption>
-            <div class="three-controls"><button type="button" data-lpu-pulse>Run tensor pulse</button><button type="button" data-lpu-view="flow" class="is-active">Data flow</button><button type="button" data-lpu-view="units">Functional slices</button><button type="button" data-lpu-reset>Reset view</button></div>
-          </div>
-          <div class="three-stage">
-            <div id="lpu-scene" class="scene-canvas" role="group" aria-label="Interactive conceptual 3D model of a Groq Tensor Streaming Processor"></div>
-            <div class="scene-inspector" id="lpu-inspector" aria-live="polite"><span>Selected / architecture</span><h3>Tensor Streaming Processor</h3><p>Instructions flow vertically through independent control queues while tensor operands flow horizontally through stream registers and functional slices.</p><dl><div><dt>Schedule</dt><dd>cycle-accurate, compile time</dd></div><div><dt>Memory</dt><dd>distributed on-die SRAM</dd></div></dl></div>
-          </div>
-          <div class="scene-key"><span><i class="key-memory"></i> MEM / SRAM</span><span><i class="key-compute"></i> MXM + VXM</span><span><i class="key-fabric"></i> SXM / streams</span><span>Based on Groq’s 2020 and 2022 ISCA papers</span></div>
-        </div>
+        <div class="hardware-mount wide-figure"><div id="lpu-scene"></div></div>
 
         <div class="lpu-principles">
           <article><span>Compiler</span><h3>Static placement and time</h3><p>The compiler knows which unit performs each operation, where operands live, and the cycle in which transfers occur. This removes caches, dynamic warp scheduling, and most arbitration from the critical plan.</p></article>

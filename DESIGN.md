@@ -69,8 +69,11 @@ Move existing nodes rather than recreating them so state and event handlers
 survive layout changes and expansion. Refresh after lazy workbench initialization.
 
 Choose the representation that makes the relationship easiest to read. Matrix
-values, reduction ownership, and algorithm stages use 2D. Physical package,
-rack, and functional-slice layouts may use 3D when depth explains something.
+values, reduction ownership, algorithm stages and hardware use 2D. Prefer an
+accurate front elevation, top view or architectural block diagram to a decorative
+3D model. Hardware drawings must cite their reference and identify which positions
+are physical and which are schematic. Separate full-silicon resource counts from
+enabled product counts. Do not add anonymous cells or chip blocks as decoration.
 
 The matrix and ring workbenches read the existing numerical state; they never
 reimplement the calculation in a renderer. Native buttons support keyboard

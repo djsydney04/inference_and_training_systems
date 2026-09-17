@@ -1,0 +1,54 @@
+import { test, expect } from "@playwright/test";
+
+test("hardware drawings preserve real inventory, nested inspection and keyboard access", async ({page})=>{
+  await page.emulateMedia({reducedMotion:"reduce"});
+  await page.goto("/#gpu");
+  const gpu=page.locator("#gpu");
+  await expect(gpu.locator(".hd-sm")).toHaveCount(144);
+  await expect(gpu.locator(".hd-tpc")).toHaveCount(72);
+  await expect(gpu.locator(".hd-canvas")).toContainText("132 SMs");
+  await gpu.getByRole("button",{name:"Look inside"}).click();
+  await expect(gpu.locator('.hd-tabs [aria-pressed=true]')).toContainText("one H100 SM");
+  await expect(gpu.locator('[data-hd-part="tensor"]')).toHaveCount(4);
+  await gpu.locator('[data-hd-part="registers"]').first().focus();
+  await page.keyboard.press("Enter");
+  await expect(gpu.locator('.hd-inspector')).toContainText("65,536 registers");
+  await gpu.getByRole("button",{name:"MI300X: compute chiplets"}).click();
+  await expect(gpu.locator('[data-hd-part="xcd"]')).toHaveCount(8);
+  await expect(gpu.locator('[data-hd-part="iod"]')).toHaveCount(4);
+  await expect(gpu.locator('[data-hd-part="hbm"]')).toHaveCount(8);
+  await gpu.getByRole('button',{name:'Open figure',exact:true}).click();
+  await expect(page.locator('dialog[open] .hd-canvas')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(gpu).toBeVisible();
+  await page.evaluate(()=>document.dispatchEvent(new CustomEvent('atlas:navigate',{detail:'rack-model'})));
+  const rack=page.locator('#rack-model');
+  await expect(rack.locator('.hd-compute')).toHaveCount(18);
+  await expect(rack.locator('.hd-switch')).toHaveCount(9);
+  await expect(rack.locator('.hd-power')).toHaveCount(8);
+  await expect(rack.locator('.hd-psu')).toHaveCount(48);
+  await rack.getByRole('button',{name:'Inside a GB200 compute tray',exact:true}).click();
+  await expect(rack.locator('[data-hd-part="gpu"]')).toHaveCount(4);
+  await expect(rack.locator('[data-hd-part="cpu"]')).toHaveCount(2);
+  await expect(rack.locator('[data-hd-part="nic"]')).toHaveCount(4);
+  await expect(rack.locator('[data-hd-part="dpu"]')).toHaveCount(2);
+  await expect(page.locator('.hardware-drawing canvas, canvas[data-engine]')).toHaveCount(0);
+  const outside=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
+  expect(outside).toBe(false);
+});
+
+test('hardware walkthrough automatically crosses component and view boundaries',async({page})=>{
+  await page.emulateMedia({reducedMotion:'no-preference'});
+  await page.clock.install();
+  await page.goto('/#gpu');
+  const gpu=page.locator('#gpu');
+  await gpu.locator('.hd-canvas').scrollIntoViewIfNeeded();
+  await expect(gpu).toHaveAttribute('data-diagram-playback','flow');
+  const initial=await gpu.locator('.hd-inspector h4').textContent();
+  await page.clock.runFor(6500);
+  await expect(gpu.locator('.hd-inspector h4')).not.toHaveText(initial!);
+  await page.clock.runFor(19000);
+  await expect(gpu.locator('.hd-tabs [aria-pressed=true]')).toContainText('one H100 SM');
+  await gpu.locator('[data-hd-part="tensor"]').first().click();
+  await expect(gpu).toHaveAttribute('data-playback-state','paused');
+});

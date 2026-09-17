@@ -37,7 +37,7 @@ export const attentionDiagram = () => {
   const a = "nn-attn-arrow";
   const mask = Array.from({length:16},(_,i)=>{const row=Math.floor(i/4),col=i%4;return `<rect class="nn-mask-cell ${col<=row?'is-visible':'is-masked'}" x="${88+col*22}" y="${380+row*22}" width="20" height="20"/>${col>row?`<text x="${98+col*22}" y="${395+row*22}" class="nn-mask-mark">×</text>`:''}`;}).join('');
   return start("nn-attn", 800, 514, "Inside causal self-attention", "Queries and keys produce scores over token positions. A causal mask removes future positions before softmax. The resulting probabilities weight value vectors, then the heads are joined and projected.") +
-    `<rect class="nn-operation-region" x="32" y="104" width="736" height="111"/><text x="48" y="199" class="nn-annotation">Split into H query heads and Hkv key/value heads; apply RoPE to Q and K.</text>` +
+    `<rect class="nn-operation-region" x="32" y="104" width="736" height="111"/><text x="48" y="235" class="nn-annotation">Q</text><text x="368" y="235" class="nn-annotation">K</text><text x="652" y="235" class="nn-annotation">V</text>` +
     line("M400 76V92H164V124M400 92V124M400 92H636V124M164 176V238H180V270M400 176V238H350V270M448 296H532M636 176V270M612 322V396M612 448V483",a) +
     partBox(280,24,240,"Normalized input X","[B, Tq, D]","input") +
     partBox(64,124,200,"Query Q","Linear Wq → RoPE","query") +

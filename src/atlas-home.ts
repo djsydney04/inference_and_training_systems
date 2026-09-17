@@ -178,9 +178,9 @@ export const galleryItems = [
   {
     kind: "gpu",
     id: "gpu",
-    title: "Inside the GPU",
-    scope: "Package → SM → operand",
-    copy: "Inspect execution partitions, register banks and staged matrix operands.",
+    title: "Inside H100 and MI300X",
+    scope: "GH100 → SM · MI300X chiplets",
+    copy: "Compare published GPU organization, enabled compute units and on-package memory.",
     type: "Hardware drawing",
   },
   {
@@ -194,8 +194,8 @@ export const galleryItems = [
   {
     kind: "rack",
     id: "rack-model",
-    title: "A rack is a network",
-    scope: "Tray → switch → fabric",
+    title: "The NVL72 rack, front to back",
+    scope: "Front elevation → compute tray",
     copy: "Connect compute, communication, power and cooling at rack scale.",
     type: "Hardware drawing",
   },
@@ -239,6 +239,6 @@ export const homeMarkup = `<section id="top" class="atlas-home" aria-labelledby=
   <header class="home-intro"><p class="home-kicker">An interactive textbook</p><h1 id="home-title">Machine learning systems</h1><p class="home-description">Learn how an LLM works, write its computations, understand the hardware, and train and serve a small model.</p><div class="home-actions"><a class="primary-action" href="#first-principles">Start learning</a><a class="text-action" href="#gallery">Explore diagrams and labs</a></div></header>
   <section class="curriculum-map" aria-label="How the material connects"><div class="map-lifecycle"><a href="#first-principles"><span>Understand</span><strong>Models and math</strong><small>tokens, tensors, attention</small></a><i aria-hidden="true">→</i><a href="#data"><span>Train</span><strong>Data and updates</strong><small>loss, gradients, optimization</small></a><i aria-hidden="true">→</i><a href="#inference"><span>Serve</span><strong>Requests and tokens</strong><small>cache, batching, latency</small></a></div><a class="map-hardware" href="#programming"><span>How the work runs</span><strong>C and CUDA <i aria-hidden="true">→</i> processors and circuits <i aria-hidden="true">→</i> connected systems</strong></a></section>
   <section class="path-section" id="learning-paths"><div><h2>Choose a path</h2><p>Pick a focus. Each path includes the foundations it needs.</p></div><div class="path-picker"><div role="group" aria-label="Learning path">${learningPaths.map((path, i) => `<button data-learning-path="${path.id}" aria-pressed="${i === 0}" class="${i === 0 ? "is-active" : ""}">${path.title}</button>`).join("")}</div><p data-path-description>${learningPaths[0].description}</p><details class="path-outline"><summary>Chapters in this path</summary><ol data-path-route>${learningPaths[0].route.map((id) => `<li><a href="#${id}">${chapters.find((c) => c.id === id)?.title}</a></li>`).join("")}</ol></details></div></section>
-  <section class="home-feature"><div class="home-machine-plate">${glyph("gpu")}</div><div><h2>See the hardware</h2><p>Open a GPU, follow a value from memory to execution, and connect what you see to a profiler trace.</p><a href="#gpu">Open the GPU workbench</a></div></section>
+  <section class="home-feature"><div class="home-machine-plate">${glyph("gpu")}</div><div><h2>See the hardware</h2><p>Open a GPU, follow a value from memory to execution, and connect what you see to a profiler trace.</p><a href="#gpu">Open the GPU drawing</a></div></section>
   <section class="home-standard"><h2>Practice as you read</h2><p>Predict a result before running an example. Use the checks to explain what happened, then change one assumption and try again.</p><a href="#projects">Choose a project</a></section>
 </section>`;

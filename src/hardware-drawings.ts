@@ -170,7 +170,7 @@ const explorers = [
 ];
 export function prepareHardwareDrawings() {
   for(const explorer of explorers) {
-    const host=document.getElementById(explorer.host)?.closest(".three-lab");
+    const host=document.getElementById(explorer.host)?.closest(".hardware-mount");
     if(!host)continue;
     host.outerHTML=`<figure id="${explorer.id}" class="hardware-drawing wide-figure" data-hardware-drawing="${explorer.id}" data-lesson="${esc(explorer.title)}"><figcaption><span>Hardware reference drawing</span><strong>${esc(explorer.title)}</strong><p>Inspect the named parts, or let the guided tour move through each view.</p></figcaption><div class="hd-tabs" role="group" aria-label="Hardware view">${explorer.ids.map((id,i)=>`<button type="button" data-hd-view="${id}" aria-pressed="${i===0}">${esc(views.find(v=>v.id===id)!.title)}</button>`).join("")}</div><div class="hd-canvas" tabindex="0" aria-label="Hardware drawing; scroll horizontally for all components"></div><div class="hd-inspector" aria-live="polite"></div><p class="hd-boundary"></p><a class="hd-source lesson-source" target="_blank" rel="noreferrer"></a></figure>`;
   }

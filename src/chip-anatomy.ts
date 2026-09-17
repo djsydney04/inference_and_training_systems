@@ -50,7 +50,7 @@ function viewMarkup(view: ChipView, first: boolean) {
 /** Insert before reader numbering, source discovery and search indexing. */
 export function prepareChipAnatomy() {
   chipExplorers.forEach(explorer => {
-    const host = document.getElementById(explorer.host)?.closest(".three-lab");
+    const host = document.getElementById(explorer.host)?.closest(".hardware-mount");
     if (!host || document.getElementById(explorer.id)) return;
     const sources = new Map(explorer.views.flatMap(view => view.sources));
     host.insertAdjacentHTML("afterend", `<section class="lesson chip-anatomy" id="${explorer.id}" data-lesson="${escape(explorer.title)}"><header><span>Chip anatomy</span><h3>${escape(explorer.title)}</h3></header><p>${escape(explorer.intro)}</p><figure class="chip-explorer" data-chip-explorer="${explorer.id}"><figcaption><span>Interactive component schematic</span><strong>${escape(explorer.title)}</strong><p>Select a part or step through a route. Open the diagram for a larger view.</p></figcaption>${explorer.views.length > 1 ? `<div class="chip-view-tabs" role="group" aria-label="${escape(explorer.title)} views">${explorer.views.map((view, i) => `<button type="button" data-chip-view="${view.id}" aria-pressed="${i === 0}">${escape(view.label)}</button>`).join("")}</div>` : ""}${explorer.views.map((view, i) => viewMarkup(view, i === 0)).join("")}</figure><div class="chip-sources">${[...sources].map(([url, label]) => `<a class="lesson-source" href="${url}" target="_blank" rel="noreferrer">${escape(label)}</a>`).join("")}</div></section>`);

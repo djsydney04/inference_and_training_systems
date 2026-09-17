@@ -14,7 +14,6 @@ type Player = {
   progress: HTMLElement;
   paused: boolean;
   override: boolean;
-  intersecting: boolean;
   liveRegions: Map<Element, string>;
 };
 const players = new Map<HTMLElement, Player>();
@@ -78,16 +77,6 @@ function revealSelected(root: HTMLElement) {
   scroller.scrollTo({ left: scroller.scrollLeft + part.left - area.left - (area.width - part.width) / 2, behavior: reducedMotion.matches ? "instant" : "smooth" });
 }
 
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    const player = players.get(entry.target as HTMLElement);
-    if (player) {
-      player.intersecting = entry.isIntersecting;
-      if (!entry.isIntersecting) { player.clock.reset(); update(player); }
-    }
-  });
-});
-
 /** Register authored walkthroughs; safe to call after inserting additional figures. */
 export function refreshDiagramPlayback() {
   document.querySelectorAll<HTMLElement>(diagramHostSelector).forEach(root => {
@@ -106,7 +95,7 @@ export function refreshDiagramPlayback() {
       root, walkthrough, clock: new DiagramClock(pace), bar,
       button: bar.querySelector("button")!, status: bar.querySelector(".playback-status")!,
       caption: bar.querySelector(".playback-caption")!, progress: bar.querySelector(".playback-progress i")!,
-      paused: false, override: false, intersecting: false, liveRegions: new Map(),
+      paused: false, override: false, liveRegions: new Map(),
     };
     players.set(root, player);
     const paceInput = bar.querySelector<HTMLSelectElement>("select")!;
@@ -133,13 +122,14 @@ export function refreshDiagramPlayback() {
     root.addEventListener("change", manual, true);
     root.addEventListener("focusin", manual);
     update(player);
-    observer.observe(root);
   });
 }
 
 function available(player: Player, modal: HTMLDialogElement | undefined) {
-  if (!playing(player) || !player.intersecting || document.hidden || (modal && !modal.contains(player.root))) return false;
+  if (!playing(player) || document.hidden || (modal && !modal.contains(player.root))) return false;
   if (player.root.closest("[hidden], [inert], details:not([open])")) return false;
+  // Moving the live node into a popout or changing its height can leave an
+  // IntersectionObserver snapshot stale. The visible drawing is authoritative.
   const visual = player.root.querySelector<HTMLElement>("[data-chip-panel]:not([hidden]) .chip-canvas, .three-stage, .lv-canvas, .nn-diagram-scroll, .nn-whole, .sb-canvas, .architecture-scroll, .hd-canvas, canvas") ?? player.root;
   const box = visual.getBoundingClientRect();
   return box.width > 0 && box.height > 0 && box.bottom > 40 && box.top < window.innerHeight - 40;
