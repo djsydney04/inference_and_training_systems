@@ -10,6 +10,7 @@ const partDescriptions: Record<string, string> = {
   Foundations: "Understand a prediction, follow the math, and learn how the numbers are stored.",
   Training: "Turn data into weight updates, then distribute the work across devices.",
   Hardware: "Follow the computation through circuits, processors, memory, and networks.",
+  Programming: "Write kernels, port operations between backends, and use profiles to improve the software.",
   Inference: "Generate tokens and serve requests within a memory and latency budget.",
   Practice: "Put the pieces together in a working model and a measured experiment.",
 };

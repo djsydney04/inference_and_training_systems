@@ -141,14 +141,6 @@ export const chapters: Chapter[] = [
     requires: ["machine"],
   },
   {
-    id: "cuda-kernels",
-    title: "Writing CUDA kernels",
-    intro: "A CUDA kernel is a function run by many GPU threads. Start with array indexing, then build reductions and normalization operations with checked gradients.",
-    part: "Hardware",
-    outcome: "Implement reductions and normalization kernels, verify gradients and diagnose memory and synchronization costs.",
-    requires: ["programming", "gpu-resources"],
-  },
-  {
     id: "rack",
     title: "Connecting accelerators",
     intro: "Multiple accelerators need to exchange data. Follow the links inside a server, across a rack and between racks.",
@@ -185,10 +177,18 @@ export const chapters: Chapter[] = [
     requires: ["machine"],
   },
   {
+    id: "cuda-kernels",
+    title: "Writing CUDA kernels",
+    intro: "A CUDA kernel is a function run by many GPU threads. Start with array indexing, then build reductions and normalization operations with checked gradients.",
+    part: "Programming",
+    outcome: "Implement reductions and normalization kernels, verify gradients and diagnose memory and synchronization costs.",
+    requires: ["programming", "gpu-resources"],
+  },
+  {
     id: "performance",
     title: "Profiling",
     intro: "A profiler records where time is spent. Read a trace, find the work that delays completion and test a specific improvement.",
-    part: "Hardware",
+    part: "Programming",
     outcome:
       "Use a trace to distinguish busy work from the exposed critical path.",
     requires: ["gpu-resources"],
@@ -295,9 +295,14 @@ export const learningPaths = [
     route: prerequisiteRoute(["post-training", "end-to-end", "projects"]),
   },
   {
-    id: "hardware", title: "Hardware and CUDA",
-    description: "C and memory, logic gates and RTL, GPU kernels, accelerator architectures and physical fabrics.",
-    route: prerequisiteRoute(["fpga-asic", "cuda-kernels", "collectives", "lpu", "accelerator-atlas", "performance", "projects"]),
+    id: "hardware", title: "Hardware and systems",
+    description: "Logic gates, RTL, processor resources, accelerator architectures and physical fabrics.",
+    route: prerequisiteRoute(["fpga-asic", "gpu-resources", "collectives", "lpu", "accelerator-atlas", "projects"]),
+  },
+  {
+    id: "kernels", title: "Kernel programming",
+    description: "C and memory, GPU execution, CUDA kernels and evidence from profiling.",
+    route: prerequisiteRoute(["cuda-kernels", "performance", "projects"]),
   },
   {
     id: "inference", title: "Inference and serving",
