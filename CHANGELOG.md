@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/djsydney04/inference_and_training_systems/compare/v0.4.1...v0.4.2) (2026-10-21)
+
+
+### Bug fixes
+
+* **security:** update TLS trust dependencies and runtime baselines ([#4](https://github.com/djsydney04/inference_and_training_systems/issues/4)) ([36e9f96](https://github.com/djsydney04/inference_and_training_systems/commit/36e9f969397ab4ca6fe601002afb75bbb661c4cb))
+
 ## [0.4.1](https://github.com/djsydney04/inference_and_training_systems/compare/v0.4.0...v0.4.1) (2026-09-17)
 
 
